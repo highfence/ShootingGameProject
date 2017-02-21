@@ -1,9 +1,12 @@
 #include "stdafx.h"
+#include "GameManager.h"
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 HINSTANCE g_hInst;
 // TODO :: 게임 이름 정하기.
 LPCTSTR lpszClass = TEXT("Shooting Game!");
+
+GameManager* gameManager;
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE PrevhInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
@@ -32,6 +35,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE PrevhInstance, LPSTR lpszCmd
 		NULL, (HMENU)NULL, hInstance, NULL);
 	ShowWindow(hWnd, nCmdShow);
 
+	gameManager = new GameManager(hWnd);
 	while (true)
 	{
 		if (PeekMessage(&Message, NULL, 0, 0, PM_REMOVE))
@@ -46,7 +50,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE PrevhInstance, LPSTR lpszCmd
 		}
 		else
 		{
-
+			gameManager->Update();
 		}
 	}
 
