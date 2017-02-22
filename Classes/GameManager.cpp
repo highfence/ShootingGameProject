@@ -11,14 +11,18 @@ GameManager::GameManager(_In_ HWND hWnd)
 	init();
 }
 
-GameManager::~GameManager()
-{
-	m_pTimer->Init();
-}
-
 void GameManager::init()
 {
+	m_hdc = GetDC(m_hWnd);
+	m_pTimer->Init();
 	return;
+}
+
+GameManager::~GameManager()
+{
+	delete m_pTimer;
+	delete m_pScroller;
+	ReleaseDC(m_hWnd, m_hdc);
 }
 
 void GameManager::Update()

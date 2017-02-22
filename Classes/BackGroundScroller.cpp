@@ -2,7 +2,7 @@
 #include "BackGroundScroller.h"
 
 const wchar_t* Background1 = _T("../Resources/BackGround1.png");
-const INT scrollSpeed = 100;
+const INT scrollSpeed = 300;
 
 BackGroundScroller::BackGroundScroller()
 {
@@ -16,13 +16,13 @@ void BackGroundScroller::init()
 
 BackGroundScroller::~BackGroundScroller()
 {
-
+	ImgDelete();
 }
 
 void BackGroundScroller::ImgLoad()
 {
-	// TODO :: CImage 쓰지 말고 해볼것
 	ImgStruct* img1 = new ImgStruct;
+	img1->img = new CImage;
 	img1->img->Load(Background1);
 	img1->imgWidth = imgWidth;
 	img1->imgHeight = imgHeight;
@@ -49,5 +49,16 @@ void BackGroundScroller::Scroll(_Inout_ HDC DrawDC, const _In_ FLOAT dt)
 		i->img->BitBlt(DrawDC, 0, i->scrollY - imgHeight, imgWidth, imgHeight, 0, 0, SRCCOPY);
 	}
 	
+	return;
+}
+
+void BackGroundScroller::ImgDelete()
+{
+	for (auto i : m_ImgVec)
+	{
+		delete i->img;
+		delete i;
+	}
+
 	return;
 }

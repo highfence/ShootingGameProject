@@ -21,6 +21,7 @@ private :
 
 	void init();
 	void ImgLoad();
+	void ImgDelete();
 
 	std::vector<ImgStruct*> m_ImgVec;
 };
