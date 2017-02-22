@@ -2,12 +2,14 @@
 #include "GameManager.h"
 #include "MyTimer.h"
 #include "BackGroundScroller.h"
+#include "Player.h"
 
-GameManager::GameManager(_In_ HWND hWnd)
+GameManager::GameManager(_Inout_ HWND hWnd)
 	: m_hWnd(hWnd)
 {
 	m_pTimer = new MyTimer;
 	m_pScroller = new BackGroundScroller;
+	m_pPlayer = new Player;
 	init();
 }
 
@@ -48,6 +50,7 @@ void GameManager::DrawProc(const _In_ FLOAT dt)
 	Rectangle(memoryDC, 0, 0, winWidth, winHeight);
 
 	m_pScroller->Scroll(memoryDC, dt);
+	m_pPlayer->Draw(memoryDC, dt);
 
 	BitBlt(m_hdc, 0, 0, winWidth, winHeight, memoryDC, 0, 0, SRCCOPY);
 
