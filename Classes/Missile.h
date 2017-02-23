@@ -1,13 +1,12 @@
 #pragma once
+#include "Missile.h"
 
 /*
-	Missile
-	미사일을 표현하는 클래스. 
-	옵션을 주어 적군과 아군의 미사일을 구분해서 생성할 수 있도록 해야할 것 같다.
-	혹은 상속을 할까?
+	PlayerMissile
+	플레이어의 미사일을 표현하는 클래스. 
 */
 
-class Missile
+class Missile 
 {
 public : 
 	Missile();

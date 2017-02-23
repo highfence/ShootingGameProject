@@ -3,7 +3,7 @@
 
 const wchar_t* playerMissile = _T("../Resources/MissileRed.png");
 const wchar_t* playerShape = _T("../Resources/MissileRedShape.png");
-const FLOAT playerMissileSpeed = 700;
+const FLOAT playerMissileSpeed = 2000;
 const FLOAT playerMissileWidth = 6;
 const FLOAT playerMissileHeight = 22;
 const FLOAT savePlacePos = -300;
@@ -26,6 +26,7 @@ void Missile::init()
 Missile::~Missile()
 {
 	delete m_pSprite;
+	delete m_pShapeSprite;
 }
 
 BOOL Missile::Launch(const _In_ FLOAT x, const _In_ FLOAT y)

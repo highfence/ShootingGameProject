@@ -9,10 +9,12 @@ const wchar_t* shapeSprite = _T("../Resources/player_m_shape2.png");
 const INT spriteWidth = 48;
 const INT spriteHeight = 50;
 const INT displayBoundaryPixel = 5;
+const INT playerMissileNumber = 15;
+const FLOAT missileLoadSpeed = 0.1f;
 
 
 Player::Player()
-	: m_PosX(0), m_PosY(0)
+	: m_PosX(0), m_PosY(0), m_AccTime(0)
 {
 	m_pSprite = new CImage;
 	m_pShapeSprite = new CImage;
@@ -26,11 +28,14 @@ void Player::init()
 	m_PosY = playerInitHeight;
 	m_pSprite->Load(playerSprite);
 	m_pShapeSprite->Load(shapeSprite);
+
+	MissileLoad();
 	return;
 }
 
 Player::~Player()
 {
+	DeleteMissile();
 	delete m_pSprite;
 }
 
@@ -43,8 +48,7 @@ void Player::Draw(_Inout_ HDC drawDC, const _In_ FLOAT dt)
 	m_pSprite->BitBlt(drawDC, m_PosX - spriteWidth / 2, m_PosY - spriteHeight / 2,
 		spriteWidth, spriteHeight, 0, 0, SRCPAINT);
 
-	m_pMissile->Draw(drawDC);
-
+	MissileDraw(drawDC);
 	return;
 }
 
@@ -81,7 +85,11 @@ void Player::Move(const _In_ BYTE* KeyState, const _In_ FLOAT dt)
 	}
 	if (KeyState[VK_A] & HOLDKEY)
 	{
-		m_pMissile->Launch(m_PosX, m_PosY);
+		LaunchMissile(dt);
+	}
+	if (KeyState[VK_D] & HOLDKEY)
+	{
+		DeleteMissile();
 	}
 
 	return;
@@ -89,6 +97,58 @@ void Player::Move(const _In_ BYTE* KeyState, const _In_ FLOAT dt)
 
 void Player::MissileFly(const _In_ FLOAT dt)
 {
-	m_pMissile->Fly(dt);
+	for (auto i : m_MissileVec)
+	{
+		i->Fly(dt);
+	}
+	return;
+}
+
+void Player::MissileLoad()
+{
+	for (int i = 0; i < playerMissileNumber; ++i)
+	{
+		Missile* loadingMissile = new Missile;
+		m_MissileVec.push_back(loadingMissile);
+	}
+
+	return;
+}
+
+void Player::MissileDraw(_Inout_ HDC drawDC)
+{
+	for (auto i : m_MissileVec)
+	{
+		i->Draw(drawDC);
+	}
+
+	return;
+}
+
+void Player::LaunchMissile(const _In_ FLOAT dt)
+{
+	m_AccTime += dt;
+	if (m_AccTime > missileLoadSpeed)
+	{
+		for (auto i : m_MissileVec)
+		{
+			if (i->Launch(m_PosX, m_PosY))
+			{
+				m_AccTime = 0;
+				break;
+			}
+		}
+	}
+
+	return;
+}
+
+void Player::DeleteMissile()
+{
+	while (!m_MissileVec.empty())
+	{
+		m_MissileVec.pop_back();
+	}
+
 	return;
 }
