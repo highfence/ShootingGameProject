@@ -41,6 +41,7 @@ void GameManager::CalProc(const _In_ FLOAT dt)
 {
 	GetKeyState();
 	m_pPlayer->Move(m_ByKey, dt);
+	m_pPlayer->MissileFly(dt);
 	return;
 }
 

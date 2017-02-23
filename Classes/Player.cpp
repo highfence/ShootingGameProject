@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Missile.h"
 
 const FLOAT playerInitWidth = winWidth / 2;
 const FLOAT playerInitHeight = winHeight * 3 / 4;
@@ -15,6 +16,7 @@ Player::Player()
 {
 	m_pSprite = new CImage;
 	m_pShapeSprite = new CImage;
+	m_pMissile = new Missile;
 	init();
 }
 
@@ -33,13 +35,15 @@ Player::~Player()
 }
 
 
-void Player::Draw(_Inout_ HDC DrawDC, const _In_ FLOAT dt)
+void Player::Draw(_Inout_ HDC drawDC, const _In_ FLOAT dt)
 {
 	// 비행기 출력
-	m_pShapeSprite->BitBlt(DrawDC, m_PosX - spriteWidth / 2, m_PosY - spriteHeight / 2,
+	m_pShapeSprite->BitBlt(drawDC, m_PosX - spriteWidth / 2, m_PosY - spriteHeight / 2,
 		spriteWidth, spriteHeight, 0, 0, SRCAND);
-	m_pSprite->BitBlt(DrawDC, m_PosX - spriteWidth / 2, m_PosY - spriteHeight / 2,
+	m_pSprite->BitBlt(drawDC, m_PosX - spriteWidth / 2, m_PosY - spriteHeight / 2,
 		spriteWidth, spriteHeight, 0, 0, SRCPAINT);
+
+	m_pMissile->Draw(drawDC);
 
 	return;
 }
@@ -75,6 +79,16 @@ void Player::Move(const _In_ BYTE* KeyState, const _In_ FLOAT dt)
 			m_PosY += playerMoveSpeed * dt;
 		}
 	}
+	if (KeyState[VK_A] & HOLDKEY)
+	{
+		m_pMissile->Launch(m_PosX, m_PosY);
+	}
 
+	return;
+}
+
+void Player::MissileFly(const _In_ FLOAT dt)
+{
+	m_pMissile->Fly(dt);
 	return;
 }
