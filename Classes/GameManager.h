@@ -34,6 +34,7 @@ private :
 	void init();
 	void CalProc(const _In_ FLOAT);
 	void DrawProc(const _In_ FLOAT);
+	void GetKeyState();
 
 	HWND m_hWnd;
 	HDC m_hdc;
@@ -41,4 +42,6 @@ private :
 	BackGroundScroller* m_pScroller;
 	Player* m_pPlayer;
 
+	BYTE m_ByKey[keyboardNumber];
+	BYTE m_OldKey[keyboardNumber];
 };
