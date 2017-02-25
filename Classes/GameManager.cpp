@@ -3,6 +3,7 @@
 #include "MyTimer.h"
 #include "BackGroundScroller.h"
 #include "Player.h"
+#include "EnemyItem.h"
 
 GameManager::GameManager(_Inout_ HWND hWnd)
 	: m_hWnd(hWnd)
@@ -10,6 +11,7 @@ GameManager::GameManager(_Inout_ HWND hWnd)
 	m_pTimer = new MyTimer;
 	m_pScroller = new BackGroundScroller;
 	m_pPlayer = new Player;
+	m_pEnemyItem = new EnemyItem(450, 300, 0, 0);
 	init();
 }
 
@@ -55,6 +57,7 @@ void GameManager::DrawProc(const _In_ FLOAT dt)
 
 	m_pScroller->Scroll(memoryDC, dt);
 	m_pPlayer->Draw(memoryDC, dt);
+	m_pEnemyItem->Draw(memoryDC);
 
 	BitBlt(m_hdc, 0, 0, winWidth, winHeight, memoryDC, 0, 0, SRCCOPY);
 

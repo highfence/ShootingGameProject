@@ -4,6 +4,7 @@
 class MyTimer;
 class BackGroundScroller;
 class Player;
+class EnemyItem;
 
 /*
 	GameManager
@@ -41,6 +42,7 @@ private :
 	MyTimer* m_pTimer;
 	BackGroundScroller* m_pScroller;
 	Player* m_pPlayer;
+	EnemyItem* m_pEnemyItem;
 
 	BYTE m_ByKey[keyboardNumber];
 	BYTE m_OldKey[keyboardNumber];
