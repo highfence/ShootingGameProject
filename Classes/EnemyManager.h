@@ -19,8 +19,9 @@ public :
 	EnemyManager();
 	~EnemyManager();
 	
-	void MakeEnemy(const _In_ INT, const _In_ FLOAT, const _In_ FLOAT, const _In_ INT, const _In_opt_ BOOL);
+	void MakeEnemyWithTime(const _In_ FLOAT, const _In_ INT, const _In_ FLOAT, const _In_ FLOAT, const _In_ INT, const _In_opt_ BOOL);
 	void CalProc(const _In_ FLOAT);
+	void MakeProc();
 	void DrawProc(_Inout_ HDC);
 	std::vector<Enemy*>& getEnemyVec();
 
@@ -45,6 +46,7 @@ private :
 	std::vector<Enemy*> m_EnemyVec;
 
 	FLOAT m_AccTime;
+	FLOAT m_RecordCreateTime;
 	
 	FLOAT m_PlayerPosX;
 	FLOAT m_PlayerPosY;

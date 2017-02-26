@@ -19,7 +19,6 @@ void GameManager::init()
 {
 	m_hdc = GetDC(m_hWnd);
 	m_pTimer->Init();
-	m_pEnemyManager->MakeEnemy(ENEMY::ENEMY_TYPE::ENEMY_ITEM, 450, 0, ENEMY::FLY_STRAIGHT, TRUE);
 	return;
 }
 

@@ -7,7 +7,7 @@ const wchar_t* spriteOnPath = _T("../Resources/EnemyItemOn.png");
 const INT enemyItemSpriteWidth = 64;
 const INT enemyItemSpriteHeight = 64;
 const FLOAT enemyItemFlightSpeed = 300;
-const INT enemyItemHp = 300;
+const INT enemyItemHp = 100;
 
 EnemyItem::EnemyItem(const _In_ FLOAT createX, const _In_ FLOAT createY, const _In_ INT flightType, const _In_ BOOL ItemLaunched)
 	: Enemy(createX, createY, flightType), m_IsItemLaunched(ItemLaunched)

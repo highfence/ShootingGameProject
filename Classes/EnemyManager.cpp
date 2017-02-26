@@ -24,7 +24,7 @@ void EnemyManager::deleteInstance()
 }
 
 EnemyManager::EnemyManager()
-	: m_AccTime(0.f)
+	: m_AccTime(0.f), m_RecordCreateTime(0.f)
 {
 	init();
 }
@@ -52,10 +52,14 @@ void EnemyManager::AccTime(const _In_ FLOAT dt)
 	return;
 }
 
-void EnemyManager::MakeEnemy(const _In_ INT enemyType, const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType, const _In_opt_ BOOL option)
+void EnemyManager::MakeEnemyWithTime(const _In_ FLOAT createTime, const _In_ INT enemyType, const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType, const _In_opt_ BOOL option)
 {
-	auto newEnemy = (this->*m_pMakeHandler[enemyType])(x, y, flightType, option);
-	m_EnemyVec.push_back(newEnemy);
+	if ((m_AccTime > createTime) && (m_RecordCreateTime < createTime))
+	{
+		auto newEnemy = (this->*m_pMakeHandler[enemyType])(x, y, flightType, option);
+		m_EnemyVec.push_back(newEnemy);
+		m_RecordCreateTime = createTime;
+	}
 
 	return;
 }
@@ -104,6 +108,7 @@ void EnemyManager::ClearVec()
 void EnemyManager::CalProc(const _In_ FLOAT dt)
 {
 	AccTime(dt);
+	MakeProc();
 	CalFly(dt);
 	ClearVec();
 	return;
@@ -118,4 +123,13 @@ void EnemyManager::DrawProc(_Inout_ HDC drawDC)
 std::vector<Enemy*>& EnemyManager::getEnemyVec()
 {
 	return m_EnemyVec;
+}
+
+void EnemyManager::MakeProc()
+{
+	MakeEnemyWithTime(3.0f, ENEMY_ITEM, 450, 0, FLY_STRAIGHT, FALSE);
+	MakeEnemyWithTime(3.25f, ENEMY_ITEM, 350, 0, FLY_STRAIGHT, FALSE);
+	MakeEnemyWithTime(3.5f, ENEMY_ITEM, 250, 0, FLY_STRAIGHT, FALSE);
+	MakeEnemyWithTime(3.75f, ENEMY_ITEM, 150, 0, FLY_STRAIGHT, TRUE);
+	return;
 }
