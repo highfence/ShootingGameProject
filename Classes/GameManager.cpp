@@ -11,7 +11,7 @@ GameManager::GameManager(_Inout_ HWND hWnd)
 	m_pTimer = new MyTimer;
 	m_pScroller = new BackGroundScroller;
 	m_pPlayer = new Player;
-	m_pEnemyManager = new EnemyManager;
+	m_pEnemyManager = EnemyManager::getInstance();
 	init();
 }
 
@@ -43,10 +43,8 @@ void GameManager::Update()
 void GameManager::CalProc(const _In_ FLOAT dt)
 {
 	GetKeyState();
-	m_pEnemyManager->CalFly(dt);
-	m_pEnemyManager->ClearVec();
-	m_pPlayer->Move(m_ByKey, dt);
-	m_pPlayer->MissileFly(dt);
+	m_pEnemyManager->CalProc(dt);
+	m_pPlayer->CalProc(m_ByKey, dt);
 
 	return;
 }
@@ -60,8 +58,8 @@ void GameManager::DrawProc(const _In_ FLOAT dt)
 	Rectangle(memoryDC, 0, 0, winWidth, winHeight);
 
 	m_pScroller->Scroll(memoryDC, dt);
-	m_pPlayer->Draw(memoryDC, dt);
-	m_pEnemyManager->Draw(memoryDC);
+	m_pPlayer->DrawProc(memoryDC);
+	m_pEnemyManager->DrawProc(memoryDC);
 
 	BitBlt(m_hdc, 0, 0, winWidth, winHeight, memoryDC, 0, 0, SRCCOPY);
 

@@ -3,6 +3,26 @@
 #include "EnemyItem.h"
 #include "EnemyManager.h"
 
+EnemyManager* EnemyManager::_instance = nullptr;
+
+// EnemyManager ½Ì±ÛÅæ ±¸Çö.
+EnemyManager* EnemyManager::getInstance()
+{
+	if (!_instance)
+	{
+		_instance = new EnemyManager();
+	}
+	return _instance;
+}
+
+// ½Ì±ÛÅæÀ» Áö¿öÁÖ´Â ÇÔ¼ö.
+void EnemyManager::deleteInstance()
+{
+	delete _instance;
+	_instance = nullptr;
+	return;
+}
+
 EnemyManager::EnemyManager()
 	: m_AccTime(0.f)
 {
@@ -75,5 +95,19 @@ void EnemyManager::ClearVec()
 		}
 	}
 
+	return;
+}
+
+void EnemyManager::CalProc(const _In_ FLOAT dt)
+{
+	AccTime(dt);
+	CalFly(dt);
+	ClearVec();
+	return;
+}
+
+void EnemyManager::DrawProc(_Inout_ HDC drawDC)
+{
+	Draw(drawDC);
 	return;
 }

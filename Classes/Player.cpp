@@ -40,7 +40,7 @@ Player::~Player()
 }
 
 
-void Player::Draw(_Inout_ HDC drawDC, const _In_ FLOAT dt)
+void Player::Draw(_Inout_ HDC drawDC)
 {
 	// 비행기 출력
 	m_pShapeSprite->BitBlt(drawDC, m_PosX - spriteWidth / 2, m_PosY - spriteHeight / 2,
@@ -150,5 +150,18 @@ void Player::DeleteMissile()
 		m_MissileVec.pop_back();
 	}
 
+	return;
+}
+
+void Player::CalProc(const _In_ BYTE* keyByte, const _In_ FLOAT dt)
+{
+	Move(keyByte, dt);
+	MissileFly(dt);
+	return;
+}
+
+void Player::DrawProc(_Inout_ HDC drawDC)
+{
+	Draw(drawDC);
 	return;
 }

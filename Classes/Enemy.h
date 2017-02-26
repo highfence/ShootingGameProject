@@ -22,6 +22,7 @@ public :
 	FLOAT m_FlightSpeed;
 	FLOAT m_Width;
 	FLOAT m_Height;
+	INT m_Hp;
 	BOOL CheckEnemyIsOnDisplay();
 
 	BOOL(Enemy::*m_pFlightHandler[ENEMY::FLIGHT_TYPE_NUM])(const _In_ FLOAT);
