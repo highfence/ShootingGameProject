@@ -39,7 +39,6 @@ Player::~Player()
 	delete m_pSprite;
 }
 
-
 void Player::Draw(_Inout_ HDC drawDC)
 {
 	// 비행기 출력
@@ -157,11 +156,33 @@ void Player::CalProc(const _In_ BYTE* keyByte, const _In_ FLOAT dt)
 {
 	Move(keyByte, dt);
 	MissileFly(dt);
+	CheckMissileColide();
 	return;
 }
 
 void Player::DrawProc(_Inout_ HDC drawDC)
 {
 	Draw(drawDC);
+	return;
+}
+
+void Player::GetPosition(_Out_ INT* posX, _Out_ INT* posY)
+{
+	*posX = m_PosX;
+	*posY = m_PosY;
+
+	return;
+}
+
+void Player::CheckMissileColide()
+{
+	for (auto i : m_MissileVec)
+	{
+		if (i->GetMissileLaunched())
+		{
+			i->CheckColide();
+		}
+	}
+
 	return;
 }

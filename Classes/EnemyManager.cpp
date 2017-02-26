@@ -64,7 +64,10 @@ void EnemyManager::Draw(_Inout_ HDC drawDC)
 {
 	for (auto i : m_EnemyVec)
 	{
-		i->Draw(drawDC);
+		if (!i->m_IsEnemyDead)
+		{
+			i->Draw(drawDC);
+		}
 	}
 
 	return;
@@ -110,4 +113,9 @@ void EnemyManager::DrawProc(_Inout_ HDC drawDC)
 {
 	Draw(drawDC);
 	return;
+}
+
+std::vector<Enemy*>& EnemyManager::getEnemyVec()
+{
+	return m_EnemyVec;
 }

@@ -19,27 +19,32 @@ public :
 	EnemyManager();
 	~EnemyManager();
 	
-	void AccTime(const _In_ FLOAT);
 	void MakeEnemy(const _In_ INT, const _In_ FLOAT, const _In_ FLOAT, const _In_ INT, const _In_opt_ BOOL);
+	void CalProc(const _In_ FLOAT);
+	void DrawProc(_Inout_ HDC);
+	std::vector<Enemy*>& getEnemyVec();
+
+private :
+
+	// 싱글톤 인스턴스
+	static EnemyManager* _instance;
+	
+	void init();
+	void AccTime(const _In_ FLOAT);
 	void Draw(_Inout_ HDC);
 	void CalFly(const _In_ FLOAT);
 	void ClearVec();
 
-	void CalProc(const _In_ FLOAT);
-	void DrawProc(_Inout_ HDC);
-
-private :
-
-	static EnemyManager* _instance;
-
+	// 생성 함수 포인터 핸들러.
 	Enemy*(EnemyManager::*m_pMakeHandler[ENEMY_TYPE_NUM])
 		(const _In_ FLOAT, const _In_ FLOAT, const _In_ INT, const _In_opt_ BOOL);
 
-	void init();
+	// 함수 포인터에 들어갈 함수
 	Enemy* MakeEnemyItem(const _In_ FLOAT, const _In_ FLOAT, const _In_ INT, const _In_opt_ BOOL);
 
-	FLOAT m_AccTime;
 	std::vector<Enemy*> m_EnemyVec;
+
+	FLOAT m_AccTime;
 	
 	FLOAT m_PlayerPosX;
 	FLOAT m_PlayerPosY;

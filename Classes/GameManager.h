@@ -36,6 +36,7 @@ private :
 	void CalProc(const _In_ FLOAT);
 	void DrawProc(const _In_ FLOAT);
 	void GetKeyState();
+	void ExchangeInfo();
 
 	HWND m_hWnd;
 	HDC m_hdc;

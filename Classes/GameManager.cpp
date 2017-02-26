@@ -107,3 +107,9 @@ void GameManager::GetKeyState()
 
 	return;
 }
+
+void GameManager::ExchangeInfo()
+{
+	
+	return;
+}
