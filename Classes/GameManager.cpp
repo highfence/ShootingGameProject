@@ -19,7 +19,7 @@ void GameManager::init()
 {
 	m_hdc = GetDC(m_hWnd);
 	m_pTimer->Init();
-	m_pEnemyManager->MakeEnemy(ENEMY::ENEMY_TYPE::ENEMY_ITEM, 450, 0, ENEMY::FLY_STRAIGHT, 0);
+	m_pEnemyManager->MakeEnemy(ENEMY::ENEMY_TYPE::ENEMY_ITEM, 450, 0, ENEMY::FLY_STRAIGHT, TRUE);
 	return;
 }
 
@@ -47,6 +47,7 @@ void GameManager::CalProc(const _In_ FLOAT dt)
 	m_pEnemyManager->ClearVec();
 	m_pPlayer->Move(m_ByKey, dt);
 	m_pPlayer->MissileFly(dt);
+
 	return;
 }
 

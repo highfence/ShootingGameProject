@@ -3,6 +3,7 @@
 
 const wchar_t* spritePath = _T("../Resources/EnemyItem.png");
 const wchar_t* shadePath = _T("../Resources/EnemyItemShade.png");
+const wchar_t* spriteOnPath = _T("../Resources/EnemyItemOn.png");
 const INT enemyItemSpriteWidth = 64;
 const INT enemyItemSpriteHeight = 64;
 const FLOAT enemyItemFlightSpeed = 300;
@@ -17,7 +18,14 @@ EnemyItem::EnemyItem(const _In_ FLOAT createX, const _In_ FLOAT createY, const _
 
 void EnemyItem::init()
 {
-	m_pSprite->Load(spritePath);
+	if (m_IsItemLaunched == true)
+	{
+		m_pSprite->Load(spriteOnPath);
+	}
+	else
+	{
+		m_pSprite->Load(spritePath);
+	}
 	m_pShadeSprite->Load(shadePath);
 
 	m_FlightSpeed = enemyItemFlightSpeed;
