@@ -11,7 +11,7 @@ GameManager::GameManager(_Inout_ HWND hWnd)
 	m_pTimer = new MyTimer;
 	m_pScroller = new BackGroundScroller;
 	m_pPlayer = new Player;
-	m_pEnemyItem = new EnemyItem(450, 300, 0, 0);
+	m_pEnemyItem = new EnemyItem(450, 300, FLY_STRAIGHT, 0);
 	init();
 }
 
@@ -44,6 +44,7 @@ void GameManager::CalProc(const _In_ FLOAT dt)
 	GetKeyState();
 	m_pPlayer->Move(m_ByKey, dt);
 	m_pPlayer->MissileFly(dt);
+	m_pEnemyItem->Fly(dt);
 	return;
 }
 

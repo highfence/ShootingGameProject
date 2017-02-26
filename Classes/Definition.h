@@ -13,3 +13,12 @@ const INT keyboardNumber = 256;
 
 // 플레이어 관련
 const FLOAT playerMoveSpeed = 300;
+
+
+namespace ENEMY
+{
+	enum FLIGHT_TYPE
+	{
+		FLY_STRAIGHT, FLIGHT_TYPE_NUM
+	};
+}
