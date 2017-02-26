@@ -17,6 +17,11 @@ const FLOAT playerMoveSpeed = 300;
 
 namespace ENEMY
 {
+	enum ENEMY_TYPE
+	{
+		ENEMY_ITEM, ENEMY_TYPE_NUM
+	};
+
 	enum FLIGHT_TYPE
 	{
 		FLY_STRAIGHT, FLIGHT_TYPE_NUM

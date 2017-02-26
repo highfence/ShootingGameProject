@@ -29,3 +29,25 @@ BOOL Enemy::FlyStraight(const _In_ FLOAT dt)
 	m_PosY += m_FlightSpeed * dt;
 	return true;
 }
+
+BOOL Enemy::CheckEnemyIsOnDisplay()
+{
+	if ((m_PosX + m_Width / 2) <= 0)
+	{
+		return false;
+	}
+	else if ((m_PosX - m_Width / 2) >= winWidth)
+	{
+		return false;
+	}
+	else if ((m_PosY + m_Height / 2) <= 0)
+	{
+		return false;
+	}
+	else if ((m_PosY - m_Height) / 2 >= winHeight)
+	{
+		return false;
+	}
+
+	return true;
+}

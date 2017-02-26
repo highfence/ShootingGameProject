@@ -3,7 +3,7 @@
 #include "MyTimer.h"
 #include "BackGroundScroller.h"
 #include "Player.h"
-#include "EnemyItem.h"
+#include "EnemyManager.h"
 
 GameManager::GameManager(_Inout_ HWND hWnd)
 	: m_hWnd(hWnd)
@@ -11,7 +11,7 @@ GameManager::GameManager(_Inout_ HWND hWnd)
 	m_pTimer = new MyTimer;
 	m_pScroller = new BackGroundScroller;
 	m_pPlayer = new Player;
-	m_pEnemyItem = new EnemyItem(450, 300, FLY_STRAIGHT, 0);
+	m_pEnemyManager = new EnemyManager;
 	init();
 }
 
@@ -19,6 +19,7 @@ void GameManager::init()
 {
 	m_hdc = GetDC(m_hWnd);
 	m_pTimer->Init();
+	m_pEnemyManager->MakeEnemy(ENEMY::ENEMY_TYPE::ENEMY_ITEM, 450, 0, ENEMY::FLY_STRAIGHT, 0);
 	return;
 }
 
@@ -42,9 +43,10 @@ void GameManager::Update()
 void GameManager::CalProc(const _In_ FLOAT dt)
 {
 	GetKeyState();
+	m_pEnemyManager->CalFly(dt);
+	m_pEnemyManager->ClearVec();
 	m_pPlayer->Move(m_ByKey, dt);
 	m_pPlayer->MissileFly(dt);
-	m_pEnemyItem->Fly(dt);
 	return;
 }
 
@@ -58,7 +60,7 @@ void GameManager::DrawProc(const _In_ FLOAT dt)
 
 	m_pScroller->Scroll(memoryDC, dt);
 	m_pPlayer->Draw(memoryDC, dt);
-	m_pEnemyItem->Draw(memoryDC);
+	m_pEnemyManager->Draw(memoryDC);
 
 	BitBlt(m_hdc, 0, 0, winWidth, winHeight, memoryDC, 0, 0, SRCCOPY);
 

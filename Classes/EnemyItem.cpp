@@ -12,7 +12,6 @@ EnemyItem::EnemyItem(const _In_ FLOAT createX, const _In_ FLOAT createY, const _
 {
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage; 
-	m_FlightSpeed = enemyItemFlightSpeed;
 	init();
 }
 
@@ -20,6 +19,10 @@ void EnemyItem::init()
 {
 	m_pSprite->Load(spritePath);
 	m_pShadeSprite->Load(shadePath);
+
+	m_FlightSpeed = enemyItemFlightSpeed;
+	m_Width = enemyItemSpriteWidth;
+	m_Height = enemyItemSpriteHeight;
 	return;
 }
 
@@ -31,9 +34,9 @@ EnemyItem::~EnemyItem()
 
 void EnemyItem::Draw(_Inout_ HDC drawDC)
 {
-	m_pShadeSprite->BitBlt(drawDC, m_PosX - enemyItemSpriteWidth / 2, m_PosY - enemyItemSpriteHeight,
-		enemyItemSpriteWidth, enemyItemSpriteHeight, 0, 0, SRCAND);
-	m_pSprite->BitBlt(drawDC, m_PosX - enemyItemSpriteWidth / 2, m_PosY - enemyItemSpriteHeight,
-		enemyItemSpriteWidth, enemyItemSpriteHeight, 0, 0, SRCPAINT);
+	m_pShadeSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height,
+		m_Width, m_Height, 0, 0, SRCAND);
+	m_pSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height,
+		m_Width, m_Height, 0, 0, SRCPAINT);
 	return;
 }

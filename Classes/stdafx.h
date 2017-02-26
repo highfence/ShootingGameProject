@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include <vector>
+#include <list>
 #include <atlimage.h>
 #include <iostream>
 #include "../Include/json/json.h"
