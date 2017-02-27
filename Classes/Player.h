@@ -2,7 +2,7 @@
 
 // 전방선언
 class Missile;
-
+class Enemy;
 
 /*
 	Player
@@ -15,9 +15,13 @@ public :
 	Player();
 	~Player();
 
-	void Draw(_Inout_ HDC, const _In_ FLOAT);
+	void CalProc(const _In_ BYTE*, const _In_ FLOAT);
+	void DrawProc(_Inout_ HDC);
+
+	void Draw(_Inout_ HDC);
 	void Move(const _In_ BYTE*, const _In_ FLOAT);
 	void MissileFly(const _In_ FLOAT);
+	void GetPosition(_Out_ INT*, _Out_ INT*);
 
 private :
 
@@ -25,7 +29,9 @@ private :
 	void MissileLoad();
 	void MissileDraw(_Inout_ HDC);
 	void LaunchMissile(const _In_ FLOAT);
+	void CalDirection();
 	void DeleteMissile();
+	void CheckMissileColide();
 
 	FLOAT m_PosX;
 	FLOAT m_PosY;
@@ -33,7 +39,7 @@ private :
 	CImage* m_pSprite;
 	CImage* m_pShapeSprite;
 	Missile* m_pMissile;
+	INT m_Direction;
 
 	std::vector<Missile*> m_MissileVec;
-
 };

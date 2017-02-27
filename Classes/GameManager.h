@@ -4,6 +4,7 @@
 class MyTimer;
 class BackGroundScroller;
 class Player;
+class EnemyManager;
 
 /*
 	GameManager
@@ -35,12 +36,14 @@ private :
 	void CalProc(const _In_ FLOAT);
 	void DrawProc(const _In_ FLOAT);
 	void GetKeyState();
+	void ExchangeInfo();
 
 	HWND m_hWnd;
 	HDC m_hdc;
 	MyTimer* m_pTimer;
 	BackGroundScroller* m_pScroller;
 	Player* m_pPlayer;
+	EnemyManager* m_pEnemyManager;
 
 	BYTE m_ByKey[keyboardNumber];
 	BYTE m_OldKey[keyboardNumber];

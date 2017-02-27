@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Missile.h"
+#include "Enemy.h"
+#include "EnemyManager.h"
 
 const wchar_t* playerMissile = _T("../Resources/MissileRed.png");
 const wchar_t* playerShape = _T("../Resources/MissileRedShape.png");
@@ -7,9 +9,11 @@ const FLOAT playerMissileSpeed = 2000;
 const FLOAT playerMissileWidth = 6;
 const FLOAT playerMissileHeight = 22;
 const FLOAT savePlacePos = -300;
+const FLOAT colideCorrectionPixel = 15;
+const INT playerMissileDamageOneTier = 50;
 
 Missile::Missile()
-	: m_IsMissileLaunched(false), m_PosX(savePlacePos), m_PosY(savePlacePos)
+	: m_IsMissileLaunched(false), m_PosX(savePlacePos), m_PosY(savePlacePos), m_Damage(playerMissileDamageOneTier)
 {
 	m_pSprite = new CImage;
 	m_pShapeSprite = new CImage;
@@ -99,4 +103,49 @@ void Missile::Draw(_Inout_ HDC drawDC)
 		playerMissileWidth, playerMissileHeight, 0, 0, SRCPAINT);
 
 	return;
+}
+
+BOOL Missile::CheckColide()
+{
+	auto EnemyVec = EnemyManager::getInstance()->getEnemyVec();
+
+	for (auto i : EnemyVec)
+	{
+		if (IsColideWithEnemy(i->m_PosX, i->m_PosY, i->m_Width, i->m_Height))
+		{
+			// 面倒 贸府.
+			i->GetDamage(m_Damage);
+
+			// 面倒 饶 固荤老 家戈
+			m_IsMissileLaunched = FALSE;
+			return TRUE;
+		}
+	}
+	
+	return FALSE;
+}
+
+BOOL Missile::IsColideWithEnemy(const _In_ FLOAT enemyPosX, const _In_ FLOAT enemyPosY, const _In_ FLOAT enemyWidth, const _In_ FLOAT enemyHeight)
+{
+	FLOAT enemyX1 = enemyPosX - enemyWidth / 2 + colideCorrectionPixel;
+	FLOAT enemyY1 = enemyPosY - enemyHeight / 2 + colideCorrectionPixel;
+	FLOAT enemyX2 = enemyPosX + enemyWidth / 2 - colideCorrectionPixel;
+	FLOAT enemyY2 = enemyPosY + enemyHeight / 2 - colideCorrectionPixel;
+
+	FLOAT thisX1 = m_PosX - playerMissileWidth / 2;
+	FLOAT thisY1 = m_PosY - playerMissileHeight / 2;
+	FLOAT thisX2 = m_PosX + playerMissileWidth / 2;
+	FLOAT thisY2 = m_PosY + playerMissileHeight / 2;
+
+	if (!(thisX2 < enemyX1 || enemyX2 < thisX1 || thisY2 < enemyY1 || enemyY2 < thisY1))
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+BOOL Missile::GetMissileLaunched()
+{
+	return m_IsMissileLaunched;
 }
