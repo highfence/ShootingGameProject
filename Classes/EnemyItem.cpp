@@ -50,3 +50,8 @@ void EnemyItem::Draw(_Inout_ HDC drawDC)
 		m_Width, m_Height, 0, 0, SRCPAINT);
 	return;
 }
+
+void EnemyItem::Explode(_Inout_ HDC drawDC)
+{
+	return;
+}

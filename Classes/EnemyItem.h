@@ -16,6 +16,7 @@ public :
 	~EnemyItem() override;
 
 	void Draw(_Inout_ HDC) override;
+	void Explode(_Inout_ HDC) override;
 
 private :
 

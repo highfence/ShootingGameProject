@@ -29,6 +29,7 @@ private :
 	void MissileLoad();
 	void MissileDraw(_Inout_ HDC);
 	void LaunchMissile(const _In_ FLOAT);
+	void CalDirection();
 	void DeleteMissile();
 	void CheckMissileColide();
 
@@ -38,6 +39,7 @@ private :
 	CImage* m_pSprite;
 	CImage* m_pShapeSprite;
 	Missile* m_pMissile;
+	INT m_Direction;
 
 	std::vector<Missile*> m_MissileVec;
 };

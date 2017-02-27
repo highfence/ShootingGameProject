@@ -4,17 +4,27 @@
 
 const FLOAT playerInitWidth = winWidth / 2;
 const FLOAT playerInitHeight = winHeight * 3 / 4;
-const wchar_t* playerSprite = _T("../Resources/player_m2.png");
-const wchar_t* shapeSprite = _T("../Resources/player_m_shape2.png");
-const INT spriteWidth = 48;
-const INT spriteHeight = 50;
+
+const wchar_t* playerSpriteM = _T("../Resources/player_m.png");
+const wchar_t* shapeSpriteM = _T("../Resources/playerShape_m.png");
+const wchar_t* playerSpriteL1 = _T("../Resources/player_l1.png");
+const wchar_t* shapeSpriteL1 = _T("../Resources/playerShape_l1.png");
+const wchar_t* playerSpriteL2 = _T("../Resources/player_l2.png");
+const wchar_t* shapeSpriteL2 = _T("../Resources/playerShape_l2.png");
+const wchar_t* playerSpriteR1 = _T("../Resources/player_R1.png");
+const wchar_t* shapeSpriteR1 = _T("../Resources/playerShape_R1.png");
+const wchar_t* playerSpriteR2 = _T("../Resources/player_R2.png");
+const wchar_t* shapeSpriteR2 = _T("../Resources/playerShape_R2.png");
+
+const INT spriteWidth = 64;
+const INT spriteHeight = 64;
 const INT displayBoundaryPixel = 5;
 const INT playerMissileNumber = 15;
 const FLOAT missileLoadSpeed = 0.1f;
 
 
 Player::Player()
-	: m_PosX(0), m_PosY(0), m_AccTime(0)
+	: m_PosX(0), m_PosY(0), m_AccTime(0), m_Direction(0)
 {
 	m_pSprite = new CImage;
 	m_pShapeSprite = new CImage;
@@ -26,8 +36,8 @@ void Player::init()
 {
 	m_PosX = playerInitWidth;
 	m_PosY = playerInitHeight;
-	m_pSprite->Load(playerSprite);
-	m_pShapeSprite->Load(shapeSprite);
+	m_pSprite->Load(playerSpriteM);
+	m_pShapeSprite->Load(shapeSpriteM);
 
 	MissileLoad();
 	return;
@@ -185,4 +195,19 @@ void Player::CheckMissileColide()
 	}
 
 	return;
+}
+
+// TODO :: 비행기를 기울기자.
+void Player::CalDirection()
+{
+	if (m_Direction <= 10 && m_Direction > 5)
+	{
+		m_pShapeSprite->Load(shapeSpriteR2);
+		m_pSprite->Load(playerSpriteR2);
+	}
+	else if (m_Direction <= 5 && m_Direction > 0)
+	{
+
+	}
+
 }

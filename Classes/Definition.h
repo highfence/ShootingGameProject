@@ -27,3 +27,11 @@ namespace ENEMY
 		FLY_STRAIGHT, FLIGHT_TYPE_NUM
 	};
 }
+
+namespace EFFECT
+{
+	enum EFFECT_TYPE
+	{
+		EXPLODE_LIGHT, EFFECT_TYPE_NUM
+	};
+}

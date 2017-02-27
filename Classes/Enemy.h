@@ -15,6 +15,7 @@ public :
 
 	void Fly(const _In_ FLOAT);
 	virtual void Draw(_Inout_ HDC) = 0;
+	virtual void Explode(_Inout_ HDC) = 0;
 	void GetDamage(const _In_ INT);
 	BOOL CheckEnemyIsOnDisplay();
 
