@@ -35,7 +35,8 @@ void EnemyManager::init()
 	return;
 }
 
-Enemy * EnemyManager::MakeEnemyItem(const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType, const _In_opt_ BOOL IsItemLaunched)
+Enemy * EnemyManager::MakeEnemyItem(const _In_ FLOAT x, const _In_ FLOAT y, 
+	const _In_ INT flightType, const _In_opt_ BOOL IsItemLaunched)
 {
 	Enemy* newEnemy = new EnemyItem(x, y, flightType, IsItemLaunched);
 	return newEnemy;
@@ -52,7 +53,8 @@ void EnemyManager::AccTime(const _In_ FLOAT dt)
 	return;
 }
 
-void EnemyManager::MakeEnemyWithTime(const _In_ FLOAT createTime, const _In_ INT enemyType, const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType, const _In_opt_ BOOL option)
+void EnemyManager::MakeEnemyWithTime(const _In_ FLOAT createTime, const _In_ INT enemyType,
+	const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType, const _In_opt_ BOOL option)
 {
 	if ((m_AccTime > createTime) && (m_RecordCreateTime < createTime))
 	{
@@ -127,9 +129,10 @@ std::vector<Enemy*>& EnemyManager::getEnemyVec()
 
 void EnemyManager::MakeProc()
 {
-	MakeEnemyWithTime(3.0f, ENEMY_ITEM, 450, 0, FLY_STRAIGHT, FALSE);
+	MakeEnemyWithTime(3.0f , ENEMY_ITEM, 450, 0, FLY_STRAIGHT, FALSE);
 	MakeEnemyWithTime(3.25f, ENEMY_ITEM, 350, 0, FLY_STRAIGHT, FALSE);
-	MakeEnemyWithTime(3.5f, ENEMY_ITEM, 250, 0, FLY_STRAIGHT, FALSE);
-	MakeEnemyWithTime(3.75f, ENEMY_ITEM, 150, 0, FLY_STRAIGHT, TRUE);
+	MakeEnemyWithTime(3.5f , ENEMY_ITEM, 250, 0, FLY_STRAIGHT, FALSE);
+	MakeEnemyWithTime(3.75f, ENEMY_ITEM, 150, 0, FLY_STRAIGHT, TRUE );
+
 	return;
 }
