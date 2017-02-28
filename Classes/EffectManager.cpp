@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Effect.h"
+#include "ExplodeLight.h"
 #include "EffectManager.h"
 
 EffectManager* EffectManager::_instance = nullptr;
@@ -46,13 +47,22 @@ EffectManager::~EffectManager()
 void EffectManager::CalProc(const _In_ FLOAT dt)
 {
 	AccTime(dt);
+	for (auto i : m_EffectVec)
+	{
+		i->CalProc(dt);
+	}
+	ClearVec();
+
 	return;
 }
 
 // 출력 담당 함수 (GameManager->Update->DrawProc에서 호출)
 void EffectManager::DrawProc(_Inout_ HDC drawDC)
 {
-
+	for (auto i : m_EffectVec)
+	{
+		i->DrawProc(drawDC);
+	}
 	return;
 }
 
@@ -63,15 +73,6 @@ void EffectManager::AccTime(const _In_ FLOAT dt)
 	return;
 }
 
-// 벡터 안의 이펙트들에게 시간을 분배하는 함수.
-void EffectManager::ProvideTime(const _In_ FLOAT dt)
-{
-	for (auto i : m_EffectVec)
-	{
-		i->AccTime(dt);
-	}
-	return;
-}
 
 // 끝난 이펙트들을 벡터에서 정리하는 함수.
 void EffectManager::ClearVec()
@@ -92,8 +93,15 @@ void EffectManager::ClearVec()
 	return;
 }
 
-BOOL EffectManager::MakeExplodeLight(const _In_ FLOAT, const _In_ FLOAT)
+BOOL EffectManager::MakeExplodeLight(const _In_ FLOAT x, const _In_ FLOAT y)
 {
-	
+	auto newEffect = new ExplodeLight(x, y);
+	m_EffectVec.push_back(newEffect);
 	return TRUE;
+}
+
+void EffectManager::MakeEffect(const _In_ INT effectType, const _In_ FLOAT creationX, const _In_ FLOAT creationY)
+{
+	(this->*m_pEffectMakerHandler[effectType])(creationX, creationY);
+	return;
 }

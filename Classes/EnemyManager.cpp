@@ -74,6 +74,10 @@ void EnemyManager::Draw(_Inout_ HDC drawDC)
 		{
 			i->Draw(drawDC);
 		}
+		else
+		{
+			i->DeadProc(drawDC);
+		}
 	}
 
 	return;
@@ -94,7 +98,7 @@ void EnemyManager::ClearVec()
 	std::vector<Enemy*>::iterator iter = m_EnemyVec.begin();
 	while (iter != m_EnemyVec.end())
 	{
-		if (!(*iter)->CheckEnemyIsOnDisplay())
+		if ((!(*iter)->CheckEnemyIsOnDisplay()) || ((*iter)->m_IsEnemyDead))
 		{
 			iter = m_EnemyVec.erase(iter);
 		}
@@ -113,6 +117,7 @@ void EnemyManager::CalProc(const _In_ FLOAT dt)
 	MakeProc();
 	CalFly(dt);
 	ClearVec();
+	CheckEnemyDead();
 	return;
 }
 
@@ -125,6 +130,19 @@ void EnemyManager::DrawProc(_Inout_ HDC drawDC)
 std::vector<Enemy*>& EnemyManager::getEnemyVec()
 {
 	return m_EnemyVec;
+}
+
+void EnemyManager::CheckEnemyDead()
+{
+	for (auto i : m_EnemyVec)
+	{
+		if (i->m_Hp <= 0)
+		{
+			i->m_IsEnemyDead = TRUE;
+		}
+	}
+
+	return;
 }
 
 void EnemyManager::MakeProc()

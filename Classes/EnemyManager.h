@@ -35,6 +35,7 @@ private :
 	void Draw(_Inout_ HDC);
 	void CalFly(const _In_ FLOAT);
 	void ClearVec();
+	void CheckEnemyDead();
 
 	// 생성 함수 포인터 핸들러.
 	Enemy*(EnemyManager::*m_pMakeHandler[ENEMY_TYPE_NUM])

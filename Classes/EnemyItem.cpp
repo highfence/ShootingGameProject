@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "EnemyItem.h"
+#include "EffectManager.h"
 
 const wchar_t* spritePath = _T("../Resources/EnemyItem.png");
 const wchar_t* shadePath = _T("../Resources/EnemyItemShade.png");
@@ -48,10 +49,23 @@ void EnemyItem::Draw(_Inout_ HDC drawDC)
 		m_Width, m_Height, 0, 0, SRCAND);
 	m_pSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height,
 		m_Width, m_Height, 0, 0, SRCPAINT);
+
+	return;
+}
+
+void EnemyItem::DeadProc(_Inout_ HDC drawDC)
+{
+	if ((!m_IsEnemyExplode) && (m_IsEnemyDead))
+	{
+		Explode(drawDC);
+		m_IsEnemyExplode = TRUE;
+	}
+
 	return;
 }
 
 void EnemyItem::Explode(_Inout_ HDC drawDC)
 {
+	EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_PosX, m_PosY);
 	return;
 }

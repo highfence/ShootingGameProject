@@ -4,6 +4,10 @@
 ExplodeLight::ExplodeLight(const _In_ FLOAT x, const _In_ FLOAT y)
 	: Effect(x, y)
 {
+	m_Width = explodeLightWidth;
+	m_Height = explodeLightHeight;
+	m_TimePerFrame = explodeLightFrameTime;
+	m_MaxFrameNum = explodeLightMaxFrameNum;
 	init();
 }
 
@@ -20,6 +24,8 @@ ExplodeLight::~ExplodeLight()
 
 void ExplodeLight::LoadInitialImg() 
 {
-	ImgLoad(explodeLightSpritePathStr, explodeLightShadePathStr, 0);
+	m_SpriteStr = explodeLightSpritePathStr;
+	m_ShadeStr = explodeLightShadePathStr;
+	ImgLoad(explodeLightSpritePathStr, explodeLightShadePathStr, 1);
 	return;
 }

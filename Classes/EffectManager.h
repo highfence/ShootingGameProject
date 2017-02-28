@@ -18,6 +18,7 @@ public :
 
 	void CalProc(const _In_ FLOAT);
 	void DrawProc(_Inout_ HDC);
+	void MakeEffect(const _In_ INT, const _In_ FLOAT, const _In_ FLOAT);
 
 private :
 
@@ -28,12 +29,11 @@ private :
 	static EffectManager* _instance;
 
 	// 핸들러와 핸들러 함수들.
-	BOOL(EffectManager::*m_pEffectMakerHandler[EFFECT_TYPE_NUM])(const _In_ FLOAT, const _In_ FLOAT);
+	BOOL(EffectManager::*m_pEffectMakerHandler[EFFECT::EFFECT_TYPE_NUM])(const _In_ FLOAT, const _In_ FLOAT);
 	BOOL MakeExplodeLight(const _In_ FLOAT, const _In_ FLOAT);
 
 	void init();
 	void AccTime(const _In_ FLOAT);
-	void ProvideTime(const _In_ FLOAT);
 	void ClearVec();
 
 	FLOAT m_AccTime;
