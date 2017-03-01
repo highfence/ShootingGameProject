@@ -80,7 +80,7 @@ void EffectManager::ClearVec()
 	std::vector<Effect*>::iterator iter = m_EffectVec.begin();
 	while (iter != m_EffectVec.end())
 	{
-		if (!(*iter)->GetIsEffectDone())
+		if (((*iter)->GetIsEffectDone()))
 		{
 			iter = m_EffectVec.erase(iter);
 		}

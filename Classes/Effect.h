@@ -39,4 +39,5 @@ private :
 
 	void init();
 	BOOL m_IsEffectDone;
+	BOOL m_IsDrawedOnce;
 };
