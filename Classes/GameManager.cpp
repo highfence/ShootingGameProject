@@ -4,6 +4,7 @@
 #include "BackGroundScroller.h"
 #include "Player.h"
 #include "EnemyManager.h"
+#include "EffectManager.h"
 
 GameManager::GameManager(_Inout_ HWND hWnd)
 	: m_hWnd(hWnd)
@@ -12,6 +13,7 @@ GameManager::GameManager(_Inout_ HWND hWnd)
 	m_pScroller = new BackGroundScroller;
 	m_pPlayer = new Player;
 	m_pEnemyManager = EnemyManager::getInstance();
+	m_pEffectManager = EffectManager::getInstance();
 	init();
 }
 
@@ -43,6 +45,7 @@ void GameManager::CalProc(const _In_ FLOAT dt)
 {
 	GetKeyState();
 	m_pEnemyManager->CalProc(dt);
+	m_pEffectManager->CalProc(dt);
 	m_pPlayer->CalProc(m_ByKey, dt);
 
 	return;
@@ -59,6 +62,7 @@ void GameManager::DrawProc(const _In_ FLOAT dt)
 	m_pScroller->Scroll(memoryDC, dt);
 	m_pPlayer->DrawProc(memoryDC);
 	m_pEnemyManager->DrawProc(memoryDC);
+	m_pEffectManager->DrawProc(memoryDC);
 
 	BitBlt(m_hdc, 0, 0, winWidth, winHeight, memoryDC, 0, 0, SRCCOPY);
 

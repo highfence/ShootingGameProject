@@ -17,12 +17,11 @@ public :
 
 	void Draw(_Inout_ HDC) override;
 	void Explode(_Inout_ HDC) override;
+	void DeadProc(_Inout_ HDC) override;
 
 private :
 
 	void init();
 
-	CImage* m_pSprite;
-	CImage* m_pShadeSprite;
 	BOOL m_IsItemLaunched;
 };
