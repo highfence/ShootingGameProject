@@ -40,7 +40,7 @@ void EffectManager::init()
 // 소멸자.
 EffectManager::~EffectManager()
 {
-
+	deleteInstance();
 }
 
 // 계산 담당 함수 (GameManager->Update->CalProc에서 호출)

@@ -42,9 +42,10 @@ Enemy * EnemyManager::MakeEnemyItem(const _In_ FLOAT x, const _In_ FLOAT y,
 	return newEnemy;
 }
 
+// TODO :: 에너미 매니저 소멸자 호출시 벡터 비워주기.
 EnemyManager::~EnemyManager()
 {
-
+	deleteInstance();
 }
 
 void EnemyManager::AccTime(const _In_ FLOAT dt)

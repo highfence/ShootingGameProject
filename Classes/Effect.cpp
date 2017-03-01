@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Effect.h"
 
-// TODO :: 왜 이펙트가 안되는 건지 모르겠음. 프레임체크를 빼보고 폭발부터 띄우는 것부터 시작해보자.
 Effect::Effect(const _In_ FLOAT x, const _In_ FLOAT y)
 	: m_AccTime(0), m_CutAccTime(0), m_IsEffectDone(FALSE), m_PosX(x), m_PosY(y), m_FrameNum(1)
 {
@@ -70,7 +69,7 @@ void Effect::FrameCheck()
 void Effect::CalProc(const _In_ FLOAT dt)
 {
 	AccTime(dt);
-	FrameCheck();
+	//FrameCheck();
 	return;
 }
 

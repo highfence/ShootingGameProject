@@ -24,8 +24,10 @@ ExplodeLight::~ExplodeLight()
 
 void ExplodeLight::LoadInitialImg() 
 {
-	m_SpriteStr = explodeLightSpritePathStr;
-	m_ShadeStr = explodeLightShadePathStr;
-	ImgLoad(explodeLightSpritePathStr, explodeLightShadePathStr, 1);
+	m_pSprite->Load(L"../Resources/FX/explosion_2_07.png");
+	m_pShade->Load(L"../Resources/FX/explosionS_2_07.png");
+	//m_SpriteStr = explodeLightSpritePathStr;
+	//m_ShadeStr = explodeLightShadePathStr;
+	//ImgLoad(explodeLightSpritePathStr, explodeLightShadePathStr, 1);
 	return;
 }
