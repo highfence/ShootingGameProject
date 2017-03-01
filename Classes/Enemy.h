@@ -17,6 +17,7 @@ public :
 	virtual void Draw(_Inout_ HDC) = 0;
 	virtual void Explode(_Inout_ HDC) = 0;
 	void GetDamage(const _In_ INT);
+	void AccTime(const _In_ FLOAT);
 	BOOL CheckEnemyIsOnDisplay();
 
 	FLOAT m_PosX;
@@ -26,6 +27,7 @@ public :
 	FLOAT m_Width;
 	FLOAT m_Height;
 	INT m_Hp;
+	FLOAT m_AccTime;
 	BOOL m_IsEnemyDead;
 
 	BOOL(Enemy::*m_pFlightHandler[ENEMY::FLIGHT_TYPE_NUM])(const _In_ FLOAT);
