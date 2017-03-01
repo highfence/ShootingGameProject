@@ -20,7 +20,7 @@ EnemyItem::EnemyItem(const _In_ FLOAT createX, const _In_ FLOAT createY, const _
 
 void EnemyItem::init()
 {
-	if (m_IsItemLaunched == true)
+	if (m_IsItemLaunched == TRUE)
 	{
 		m_pSprite->Load(spriteOnPath);
 	}

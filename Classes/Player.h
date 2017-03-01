@@ -2,6 +2,7 @@
 
 // 전방선언
 class Missile;
+class PlayerMissile;
 class Enemy;
 
 /*
@@ -41,5 +42,5 @@ private :
 	Missile* m_pMissile;
 	INT m_Direction;
 
-	std::vector<Missile*> m_MissileVec;
+	std::vector<PlayerMissile*> m_MissileVec;
 };

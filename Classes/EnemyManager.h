@@ -23,6 +23,7 @@ public :
 	void CalProc(const _In_ FLOAT);
 	void MakeProc();
 	void DrawProc(_Inout_ HDC);
+	void SetPlayerPos(const _In_ FLOAT, const _In_ FLOAT);
 	std::vector<Enemy*>& getEnemyVec();
 
 private :
@@ -36,6 +37,7 @@ private :
 	void CalFly(const _In_ FLOAT);
 	void ClearVec();
 	void CheckEnemyDead();
+	void DistributeTime(const _In_ FLOAT);
 
 	// 생성 함수 포인터 핸들러.
 	Enemy*(EnemyManager::*m_pMakeHandler[ENEMY_TYPE_NUM])

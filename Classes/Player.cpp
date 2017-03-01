@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
-#include "Missile.h"
+#include "PlayerMissile.h"
+#include "EnemyManager.h"
 
 const FLOAT playerInitWidth = winWidth / 2;
 const FLOAT playerInitHeight = winHeight * 3 / 4;
@@ -28,7 +29,7 @@ Player::Player()
 {
 	m_pSprite = new CImage;
 	m_pShapeSprite = new CImage;
-	m_pMissile = new Missile;
+	m_pMissile = new PlayerMissile;
 	init();
 }
 
@@ -117,7 +118,7 @@ void Player::MissileLoad()
 {
 	for (int i = 0; i < playerMissileNumber; ++i)
 	{
-		Missile* loadingMissile = new Missile;
+		PlayerMissile* loadingMissile = new PlayerMissile;
 		m_MissileVec.push_back(loadingMissile);
 	}
 
@@ -167,6 +168,10 @@ void Player::CalProc(const _In_ BYTE* keyByte, const _In_ FLOAT dt)
 	Move(keyByte, dt);
 	MissileFly(dt);
 	CheckMissileColide();
+
+	// EnemyManager에게 자신의 위치 정보 전달.
+	EnemyManager::getInstance()->SetPlayerPos(m_PosX, m_PosY);
+
 	return;
 }
 

@@ -1,35 +1,31 @@
 #pragma once
 #include "Missile.h"
 
-class Enemy;
-
-/*
-	PlayerMissile
-	플레이어의 미사일을 표현하는 클래스. 
-*/
 
 class Missile 
 {
 public : 
 	Missile();
-	~Missile();
+	virtual ~Missile();
+
+	virtual void Fly(const _In_ FLOAT) = 0;
+	void Draw(_Inout_ HDC);
 
 	BOOL Launch(const _In_ FLOAT, const _In_ FLOAT);
-	void Fly(const _In_ FLOAT);
-	void Draw(_Inout_ HDC);
-	BOOL CheckColide();
 	BOOL GetMissileLaunched();
+
+	CImage* m_pSprite;
+	CImage* m_pShapeSprite;
+	INT m_Damage;
+	BOOL m_IsMissileLaunched;
+	BOOL IsMissileOnDisplay();
+	FLOAT m_PosX;
+	FLOAT m_PosY;
+	FLOAT m_Width;
+	FLOAT m_Height;
 
 private :
 
 	void init();
-	BOOL IsColideWithEnemy(const _In_ FLOAT, const _In_ FLOAT, const _In_ FLOAT, const _In_ FLOAT);
-	BOOL IsMissileOnDisplay();
 
-	CImage* m_pSprite;
-	CImage* m_pShapeSprite;
-	BOOL m_IsMissileLaunched;
-	FLOAT m_PosX;
-	FLOAT m_PosY;
-	INT m_Damage;
 };

@@ -13,16 +13,22 @@ public :
 	Enemy(const _In_ FLOAT, const _In_ FLOAT, const _In_ INT);
 	virtual ~Enemy();
 
-	void Fly(const _In_ FLOAT);
 	virtual void Draw(_Inout_ HDC) = 0;
 	virtual void Explode(_Inout_ HDC) = 0;
 	virtual void DeadProc(_Inout_ HDC) = 0;
+
+	// TODO :: Fire ±¸Çö.
+	//virtual void Fire() = 0;
+
+	void Fly(const _In_ FLOAT);
 	void GetDamage(const _In_ INT);
 	void AccTime(const _In_ FLOAT);
 	BOOL CheckEnemyIsOnDisplay();
 
 	FLOAT m_PosX;
 	FLOAT m_PosY;
+	FLOAT m_PlayerX;
+	FLOAT m_PlayerY;
 	INT m_FlightType;
 	FLOAT m_FlightSpeed;
 	FLOAT m_Width;

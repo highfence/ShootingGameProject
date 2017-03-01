@@ -115,6 +115,7 @@ void EnemyManager::ClearVec()
 void EnemyManager::CalProc(const _In_ FLOAT dt)
 {
 	AccTime(dt);
+	DistributeTime(dt);
 	MakeProc();
 	CalFly(dt);
 	ClearVec();
@@ -152,6 +153,27 @@ void EnemyManager::MakeProc()
 	MakeEnemyWithTime(3.25f, ENEMY_ITEM, 350, 0, FLY_STRAIGHT, FALSE);
 	MakeEnemyWithTime(3.5f , ENEMY_ITEM, 250, 0, FLY_STRAIGHT, FALSE);
 	MakeEnemyWithTime(3.75f, ENEMY_ITEM, 150, 0, FLY_STRAIGHT, TRUE );
+
+	return;
+}
+
+void EnemyManager::DistributeTime(const _In_ FLOAT dt)
+{
+	for (auto i : m_EnemyVec)
+	{
+		i->AccTime(dt);
+	}
+	
+	return;
+}
+
+void EnemyManager::SetPlayerPos(const _In_ FLOAT playerPosX, const _In_ FLOAT playerPosY)
+{
+	for (auto i : m_EnemyVec)
+	{
+		i->m_PlayerX = playerPosX;
+		i->m_PlayerY = playerPosY;
+	}
 
 	return;
 }
