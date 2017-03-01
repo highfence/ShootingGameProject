@@ -8,7 +8,7 @@ public :
 	Missile();
 	virtual ~Missile();
 
-	virtual void Fly(const _In_ FLOAT) = 0;
+	virtual void Fly(const _In_ FLOAT, const _In_ FLOAT, const _In_ FLOAT, const _In_ FLOAT) = 0;
 	void Draw(_Inout_ HDC);
 
 	BOOL Launch(const _In_ FLOAT, const _In_ FLOAT);

@@ -25,14 +25,20 @@ PlayerMissile::~PlayerMissile()
 
 }
 
-void PlayerMissile::Fly(const _In_ FLOAT dt)
+void PlayerMissile::Fly(const _In_ FLOAT dt, const _In_ FLOAT vecX, const _In_ FLOAT vecY, const _In_ FLOAT speed)
 {
 	if (!m_IsMissileLaunched)
 	{
 		return;
 	}
 
-	m_PosY -= playerMissileSpeed * dt;
+	FLOAT unitVecX;
+	FLOAT unitVecY;
+
+	GetUnitVec(vecX, vecY, &unitVecX, &unitVecY);
+
+	m_PosX += unitVecX * speed * dt;
+	m_PosY -= unitVecY * speed * dt;
 
 	if (!IsMissileOnDisplay())
 	{

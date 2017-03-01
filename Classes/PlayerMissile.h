@@ -12,7 +12,7 @@ public :
 	PlayerMissile();
 	~PlayerMissile();
 
-	void Fly(const _In_ FLOAT) override;
+	void Fly(const _In_ FLOAT, const _In_ FLOAT, const _In_ FLOAT, const _In_ FLOAT) override;
 	BOOL CheckColide();
 
 private :

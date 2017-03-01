@@ -109,7 +109,7 @@ void Player::MissileFly(const _In_ FLOAT dt)
 {
 	for (auto i : m_MissileVec)
 	{
-		i->Fly(dt);
+		i->Fly(dt, 0, 1, PLAYER::playerMissileSpeed);
 	}
 	return;
 }

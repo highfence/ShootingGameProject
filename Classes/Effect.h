@@ -1,5 +1,7 @@
 #pragma once
 
+// TODO :: ExplodeLight가 생성시에 스피드를 받아서 비행기가 움직였던 속도로 움직이게 하는 건 어떨까?
+
 using namespace EFFECT;
 
 class Effect
