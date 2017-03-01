@@ -34,4 +34,13 @@ namespace EFFECT
 	{
 		EXPLODE_LIGHT, EFFECT_TYPE_NUM
 	};
+
+	const INT explodeLightMaxFrameNum = 9;
+	const std::wstring explodeLightSpritePathStr = _T("../Resources/FX/explosion_2_0");
+	const std::wstring explodeLightShadePathStr = _T("../Resources/FX/explosionS_2_0");
+	const INT explodeLightWidth = 52;
+	const INT explodeLightHeight = 51;
+	const FLOAT explodeLightFrameTime = 0.1f;
+
+	const std::wstring SpriteExtension = _T(".png");
 }

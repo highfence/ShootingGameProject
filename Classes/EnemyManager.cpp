@@ -35,15 +35,17 @@ void EnemyManager::init()
 	return;
 }
 
-Enemy * EnemyManager::MakeEnemyItem(const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType, const _In_opt_ BOOL IsItemLaunched)
+Enemy * EnemyManager::MakeEnemyItem(const _In_ FLOAT x, const _In_ FLOAT y, 
+	const _In_ INT flightType, const _In_opt_ BOOL IsItemLaunched)
 {
 	Enemy* newEnemy = new EnemyItem(x, y, flightType, IsItemLaunched);
 	return newEnemy;
 }
 
+// TODO :: 에너미 매니저 소멸자 호출시 벡터 비워주기.
 EnemyManager::~EnemyManager()
 {
-
+	deleteInstance();
 }
 
 void EnemyManager::AccTime(const _In_ FLOAT dt)
@@ -52,7 +54,8 @@ void EnemyManager::AccTime(const _In_ FLOAT dt)
 	return;
 }
 
-void EnemyManager::MakeEnemyWithTime(const _In_ FLOAT createTime, const _In_ INT enemyType, const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType, const _In_opt_ BOOL option)
+void EnemyManager::MakeEnemyWithTime(const _In_ FLOAT createTime, const _In_ INT enemyType,
+	const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType, const _In_opt_ BOOL option)
 {
 	if ((m_AccTime > createTime) && (m_RecordCreateTime < createTime))
 	{
@@ -71,6 +74,10 @@ void EnemyManager::Draw(_Inout_ HDC drawDC)
 		if (!i->m_IsEnemyDead)
 		{
 			i->Draw(drawDC);
+		}
+		else
+		{
+			i->DeadProc(drawDC);
 		}
 	}
 
@@ -92,7 +99,7 @@ void EnemyManager::ClearVec()
 	std::vector<Enemy*>::iterator iter = m_EnemyVec.begin();
 	while (iter != m_EnemyVec.end())
 	{
-		if (!(*iter)->CheckEnemyIsOnDisplay())
+		if ((!(*iter)->CheckEnemyIsOnDisplay()) || ((*iter)->m_IsEnemyDead))
 		{
 			iter = m_EnemyVec.erase(iter);
 		}
@@ -111,6 +118,7 @@ void EnemyManager::CalProc(const _In_ FLOAT dt)
 	MakeProc();
 	CalFly(dt);
 	ClearVec();
+	CheckEnemyDead();
 	return;
 }
 
@@ -125,11 +133,25 @@ std::vector<Enemy*>& EnemyManager::getEnemyVec()
 	return m_EnemyVec;
 }
 
+void EnemyManager::CheckEnemyDead()
+{
+	for (auto i : m_EnemyVec)
+	{
+		if (i->m_Hp <= 0)
+		{
+			i->m_IsEnemyDead = TRUE;
+		}
+	}
+
+	return;
+}
+
 void EnemyManager::MakeProc()
 {
-	MakeEnemyWithTime(3.0f, ENEMY_ITEM, 450, 0, FLY_STRAIGHT, FALSE);
+	MakeEnemyWithTime(3.0f , ENEMY_ITEM, 450, 0, FLY_STRAIGHT, FALSE);
 	MakeEnemyWithTime(3.25f, ENEMY_ITEM, 350, 0, FLY_STRAIGHT, FALSE);
-	MakeEnemyWithTime(3.5f, ENEMY_ITEM, 250, 0, FLY_STRAIGHT, FALSE);
-	MakeEnemyWithTime(3.75f, ENEMY_ITEM, 150, 0, FLY_STRAIGHT, TRUE);
+	MakeEnemyWithTime(3.5f , ENEMY_ITEM, 250, 0, FLY_STRAIGHT, FALSE);
+	MakeEnemyWithTime(3.75f, ENEMY_ITEM, 150, 0, FLY_STRAIGHT, TRUE );
+
 	return;
 }
