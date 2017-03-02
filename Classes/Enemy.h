@@ -1,6 +1,8 @@
 #pragma once
 using namespace ENEMY;
 
+class EnemyMissile;
+
 /*
 	Enemy
 		: 생성인자 (생성좌표 x, y, 비행 타입)
@@ -17,12 +19,20 @@ public :
 	virtual void Explode(_Inout_ HDC) = 0;
 	virtual void DeadProc(_Inout_ HDC) = 0;
 
-	// TODO :: Fire 구현.
-	//virtual void Fire() = 0;
+	// TODO :: 구현해야할 것들.
+	virtual void Fire() = 0;
+
+	void CalProc(const _In_ FLOAT);
+	void DrawProc(_Inout_ HDC);
 
 	void Fly(const _In_ FLOAT);
+	void MissileFly(const _In_ FLOAT);
 	void GetDamage(const _In_ INT);
 	void AccTime(const _In_ FLOAT);
+	void LoadMissiles(const _In_ ENEMY::MISSILE_SIZE);
+	void DrawMissiles(_Inout_ HDC);
+
+	BOOL CheckDead();
 	BOOL CheckEnemyIsOnDisplay();
 
 	FLOAT m_PosX;
@@ -33,18 +43,29 @@ public :
 	FLOAT m_FlightSpeed;
 	FLOAT m_Width;
 	FLOAT m_Height;
+	FLOAT m_MissileSpeed;
+	FLOAT m_MissileDamage;
 	INT m_Hp;
+	INT m_LoadedMissileNumber;
 	FLOAT m_AccTime;
+	FLOAT m_RecordAccTime;
 	BOOL m_IsEnemyDead;
 	BOOL m_IsEnemyExplode;
 	CImage* m_pSprite;
 	CImage* m_pShadeSprite;
 
 	BOOL(Enemy::*m_pFlightHandler[ENEMY::FLIGHT_TYPE_NUM])(const _In_ FLOAT);
+	BOOL(Enemy::*m_pMissileFlyHandler[ENEMY::MISSILE_TYPE_NUM])(EnemyMissile*, const _In_ FLOAT);
+	std::vector<EnemyMissile*> m_MissileVec;
 
 private :
 
+	// Flight 타입 함수 포인터.
 	BOOL FlyStraight(const _In_ FLOAT);
-	
+
+	// MissileFly 타입 함수 포인터.
+	BOOL MissileFlyStraight(EnemyMissile*, const _In_ FLOAT);
+
 	void init();
+	
 };

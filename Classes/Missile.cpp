@@ -7,7 +7,7 @@
 const FLOAT savePlacePos = -300;
 
 Missile::Missile()
-	: m_IsMissileLaunched(false), m_PosX(savePlacePos), m_PosY(savePlacePos) 
+	: m_IsMissileLaunched(false), m_PosX(savePlacePos), m_PosY(savePlacePos), m_MissileType(NONE)
 {
 	m_pSprite = new CImage;
 	m_pShapeSprite = new CImage;
@@ -19,12 +19,20 @@ void Missile::init()
 	return;
 }
 
+/*
+	Destructer of Missile.
+*/
 Missile::~Missile()
 {
 	delete m_pSprite;
 	delete m_pShapeSprite;
 }
 
+/*
+	Launch gives position to Missile (Generally their own position who calls this Function) 
+	If Launch success, it return TRUE.
+	else, it return FALSE.
+*/
 BOOL Missile::Launch(const _In_ FLOAT x, const _In_ FLOAT y)
 {
 	if (m_IsMissileLaunched)
@@ -39,7 +47,24 @@ BOOL Missile::Launch(const _In_ FLOAT x, const _In_ FLOAT y)
 	return TRUE;
 }
 
+/*
+	Initialize with MissileType (Launch Func Overloading)
+*/
+BOOL Missile::Launch(const _In_ ENEMY::MISSILE_TYPE missileType, const _In_ FLOAT x, const _In_ FLOAT y)
+{
+	if (!Launch(x, y))
+	{
+		return FALSE;
+	}
 
+	m_MissileType = missileType;
+	return TRUE;
+}
+
+/*
+	If missile is on the board, return TRUE.
+	else, return FALSE (It means missile is DEAD)
+*/ 
 BOOL Missile::IsMissileOnDisplay()
 {
 	if (m_PosY < -m_Height)
@@ -79,7 +104,18 @@ void Missile::Draw(_Inout_ HDC drawDC)
 }
 
 
-BOOL Missile::GetMissileLaunched()
+BOOL Missile::GetMissileLaunched() const
 {
 	return m_IsMissileLaunched;
+}
+
+void Missile::SetMissileType(const _In_ ENEMY::MISSILE_TYPE type)
+{
+	m_MissileType = type;
+	return;
+}
+
+MISSILE_TYPE Missile::GetMissileType() const
+{
+	return m_MissileType;
 }

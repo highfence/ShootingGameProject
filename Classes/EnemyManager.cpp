@@ -73,22 +73,12 @@ void EnemyManager::Draw(_Inout_ HDC drawDC)
 	{
 		if (!i->m_IsEnemyDead)
 		{
-			i->Draw(drawDC);
+			i->DrawProc(drawDC);
 		}
 		else
 		{
 			i->DeadProc(drawDC);
 		}
-	}
-
-	return;
-}
-
-void EnemyManager::CalFly(const _In_ FLOAT dt)
-{
-	for (auto i : m_EnemyVec)
-	{
-		i->Fly(dt);
 	}
 
 	return;
@@ -115,11 +105,9 @@ void EnemyManager::ClearVec()
 void EnemyManager::CalProc(const _In_ FLOAT dt)
 {
 	AccTime(dt);
-	DistributeTime(dt);
 	MakeProc();
-	CalFly(dt);
 	ClearVec();
-	CheckEnemyDead();
+	DistributeTime(dt);
 	return;
 }
 
@@ -132,19 +120,6 @@ void EnemyManager::DrawProc(_Inout_ HDC drawDC)
 std::vector<Enemy*>& EnemyManager::getEnemyVec()
 {
 	return m_EnemyVec;
-}
-
-void EnemyManager::CheckEnemyDead()
-{
-	for (auto i : m_EnemyVec)
-	{
-		if (i->m_Hp <= 0)
-		{
-			i->m_IsEnemyDead = TRUE;
-		}
-	}
-
-	return;
 }
 
 void EnemyManager::MakeProc()
@@ -161,7 +136,7 @@ void EnemyManager::DistributeTime(const _In_ FLOAT dt)
 {
 	for (auto i : m_EnemyVec)
 	{
-		i->AccTime(dt);
+		i->CalProc(dt);
 	}
 	
 	return;

@@ -34,9 +34,7 @@ private :
 	void init();
 	void AccTime(const _In_ FLOAT);
 	void Draw(_Inout_ HDC);
-	void CalFly(const _In_ FLOAT);
 	void ClearVec();
-	void CheckEnemyDead();
 	void DistributeTime(const _In_ FLOAT);
 
 	// 생성 함수 포인터 핸들러.

@@ -18,6 +18,7 @@ public :
 	void Draw(_Inout_ HDC) override;
 	void Explode(_Inout_ HDC) override;
 	void DeadProc(_Inout_ HDC) override;
+	void Fire() override;
 
 private :
 

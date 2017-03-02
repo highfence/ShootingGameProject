@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "EnemyItem.h"
 #include "EffectManager.h"
+#include "EnemyMissile.h"
 
 const wchar_t* spritePath = _T("../Resources/EnemyItem.png");
 const wchar_t* shadePath = _T("../Resources/EnemyItemShade.png");
@@ -34,6 +35,10 @@ void EnemyItem::init()
 	m_Width = enemyItemSpriteWidth;
 	m_Height = enemyItemSpriteHeight;
 	m_Hp = enemyItemHp;
+	m_MissileDamage = enemyItemDamage;
+	m_MissileSpeed = enemyItemMissileSpeed;
+	m_LoadedMissileNumber = enemyItemLoadedMissileNumber;
+	LoadMissiles(ENEMY::MISSILE_SIZE::SMALL);
 	return;
 }
 
@@ -61,6 +66,23 @@ void EnemyItem::DeadProc(_Inout_ HDC drawDC)
 		m_IsEnemyExplode = TRUE;
 	}
 
+	return;
+}
+
+void EnemyItem::Fire()
+{
+	const FLOAT fireFrequency = 1.5f;
+	if (m_RecordAccTime > fireFrequency)
+	{
+		for (auto i : m_MissileVec)
+		{
+			if (i->Launch(ENEMY::MISSILE_TYPE::STRAIGHT_FIRE, m_PosX, m_PosY))
+			{
+				break;
+			}
+		}
+		m_RecordAccTime = 0.f;
+	}
 	return;
 }
 

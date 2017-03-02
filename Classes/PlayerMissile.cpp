@@ -38,7 +38,7 @@ void PlayerMissile::Fly(const _In_ FLOAT dt, const _In_ FLOAT vecX, const _In_ F
 	GetUnitVec(vecX, vecY, &unitVecX, &unitVecY);
 
 	m_PosX += unitVecX * speed * dt;
-	m_PosY -= unitVecY * speed * dt;
+	m_PosY += unitVecY * speed * dt;
 
 	if (!IsMissileOnDisplay())
 	{

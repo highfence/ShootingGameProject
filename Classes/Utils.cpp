@@ -13,13 +13,27 @@ void GetUnitVec(const _In_ FLOAT x, const _In_ FLOAT y, _Out_ FLOAT* unitX, _Out
 	else if (x == 0)
 	{
 		*unitX = 0;
-		*unitY = 1;
+		if (y > 0)
+		{
+			*unitY = 1;
+		}
+		else if (y < 0)
+		{
+			*unitY = -1;
+		}
 		return;
 	}
 	else if (y == 0)
 	{
-		*unitX = 1;
 		*unitY = 0;
+		if (x > 0)
+		{
+			*unitX = 1;
+		}
+		else if (x < 0)
+		{
+			*unitX = -1;
+		}
 		return;
 	}
 
