@@ -79,10 +79,16 @@ namespace EFFECT
 
 namespace PLAYER
 {
-	const std::wstring playerMissile = _T("../Resources/MissileRed.png");
-	const std::wstring playerShape = _T("../Resources/MissileRedShape.png");
+	const std::wstring playerMissile = _T("../Resources/FX/PlayerMissileTier");
+	const std::wstring playerMissileShape = _T("../Resources/FX/PlayerMissileTierS");
+	const std::wstring fileExtension = _T(".png");
 	const FLOAT playerMissileSpeed = 2000.f;
-	const FLOAT playerMissileWidth = 6.f;
-	const FLOAT playerMissileHeight = 22.f;
-	const INT playerMissileDamageOneTier = 50;
+	const INT playerMissileWidthArray[4] = { 6, 18, };
+	const INT playerMissileHeightArray[4] = { 22, 25, };
+	const INT playerMissileDamageArray[4] = { 3, 7, 15, 21 };
 }
+
+enum RESULT_VALUE
+{
+	WELL_PERFORMED = 0, ERROR_INVALID_INPUT = -1
+};

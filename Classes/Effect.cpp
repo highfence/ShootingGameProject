@@ -33,7 +33,10 @@ void Effect::AccTime(const _In_ FLOAT dt)
 	return;
 }
 
-void Effect::ImgLoad(const _In_ std::wstring spriteStr, const _In_ std::wstring shadeStr, const _In_ INT frameNum)
+void Effect::ImgLoad(
+	const _In_ std::wstring spriteStr,
+	const _In_ std::wstring shadeStr,
+	const _In_ INT frameNum)
 {
 	if (m_IsDrawedOnce == TRUE)
 	{

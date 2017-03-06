@@ -22,20 +22,26 @@ public :
 	void Draw(_Inout_ HDC);
 	void Move(const _In_ BYTE*, const _In_ FLOAT);
 	void MissileFly(const _In_ FLOAT);
-	void GetPosition(_Out_ FLOAT*, _Out_ FLOAT*);
+	INT GetPosition(_Out_ FLOAT*, _Out_ FLOAT*);
 	FLOAT GetCollisionPixel() const;
 	BOOL GetIsPlayerAlived() const;
 	void PlayerDamaged();
+	void PlayerPowerUp();
 
 private :
 
 	void init();
+	INT InitialImgLoad();
+	INT AccTime(const _In_ FLOAT);
 	void MissileLoad();
 	void MissileDraw(_Inout_ HDC);
 	void LaunchMissile(const _In_ FLOAT);
-	void CalDirection();
+	void LoadImgWithDirection();
 	void DeleteMissile();
 	void CheckMissileColide();
+	void ChangeMissilesAccordWithPower();
+	INT CalDirection(const _In_ INT);
+
 
 	FLOAT m_PosX;
 	FLOAT m_PosY;
@@ -43,11 +49,17 @@ private :
 	FLOAT m_Height;
 	FLOAT m_CollisionPixel;
 	FLOAT m_AccTime;
+	FLOAT m_RecordAccTime;
+	INT m_PowerTier;
 	CImage* m_pSprite;
-	CImage* m_pShapeSprite;
+	CImage* m_pShadeSprite;
 	Missile* m_pMissile;
 	BOOL m_IsPlayerAlive;
 	INT m_Direction;
 
 	std::vector<PlayerMissile*> m_MissileVec;
+
+#ifdef _DEBUG
+	INT PrintDebugLabel(_Inout_ HDC);
+#endif
 };

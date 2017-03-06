@@ -6,36 +6,30 @@
 const FLOAT playerInitWidth = winWidth / 2;
 const FLOAT playerInitHeight = winHeight * 3 / 4;
 
-const wchar_t* playerSpriteM = _T("../Resources/player_m.png");
-const wchar_t* shapeSpriteM = _T("../Resources/playerShape_m.png");
-const wchar_t* playerSpriteL1 = _T("../Resources/player_l1.png");
-const wchar_t* shapeSpriteL1 = _T("../Resources/playerShape_l1.png");
-const wchar_t* playerSpriteL2 = _T("../Resources/player_l2.png");
-const wchar_t* shapeSpriteL2 = _T("../Resources/playerShape_l2.png");
-const wchar_t* playerSpriteR1 = _T("../Resources/player_R1.png");
-const wchar_t* shapeSpriteR1 = _T("../Resources/playerShape_R1.png");
-const wchar_t* playerSpriteR2 = _T("../Resources/player_R2.png");
-const wchar_t* shapeSpriteR2 = _T("../Resources/playerShape_R2.png");
+const std::wstring playerFilePath = _T("../Resources/player_");
+const std::wstring playerShadePath = _T("../Resources/playerS_");
+const std::wstring playerFileExtension = _T(".png");
 
 const INT spriteWidth = 64;
 const INT spriteHeight = 64;
 const INT displayBoundaryPixel = 5;
 const INT playerMissileNumber = 15;
 const FLOAT missileLoadSpeed = 0.1f;
-// TODO :: 뭔가 이상한데?
 const FLOAT playerColisionPixel = 15;
+const INT playerMaxPowerTier = 4;
 
 
 Player::Player()
-	: m_PosX(0),
-	m_PosY(0),
-	m_AccTime(0),
+	: m_PosX(0.f),
+	m_PosY(0.f),
+	m_AccTime(0.f),
 	m_Direction(0),
+	m_PowerTier(1),
 	m_IsPlayerAlive(TRUE),
 	m_CollisionPixel(playerColisionPixel)
 {
 	m_pSprite = new CImage;
-	m_pShapeSprite = new CImage;
+	m_pShadeSprite = new CImage;
 	m_pMissile = new PlayerMissile;
 	init();
 }
@@ -46,9 +40,8 @@ void Player::init()
 	m_PosY = playerInitHeight;
 	m_Width = spriteWidth;
 	m_Height = spriteHeight;
-	m_pSprite->Load(playerSpriteM);
-	m_pShapeSprite->Load(shapeSpriteM);
 
+	InitialImgLoad();
 	MissileLoad();
 	return;
 }
@@ -59,34 +52,53 @@ Player::~Player()
 	delete m_pSprite;
 }
 
+INT Player::InitialImgLoad()
+{
+	ImgLoad(m_pSprite, playerFilePath, 3, playerFileExtension, FALSE);
+	ImgLoad(m_pShadeSprite, playerShadePath, 3, playerFileExtension, FALSE);
+	return WELL_PERFORMED;
+}
+
 void Player::Draw(_Inout_ HDC drawDC)
 {
+	// 비행기 기울기에 맞게 
+	LoadImgWithDirection();
+	
 	// 비행기 출력
-	m_pShapeSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2,
+	m_pShadeSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2,
 		m_Width, m_Height, 0, 0, SRCAND);
 	m_pSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2,
 		m_Width, m_Height, 0, 0, SRCPAINT);
 
 	MissileDraw(drawDC);
+
+#ifdef _DEBUG
+	PrintDebugLabel(drawDC);
+#endif
 	return;
 }
 
 void Player::Move(const _In_ BYTE* KeyState, const _In_ FLOAT dt)
 {
-	// TODO :: 기울어지는 애니메이션 이용하기.
 	if (KeyState[VK_LEFT] & HOLDKEY)
 	{
 		if (m_PosX > displayBoundaryPixel + m_Width / 2)
 		{
 			m_PosX -= playerMoveSpeed * dt;
 		}
+		CalDirection(VK_LEFT);
 	}
-	if (KeyState[VK_RIGHT] & HOLDKEY)
+	else if (KeyState[VK_RIGHT] & HOLDKEY)
 	{
 		if (m_PosX < winWidth - displayBoundaryPixel - m_Width / 2)
 		{
 			m_PosX += playerMoveSpeed * dt;
 		}
+		CalDirection(VK_RIGHT);
+	}
+	else
+	{
+		CalDirection(0);
 	}
 	if (KeyState[VK_UP] & HOLDKEY)
 	{
@@ -142,7 +154,6 @@ void Player::MissileDraw(_Inout_ HDC drawDC)
 
 void Player::LaunchMissile(const _In_ FLOAT dt)
 {
-	m_AccTime += dt;
 	if (m_AccTime > missileLoadSpeed)
 	{
 		for (auto i : m_MissileVec)
@@ -158,6 +169,13 @@ void Player::LaunchMissile(const _In_ FLOAT dt)
 	return;
 }
 
+INT Player::AccTime(const _In_ FLOAT dt)
+{
+	m_AccTime += dt;
+	m_RecordAccTime += dt;
+	return WELL_PERFORMED;
+}
+
 void Player::DeleteMissile()
 {
 	while (!m_MissileVec.empty())
@@ -170,6 +188,7 @@ void Player::DeleteMissile()
 
 void Player::CalProc(const _In_ BYTE* keyByte, const _In_ FLOAT dt)
 {
+	AccTime(dt);
 	Move(keyByte, dt);
 	MissileFly(dt);
 	CheckMissileColide();
@@ -186,19 +205,28 @@ void Player::DrawProc(_Inout_ HDC drawDC)
 	return;
 }
 
-void Player::GetPosition(_Out_ FLOAT* posX, _Out_ FLOAT* posY)
+/*
+	인자로 넣은 FLOAT 데이터에 플레이어의 포지션을 반환해주는 함수.
+*/
+INT Player::GetPosition(_Out_ FLOAT* posX, _Out_ FLOAT* posY)
 {
 	*posX = m_PosX;
 	*posY = m_PosY;
 
-	return;
+	return WELL_PERFORMED;
 }
 
+/*
+	플레이어의 충돌 반경을 반환해주는 함수.
+*/
 FLOAT Player::GetCollisionPixel() const
 {
 	return m_CollisionPixel;
 }
 
+/*
+	플레이어가 살아있는지 여부를 반환해주는 함수.
+*/
 BOOL Player::GetIsPlayerAlived() const
 {
 	return m_IsPlayerAlive;
@@ -217,23 +245,130 @@ void Player::CheckMissileColide()
 	return;
 }
 
-// TODO :: 비행기를 기울이자.
-void Player::CalDirection()
+/*
+	현재 방향이 어디를 향하고 있는지 계산해서 그에 맞는 이미지를 로드해주는 함수.
+*/
+void Player::LoadImgWithDirection()
 {
-	if (m_Direction <= 10 && m_Direction > 5)
+	if (m_Direction <= 10 && m_Direction > 6)
 	{
-		m_pShapeSprite->Load(shapeSpriteR2);
-		m_pSprite->Load(playerSpriteR2);
+		ImgLoad(m_pSprite, playerFilePath, 5, playerFileExtension, TRUE);
+		ImgLoad(m_pShadeSprite, playerShadePath, 5, playerFileExtension, TRUE);
 	}
-	else if (m_Direction <= 5 && m_Direction > 0)
+	else if (m_Direction <= 6 && m_Direction > 3)
 	{
-
+		ImgLoad(m_pSprite, playerFilePath, 4, playerFileExtension, TRUE);
+		ImgLoad(m_pShadeSprite, playerShadePath, 4, playerFileExtension, TRUE);
+	}
+	else if (m_Direction <= 3 && m_Direction >= -3)
+	{
+		ImgLoad(m_pSprite, playerFilePath, 3, playerFileExtension, TRUE);
+		ImgLoad(m_pShadeSprite, playerShadePath, 3, playerFileExtension, TRUE);
+	}
+	else if (m_Direction < -3 && m_Direction >= -6)
+	{
+		ImgLoad(m_pSprite, playerFilePath, 2, playerFileExtension, TRUE);
+		ImgLoad(m_pShadeSprite, playerShadePath, 2, playerFileExtension, TRUE);
+	}
+	else
+	{
+		ImgLoad(m_pSprite, playerFilePath, 1, playerFileExtension, TRUE);
+		ImgLoad(m_pShadeSprite, playerShadePath, 1, playerFileExtension, TRUE);
 	}
 
+	return;
 }
 
+/*
+	플레이어에게 총알이 맞았을 경우 호출하는 함수.
+*/
 void Player::PlayerDamaged()
 {
 	m_IsPlayerAlive = FALSE;
 	return;
+}
+
+/*
+	플레이어가 아이템을 먹었을 경우 호출하는 함수.
+*/
+void Player::PlayerPowerUp()
+{
+	if (m_PowerTier <= playerMaxPowerTier)
+	{
+		++m_PowerTier;
+		ChangeMissilesAccordWithPower();
+	}
+
+	return;
+}
+
+/*
+	멤버 변수 m_PowerTier에 맞도록 미사일의 외향과 데미지를 바꾸어주는 함수. 
+*/
+void Player::ChangeMissilesAccordWithPower()
+{
+	for (auto i : m_MissileVec)
+	{
+		i->ChangeMissileTier(m_PowerTier);
+	}
+
+	return;
+}
+
+/*
+	입력받은 키에 따라 m_Direction을 계산해주는 함수.
+*/
+INT Player::CalDirection(const _In_ INT pushedKey)
+{
+	const INT directionRefreshTime = 0.3f;
+	if (m_RecordAccTime > directionRefreshTime)
+	{
+		switch (pushedKey)
+		{
+		case VK_LEFT :
+			if (m_Direction > 0)
+			{
+				m_Direction = 0;
+			}
+			if (m_Direction > -10)
+			{
+				--m_Direction;
+			}
+			break;
+		case VK_RIGHT :
+			if (m_Direction < 0)
+			{
+				m_Direction = 0;
+			}
+			if (m_Direction < 10)
+			{
+				++m_Direction;
+			}
+			break;
+		default :
+			if (m_Direction > 0)
+			{
+				--m_Direction;
+			}
+			else
+			{
+				++m_Direction;
+			}
+		}
+		m_RecordAccTime = 0;
+	}
+
+	return WELL_PERFORMED;
+}
+
+
+/*
+	Debug모드에서 라벨을 출력시키는 함수.
+*/
+INT Player::PrintDebugLabel(_Inout_ HDC drawDC)
+{
+	//SetTextAlign(drawDC, TA_CENTER);
+	//std::wstring DebugLabel = std::to_wstring(m_Direction);
+	//TextOut(drawDC, m_PosX, m_PosY, DebugLabel.c_str(), wcslen(DebugLabel.c_str()));
+	return WELL_PERFORMED;
 }

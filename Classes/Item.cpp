@@ -94,6 +94,7 @@ BOOL Item::CheckPlayerGetItem()
 	if (!(x1 <= mx0 || mx1 <= x0 || y1 <= my0 || my1 <= y0))
 	{
 		m_Hp -= 10;
+		playerInfo.PlayerPowerUp();
 		return TRUE;
 	}
 	return FALSE;

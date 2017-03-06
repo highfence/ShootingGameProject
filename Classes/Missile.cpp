@@ -7,7 +7,10 @@
 const FLOAT savePlacePos = -300;
 
 Missile::Missile()
-	: m_IsMissileLaunched(false), m_PosX(savePlacePos), m_PosY(savePlacePos), m_MissileType(NONE)
+	: m_IsMissileLaunched(false),
+	m_PosX(savePlacePos),
+	m_PosY(savePlacePos),
+	m_MissileType(NONE)
 {
 	m_pSprite = new CImage;
 	m_pShapeSprite = new CImage;

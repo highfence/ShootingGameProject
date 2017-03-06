@@ -7,16 +7,15 @@ using namespace PLAYER;
 
 PlayerMissile::PlayerMissile()
 {
-	m_Damage = playerMissileDamageOneTier;
-	m_Width = playerMissileWidth;
-	m_Height = playerMissileHeight;
+	m_Damage = playerMissileDamageArray[0];
+	m_Width = playerMissileWidthArray[0];
+	m_Height = playerMissileHeightArray[0];
 	init();
 }
 
 void PlayerMissile::init()
 {
-	m_pShapeSprite->Load(playerShape.c_str());
-	m_pSprite->Load(playerMissile.c_str());
+	InitialImgLoad();
 	return;
 }
 
@@ -25,7 +24,24 @@ PlayerMissile::~PlayerMissile()
 
 }
 
-void PlayerMissile::Fly(const _In_ FLOAT dt, const _In_ FLOAT vecX, const _In_ FLOAT vecY, const _In_ FLOAT speed)
+/*
+	InitialImgLoad
+	init에서 호출. 
+	맨 처음 이미지를 로드해주는 함수.
+*/
+INT PlayerMissile::InitialImgLoad()
+{
+	ImgLoad(m_pShapeSprite, playerMissileShape, 1, fileExtension, FALSE);
+	ImgLoad(m_pSprite, playerMissile, 1, fileExtension, FALSE);
+
+	return WELL_PERFORMED;
+}
+
+void PlayerMissile::Fly(
+	const _In_ FLOAT dt,
+	const _In_ FLOAT vecX,
+	const _In_ FLOAT vecY,
+	const _In_ FLOAT speed)
 {
 	if (!m_IsMissileLaunched)
 	{
@@ -68,7 +84,11 @@ BOOL PlayerMissile::CheckColide()
 	return FALSE;
 }
 
-BOOL PlayerMissile::IsColideWithEnemy(const _In_ FLOAT enemyPosX, const _In_ FLOAT enemyPosY, const _In_ FLOAT enemyWidth, const _In_ FLOAT enemyHeight)
+BOOL PlayerMissile::IsColideWithEnemy(
+	const _In_ FLOAT enemyPosX,
+	const _In_ FLOAT enemyPosY,
+	const _In_ FLOAT enemyWidth,
+	const _In_ FLOAT enemyHeight)
 {
 	FLOAT enemyX1 = enemyPosX - enemyWidth / 2 + colideCorrectionPixel;
 	FLOAT enemyY1 = enemyPosY - enemyHeight / 2 + colideCorrectionPixel;
@@ -86,4 +106,19 @@ BOOL PlayerMissile::IsColideWithEnemy(const _In_ FLOAT enemyPosX, const _In_ FLO
 	}
 
 	return FALSE;
+}
+
+/*
+	ChangeMissileTier
+	미사일의 티어를 받아 이미지와 데미지를 바꾸는 함수.
+*/
+BOOL PlayerMissile::ChangeMissileTier(const _In_ INT tierNumber)
+{
+	ImgLoad(m_pShapeSprite, playerMissileShape, tierNumber, fileExtension, TRUE);
+	ImgLoad(m_pSprite, playerMissile, tierNumber, fileExtension, TRUE);
+	m_Damage = playerMissileDamageArray[tierNumber - 1];
+	m_Width = playerMissileWidthArray[tierNumber - 1];
+	m_Height = playerMissileHeightArray[tierNumber - 1];
+
+	return TRUE;
 }

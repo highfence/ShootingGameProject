@@ -12,11 +12,22 @@ public :
 	PlayerMissile();
 	~PlayerMissile();
 
-	void Fly(const _In_ FLOAT, const _In_ FLOAT, const _In_ FLOAT, const _In_ FLOAT) override;
+	void Fly(
+		const _In_ FLOAT,
+		const _In_ FLOAT,
+		const _In_ FLOAT,
+		const _In_ FLOAT) override;
 	BOOL CheckColide();
+	BOOL ChangeMissileTier(const _In_ INT);
 
 private :
 
-	BOOL IsColideWithEnemy(const _In_ FLOAT, const _In_ FLOAT, const _In_ FLOAT, const _In_ FLOAT);
+	BOOL IsColideWithEnemy(
+		const _In_ FLOAT,
+		const _In_ FLOAT,
+		const _In_ FLOAT,
+		const _In_ FLOAT);
+	INT InitialImgLoad();
+
 	void init();
 };
