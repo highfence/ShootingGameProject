@@ -52,7 +52,11 @@ EnemyMissile::~EnemyMissile()
 
 }
 
-void EnemyMissile::Fly(const _In_ FLOAT dt, const _In_ FLOAT vecX, const _In_ FLOAT vecY, const _In_ FLOAT speed)
+void EnemyMissile::Fly(
+	const _In_ FLOAT dt,
+	const _In_ FLOAT vecX,
+	const _In_ FLOAT vecY,
+	const _In_ FLOAT speed)
 {
 	if (!m_IsMissileLaunched)
 	{
@@ -76,7 +80,9 @@ void EnemyMissile::Fly(const _In_ FLOAT dt, const _In_ FLOAT vecX, const _In_ FL
 }
 
 // EnemyMissile에게 Player의 위치 정보를 알려주는 함수. (충돌 판정을 위해)
-void EnemyMissile::SetPlayerPos(const _In_ FLOAT playerPosX, const _In_ FLOAT playerPosY)
+void EnemyMissile::SetPlayerPos(
+	const _In_ FLOAT playerPosX,
+	const _In_ FLOAT playerPosY)
 {
 	m_PlayerPosX = playerPosX;
 	m_PlayerPosY = playerPosY;

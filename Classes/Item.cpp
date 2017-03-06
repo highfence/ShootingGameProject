@@ -6,7 +6,10 @@
 
 using namespace ENEMY;
 
-Item::Item(const _In_ FLOAT vecX, const _In_ FLOAT vecY, const _In_ INT flightType)
+Item::Item(
+	const _In_ FLOAT vecX,
+	const _In_ FLOAT vecY,
+	const _In_ INT flightType)
 	: Enemy(vecX, vecY, flightType)
 {
 	m_pSprite = new CImage;
@@ -22,6 +25,7 @@ void Item::init()
 	m_Width = itemWidth;
 	m_Height = itemHeight;
 	m_Hp = 10;
+	m_LoadedMissileNumber = 0;
 	
 	return;
 }
@@ -31,6 +35,19 @@ Item::~Item()
 {
 	delete m_pSprite;
 	delete m_pShadeSprite;
+}
+
+void Item::CalProc(const _In_ FLOAT dt)
+{
+	if (!CheckDead())
+	{
+		AccTime(dt);
+		Fly(dt);
+		MissileFly(dt);
+		Fire();
+		CheckPlayerGetItem();
+	}
+	return;
 }
 
 void Item::Draw(_Inout_ HDC drawDC)
@@ -65,22 +82,19 @@ BOOL Item::CheckPlayerGetItem()
 	FLOAT playerPosY;
 	playerInfo.GetPosition(&playerPosX, &playerPosY);
 
-	if ((m_PosX + m_Width / 2) < playerPosX - playerCorrectionPixel)
-	{
-		return FALSE;
-	}
-	else if ((m_PosX - m_Width / 2) > playerPosX + playerCorrectionPixel)
-	{
-		return FALSE;
-	}
-	else if ((m_PosY + m_Height / 2) < playerPosY - playerCorrectionPixel)
-	{
-		return FALSE;
-	}
-	else if ((m_PosY - m_Height / 2) < playerPosY + playerCorrectionPixel)
-	{
-		return FALSE;
-	}
+	auto x0 = m_PosX - m_Width / 2;
+	auto y0 = m_PosY - m_Height / 2;
+	auto x1 = m_PosX + m_Width / 2;
+	auto y1 = m_PosY + m_Height / 2;
+	auto mx0 = playerPosX - playerCorrectionPixel;
+	auto my0 = playerPosY - playerCorrectionPixel;
+	auto mx1 = playerPosX + playerCorrectionPixel;
+	auto my1 = playerPosY + playerCorrectionPixel;
 
-	return TRUE;
+	if (!(x1 <= mx0 || mx1 <= x0 || y1 <= my0 || my1 <= y0))
+	{
+		m_Hp -= 10;
+		return TRUE;
+	}
+	return FALSE;
 }

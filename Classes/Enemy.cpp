@@ -28,7 +28,6 @@ void Enemy::init()
 }
 
 
-
 /*
 	~Enemy
 	m_MissileVec에 있는 미사일들 지워주기.
@@ -37,6 +36,7 @@ Enemy::~Enemy()
 {
 	DeleteAllElementsMissileVector();
 }
+
 
 void Enemy::CalProc(const _In_ FLOAT dt)
 {

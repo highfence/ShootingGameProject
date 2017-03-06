@@ -20,7 +20,7 @@ public :
 	virtual void DeadProc() = 0;
 	virtual void Fire() = 0;
 
-	void CalProc(const _In_ FLOAT);
+	virtual void CalProc(const _In_ FLOAT);
 	void DrawProc(_Inout_ HDC);
 
 	void Fly(const _In_ FLOAT);
