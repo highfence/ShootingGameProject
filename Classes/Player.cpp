@@ -22,10 +22,17 @@ const INT spriteHeight = 64;
 const INT displayBoundaryPixel = 5;
 const INT playerMissileNumber = 15;
 const FLOAT missileLoadSpeed = 0.1f;
+// TODO :: 뭔가 이상한데?
+const FLOAT playerColisionPixel = 15;
 
 
 Player::Player()
-	: m_PosX(0), m_PosY(0), m_AccTime(0), m_Direction(0)
+	: m_PosX(0),
+	m_PosY(0),
+	m_AccTime(0),
+	m_Direction(0),
+	m_IsPlayerAlive(TRUE),
+	m_CollisionPixel(playerColisionPixel)
 {
 	m_pSprite = new CImage;
 	m_pShapeSprite = new CImage;
@@ -37,6 +44,8 @@ void Player::init()
 {
 	m_PosX = playerInitWidth;
 	m_PosY = playerInitHeight;
+	m_Width = spriteWidth;
+	m_Height = spriteHeight;
 	m_pSprite->Load(playerSpriteM);
 	m_pShapeSprite->Load(shapeSpriteM);
 
@@ -53,10 +62,10 @@ Player::~Player()
 void Player::Draw(_Inout_ HDC drawDC)
 {
 	// 비행기 출력
-	m_pShapeSprite->BitBlt(drawDC, m_PosX - spriteWidth / 2, m_PosY - spriteHeight / 2,
-		spriteWidth, spriteHeight, 0, 0, SRCAND);
-	m_pSprite->BitBlt(drawDC, m_PosX - spriteWidth / 2, m_PosY - spriteHeight / 2,
-		spriteWidth, spriteHeight, 0, 0, SRCPAINT);
+	m_pShapeSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2,
+		m_Width, m_Height, 0, 0, SRCAND);
+	m_pSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2,
+		m_Width, m_Height, 0, 0, SRCPAINT);
 
 	MissileDraw(drawDC);
 	return;
@@ -67,28 +76,28 @@ void Player::Move(const _In_ BYTE* KeyState, const _In_ FLOAT dt)
 	// TODO :: 기울어지는 애니메이션 이용하기.
 	if (KeyState[VK_LEFT] & HOLDKEY)
 	{
-		if (m_PosX > displayBoundaryPixel + spriteWidth / 2)
+		if (m_PosX > displayBoundaryPixel + m_Width / 2)
 		{
 			m_PosX -= playerMoveSpeed * dt;
 		}
 	}
 	if (KeyState[VK_RIGHT] & HOLDKEY)
 	{
-		if (m_PosX < winWidth - displayBoundaryPixel - spriteWidth / 2)
+		if (m_PosX < winWidth - displayBoundaryPixel - m_Width / 2)
 		{
 			m_PosX += playerMoveSpeed * dt;
 		}
 	}
 	if (KeyState[VK_UP] & HOLDKEY)
 	{
-		if (m_PosY > displayBoundaryPixel + spriteHeight / 2)
+		if (m_PosY > displayBoundaryPixel + m_Height / 2)
 		{
 			m_PosY -= playerMoveSpeed * dt;
 		}
 	}
 	if (KeyState[VK_DOWN] & HOLDKEY)
 	{
-		if (m_PosY < winHeight - displayBoundaryPixel - spriteHeight / 2)
+		if (m_PosY < winHeight - displayBoundaryPixel - m_Height / 2)
 		{
 			m_PosY += playerMoveSpeed * dt;
 		}
@@ -96,10 +105,6 @@ void Player::Move(const _In_ BYTE* KeyState, const _In_ FLOAT dt)
 	if (KeyState[VK_A] & HOLDKEY)
 	{
 		LaunchMissile(dt);
-	}
-	if (KeyState[VK_D] & HOLDKEY)
-	{
-		DeleteMissile();
 	}
 
 	return;
@@ -170,7 +175,7 @@ void Player::CalProc(const _In_ BYTE* keyByte, const _In_ FLOAT dt)
 	CheckMissileColide();
 
 	// EnemyManager에게 자신의 위치 정보 전달.
-	EnemyManager::getInstance()->SetPlayerPos(m_PosX, m_PosY);
+	EnemyManager::getInstance()->SetPlayerInfo(this);
 
 	return;
 }
@@ -181,12 +186,22 @@ void Player::DrawProc(_Inout_ HDC drawDC)
 	return;
 }
 
-void Player::GetPosition(_Out_ INT* posX, _Out_ INT* posY)
+void Player::GetPosition(_Out_ FLOAT* posX, _Out_ FLOAT* posY)
 {
 	*posX = m_PosX;
 	*posY = m_PosY;
 
 	return;
+}
+
+FLOAT Player::GetCollisionPixel() const
+{
+	return m_CollisionPixel;
+}
+
+BOOL Player::GetIsPlayerAlived() const
+{
+	return m_IsPlayerAlive;
 }
 
 void Player::CheckMissileColide()
@@ -202,7 +217,7 @@ void Player::CheckMissileColide()
 	return;
 }
 
-// TODO :: 비행기를 기울기자.
+// TODO :: 비행기를 기울이자.
 void Player::CalDirection()
 {
 	if (m_Direction <= 10 && m_Direction > 5)
@@ -215,4 +230,10 @@ void Player::CalDirection()
 
 	}
 
+}
+
+void Player::PlayerDamaged()
+{
+	m_IsPlayerAlive = FALSE;
+	return;
 }

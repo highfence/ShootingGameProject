@@ -16,10 +16,8 @@ public :
 	virtual ~Enemy();
 
 	virtual void Draw(_Inout_ HDC) = 0;
-	virtual void Explode(_Inout_ HDC) = 0;
-	virtual void DeadProc(_Inout_ HDC) = 0;
-
-	// TODO :: 구현해야할 것들.
+	virtual void Explode() = 0;
+	virtual void DeadProc() = 0;
 	virtual void Fire() = 0;
 
 	void CalProc(const _In_ FLOAT);
@@ -49,6 +47,9 @@ public :
 	INT m_LoadedMissileNumber;
 	FLOAT m_AccTime;
 	FLOAT m_RecordAccTime;
+	FLOAT m_RecordFlyTime;
+	FLOAT m_UnitVecX;
+	FLOAT m_UnitVecY;
 	BOOL m_IsEnemyDead;
 	BOOL m_IsEnemyExplode;
 	CImage* m_pSprite;
@@ -62,10 +63,11 @@ private :
 
 	// Flight 타입 함수 포인터.
 	BOOL FlyStraight(const _In_ FLOAT);
+	BOOL FlyItem(const _In_ FLOAT);
 
 	// MissileFly 타입 함수 포인터.
 	BOOL MissileFlyStraight(EnemyMissile*, const _In_ FLOAT);
 
 	void init();
-	
+	void DeleteAllElementsMissileVector();
 };

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "EnemyItem.h"
 #include "EffectManager.h"
+#include "EnemyManager.h"
 #include "EnemyMissile.h"
 
 const wchar_t* spritePath = _T("../Resources/EnemyItem.png");
@@ -11,8 +12,14 @@ const INT enemyItemSpriteHeight = 64;
 const FLOAT enemyItemFlightSpeed = 300;
 const INT enemyItemHp = 100;
 
-EnemyItem::EnemyItem(const _In_ FLOAT createX, const _In_ FLOAT createY, const _In_ INT flightType, const _In_ BOOL ItemLaunched)
-	: Enemy(createX, createY, flightType), m_IsItemLaunched(ItemLaunched)
+EnemyItem::EnemyItem(
+	const _In_ FLOAT createX,
+	const _In_ FLOAT createY,
+	const _In_ INT flightType,
+	const _In_ BOOL ItemLaunched)
+	: 
+	Enemy(createX, createY, flightType),
+	m_IsItemLaunched(ItemLaunched)
 {
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage; 
@@ -58,11 +65,11 @@ void EnemyItem::Draw(_Inout_ HDC drawDC)
 	return;
 }
 
-void EnemyItem::DeadProc(_Inout_ HDC drawDC)
+void EnemyItem::DeadProc()
 {
 	if ((!m_IsEnemyExplode) && (m_IsEnemyDead))
 	{
-		Explode(drawDC);
+		Explode();
 		m_IsEnemyExplode = TRUE;
 	}
 
@@ -86,8 +93,17 @@ void EnemyItem::Fire()
 	return;
 }
 
-void EnemyItem::Explode(_Inout_ HDC drawDC)
+void EnemyItem::Explode()
 {
+	if (m_IsItemLaunched)
+	{
+		EnemyManager::getInstance()->MakeEnemyOneTime(
+			ENEMY::ENEMY_TYPE::ITEM,
+			m_PosX,
+			m_PosY,
+			ENEMY::FLIGHT_TYPE::FLY_ITEM,
+			TRUE);
+	}
 	EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_PosX, m_PosY);
 	return;
 }

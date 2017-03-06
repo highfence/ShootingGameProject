@@ -46,7 +46,10 @@ void GameManager::CalProc(const _In_ FLOAT dt)
 	GetKeyState();
 	m_pEnemyManager->CalProc(dt);
 	m_pEffectManager->CalProc(dt);
-	m_pPlayer->CalProc(m_ByKey, dt);
+	if (m_pPlayer->GetIsPlayerAlived())
+	{
+		m_pPlayer->CalProc(m_ByKey, dt);
+	}
 
 	return;
 }
@@ -60,7 +63,10 @@ void GameManager::DrawProc(const _In_ FLOAT dt)
 	Rectangle(memoryDC, 0, 0, winWidth, winHeight);
 
 	m_pScroller->Scroll(memoryDC, dt);
-	m_pPlayer->DrawProc(memoryDC);
+	if (m_pPlayer->GetIsPlayerAlived())
+	{
+		m_pPlayer->DrawProc(memoryDC);
+	}
 	m_pEnemyManager->DrawProc(memoryDC);
 	m_pEffectManager->DrawProc(memoryDC);
 

@@ -22,7 +22,10 @@ public :
 	void Draw(_Inout_ HDC);
 	void Move(const _In_ BYTE*, const _In_ FLOAT);
 	void MissileFly(const _In_ FLOAT);
-	void GetPosition(_Out_ INT*, _Out_ INT*);
+	void GetPosition(_Out_ FLOAT*, _Out_ FLOAT*);
+	FLOAT GetCollisionPixel() const;
+	BOOL GetIsPlayerAlived() const;
+	void PlayerDamaged();
 
 private :
 
@@ -36,10 +39,14 @@ private :
 
 	FLOAT m_PosX;
 	FLOAT m_PosY;
+	FLOAT m_Width;
+	FLOAT m_Height;
+	FLOAT m_CollisionPixel;
 	FLOAT m_AccTime;
 	CImage* m_pSprite;
 	CImage* m_pShapeSprite;
 	Missile* m_pMissile;
+	BOOL m_IsPlayerAlive;
 	INT m_Direction;
 
 	std::vector<PlayerMissile*> m_MissileVec;

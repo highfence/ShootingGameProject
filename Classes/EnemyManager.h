@@ -3,6 +3,7 @@ using namespace ENEMY;
 
 // 전방 선언
 class Enemy;
+class Player;
 
 /*
 	EnemyManager
@@ -19,12 +20,27 @@ public :
 	EnemyManager();
 	~EnemyManager();
 	
-	void MakeEnemyWithTime(const _In_ FLOAT, const _In_ INT, const _In_ FLOAT, const _In_ FLOAT, const _In_ INT, const _In_opt_ BOOL);
+	void MakeEnemyWithTime(
+		const _In_ FLOAT createTime,
+		const _In_ INT enemyType,
+		const _In_ FLOAT createPosX,
+		const _In_ FLOAT createPosY,
+		const _In_ INT flightType,
+		const _In_opt_ BOOL option);
+
+	void MakeEnemyOneTime(
+		const _In_ INT enemyType,
+		const _In_ FLOAT createPosX,
+		const _In_ FLOAT createPosY,
+		const _In_ INT flightType,
+		const _In_opt_ BOOL option);
+
 	void CalProc(const _In_ FLOAT);
 	void MakeProc();
 	void DrawProc(_Inout_ HDC);
-	void SetPlayerPos(const _In_ FLOAT, const _In_ FLOAT);
-	std::vector<Enemy*>& getEnemyVec();
+	void SetPlayerInfo(_Inout_ Player*);
+	std::list<Enemy*>& getEnemyList();
+	Player& getPlayerInfo();
 
 private :
 
@@ -34,8 +50,10 @@ private :
 	void init();
 	void AccTime(const _In_ FLOAT);
 	void Draw(_Inout_ HDC);
-	void ClearVec();
+	void ClearList();
 	void DistributeTime(const _In_ FLOAT);
+	void DistributePlayerInfo();
+	void SetPlayerPos(const _In_ FLOAT, const _In_ FLOAT);
 
 	// 생성 함수 포인터 핸들러.
 	Enemy*(EnemyManager::*m_pMakeHandler[ENEMY_TYPE_NUM])
@@ -43,12 +61,12 @@ private :
 
 	// 함수 포인터에 들어갈 함수
 	Enemy* MakeEnemyItem(const _In_ FLOAT, const _In_ FLOAT, const _In_ INT, const _In_opt_ BOOL);
+	Enemy* MakeItem(const _In_ FLOAT, const _In_ FLOAT, const _In_ INT, const _In_opt_ BOOL);
 
-	std::vector<Enemy*> m_EnemyVec;
+	std::list<Enemy*> m_EnemyList;
 
 	FLOAT m_AccTime;
 	FLOAT m_RecordCreateTime;
 	
-	FLOAT m_PlayerPosX;
-	FLOAT m_PlayerPosY;
+	Player* m_pPlayerInfo;
 };

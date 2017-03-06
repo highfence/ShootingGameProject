@@ -12,12 +12,16 @@
 class EnemyItem : public Enemy
 {
 public : 
-	EnemyItem(const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType, const _In_ BOOL IsItemLaunched);
+	EnemyItem(
+		const _In_ FLOAT x,
+		const _In_ FLOAT y,
+		const _In_ INT flightType,
+		const _In_ BOOL IsItemLaunched);
 	~EnemyItem() override;
 
 	void Draw(_Inout_ HDC) override;
-	void Explode(_Inout_ HDC) override;
-	void DeadProc(_Inout_ HDC) override;
+	void Explode() override;
+	void DeadProc() override;
 	void Fire() override;
 
 private :

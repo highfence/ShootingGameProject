@@ -3,7 +3,17 @@
 #include "EnemyMissile.h"
 
 Enemy::Enemy(const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType)
-	: m_PosX(x), m_PosY(y), m_AccTime(0.f), m_RecordAccTime(0.f), m_PlayerX(0.f), m_PlayerY(0.f), m_FlightType(flightType), m_IsEnemyDead(FALSE)
+	: m_PosX(x),
+	m_PosY(y),
+	m_AccTime(0.f),
+	m_RecordAccTime(0.f),
+	m_UnitVecX(0),
+	m_UnitVecY(0),
+	m_RecordFlyTime(0.f),
+	m_PlayerX(0.f),
+	m_PlayerY(0.f),
+	m_FlightType(flightType),
+	m_IsEnemyDead(FALSE)
 {
 	init();
 }
@@ -11,13 +21,21 @@ Enemy::Enemy(const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType)
 void Enemy::init()
 {
 	m_pFlightHandler[FLIGHT_TYPE::FLY_STRAIGHT] = &Enemy::FlyStraight;
+	m_pFlightHandler[FLIGHT_TYPE::FLY_ITEM] = &Enemy::FlyItem;
 	m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &Enemy::MissileFlyStraight;
+
 	return;
 }
 
+
+
+/*
+	~Enemy
+	m_MissileVec에 있는 미사일들 지워주기.
+*/
 Enemy::~Enemy()
 {
-
+	DeleteAllElementsMissileVector();
 }
 
 void Enemy::CalProc(const _In_ FLOAT dt)
@@ -61,12 +79,28 @@ void Enemy::MissileFly(const _In_ FLOAT dt)
 BOOL Enemy::FlyStraight(const _In_ FLOAT dt)
 {
 	m_PosY += m_FlightSpeed * dt;
-	return true;
+	return TRUE;
+}
+
+// 랜덤한 방향의 벡터를 받아서 지정한 만큼 중구난방으로 움직이는 아이템.
+BOOL Enemy::FlyItem(const _In_ FLOAT dt)
+{
+	const FLOAT itemFlyTime = 1.0f;
+	if ((m_UnitVecX == 0 && m_UnitVecY == 0) || (m_RecordFlyTime > itemFlyTime))
+	{
+		GetUnitVec(rand() % 100, rand() % 100, &m_UnitVecX, &m_UnitVecY);
+		m_RecordFlyTime = 0.f;
+	}
+
+	m_PosX += m_UnitVecX * dt * m_FlightSpeed;
+	m_PosY += m_UnitVecY * dt * m_FlightSpeed;
+	return TRUE;
 }
 
 BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
 {
 	missile->Fly(dt, 0, 1, m_MissileSpeed);
+	missile->CheckColideWithPlayer();
 	return TRUE;
 }
 
@@ -109,6 +143,7 @@ void Enemy::AccTime(const _In_ FLOAT dt)
 {
 	m_AccTime += dt;
 	m_RecordAccTime += dt;
+	m_RecordFlyTime += dt;
 	return;
 }
 
@@ -138,12 +173,31 @@ void Enemy::LoadMissiles(const _In_ ENEMY::MISSILE_SIZE missileSize)
 	return;
 }
 
-// 날아가고 있는 미사일들을 그려주는 함수.
+/*
+	DrawMissiles
+	미사일 벡터를 순회하며 Draw를 호출해주는 함수.
+*/
 void Enemy::DrawMissiles(_Inout_ HDC drawDC)
 {
 	for (auto i : m_MissileVec)
 	{
 		i->Draw(drawDC);
+	}
+
+	return;
+}
+
+/*
+	DeleteAllElementsMissileVector
+	멤버 변수 m_MissileVec에 있는 모든 원소들을 순회하면서 소멸자를 호출해주는 함수.
+*/
+void Enemy::DeleteAllElementsMissileVector()
+{
+	std::vector<EnemyMissile*>::iterator iter = m_MissileVec.begin();
+	while (iter != m_MissileVec.end())
+	{
+		delete (*iter);
+		iter = m_MissileVec.erase(iter);
 	}
 
 	return;

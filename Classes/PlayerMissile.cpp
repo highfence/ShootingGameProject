@@ -50,7 +50,7 @@ void PlayerMissile::Fly(const _In_ FLOAT dt, const _In_ FLOAT vecX, const _In_ F
 
 BOOL PlayerMissile::CheckColide()
 {
-	auto EnemyVec = EnemyManager::getInstance()->getEnemyVec();
+	auto EnemyVec = EnemyManager::getInstance()->getEnemyList();
 
 	for (auto i : EnemyVec)
 	{

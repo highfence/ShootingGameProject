@@ -19,13 +19,13 @@ public :
 
 	CImage* m_pSprite;
 	CImage* m_pShapeSprite;
-	INT m_Damage;
 	BOOL m_IsMissileLaunched;
 	BOOL IsMissileOnDisplay();
 	FLOAT m_PosX;
 	FLOAT m_PosY;
 	FLOAT m_Width;
 	FLOAT m_Height;
+	FLOAT m_Damage;
 	ENEMY::MISSILE_TYPE m_MissileType;
 
 private :

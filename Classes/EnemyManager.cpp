@@ -1,5 +1,7 @@
 #include "stdafx.h"
+#include "Player.h"
 #include "Enemy.h"
+#include "Item.h"
 #include "EnemyItem.h"
 #include "EnemyManager.h"
 
@@ -15,7 +17,10 @@ EnemyManager* EnemyManager::getInstance()
 	return _instance;
 }
 
-// 싱글톤을 지워주는 함수.
+/*
+	deleteInstance
+	싱글톤 소멸 함수.
+*/
 void EnemyManager::deleteInstance()
 {
 	delete _instance;
@@ -29,16 +34,42 @@ EnemyManager::EnemyManager()
 	init();
 }
 
+/*
+	init
+	Enemy 생성 함수 포인터 핸들러에 함수를 등록해 주는 함수.
+*/
 void EnemyManager::init()
 {
 	m_pMakeHandler[ENEMY_TYPE::ENEMY_ITEM] = &EnemyManager::MakeEnemyItem;
+	m_pMakeHandler[ENEMY_TYPE::ITEM] = &EnemyManager::MakeItem;
 	return;
 }
 
-Enemy * EnemyManager::MakeEnemyItem(const _In_ FLOAT x, const _In_ FLOAT y, 
-	const _In_ INT flightType, const _In_opt_ BOOL IsItemLaunched)
+/*
+	MakeEnemyItem
+	EnemyItem을 만들어주는 함수 포인터에 등록될 함수.
+*/
+Enemy * EnemyManager::MakeEnemyItem(
+	const _In_ FLOAT x,
+	const _In_ FLOAT y, 
+	const _In_ INT flightType,
+	const _In_opt_ BOOL IsItemLaunched)
 {
 	Enemy* newEnemy = new EnemyItem(x, y, flightType, IsItemLaunched);
+	return newEnemy;
+}
+ 
+/*
+	MakeItem
+	Item을 만드는 함수 포인터에 등록될 함수.
+*/
+Enemy* EnemyManager::MakeItem(
+	const _In_ FLOAT x,
+	const _In_ FLOAT y,
+	const _In_ INT flightType,
+	const _In_opt_ BOOL option)
+{
+	Enemy* newEnemy = new Item(x, y, flightType);
 	return newEnemy;
 }
 
@@ -54,44 +85,69 @@ void EnemyManager::AccTime(const _In_ FLOAT dt)
 	return;
 }
 
-void EnemyManager::MakeEnemyWithTime(const _In_ FLOAT createTime, const _In_ INT enemyType,
-	const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType, const _In_opt_ BOOL option)
+void EnemyManager::MakeEnemyWithTime(
+	const _In_ FLOAT createTime,
+	const _In_ INT enemyType,
+	const _In_ FLOAT createPosX,
+	const _In_ FLOAT createPosY,
+	const _In_ INT flightType,
+	const _In_opt_ BOOL option)
 {
 	if ((m_AccTime > createTime) && (m_RecordCreateTime < createTime))
 	{
-		auto newEnemy = (this->*m_pMakeHandler[enemyType])(x, y, flightType, option);
-		m_EnemyVec.push_back(newEnemy);
+		auto newEnemy = (this->*m_pMakeHandler[enemyType])(
+			createPosX, createPosY, flightType, option);
+
+		m_EnemyList.push_back(newEnemy);
 		m_RecordCreateTime = createTime;
 	}
 
 	return;
 }
 
+/*
+	MakeEnemyOneTime
+	시간에 구애받지 않고 Enemy를 생성해야만 할 때 사용하는 함수.
+	기본적으로 MakeEnemyWithTime과 시간을 제외한 인자가 모두 같다.
+*/
+void EnemyManager::MakeEnemyOneTime(
+	const _In_ INT enemyType, 
+	const _In_ FLOAT createPosX, 
+	const _In_ FLOAT createPosY, 
+	const _In_ INT flightType, 
+	const _In_opt_ BOOL option)
+{
+	auto newEnemy = (this->*m_pMakeHandler[enemyType])(
+		createPosX, createPosY, flightType, option);
+
+	m_EnemyList.push_back(newEnemy);
+	return;
+}
+
 void EnemyManager::Draw(_Inout_ HDC drawDC)
 {
-	for (auto i : m_EnemyVec)
+	for (auto i : m_EnemyList)
 	{
 		if (!i->m_IsEnemyDead)
 		{
 			i->DrawProc(drawDC);
-		}
-		else
-		{
-			i->DeadProc(drawDC);
 		}
 	}
 
 	return;
 }
 
-void EnemyManager::ClearVec()
+void EnemyManager::ClearList()
 {
-	std::vector<Enemy*>::iterator iter = m_EnemyVec.begin();
-	while (iter != m_EnemyVec.end())
+	std::list<Enemy*>::iterator iter = m_EnemyList.begin();
+	while (iter != m_EnemyList.end())
 	{
-		if ((!(*iter)->CheckEnemyIsOnDisplay()) || ((*iter)->m_IsEnemyDead))
+		if ((!(*iter)->CheckEnemyIsOnDisplay())
+			|| ((*iter)->m_IsEnemyDead))
 		{
-			iter = m_EnemyVec.erase(iter);
+			(*iter)->DeadProc();
+			delete (*iter);
+			iter = m_EnemyList.erase(iter);
 		}
 		else
 		{
@@ -106,7 +162,7 @@ void EnemyManager::CalProc(const _In_ FLOAT dt)
 {
 	AccTime(dt);
 	MakeProc();
-	ClearVec();
+	ClearList();
 	DistributeTime(dt);
 	return;
 }
@@ -117,9 +173,14 @@ void EnemyManager::DrawProc(_Inout_ HDC drawDC)
 	return;
 }
 
-std::vector<Enemy*>& EnemyManager::getEnemyVec()
+std::list<Enemy*>& EnemyManager::getEnemyList() 
 {
-	return m_EnemyVec;
+	return m_EnemyList;
+}
+
+Player& EnemyManager::getPlayerInfo() 
+{
+	return *m_pPlayerInfo;
 }
 
 void EnemyManager::MakeProc()
@@ -134,7 +195,7 @@ void EnemyManager::MakeProc()
 
 void EnemyManager::DistributeTime(const _In_ FLOAT dt)
 {
-	for (auto i : m_EnemyVec)
+	for (auto i : m_EnemyList)
 	{
 		i->CalProc(dt);
 	}
@@ -142,13 +203,29 @@ void EnemyManager::DistributeTime(const _In_ FLOAT dt)
 	return;
 }
 
+void EnemyManager::DistributePlayerInfo()
+{
+	FLOAT x;
+	FLOAT y;
+	m_pPlayerInfo->GetPosition(&x, &y);
+	SetPlayerPos(x, y);
+	return;
+}
+
+// TODO :: 여기서부터 시작.
 void EnemyManager::SetPlayerPos(const _In_ FLOAT playerPosX, const _In_ FLOAT playerPosY)
 {
-	for (auto i : m_EnemyVec)
+	for (auto i : m_EnemyList)
 	{
 		i->m_PlayerX = playerPosX;
 		i->m_PlayerY = playerPosY;
 	}
 
+	return;
+}
+
+void EnemyManager::SetPlayerInfo(Player* playerInfo)
+{
+	m_pPlayerInfo = playerInfo;
 	return;
 }

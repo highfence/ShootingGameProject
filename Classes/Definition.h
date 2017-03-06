@@ -21,12 +21,12 @@ namespace ENEMY
 {
 	enum ENEMY_TYPE
 	{
-		ENEMY_ITEM, ENEMY_TYPE_NUM
+		ENEMY_ITEM, ITEM, ENEMY_TYPE_NUM
 	};
 
 	enum FLIGHT_TYPE
 	{
-		FLY_STRAIGHT, FLIGHT_TYPE_NUM
+		FLY_STRAIGHT, FLY_ITEM, FLIGHT_TYPE_NUM
 	};
 
 	enum MISSILE_TYPE
@@ -52,6 +52,12 @@ namespace ENEMY
 	const FLOAT enemyItemDamage = 3.f;
 	const FLOAT enemyItemMissileSpeed = 700.f;
 	const FLOAT enemyItemLoadedMissileNumber = 5.f;
+
+	// Item
+	const std::wstring itemSpritePath = _T("../Resources/PowerUp.png");
+	const std::wstring itemShadePath = _T("../Resources/PowerUpS.png");
+	const FLOAT itemWidth = 24;
+	const FLOAT itemHeight = 19;
 }
 
 namespace EFFECT
