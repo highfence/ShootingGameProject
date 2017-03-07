@@ -27,6 +27,9 @@ void Enemy::init()
 {
 	m_pFlightHandler[FLIGHT_TYPE::FLY_STRAIGHT] = &Enemy::FlyStraight;
 	m_pFlightHandler[FLIGHT_TYPE::FLY_ITEM] = &Enemy::FlyItem;
+	m_pFlightHandler[FLIGHT_TYPE::FLY_ACCELERATE] = &Enemy::FlyAccelerate;
+	m_pFlightHandler[FLIGHT_TYPE::FLY_GO_AND_SLOW] = &Enemy::FlyGoAndSlow;
+
 	m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &Enemy::MissileFlyStraight;
 
 	return;
@@ -110,6 +113,38 @@ BOOL Enemy::FlyItem(const _In_ FLOAT dt)
 }
 
 /*
+	점점 빨라지는 비행
+*/
+BOOL Enemy::FlyAccelerate(const _In_ FLOAT dt)
+{
+	FLOAT currentSpeed = (m_Option.m_InitSpeed + m_Option.m_AccSpeedPerSec * m_AccTime);
+	m_PosX += m_FlightVec.m_X * currentSpeed * dt;
+	m_PosY += m_FlightVec.m_Y * currentSpeed * dt;
+	return TRUE;
+}
+
+/*
+	어느 정도 거리까지는 빠르게 진행하다가 일정 시간 그 자리에서 느리게 가는 비행.
+*/
+BOOL Enemy::FlyGoAndSlow(const _In_ FLOAT dt)
+{
+	// 누적 시간이 m_TimeToSlow와 m_TimeToSlow + m_SlowedTime 사이일 경우 느린 비행.
+	if ((m_AccTime < m_Option.m_TimeToSlow + m_Option.m_SlowedTime) 
+		&& (m_AccTime > m_Option.m_TimeToSlow))
+	{
+		m_PosX += m_FlightVec.m_X * m_Option.m_SlowedSpeed * dt;
+		m_PosY += m_FlightVec.m_Y * m_Option.m_SlowedSpeed * dt;
+	}
+	else
+	{
+		m_PosX += m_FlightVec.m_X * m_Option.m_InitSpeed * dt;
+		m_PosY += m_FlightVec.m_Y * m_Option.m_InitSpeed * dt;
+	}
+
+	return TRUE;
+}
+
+/*
 	직선으로 미사일을 날아가게 하는 방식.
 */
 BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
@@ -142,6 +177,17 @@ BOOL Enemy::CheckEnemyIsOnDisplay()
 	}
 
 	return true;
+}
+
+/*
+	m_FlightVec에 맞도록 CImage를 회전시켜주는 함수.
+	Enemy 상속 클래스에서 호출.
+*/
+INT Enemy::RotateAccordWithVec()
+{
+	// TODO :: CImage 회전 함수.
+
+	return WELL_PERFORMED;
 }
 
 void Enemy::GetDamage(const _In_ INT damage)

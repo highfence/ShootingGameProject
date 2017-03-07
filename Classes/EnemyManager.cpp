@@ -191,16 +191,20 @@ void EnemyManager::MakeProc()
 {
 	CreateOption enemyItemOptionFalse((FALSE), 0, 0, 0, 0, 0);
 	CreateOption enemyItemOptionTrue((TRUE), 0, 0, 0, 0, 0);
-	MakeEnemyWithTime(3.0f , ENEMY_ITEM, 450, 0, FLY_STRAIGHT, Vec(0, 1), enemyItemOptionFalse);
-	MakeEnemyWithTime(3.25f, ENEMY_ITEM, 350, 0, FLY_STRAIGHT, Vec(0, 1), enemyItemOptionFalse);
-	MakeEnemyWithTime(3.5f , ENEMY_ITEM, 250, 0, FLY_STRAIGHT, Vec(0, 1), enemyItemOptionFalse);
-	MakeEnemyWithTime(3.75f, ENEMY_ITEM, 150, 0, FLY_STRAIGHT, Vec(0, 1), enemyItemOptionTrue);
+	CreateOption flyAccelerate((FALSE), 150, 200, 0, 0, 0);
+	CreateOption flyGoAndSlowItemFalse((FALSE), 0, 400, 50, 0.5f, 1.5f);
+	CreateOption flyGoAndSlowItemTrue((TRUE), 0, 400, 50, 0.5f, 1.5f);
 
-	MakeEnemyWithTime(5.0f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), enemyItemOptionFalse);
-	MakeEnemyWithTime(5.25f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), enemyItemOptionFalse);
-	MakeEnemyWithTime(5.5f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), enemyItemOptionFalse);
-	MakeEnemyWithTime(5.75f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), enemyItemOptionFalse);
-	MakeEnemyWithTime(6.0f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), enemyItemOptionFalse);
+	MakeEnemyWithTime(3.0f , ENEMY_ITEM, 450.f, 0.f, FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemFalse);
+	MakeEnemyWithTime(3.25f, ENEMY_ITEM, 350.f, 0.f, FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemFalse);
+	MakeEnemyWithTime(3.5f , ENEMY_ITEM, 250.f, 0.f, FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemFalse);
+	MakeEnemyWithTime(3.75f, ENEMY_ITEM, 150.f, 0.f, FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemTrue);
+
+	MakeEnemyWithTime(5.0f, ENEMY_ITEM, winWidth, 200.f, FLY_ACCELERATE, Vec(-1, 1), flyAccelerate);
+	MakeEnemyWithTime(5.25f, ENEMY_ITEM, winWidth, 200.f, FLY_ACCELERATE, Vec(-1, 1), flyAccelerate);
+	MakeEnemyWithTime(5.5f, ENEMY_ITEM, winWidth, 200.f, FLY_ACCELERATE, Vec(-1, 1), flyAccelerate);
+	MakeEnemyWithTime(5.75f, ENEMY_ITEM, winWidth, 200.f, FLY_ACCELERATE, Vec(-1, 1), flyAccelerate);
+	MakeEnemyWithTime(6.0f, ENEMY_ITEM, winWidth, 200.f, FLY_ACCELERATE, Vec(-1, 1), flyAccelerate);
 
 /*	MakeEnemyWithTime(4.0f , ENEMY_ITEM, 450, 0, FLY_STRAIGHT, FALSE);
 	MakeEnemyWithTime(4.25f, ENEMY_ITEM, 550, 0, FLY_STRAIGHT, FALSE);

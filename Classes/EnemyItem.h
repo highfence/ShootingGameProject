@@ -1,6 +1,5 @@
 #pragma once
 #include "Enemy.h"
-#include "Option.h"
 
 /*
 	EnemyItem
@@ -30,5 +29,4 @@ private :
 
 	void init();
 
-	BOOL m_IsItemLaunched;
 };

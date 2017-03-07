@@ -9,10 +9,10 @@ CreateOption::CreateOption(
 	const _In_opt_ FLOAT SlowDistance,
 	const _In_opt_ FLOAT SlowTime)
 	: m_IsItemLaunched(IsItemLaunched),
-	m_AccSpeed(AccSpeed),
+	m_AccSpeedPerSec(AccSpeed),
 	m_InitSpeed(InitSpeed),
 	m_SlowedSpeed(SlowSpeed),
-	m_DistanceToSlow(SlowDistance),
+	m_TimeToSlow(SlowDistance),
 	m_SlowedTime(SlowTime)
 {
 
@@ -38,10 +38,10 @@ CreateOption::~CreateOption()
 CreateOption & CreateOption::operator=(const _In_ CreateOption option)
 {
 	m_IsItemLaunched = option.m_IsItemLaunched;
-	m_AccSpeed = option.m_AccSpeed;
+	m_AccSpeedPerSec = option.m_AccSpeedPerSec;
 	m_InitSpeed = option.m_InitSpeed;
 	m_SlowedSpeed = option.m_SlowedSpeed;
-	m_DistanceToSlow = option.m_DistanceToSlow;
+	m_TimeToSlow = option.m_TimeToSlow;
 	m_SlowedTime = option.m_SlowedTime;
 
 	return *this;

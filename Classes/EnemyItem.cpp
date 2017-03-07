@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Option.h"
 #include "EnemyItem.h"
 #include "EffectManager.h"
 #include "EnemyManager.h"
@@ -24,13 +23,13 @@ EnemyItem::EnemyItem(
 {
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage; 
-	m_IsItemLaunched = flightOption.m_IsItemLaunched;
+	m_Option = flightOption;
 	init();
 }
 
 void EnemyItem::init()
 {
-	if (m_IsItemLaunched == TRUE)
+	if (m_Option.m_IsItemLaunched == TRUE)
 	{
 		m_pSprite->Load(spriteOnPath);
 	}
@@ -97,7 +96,7 @@ void EnemyItem::Fire()
 
 void EnemyItem::Explode()
 {
-	if (m_IsItemLaunched)
+	if (m_Option.m_IsItemLaunched)
 	{
 		EnemyManager::getInstance()->MakeEnemyOneTime(
 			ENEMY::ENEMY_TYPE::ITEM,
