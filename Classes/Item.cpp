@@ -52,10 +52,15 @@ void Item::CalProc(const _In_ FLOAT dt)
 
 void Item::Draw(_Inout_ HDC drawDC)
 {
+#pragma warning(push)
+#pragma warning(disable : 4244)
+
 	m_pShadeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
 		m_Width, m_Height, 0, 0, SRCAND);
 	m_pSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
 		m_Width, m_Height, 0, 0, SRCPAINT);
+
+#pragma warning(pop)
 	return;
 }
 

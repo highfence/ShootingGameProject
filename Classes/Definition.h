@@ -93,7 +93,15 @@ namespace PLAYER
 	const INT playerMissileDamageArray[4] = { 3, 7, 15, 21 };
 }
 
-enum RESULT_VALUE
+enum vRESULT
 {
-	WELL_PERFORMED = 0, ERROR_INVALID_INPUT = -1
+	WELL_PERFORMED = 0,
+	ERROR_INVALID_INPUT = -1,
+	ERROR_IMG_LOAD_FAILED = -2
 };
+
+namespace MESSAGES
+{
+	const std::wstring creationFailed = _T("Creation Falied! \n ERROR CODE : ");
+	const std::wstring error = _T("ERROR!");
+}

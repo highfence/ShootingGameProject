@@ -23,6 +23,7 @@ public :
 
 private :
 
-	void init();
+	const vRESULT init();
+	const vRESULT InitialImgLoad();
 
 };

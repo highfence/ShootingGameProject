@@ -23,30 +23,34 @@ EnemyItem::EnemyItem(
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage; 
 	m_Option = flightOption;
-	init();
+
+	vRESULT retval = init();
+
+#ifdef _DEBUG
+	if (retval != WELL_PERFORMED)
+	{
+		std::wstring guideWord = MESSAGES::creationFailed + std::to_wstring(retval) + _T(" (In Creation ENEMY ITEM) \n");
+		OutputDebugString(guideWord.c_str());
+		exit(0);
+	}
+#endif
 }
 
-void EnemyItem::init()
+const vRESULT EnemyItem::init()
 {
-	if (m_Option.m_IsItemLaunched == TRUE)
+	if (InitialImgLoad() != WELL_PERFORMED)
 	{
-		m_pSprite->Load(spriteOnPath);
+		return ERROR_IMG_LOAD_FAILED;
 	}
-	else
-	{
-		m_pSprite->Load(spritePath);
-	}
-	m_pShadeSprite->Load(shadePath);
 
 	m_FlightSpeed = enemyItemFlightSpeed;
 	m_Width = enemyItemSpriteWidth;
 	m_Height = enemyItemSpriteHeight;
 	m_Hp = enemyItemHp;
-	m_MissileDamage = enemyItemDamage;
 	m_MissileSpeed = enemyItemMissileSpeed;
 	m_LoadedMissileNumber = enemyItemLoadedMissileNumber;
 	LoadMissiles(ENEMY::MISSILE_SIZE::SMALL);
-	return;
+	return WELL_PERFORMED;
 }
 
 EnemyItem::~EnemyItem()
@@ -57,11 +61,15 @@ EnemyItem::~EnemyItem()
 
 void EnemyItem::Draw(_Inout_ HDC drawDC)
 {
+#pragma warning(push)
+#pragma warning(disable : 4244)
+
 	m_pShadeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
 		m_Width, m_Height, 0, 0, SRCAND);
 	m_pSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
 		m_Width, m_Height, 0, 0, SRCPAINT);
 
+#pragma warning(pop)
 	return;
 }
 
@@ -106,4 +114,27 @@ void EnemyItem::Explode()
 	}
 	EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos.x, m_Pos.y);
 	return;
+}
+
+const vRESULT EnemyItem::InitialImgLoad()
+{
+	if (m_Option.m_IsItemLaunched == TRUE)
+	{
+		if (m_pSprite->Load(spriteOnPath) == E_FAIL)
+		{
+			return ERROR_IMG_LOAD_FAILED;
+		}
+	}
+	else
+	{
+		if (m_pSprite->Load(spritePath) == E_FAIL)
+		{
+			return ERROR_IMG_LOAD_FAILED;
+		}
+	}
+	if (m_pShadeSprite->Load(shadePath) == E_FAIL)
+	{
+		return ERROR_IMG_LOAD_FAILED;
+	}
+	return WELL_PERFORMED;
 }
