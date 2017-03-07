@@ -23,9 +23,9 @@ public :
 	BOOL IsMissileOnDisplay();
 	FLOAT m_PosX;
 	FLOAT m_PosY;
-	FLOAT m_Width;
-	FLOAT m_Height;
-	FLOAT m_Damage;
+	INT m_Width;
+	INT m_Height;
+	INT m_Damage;
 	ENEMY::MISSILE_TYPE m_MissileType;
 
 private :

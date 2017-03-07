@@ -26,6 +26,7 @@ public :
 		const _In_ FLOAT createPosX,
 		const _In_ FLOAT createPosY,
 		const _In_ INT flightType,
+		const _In_opt_ Vec flightVec,
 		const _In_opt_ BOOL option);
 
 	void MakeEnemyOneTime(
@@ -33,6 +34,7 @@ public :
 		const _In_ FLOAT createPosX,
 		const _In_ FLOAT createPosY,
 		const _In_ INT flightType,
+		const _In_opt_ Vec flightVec,
 		const _In_opt_ BOOL option);
 
 	void CalProc(const _In_ FLOAT);
@@ -56,12 +58,26 @@ private :
 	void SetPlayerPos(const _In_ FLOAT, const _In_ FLOAT);
 
 	// 생성 함수 포인터 핸들러.
-	Enemy*(EnemyManager::*m_pMakeHandler[ENEMY_TYPE_NUM])
-		(const _In_ FLOAT, const _In_ FLOAT, const _In_ INT, const _In_opt_ BOOL);
+	Enemy*(EnemyManager::*m_pMakeHandler[ENEMY_TYPE_NUM])(
+		const _In_ FLOAT,
+		const _In_ FLOAT,
+		const _In_ INT,
+		const _In_opt_ Vec,
+		const _In_opt_ BOOL);
 
 	// 함수 포인터에 들어갈 함수
-	Enemy* MakeEnemyItem(const _In_ FLOAT, const _In_ FLOAT, const _In_ INT, const _In_opt_ BOOL);
-	Enemy* MakeItem(const _In_ FLOAT, const _In_ FLOAT, const _In_ INT, const _In_opt_ BOOL);
+	Enemy* MakeEnemyItem(
+		const _In_ FLOAT,
+		const _In_ FLOAT,
+		const _In_ INT,
+		const _In_opt_ Vec,
+		const _In_opt_ BOOL);
+	Enemy* MakeItem(
+		const _In_ FLOAT,
+		const _In_ FLOAT,
+		const _In_ INT,
+		const _In_opt_ Vec,
+		const _In_opt_ BOOL);
 
 	std::list<Enemy*> m_EnemyList;
 

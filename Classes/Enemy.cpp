@@ -2,9 +2,13 @@
 #include "Enemy.h"
 #include "EnemyMissile.h"
 
-Enemy::Enemy(const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType)
-	: m_PosX(x),
-	m_PosY(y),
+Enemy::Enemy(
+	const _In_ FLOAT createPosX,
+	const _In_ FLOAT createPosY,
+	const _In_ INT flightType,
+	const _In_opt_ Vec flightVec)
+	: m_PosX(createPosX),
+	m_PosY(createPosY),
 	m_AccTime(0.f),
 	m_RecordAccTime(0.f),
 	m_UnitVecX(0),
@@ -15,6 +19,7 @@ Enemy::Enemy(const _In_ FLOAT x, const _In_ FLOAT y, const _In_ INT flightType)
 	m_FlightType(flightType),
 	m_IsEnemyDead(FALSE)
 {
+	m_FlightVec = flightVec;
 	init();
 }
 
@@ -76,13 +81,20 @@ void Enemy::MissileFly(const _In_ FLOAT dt)
 	return;
 }
 
+/*
+	FlyStratight accord to m_FlightVec.
+*/
 BOOL Enemy::FlyStraight(const _In_ FLOAT dt)
 {
-	m_PosY += m_FlightSpeed * dt;
+	m_PosX += m_FlightVec._x * m_FlightSpeed * dt;
+	m_PosY += m_FlightVec._y * m_FlightSpeed * dt;
 	return TRUE;
 }
 
-// 랜덤한 방향의 벡터를 받아서 지정한 만큼 중구난방으로 움직이는 아이템.
+/*
+	Make random flightVector and Fly until "itemFlyTime(const FLOAT)" end.
+	Using in Item :: public Enemy
+*/
 BOOL Enemy::FlyItem(const _In_ FLOAT dt)
 {
 	const FLOAT itemFlyTime = 1.0f;
@@ -97,6 +109,9 @@ BOOL Enemy::FlyItem(const _In_ FLOAT dt)
 	return TRUE;
 }
 
+/*
+	직선으로 미사일을 날아가게 하는 방식.
+*/
 BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
 {
 	missile->Fly(dt, 0, 1, m_MissileSpeed);

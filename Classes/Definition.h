@@ -2,7 +2,7 @@
 
 // 윈도우 사이즈
 const INT winWidth = 900;
-const INT winHeight = 1600;
+const INT winHeight = 1200;
 
 // 배경 이미지 사이즈. (윈도우 사이즈와 같음)
 const INT imgWidth = 900;
@@ -51,7 +51,7 @@ namespace ENEMY
 	// Enemy_Item
 	const FLOAT enemyItemDamage = 3.f;
 	const FLOAT enemyItemMissileSpeed = 700.f;
-	const FLOAT enemyItemLoadedMissileNumber = 5.f;
+	const INT enemyItemLoadedMissileNumber = 5;
 
 	// Item
 	const std::wstring itemSpritePath = _T("../Resources/PowerUp.png");
@@ -83,8 +83,8 @@ namespace PLAYER
 	const std::wstring playerMissileShape = _T("../Resources/FX/PlayerMissileTierS");
 	const std::wstring fileExtension = _T(".png");
 	const FLOAT playerMissileSpeed = 2000.f;
-	const INT playerMissileWidthArray[4] = { 6, 18, };
-	const INT playerMissileHeightArray[4] = { 22, 25, };
+	const INT playerMissileWidthArray[4] = { 6, 18, 38, 70 };
+	const INT playerMissileHeightArray[4] = { 22, 25, 28, 28 };
 	const INT playerMissileDamageArray[4] = { 3, 7, 15, 21 };
 }
 

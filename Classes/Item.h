@@ -4,7 +4,11 @@
 class Item : public Enemy 
 {
 public :
-	Item(const _In_ FLOAT, const _In_ FLOAT, const _In_ INT);
+	Item(
+		const _In_ FLOAT createPosX,
+		const _In_ FLOAT createPosY,
+		const _In_ INT flightType,
+		const _In_ Vec flightVec);
 	~Item();
 
 	virtual void CalProc(const _In_ FLOAT dt) override;

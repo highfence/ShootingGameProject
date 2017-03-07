@@ -9,8 +9,9 @@ using namespace ENEMY;
 Item::Item(
 	const _In_ FLOAT vecX,
 	const _In_ FLOAT vecY,
-	const _In_ INT flightType)
-	: Enemy(vecX, vecY, flightType)
+	const _In_ INT flightType,
+	const _In_ Vec flightVec)
+	: Enemy(vecX, vecY, flightType, flightVec)
 {
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage;

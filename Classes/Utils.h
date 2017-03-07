@@ -1,6 +1,22 @@
 #pragma once
 
 /*
+	2차원 벡터 값을 표현하기 위해 사용하는 클래스.
+	FLOAT 인자 _x, _y를 가지고 있다.
+*/
+class Vec
+{
+public :
+	Vec(const _In_ FLOAT, const _In_ FLOAT);
+	Vec();
+	~Vec();
+	Vec& operator = (const Vec &vecForCopy);
+
+	FLOAT _x;
+	FLOAT _y;
+};
+
+/*
 	GetUnitVec
 	1,2번째 인자로 x, y변을 넣어주면 3,4번쨰 인자로 유닛벡터를 반환해주는 함수.
 */
@@ -27,3 +43,4 @@ void ImgLoad(
 	const _In_ INT,
 	const _In_ std::wstring,
 	const _In_ BOOL);
+

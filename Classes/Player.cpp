@@ -320,7 +320,7 @@ void Player::ChangeMissilesAccordWithPower()
 */
 INT Player::CalDirection(const _In_ INT pushedKey)
 {
-	const INT directionRefreshTime = 0.3f;
+	const FLOAT directionRefreshTime = 0.1f;
 	if (m_RecordAccTime > directionRefreshTime)
 	{
 		switch (pushedKey)

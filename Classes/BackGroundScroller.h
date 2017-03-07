@@ -7,13 +7,13 @@
 */
 
 
-typedef struct ImgStruct
+typedef struct 
 {
 	CImage* img;
-	INT imgWidth;
-	INT imgHeight;
-	INT scrollY;
-};
+	FLOAT imgWidth;
+	FLOAT imgHeight;
+	FLOAT scrollY;
+} ImgStruct;
 
 /*
 	BackGroundScroller

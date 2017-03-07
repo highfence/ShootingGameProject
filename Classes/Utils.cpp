@@ -68,3 +68,28 @@ void ImgLoad(
 
 	return;
 }
+
+
+Vec::Vec(const _In_ FLOAT vecX, const _In_ FLOAT vecY)
+{
+	_x = vecX;
+	_y = vecY;
+}
+
+Vec::Vec()
+{
+	_x = 0.f;
+	_y = 0.f;
+}
+
+Vec::~Vec()
+{
+
+}
+
+Vec& Vec::operator=(const Vec &vecForCopy)
+{
+	_x = vecForCopy._x;
+	_y = vecForCopy._y;
+	return *this;
+}

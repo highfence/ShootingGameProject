@@ -16,9 +16,10 @@ EnemyItem::EnemyItem(
 	const _In_ FLOAT createX,
 	const _In_ FLOAT createY,
 	const _In_ INT flightType,
+	const _In_opt_ Vec flightVec,
 	const _In_ BOOL ItemLaunched)
 	: 
-	Enemy(createX, createY, flightType),
+	Enemy(createX, createY, flightType, flightVec),
 	m_IsItemLaunched(ItemLaunched)
 {
 	m_pSprite = new CImage;
@@ -102,6 +103,7 @@ void EnemyItem::Explode()
 			m_PosX,
 			m_PosY,
 			ENEMY::FLIGHT_TYPE::FLY_ITEM,
+			Vec(0, 1),
 			TRUE);
 	}
 	EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_PosX, m_PosY);

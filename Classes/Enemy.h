@@ -12,7 +12,11 @@ class EnemyMissile;
 class Enemy
 {
 public :
-	Enemy(const _In_ FLOAT, const _In_ FLOAT, const _In_ INT);
+	Enemy(
+		const _In_ FLOAT createPosX,
+		const _In_ FLOAT createPosY,
+		const _In_ INT flightType,
+		const _In_opt_ Vec flightVec);
 	virtual ~Enemy();
 
 	virtual void Draw(_Inout_ HDC) = 0;
@@ -38,6 +42,7 @@ public :
 	FLOAT m_PlayerX;
 	FLOAT m_PlayerY;
 	INT m_FlightType;
+	Vec m_FlightVec;
 	FLOAT m_FlightSpeed;
 	FLOAT m_Width;
 	FLOAT m_Height;
