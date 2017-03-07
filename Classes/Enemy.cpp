@@ -82,7 +82,7 @@ void Enemy::MissileFly(const _In_ FLOAT dt)
 }
 
 /*
-	FlyStratight accord to m_FlightVec.
+	FlyStratight accord with m_FlightVec.
 */
 BOOL Enemy::FlyStraight(const _In_ FLOAT dt)
 {
@@ -119,23 +119,26 @@ BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
 	return TRUE;
 }
 
+/*
+	Return Enemy Is on Display.
+*/
 BOOL Enemy::CheckEnemyIsOnDisplay()
 {
-	if ((m_PosX + m_Width / 2) <= 0)
+	if ((m_PosX + m_Width / 2) <= -boundaryRange)
 	{
-		return false;
+		return FALSE;
 	}
-	else if ((m_PosX - m_Width / 2) >= winWidth)
+	else if ((m_PosX - m_Width / 2) >= winWidth + boundaryRange)
 	{
-		return false;
+		return FALSE;
 	}
-	else if ((m_PosY + m_Height / 2) <= 0)
+	else if ((m_PosY + m_Height / 2) <= -boundaryRange)
 	{
-		return false;
+		return FALSE;
 	}
-	else if ((m_PosY - m_Height) / 2 >= winHeight)
+	else if ((m_PosY - m_Height) / 2 >= winHeight + boundaryRange)
 	{
-		return false;
+		return FALSE;
 	}
 
 	return true;

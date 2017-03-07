@@ -3,6 +3,7 @@
 // 윈도우 사이즈
 const INT winWidth = 900;
 const INT winHeight = 1200;
+const INT boundaryRange = 100;
 
 // 배경 이미지 사이즈. (윈도우 사이즈와 같음)
 const INT imgWidth = 900;
