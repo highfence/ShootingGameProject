@@ -192,7 +192,6 @@ void Enemy::LoadMissiles(const _In_ ENEMY::MISSILE_SIZE missileSize)
 }
 
 /*
-	DrawMissiles
 	미사일 벡터를 순회하며 Draw를 호출해주는 함수.
 */
 void Enemy::DrawMissiles(_Inout_ HDC drawDC)
@@ -206,7 +205,6 @@ void Enemy::DrawMissiles(_Inout_ HDC drawDC)
 }
 
 /*
-	DeleteAllElementsMissileVector
 	멤버 변수 m_MissileVec에 있는 모든 원소들을 순회하면서 소멸자를 호출해주는 함수.
 */
 void Enemy::DeleteAllElementsMissileVector()

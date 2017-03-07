@@ -61,7 +61,9 @@ public :
 	CImage* m_pShadeSprite;
 
 	BOOL(Enemy::*m_pFlightHandler[ENEMY::FLIGHT_TYPE_NUM])(const _In_ FLOAT);
-	BOOL(Enemy::*m_pMissileFlyHandler[ENEMY::MISSILE_TYPE_NUM])(EnemyMissile*, const _In_ FLOAT);
+	BOOL(Enemy::*m_pMissileFlyHandler[ENEMY::MISSILE_TYPE_NUM])(
+		EnemyMissile*,
+		const _In_ FLOAT);
 	std::vector<EnemyMissile*> m_MissileVec;
 
 private :
