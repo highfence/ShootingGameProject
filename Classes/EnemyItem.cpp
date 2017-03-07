@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Option.h"
 #include "EnemyItem.h"
 #include "EffectManager.h"
 #include "EnemyManager.h"
@@ -17,13 +18,13 @@ EnemyItem::EnemyItem(
 	const _In_ FLOAT createY,
 	const _In_ INT flightType,
 	const _In_opt_ Vec flightVec,
-	const _In_ BOOL ItemLaunched)
+	const _In_opt_ ::CreateOption flightOption)
 	: 
-	Enemy(createX, createY, flightType, flightVec),
-	m_IsItemLaunched(ItemLaunched)
+	Enemy(createX, createY, flightType, flightVec)
 {
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage; 
+	m_IsItemLaunched = flightOption.m_IsItemLaunched;
 	init();
 }
 
@@ -104,7 +105,7 @@ void EnemyItem::Explode()
 			m_PosY,
 			ENEMY::FLIGHT_TYPE::FLY_ITEM,
 			Vec(0, 1),
-			TRUE);
+			nullptr);
 	}
 	EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_PosX, m_PosY);
 	return;

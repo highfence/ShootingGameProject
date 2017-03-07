@@ -1,5 +1,6 @@
 #pragma once
 using namespace ENEMY;
+#include "Option.h"
 
 // 전방 선언
 class Enemy;
@@ -27,7 +28,7 @@ public :
 		const _In_ FLOAT createPosY,
 		const _In_ INT flightType,
 		const _In_opt_ Vec flightVec,
-		const _In_opt_ BOOL option);
+		const _In_opt_ ::CreateOption flightOption);
 
 	void MakeEnemyOneTime(
 		const _In_ INT enemyType,
@@ -35,7 +36,7 @@ public :
 		const _In_ FLOAT createPosY,
 		const _In_ INT flightType,
 		const _In_opt_ Vec flightVec,
-		const _In_opt_ BOOL option);
+		const _In_opt_ ::CreateOption flightOption);
 
 	void CalProc(const _In_ FLOAT);
 	void MakeProc();
@@ -63,7 +64,7 @@ private :
 		const _In_ FLOAT,
 		const _In_ INT,
 		const _In_opt_ Vec,
-		const _In_opt_ BOOL);
+		const _In_opt_ ::CreateOption);
 
 	// 함수 포인터에 들어갈 함수
 	Enemy* MakeEnemyItem(
@@ -71,13 +72,13 @@ private :
 		const _In_ FLOAT,
 		const _In_ INT,
 		const _In_opt_ Vec,
-		const _In_opt_ BOOL);
+		const _In_opt_ ::CreateOption);
 	Enemy* MakeItem(
 		const _In_ FLOAT,
 		const _In_ FLOAT,
 		const _In_ INT,
 		const _In_opt_ Vec,
-		const _In_opt_ BOOL);
+		const _In_opt_ ::CreateOption);
 
 	std::list<Enemy*> m_EnemyList;
 

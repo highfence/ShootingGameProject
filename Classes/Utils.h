@@ -1,9 +1,8 @@
-#pragma once
+ï»¿#pragma once
 
 
 /*
-	GetUnitVec
-	1,2¹øÂ° ÀÎÀÚ·Î x, yº¯À» ³Ö¾îÁÖ¸é 3,4¹ø¤Š ÀÎÀÚ·Î À¯´Öº¤ÅÍ¸¦ ¹İÈ¯ÇØÁÖ´Â ÇÔ¼ö.
+	1,2ë²ˆì§¸ ì¸ìë¡œ x, yë³€ì„ ë„£ì–´ì£¼ë©´ 3,4ë²ˆì¨° ì¸ìë¡œ ìœ ë‹›ë²¡í„°ë¥¼ ë°˜í™˜í•´ì£¼ëŠ” í•¨ìˆ˜.
 */
 void GetUnitVec(
 	const _In_ FLOAT,
@@ -12,15 +11,14 @@ void GetUnitVec(
 	_Out_ FLOAT*);
 
 /*
-	ImgLoad
-	filePath + FrameNumber + FileExtensionÀÇ ÇüÅÂÀÇ ÀÌ¹ÌÁö¸¦ ·ÎµåÇØ¾ßÇÒ °æ¿ì »ç¿ëÇÏ´Â ÇÔ¼ö.
+	filePath + FrameNumber + FileExtensionì˜ í˜•íƒœì˜ ì´ë¯¸ì§€ë¥¼ ë¡œë“œí•´ì•¼í•  ê²½ìš° ì‚¬ìš©í•˜ëŠ” í•¨ìˆ˜.
 
-	ÀÎÀÚ :
-		1. ImgLoadÇÏ°í ½ÍÀº CImageÀÇ Æ÷ÀÎÅÍ.
-		2. ÀÌ¹ÌÁöÀÇ FilePath
-		3. ÀÌ¹ÌÁö FilePath µÚ¿¡ ´õÇÒ FrameNumber
-		4. ÀÌ¹ÌÁö ÆÄÀÏÀÇ È®ÀåÀÚ
-		5. CImage°¡ ÇÑ ¹ø »ç¿ëµÈ ÀûÀÌ ÀÖ´ÂÁö. (Destroy°¡ ÇÊ¿äÇÑÁö)
+	ì¸ì :
+		1. ImgLoadí•˜ê³  ì‹¶ì€ CImageì˜ í¬ì¸í„°.
+		2. ì´ë¯¸ì§€ì˜ FilePath
+		3. ì´ë¯¸ì§€ FilePath ë’¤ì— ë”í•  FrameNumber
+		4. ì´ë¯¸ì§€ íŒŒì¼ì˜ í™•ì¥ì
+		5. CImageê°€ í•œ ë²ˆ ì‚¬ìš©ëœ ì ì´ ìˆëŠ”ì§€. (Destroyê°€ í•„ìš”í•œì§€)
 */
 void ImgLoad(
 	_Inout_ CImage*,
@@ -28,4 +26,11 @@ void ImgLoad(
 	const _In_ INT,
 	const _In_ std::wstring,
 	const _In_ BOOL);
+
+/*
+	íƒ„ì  ÂˆíŠ¸ë¥¼ ì´ìš©í•˜ì—¬ ê°ë„ë¥¼ êµ¬í•´ì£¼ëŠ” í•¨ìˆ˜.
+*/
+FLOAT GetTanDegree(
+	const _In_ FLOAT x,
+	const _In_ FLOAT y);
 

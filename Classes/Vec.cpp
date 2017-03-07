@@ -4,14 +4,14 @@
 
 Vec::Vec(const _In_ FLOAT vecX, const _In_ FLOAT vecY)
 {
-	_x = vecX;
-	_y = vecY;
+	m_X = vecX;
+	m_Y = vecY;
 }
 
 Vec::Vec()
 {
-	_x = 0.f;
-	_y = 0.f;
+	m_X = 0.f;
+	m_Y = 0.f;
 }
 
 Vec::~Vec()
@@ -21,67 +21,67 @@ Vec::~Vec()
 
 Vec& Vec::operator=(const _In_ Vec &vecForCopy)
 {
-	_x = vecForCopy._x;
-	_y = vecForCopy._y;
+	m_X = vecForCopy.m_X;
+	m_Y = vecForCopy.m_Y;
 	return *this;
 }
 
 Vec& Vec::operator=(const _In_ INT intForCopy)
 {
-	_x = intForCopy;
-	_y = intForCopy;
+	m_X = intForCopy;
+	m_Y = intForCopy;
 	return *this;
 }
 
 Vec& Vec::operator+(const _In_ Vec &vecForPlus)
 {
-	_x += vecForPlus._x;
-	_y += vecForPlus._y;
+	m_X += vecForPlus.m_X;
+	m_Y += vecForPlus.m_Y;
 	return *this;
 }
 
 Vec& Vec::operator+(const _In_ INT intForPlus)
 {
-	_x += intForPlus;
-	_y += intForPlus;
+	m_X += intForPlus;
+	m_Y += intForPlus;
 	return *this;
 }
 
 Vec& Vec::operator-(const _In_ Vec &vecForMinus)
 {
-	_x -= vecForMinus._x;
-	_y -= vecForMinus._y;
+	m_X -= vecForMinus.m_X;
+	m_Y -= vecForMinus.m_Y;
 	return *this;
 }
 
 Vec& Vec::operator-(const _In_ INT intForMinus)
 {
-	_x -= intForMinus;
-	_y -= intForMinus;
+	m_X -= intForMinus;
+	m_Y -= intForMinus;
 	return *this;
 }
 
 Vec& Vec::operator*(const _In_ Vec &vecForMulti)
 {
-	_x *= vecForMulti._x;
-	_y *= vecForMulti._y;
+	m_X *= vecForMulti.m_X;
+	m_Y *= vecForMulti.m_Y;
 	return *this;
 }
 
 Vec& Vec::operator*(const _In_ INT intForMulti)
 {
-	_x *= intForMulti;
-	_y *= intForMulti;
+	m_X *= intForMulti;
+	m_Y *= intForMulti;
 	return *this;
 }
 
 Vec& Vec::operator/(const _In_ Vec &vecForDivide)
 {
-	// 벡터의 한 좌표라도 0일 경우 그냥 리턴.
-	if (!vecForDivide._x && !vecForDivide._y)
+	// 나누는 벡터의 한 좌표라도 0일 경우 그냥 리턴.
+	if (!vecForDivide.m_X && !vecForDivide.m_Y)
 	{
-		_x /= vecForDivide._x;
-		_y /= vecForDivide._y;
+		m_X /= vecForDivide.m_X;
+		m_Y /= vecForDivide.m_Y;
 	}
 	return *this;
 }
@@ -91,8 +91,8 @@ Vec & Vec::operator/(const INT intForDivide)
 	// 나누는 인자가 0일 경우 그냥 리턴.
 	if (!intForDivide)
 	{
-		_x /= intForDivide;
-		_y /= intForDivide;
+		m_X /= intForDivide;
+		m_Y /= intForDivide;
 	}
 	return *this;
 }

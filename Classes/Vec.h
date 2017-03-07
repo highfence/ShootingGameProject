@@ -22,6 +22,6 @@ public :
 	Vec& operator / (const _In_ Vec &vecForDivide);
 	Vec& operator / (const _In_ INT intForDivide);
 
-	FLOAT _x;
-	FLOAT _y;
+	FLOAT m_X;
+	FLOAT m_Y;
 };

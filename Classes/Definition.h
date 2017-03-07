@@ -54,12 +54,16 @@ namespace ENEMY
 	const FLOAT enemyItemMissileSpeed = 700.f;
 	const INT enemyItemLoadedMissileNumber = 5;
 
+
+
 	// Item
 	const std::wstring itemSpritePath = _T("../Resources/PowerUp.png");
 	const std::wstring itemShadePath = _T("../Resources/PowerUpS.png");
 	const FLOAT itemWidth = 24;
 	const FLOAT itemHeight = 19;
+
 }
+
 
 namespace EFFECT
 {

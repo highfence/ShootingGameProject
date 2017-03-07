@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include "Option.h"
 
 /*
 	EnemyItem
@@ -17,7 +18,7 @@ public :
 		const _In_ FLOAT y,
 		const _In_ INT flightType,
 		const _In_opt_ Vec flightVec,
-		const _In_ BOOL IsItemLaunched);
+		const _In_opt_ ::CreateOption flightOption);
 	~EnemyItem() override;
 
 	void Draw(_Inout_ HDC) override;

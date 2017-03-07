@@ -1,11 +1,11 @@
 #pragma once
+
 /*
 	ImgStruct
 	백그라운드 스크롤러에서 사용하기 위해 정의한 이미지 구조체.
 	이미지를 담고 있는 CImage와 리소스의 크기를 담는다. (imgWidth, imgHeight)
 	scrollY는 Y축으로 얼만큼 스크롤 되었는지를 기록한다.
 */
-
 
 typedef struct 
 {

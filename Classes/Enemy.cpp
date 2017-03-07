@@ -86,8 +86,8 @@ void Enemy::MissileFly(const _In_ FLOAT dt)
 */
 BOOL Enemy::FlyStraight(const _In_ FLOAT dt)
 {
-	m_PosX += m_FlightVec._x * m_FlightSpeed * dt;
-	m_PosY += m_FlightVec._y * m_FlightSpeed * dt;
+	m_PosX += m_FlightVec.m_X * m_FlightSpeed * dt;
+	m_PosY += m_FlightVec.m_Y * m_FlightSpeed * dt;
 	return TRUE;
 }
 
@@ -100,7 +100,7 @@ BOOL Enemy::FlyItem(const _In_ FLOAT dt)
 	const FLOAT itemFlyTime = 1.0f;
 	if ((m_UnitVecX == 0 && m_UnitVecY == 0) || (m_RecordFlyTime > itemFlyTime))
 	{
-		GetUnitVec(rand() % 100, rand() % 100, &m_UnitVecX, &m_UnitVecY);
+		GetUnitVec((FLOAT)(rand() % 100), (FLOAT)(rand() % 100), &m_UnitVecX, &m_UnitVecY);
 		m_RecordFlyTime = 0.f;
 	}
 

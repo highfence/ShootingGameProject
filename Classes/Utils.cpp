@@ -69,3 +69,12 @@ void ImgLoad(
 	return;
 }
 
+FLOAT GetTanDegree(
+	const _In_ FLOAT x,
+	const _In_ FLOAT y
+)
+{
+	FLOAT radian = atan2f(y, x);
+	FLOAT degree = radian * 180.f / (FLOAT)M_PI;
+	return degree;
+}

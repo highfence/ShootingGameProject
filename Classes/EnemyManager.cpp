@@ -54,9 +54,9 @@ Enemy * EnemyManager::MakeEnemyItem(
 	const _In_ FLOAT y, 
 	const _In_ INT flightType,
 	const _In_ Vec flightVec,
-	const _In_opt_ BOOL IsItemLaunched)
+	const _In_opt_ ::CreateOption flightOption)
 {
-	Enemy* newEnemy = new EnemyItem(x, y, flightType, flightVec, IsItemLaunched);
+	Enemy* newEnemy = new EnemyItem(x, y, flightType, flightVec, flightOption);
 	return newEnemy;
 }
  
@@ -69,7 +69,7 @@ Enemy* EnemyManager::MakeItem(
 	const _In_ FLOAT y,
 	const _In_ INT flightType,
 	const _In_ Vec flightVec,
-	const _In_opt_ BOOL option)
+	const _In_opt_ ::CreateOption flightOption)
 {
 	Enemy* newEnemy = new Item(x, y, flightType, flightVec);
 	return newEnemy;
@@ -94,12 +94,12 @@ void EnemyManager::MakeEnemyWithTime(
 	const _In_ FLOAT createPosY,
 	const _In_ INT flightType,
 	const _In_opt_ Vec flightVec,
-	const _In_opt_ BOOL option)
+	const _In_opt_ ::CreateOption flightOption)
 {
 	if ((m_AccTime > createTime) && (m_RecordCreateTime < createTime))
 	{
 		auto newEnemy = (this->*m_pMakeHandler[enemyType])(
-			createPosX, createPosY, flightType, flightVec, option);
+			createPosX, createPosY, flightType, flightVec, flightOption);
 
 		m_EnemyList.push_back(newEnemy);
 		m_RecordCreateTime = createTime;
@@ -119,10 +119,10 @@ void EnemyManager::MakeEnemyOneTime(
 	const _In_ FLOAT createPosY, 
 	const _In_ INT flightType, 
 	const _In_opt_ Vec flightVec,
-	const _In_opt_ BOOL option)
+	const _In_opt_ ::CreateOption flightOption)
 {
 	auto newEnemy = (this->*m_pMakeHandler[enemyType])(
-		createPosX, createPosY, flightType, flightVec, option);
+		createPosX, createPosY, flightType, flightVec, flightOption);
 
 	m_EnemyList.push_back(newEnemy);
 	return;
@@ -189,16 +189,18 @@ Player& EnemyManager::getPlayerInfo()
 
 void EnemyManager::MakeProc()
 {
-	MakeEnemyWithTime(3.0f , ENEMY_ITEM, 450, 0, FLY_STRAIGHT, Vec(0, 1), FALSE);
-	MakeEnemyWithTime(3.25f, ENEMY_ITEM, 350, 0, FLY_STRAIGHT, Vec(0, 1), FALSE);
-	MakeEnemyWithTime(3.5f , ENEMY_ITEM, 250, 0, FLY_STRAIGHT, Vec(0, 1), FALSE);
-	MakeEnemyWithTime(3.75f, ENEMY_ITEM, 150, 0, FLY_STRAIGHT, Vec(0, 1), TRUE );
+	CreateOption enemyItemOptionFalse((FALSE), 0, 0, 0, 0, 0);
+	CreateOption enemyItemOptionTrue((TRUE), 0, 0, 0, 0, 0);
+	MakeEnemyWithTime(3.0f , ENEMY_ITEM, 450, 0, FLY_STRAIGHT, Vec(0, 1), enemyItemOptionFalse);
+	MakeEnemyWithTime(3.25f, ENEMY_ITEM, 350, 0, FLY_STRAIGHT, Vec(0, 1), enemyItemOptionFalse);
+	MakeEnemyWithTime(3.5f , ENEMY_ITEM, 250, 0, FLY_STRAIGHT, Vec(0, 1), enemyItemOptionFalse);
+	MakeEnemyWithTime(3.75f, ENEMY_ITEM, 150, 0, FLY_STRAIGHT, Vec(0, 1), enemyItemOptionTrue);
 
-	MakeEnemyWithTime(5.0f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), FALSE);
-	MakeEnemyWithTime(5.25f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), FALSE);
-	MakeEnemyWithTime(5.5f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), FALSE);
-	MakeEnemyWithTime(5.75f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), FALSE);
-	MakeEnemyWithTime(6.0f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), FALSE);
+	MakeEnemyWithTime(5.0f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), enemyItemOptionFalse);
+	MakeEnemyWithTime(5.25f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), enemyItemOptionFalse);
+	MakeEnemyWithTime(5.5f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), enemyItemOptionFalse);
+	MakeEnemyWithTime(5.75f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), enemyItemOptionFalse);
+	MakeEnemyWithTime(6.0f, ENEMY_ITEM, winWidth, 200, FLY_STRAIGHT, Vec(-1, 1), enemyItemOptionFalse);
 
 /*	MakeEnemyWithTime(4.0f , ENEMY_ITEM, 450, 0, FLY_STRAIGHT, FALSE);
 	MakeEnemyWithTime(4.25f, ENEMY_ITEM, 550, 0, FLY_STRAIGHT, FALSE);
@@ -227,7 +229,6 @@ void EnemyManager::DistributePlayerInfo()
 	return;
 }
 
-// TODO :: 여기서부터 시작.
 void EnemyManager::SetPlayerPos(const _In_ FLOAT playerPosX, const _In_ FLOAT playerPosY)
 {
 	for (auto i : m_EnemyList)
