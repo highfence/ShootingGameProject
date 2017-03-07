@@ -7,11 +7,10 @@
 using namespace ENEMY;
 
 Item::Item(
-	const _In_ FLOAT vecX,
-	const _In_ FLOAT vecY,
+	const _In_ Vec createPos,
 	const _In_ INT flightType,
 	const _In_ Vec flightVec)
-	: Enemy(vecX, vecY, flightType, flightVec)
+	: Enemy(createPos, flightType, flightVec)
 {
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage;
@@ -53,9 +52,9 @@ void Item::CalProc(const _In_ FLOAT dt)
 
 void Item::Draw(_Inout_ HDC drawDC)
 {
-	m_pShadeSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height,
+	m_pShadeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
 		m_Width, m_Height, 0, 0, SRCAND);
-	m_pSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height,
+	m_pSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
 		m_Width, m_Height, 0, 0, SRCPAINT);
 	return;
 }
@@ -83,10 +82,11 @@ BOOL Item::CheckPlayerGetItem()
 	FLOAT playerPosY;
 	playerInfo.GetPosition(&playerPosX, &playerPosY);
 
-	auto x0 = m_PosX - m_Width / 2;
-	auto y0 = m_PosY - m_Height / 2;
-	auto x1 = m_PosX + m_Width / 2;
-	auto y1 = m_PosY + m_Height / 2;
+	// TODO :: 이거 충돌판정 하나로 모아서 처리할 함수 만들기.
+	auto x0 = m_Pos.x - m_Width / 2;
+	auto y0 = m_Pos.y - m_Height / 2;
+	auto x1 = m_Pos.x + m_Width / 2;
+	auto y1 = m_Pos.y + m_Height / 2;
 	auto mx0 = playerPosX - playerCorrectionPixel;
 	auto my0 = playerPosY - playerCorrectionPixel;
 	auto mx1 = playerPosX + playerCorrectionPixel;

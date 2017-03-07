@@ -13,13 +13,12 @@ const FLOAT enemyItemFlightSpeed = 300;
 const INT enemyItemHp = 1;
 
 EnemyItem::EnemyItem(
-	const _In_ FLOAT createX,
-	const _In_ FLOAT createY,
+	const _In_ Vec createPos,
 	const _In_ INT flightType,
 	const _In_opt_ Vec flightVec,
 	const _In_opt_ ::CreateOption flightOption)
 	: 
-	Enemy(createX, createY, flightType, flightVec)
+	Enemy(createPos, flightType, flightVec)
 {
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage; 
@@ -58,9 +57,9 @@ EnemyItem::~EnemyItem()
 
 void EnemyItem::Draw(_Inout_ HDC drawDC)
 {
-	m_pShadeSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height,
+	m_pShadeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
 		m_Width, m_Height, 0, 0, SRCAND);
-	m_pSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height,
+	m_pSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
 		m_Width, m_Height, 0, 0, SRCPAINT);
 
 	return;
@@ -84,7 +83,7 @@ void EnemyItem::Fire()
 	{
 		for (auto i : m_MissileVec)
 		{
-			if (i->Launch(ENEMY::MISSILE_TYPE::STRAIGHT_FIRE, m_PosX, m_PosY))
+			if (i->Launch(ENEMY::MISSILE_TYPE::STRAIGHT_FIRE, m_Pos.x, m_Pos.y))
 			{
 				break;
 			}
@@ -100,12 +99,11 @@ void EnemyItem::Explode()
 	{
 		EnemyManager::getInstance()->MakeEnemyOneTime(
 			ENEMY::ENEMY_TYPE::ITEM,
-			m_PosX,
-			m_PosY,
+			m_Pos,
 			ENEMY::FLIGHT_TYPE::FLY_ITEM,
 			Vec(0, 1),
 			nullptr);
 	}
-	EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_PosX, m_PosY);
+	EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos.x, m_Pos.y);
 	return;
 }

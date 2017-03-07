@@ -5,8 +5,7 @@ class Item : public Enemy
 {
 public :
 	Item(
-		const _In_ FLOAT createPosX,
-		const _In_ FLOAT createPosY,
+		const _In_ Vec createPos,
 		const _In_ INT flightType,
 		const _In_ Vec flightVec);
 	~Item();

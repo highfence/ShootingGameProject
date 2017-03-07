@@ -13,8 +13,7 @@ class Enemy
 {
 public :
 	Enemy(
-		const _In_ FLOAT createPosX,
-		const _In_ FLOAT createPosY,
+		const _In_ Vec createPos,
 		const _In_ INT flightType,
 		const _In_opt_ Vec flightVec);
 	
@@ -39,8 +38,7 @@ public :
 			BOOL CheckEnemyIsOnDisplay();
 			INT  RotateAccordWithVec();
 
-	FLOAT	m_PosX;
-	FLOAT	m_PosY;
+	Vec		m_Pos;
 	FLOAT	m_PlayerX;
 	FLOAT	m_PlayerY;
 	INT		m_FlightType;

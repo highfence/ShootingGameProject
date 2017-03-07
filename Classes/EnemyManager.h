@@ -24,16 +24,14 @@ public :
 	void MakeEnemyWithTime(
 		const _In_ FLOAT createTime,
 		const _In_ INT enemyType,
-		const _In_ FLOAT createPosX,
-		const _In_ FLOAT createPosY,
+		const _In_ Vec createPos,
 		const _In_ INT flightType,
 		const _In_opt_ Vec flightVec,
 		const _In_opt_ ::CreateOption flightOption);
 
 	void MakeEnemyOneTime(
 		const _In_ INT enemyType,
-		const _In_ FLOAT createPosX,
-		const _In_ FLOAT createPosY,
+		const _In_ Vec createPos,
 		const _In_ INT flightType,
 		const _In_opt_ Vec flightVec,
 		const _In_opt_ ::CreateOption flightOption);
@@ -60,22 +58,19 @@ private :
 
 	// 생성 함수 포인터 핸들러.
 	Enemy*(EnemyManager::*m_pMakeHandler[ENEMY_TYPE_NUM])(
-		const _In_ FLOAT,
-		const _In_ FLOAT,
+		const _In_ Vec,
 		const _In_ INT,
 		const _In_opt_ Vec,
 		const _In_opt_ ::CreateOption);
 
 	// 함수 포인터에 들어갈 함수
 	Enemy* MakeEnemyItem(
-		const _In_ FLOAT,
-		const _In_ FLOAT,
+		const _In_ Vec,
 		const _In_ INT,
 		const _In_opt_ Vec,
 		const _In_opt_ ::CreateOption);
 	Enemy* MakeItem(
-		const _In_ FLOAT,
-		const _In_ FLOAT,
+		const _In_ Vec,
 		const _In_ INT,
 		const _In_opt_ Vec,
 		const _In_opt_ ::CreateOption);

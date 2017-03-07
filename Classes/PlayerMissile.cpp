@@ -70,7 +70,7 @@ BOOL PlayerMissile::CheckColide()
 
 	for (auto i : EnemyVec)
 	{
-		if (IsColideWithEnemy(i->m_PosX, i->m_PosY, i->m_Width, i->m_Height))
+		if (IsColideWithEnemy(i->m_Pos.x, i->m_Pos.y, i->m_Width, i->m_Height))
 		{
 			// 충돌 처리.
 			i->GetDamage(m_Damage);

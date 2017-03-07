@@ -3,12 +3,11 @@
 #include "EnemyMissile.h"
 
 Enemy::Enemy(
-	const _In_ FLOAT createPosX,
-	const _In_ FLOAT createPosY,
+	const _In_ Vec createPos,
 	const _In_ INT flightType,
 	const _In_opt_ Vec flightVec)
-	: m_PosX(createPosX),
-	m_PosY(createPosY),
+	: 
+	m_Pos(createPos),
 	m_AccTime(0.f),
 	m_RecordAccTime(0.f),
 	m_UnitVecX(0),
@@ -89,8 +88,8 @@ void Enemy::MissileFly(const _In_ FLOAT dt)
 */
 BOOL Enemy::FlyStraight(const _In_ FLOAT dt)
 {
-	m_PosX += m_FlightVec.m_X * m_FlightSpeed * dt;
-	m_PosY += m_FlightVec.m_Y * m_FlightSpeed * dt;
+	m_Pos.x += m_FlightVec.x * m_FlightSpeed * dt;
+	m_Pos.y += m_FlightVec.y * m_FlightSpeed * dt;
 	return TRUE;
 }
 
@@ -107,8 +106,8 @@ BOOL Enemy::FlyItem(const _In_ FLOAT dt)
 		m_RecordFlyTime = 0.f;
 	}
 
-	m_PosX += m_UnitVecX * dt * m_FlightSpeed;
-	m_PosY += m_UnitVecY * dt * m_FlightSpeed;
+	m_Pos.x += m_UnitVecX * dt * m_FlightSpeed;
+	m_Pos.y += m_UnitVecY * dt * m_FlightSpeed;
 	return TRUE;
 }
 
@@ -118,8 +117,8 @@ BOOL Enemy::FlyItem(const _In_ FLOAT dt)
 BOOL Enemy::FlyAccelerate(const _In_ FLOAT dt)
 {
 	FLOAT currentSpeed = (m_Option.m_InitSpeed + m_Option.m_AccSpeedPerSec * m_AccTime);
-	m_PosX += m_FlightVec.m_X * currentSpeed * dt;
-	m_PosY += m_FlightVec.m_Y * currentSpeed * dt;
+	m_Pos.x += m_FlightVec.x * currentSpeed * dt;
+	m_Pos.y += m_FlightVec.y * currentSpeed * dt;
 	return TRUE;
 }
 
@@ -132,13 +131,13 @@ BOOL Enemy::FlyGoAndSlow(const _In_ FLOAT dt)
 	if ((m_AccTime < m_Option.m_TimeToSlow + m_Option.m_SlowedTime) 
 		&& (m_AccTime > m_Option.m_TimeToSlow))
 	{
-		m_PosX += m_FlightVec.m_X * m_Option.m_SlowedSpeed * dt;
-		m_PosY += m_FlightVec.m_Y * m_Option.m_SlowedSpeed * dt;
+		m_Pos.x += m_FlightVec.x * m_Option.m_SlowedSpeed * dt;
+		m_Pos.y += m_FlightVec.y * m_Option.m_SlowedSpeed * dt;
 	}
 	else
 	{
-		m_PosX += m_FlightVec.m_X * m_Option.m_InitSpeed * dt;
-		m_PosY += m_FlightVec.m_Y * m_Option.m_InitSpeed * dt;
+		m_Pos.x += m_FlightVec.x * m_Option.m_InitSpeed * dt;
+		m_Pos.y += m_FlightVec.y * m_Option.m_InitSpeed * dt;
 	}
 
 	return TRUE;
@@ -159,19 +158,19 @@ BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
 */
 BOOL Enemy::CheckEnemyIsOnDisplay()
 {
-	if ((m_PosX + m_Width / 2) <= -boundaryRange)
+	if ((m_Pos.x + m_Width / 2) <= -boundaryRange)
 	{
 		return FALSE;
 	}
-	else if ((m_PosX - m_Width / 2) >= winWidth + boundaryRange)
+	else if ((m_Pos.x - m_Width / 2) >= winWidth + boundaryRange)
 	{
 		return FALSE;
 	}
-	else if ((m_PosY + m_Height / 2) <= -boundaryRange)
+	else if ((m_Pos.y + m_Height / 2) <= -boundaryRange)
 	{
 		return FALSE;
 	}
-	else if ((m_PosY - m_Height) / 2 >= winHeight + boundaryRange)
+	else if ((m_Pos.y - m_Height) / 2 >= winHeight + boundaryRange)
 	{
 		return FALSE;
 	}

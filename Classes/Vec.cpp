@@ -4,14 +4,14 @@
 
 Vec::Vec(const _In_ FLOAT vecX, const _In_ FLOAT vecY)
 {
-	m_X = vecX;
-	m_Y = vecY;
+	x = vecX;
+	y = vecY;
 }
 
 Vec::Vec()
 {
-	m_X = 0.f;
-	m_Y = 0.f;
+	x = 0.f;
+	y = 0.f;
 }
 
 Vec::~Vec()
@@ -21,67 +21,67 @@ Vec::~Vec()
 
 Vec& Vec::operator=(const _In_ Vec &vecForCopy)
 {
-	m_X = vecForCopy.m_X;
-	m_Y = vecForCopy.m_Y;
+	x = vecForCopy.x;
+	y = vecForCopy.y;
 	return *this;
 }
 
 Vec& Vec::operator=(const _In_ INT intForCopy)
 {
-	m_X = intForCopy;
-	m_Y = intForCopy;
+	x = intForCopy;
+	y = intForCopy;
 	return *this;
 }
 
 Vec& Vec::operator+(const _In_ Vec &vecForPlus)
 {
-	m_X += vecForPlus.m_X;
-	m_Y += vecForPlus.m_Y;
+	x += vecForPlus.x;
+	y += vecForPlus.y;
 	return *this;
 }
 
 Vec& Vec::operator+(const _In_ INT intForPlus)
 {
-	m_X += intForPlus;
-	m_Y += intForPlus;
+	x += intForPlus;
+	y += intForPlus;
 	return *this;
 }
 
 Vec& Vec::operator-(const _In_ Vec &vecForMinus)
 {
-	m_X -= vecForMinus.m_X;
-	m_Y -= vecForMinus.m_Y;
+	x -= vecForMinus.x;
+	y -= vecForMinus.y;
 	return *this;
 }
 
 Vec& Vec::operator-(const _In_ INT intForMinus)
 {
-	m_X -= intForMinus;
-	m_Y -= intForMinus;
+	x -= intForMinus;
+	y -= intForMinus;
 	return *this;
 }
 
 Vec& Vec::operator*(const _In_ Vec &vecForMulti)
 {
-	m_X *= vecForMulti.m_X;
-	m_Y *= vecForMulti.m_Y;
+	x *= vecForMulti.x;
+	y *= vecForMulti.y;
 	return *this;
 }
 
 Vec& Vec::operator*(const _In_ INT intForMulti)
 {
-	m_X *= intForMulti;
-	m_Y *= intForMulti;
+	x *= intForMulti;
+	y *= intForMulti;
 	return *this;
 }
 
 Vec& Vec::operator/(const _In_ Vec &vecForDivide)
 {
 	// 나누는 벡터의 한 좌표라도 0일 경우 그냥 리턴.
-	if (!vecForDivide.m_X && !vecForDivide.m_Y)
+	if (!vecForDivide.x && !vecForDivide.y)
 	{
-		m_X /= vecForDivide.m_X;
-		m_Y /= vecForDivide.m_Y;
+		x /= vecForDivide.x;
+		y /= vecForDivide.y;
 	}
 	return *this;
 }
@@ -91,8 +91,8 @@ Vec & Vec::operator/(const INT intForDivide)
 	// 나누는 인자가 0일 경우 그냥 리턴.
 	if (!intForDivide)
 	{
-		m_X /= intForDivide;
-		m_Y /= intForDivide;
+		x /= intForDivide;
+		y /= intForDivide;
 	}
 	return *this;
 }

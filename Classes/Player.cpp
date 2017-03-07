@@ -10,11 +10,11 @@ const std::wstring playerFilePath = _T("../Resources/player_");
 const std::wstring playerShadePath = _T("../Resources/playerS_");
 const std::wstring playerFileExtension = _T(".png");
 
-const INT spriteWidth = 64;
-const INT spriteHeight = 64;
+const INT playerSpriteWidth = 64;
+const INT playerSpriteHeight = 64;
 const INT displayBoundaryPixel = 5;
 const INT playerMissileNumber = 15;
-const FLOAT missileLoadSpeed = 0.1f;
+const FLOAT playerMissileLoadSpeed = 0.05f;
 const FLOAT playerColisionPixel = 15;
 const INT playerMaxPowerTier = 4;
 
@@ -38,8 +38,8 @@ void Player::init()
 {
 	m_PosX = playerInitWidth;
 	m_PosY = playerInitHeight;
-	m_Width = spriteWidth;
-	m_Height = spriteHeight;
+	m_Width = playerSpriteWidth;
+	m_Height = playerSpriteHeight;
 
 	InitialImgLoad();
 	MissileLoad();
@@ -154,7 +154,7 @@ void Player::MissileDraw(_Inout_ HDC drawDC)
 
 void Player::LaunchMissile(const _In_ FLOAT dt)
 {
-	if (m_AccTime > missileLoadSpeed)
+	if (m_AccTime > playerMissileLoadSpeed)
 	{
 		for (auto i : m_MissileVec)
 		{
