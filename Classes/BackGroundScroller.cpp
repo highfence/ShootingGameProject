@@ -44,9 +44,11 @@ void BackGroundScroller::Scroll(_Inout_ HDC DrawDC, const _In_ FLOAT dt)
 		{
 			i->scrollY -= imgHeight;
 		}
-
+#pragma warning(push)
+#pragma warning(disable : 4244)
 		i->img->BitBlt(DrawDC, 0, i->scrollY, imgWidth, imgHeight, 0, 0, SRCCOPY);
 		i->img->BitBlt(DrawDC, 0, i->scrollY - imgHeight, imgWidth, imgHeight, 0, 0, SRCCOPY);
+#pragma warning(pop)
 	}
 	
 	return;

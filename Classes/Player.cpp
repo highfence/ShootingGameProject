@@ -64,6 +64,9 @@ void Player::Draw(_Inout_ HDC drawDC)
 	// 비행기 기울기에 맞게 
 	LoadImgWithDirection();
 	
+#pragma warning(push)
+#pragma warning(disable : 4244)	
+
 	// 비행기 출력
 	m_pShadeSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2,
 		m_Width, m_Height, 0, 0, SRCAND);
@@ -71,6 +74,8 @@ void Player::Draw(_Inout_ HDC drawDC)
 		m_Width, m_Height, 0, 0, SRCPAINT);
 
 	MissileDraw(drawDC);
+
+#pragma warning(pop)
 
 #ifdef _DEBUG
 	PrintDebugLabel(drawDC);
