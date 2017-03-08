@@ -49,6 +49,12 @@ private :
 		const _In_ FLOAT,
 		const _In_ Vec);
 
+	BOOL MakeExplodeHit(const _In_ Vec);
+	BOOL MakeExplodeHitWithFloat(
+		const _In_ Vec,
+		const _In_ FLOAT,
+		const _In_ Vec);
+
 	void init();
 	void AccTime(const _In_ FLOAT);
 	void ClearVec();

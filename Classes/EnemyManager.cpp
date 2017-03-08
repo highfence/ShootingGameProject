@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "EnemyItem.h"
 #include "EnemyZaco.h"
+#include "EnemyHandShot.h"
 #include "EnemyManager.h"
 
 EnemyManager* EnemyManager::_instance = nullptr;
@@ -44,6 +45,7 @@ void EnemyManager::init()
 	m_pMakeHandler[ENEMY_TYPE::ENEMY_ITEM] = &EnemyManager::MakeEnemyItem;
 	m_pMakeHandler[ENEMY_TYPE::ITEM] = &EnemyManager::MakeItem;
 	m_pMakeHandler[ENEMY_TYPE::ENEMY_ZACO] = &EnemyManager::MakeZaco;
+	m_pMakeHandler[ENEMY_TYPE::ENEMY_HAND_SHOT] = &EnemyManager::MakeHandShot;
 	return;
 }
 
@@ -86,6 +88,18 @@ Enemy* EnemyManager::MakeZaco(
 	const _In_opt_::CreateOption flightOption)
 {
 	Enemy* newEnemy = new EnemyZaco(createPos, flightType, flightVec, flightOption);
+	return newEnemy;
+}
+/*
+	EnemyHandShot를 만드는 함수 포인터에 등록될 함수.
+*/
+Enemy* EnemyManager::MakeHandShot(
+	const _In_ Vec createPos,
+	const _In_ INT flightType,
+	const _In_ Vec flightVec,
+	const _In_opt_::CreateOption flightOption)
+{
+	Enemy* newEnemy = new EnemyHandShot(createPos, flightType, flightVec, flightOption);
 	return newEnemy;
 }
 
@@ -143,10 +157,7 @@ void EnemyManager::Draw(_Inout_ HDC drawDC)
 {
 	for (auto i : m_EnemyList)
 	{
-		if (!i->m_IsEnemyDead)
-		{
-			i->DrawProc(drawDC);
-		}
+		i->DrawProc(drawDC);
 	}
 
 	return;
@@ -183,9 +194,11 @@ void EnemyManager::CalProc(const _In_ FLOAT dt)
 
 void EnemyManager::DrawProc(_Inout_ HDC drawDC)
 {
-	SetTextAlign(drawDC, TA_CENTER);
+#ifdef _DEBUG
+	SetTextAlign(drawDC, TA_LEFT);
 	std::wstring DebugLabel = _T("Enemy List Size : ") + std::to_wstring(m_EnemyList.size());
-	TextOut(drawDC, 300, 300, DebugLabel.c_str(), wcslen(DebugLabel.c_str()));
+	TextOut(drawDC, 10, 10, DebugLabel.c_str(), wcslen(DebugLabel.c_str()));
+#endif
 	Draw(drawDC);
 	return;
 }
@@ -207,6 +220,7 @@ void EnemyManager::MakeProc()
 	CreateOption flyAccelerate((FALSE), 150, 200, 0, 0, 0);
 	CreateOption flyGoAndSlowItemFalse((FALSE), 0, 400, 75, 0.5f, 2.5f);
 	CreateOption flyGoAndSlowItemTrue((TRUE), 0, 400, 75, 0.5f, 2.5f);
+	CreateOption flyGoAndSlowQuiteLong((FALSE), 0, 400, 30, 0.3f, 15.f);
 
 	FLOAT enemyItemCreateTime = 3.0f;
 	FLOAT createIntervalTime = 0.25f;
@@ -229,12 +243,21 @@ void EnemyManager::MakeProc()
 	MakeEnemyWithTime(enemyZacoSecondCreateTime + 0.75f, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
 	MakeEnemyWithTime(enemyZacoSecondCreateTime + 1.f, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
 
+	FLOAT enemyZacoThirdCreateTime = 9.4f;
+	MakeEnemyWithTime(enemyZacoThirdCreateTime, ENEMY_ZACO, Vec(400.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
+	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.25f, ENEMY_ZACO, Vec(400.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
+	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.5f, ENEMY_ZACO, Vec(400.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
+	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.75f, ENEMY_ZACO, Vec(400.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
+	MakeEnemyWithTime(enemyZacoThirdCreateTime + 1.f, ENEMY_ZACO, Vec(400.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
+	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.01f, ENEMY_ZACO, Vec(320.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
+	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.26f, ENEMY_ZACO, Vec(320.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
+	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.51f, ENEMY_ZACO, Vec(320.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
+	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.76f, ENEMY_ZACO, Vec(320.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
+	MakeEnemyWithTime(enemyZacoThirdCreateTime + 1.01f, ENEMY_ZACO, Vec(320.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
 
-/*	MakeEnemyWithTime(4.0f , ENEMY_ITEM, 450, 0, FLY_STRAIGHT, FALSE);
-	MakeEnemyWithTime(4.25f, ENEMY_ITEM, 550, 0, FLY_STRAIGHT, FALSE);
-	MakeEnemyWithTime(4.5f , ENEMY_ITEM, 650, 0, FLY_STRAIGHT, FALSE);
-	MakeEnemyWithTime(4.75f, ENEMY_ITEM, 750, 0, FLY_STRAIGHT, TRUE );
-	*/
+	FLOAT enemyHandShotCreateTime = 15.f;
+	MakeEnemyWithTime(enemyHandShotCreateTime, ENEMY_HAND_SHOT, Vec(250.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowQuiteLong);
+
 	return;
 }
 

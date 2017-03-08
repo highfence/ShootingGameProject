@@ -4,9 +4,9 @@
 #include "EnemyManager.h"
 #include "EnemyMissile.h"
 
-const wchar_t* spritePath = _T("../Resources/EnemyItem.png");
-const wchar_t* shadePath = _T("../Resources/EnemyItemShade.png");
-const wchar_t* spriteOnPath = _T("../Resources/EnemyItemOn.png");
+const std::wstring enemyItemSpritePath = _T("../Resources/EnemyItem.png");
+const std::wstring enemyItemShadePath = _T("../Resources/EnemyItemShade.png");
+const std::wstring enemyItemSpriteOnPath = _T("../Resources/EnemyItemOn.png");
 const INT enemyItemSpriteWidth = 64;
 const INT enemyItemSpriteHeight = 64;
 const FLOAT enemyItemFlightSpeed = 300;
@@ -74,7 +74,6 @@ void EnemyItem::DeadProc()
 		Explode();
 		m_IsEnemyExplode = TRUE;
 	}
-
 	return;
 }
 
@@ -114,19 +113,19 @@ const vRESULT EnemyItem::InitialImgLoad()
 {
 	if (m_Option.m_IsItemLaunched == TRUE)
 	{
-		if (m_pSprite->Load(spriteOnPath) == E_FAIL)
+		if (m_pSprite->Load(enemyItemSpriteOnPath.c_str()) == E_FAIL)
 		{
 			return ERROR_IMG_LOAD_FAILED;
 		}
 	}
 	else
 	{
-		if (m_pSprite->Load(spritePath) == E_FAIL)
+		if (m_pSprite->Load(enemyItemSpritePath.c_str()) == E_FAIL)
 		{
 			return ERROR_IMG_LOAD_FAILED;
 		}
 	}
-	if (m_pShadeSprite->Load(shadePath) == E_FAIL)
+	if (m_pShadeSprite->Load(enemyItemShadePath.c_str()) == E_FAIL)
 	{
 		return ERROR_IMG_LOAD_FAILED;
 	}

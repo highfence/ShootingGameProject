@@ -78,6 +78,11 @@ private :
 		const _In_ INT,
 		const _In_opt_ Vec,
 		const _In_opt_ ::CreateOption);
+	Enemy* MakeHandShot(
+		const _In_ Vec,
+		const _In_ INT,
+		const _In_opt_ Vec,
+		const _In_opt_ ::CreateOption);
 
 	std::list<Enemy*> m_EnemyList;
 

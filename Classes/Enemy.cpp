@@ -76,7 +76,11 @@ void Enemy::CalProc(const _In_ FLOAT dt)
 
 void Enemy::DrawProc(_Inout_ HDC drawDC)
 {
-	Draw(drawDC);
+	// Enemy가 죽어도 미사일은 그리도록.
+	if (!m_IsEnemyDead)
+	{
+		Draw(drawDC);
+	}
 	DrawMissiles(drawDC);
 	return;
 }
@@ -227,7 +231,7 @@ INT Enemy::RotateAccordWithVec()
 	return WELL_PERFORMED;
 }
 
-void Enemy::GetDamage(const _In_ INT damage)
+const vRESULT Enemy::GetDamage(const _In_ INT damage, const _In_ Vec playerMissile)
 {
 	m_Hp -= damage;
 
@@ -236,7 +240,7 @@ void Enemy::GetDamage(const _In_ INT damage)
 		m_IsEnemyDead = TRUE;
 	}
 	
-	return;
+	return WELL_PERFORMED;
 }
 
 // Enemy안에 시간을 누적해주는 함수.

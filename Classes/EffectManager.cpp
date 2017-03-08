@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Effect.h"
 #include "ExplodeLight.h"
+#include "ExplodeHit.h"
 #include "EffectManager.h"
 
 EffectManager* EffectManager::_instance = nullptr;
@@ -34,7 +35,9 @@ EffectManager::EffectManager()
 void EffectManager::init()
 {
 	m_pEffectMakerHandler[EXPLODE_LIGHT] = &EffectManager::MakeExplodeLight;
+	m_pEffectMakerHandler[EXPLODE_HIT] = &EffectManager::MakeExplodeHit;
 	m_pEffectMakerHandlerWithFloat[EXPLODE_LIGHT] = &EffectManager::MakeExplodeLightWithFloat;
+	m_pEffectMakerHandlerWithFloat[EXPLODE_HIT] = &EffectManager::MakeExplodeHitWithFloat;
 
 	return;
 }
@@ -61,9 +64,12 @@ void EffectManager::CalProc(const _In_ FLOAT dt)
 // 출력 담당 함수 (GameManager->Update->DrawProc에서 호출)
 void EffectManager::DrawProc(_Inout_ HDC drawDC)
 {
-	SetTextAlign(drawDC, TA_CENTER);
+#ifdef _DEBUG
+	SetTextAlign(drawDC, TA_LEFT);
 	std::wstring DebugLabel = _T("Effect Vector Size : ") + std::to_wstring(m_EffectVec.size());
-	TextOut(drawDC, 300, 350, DebugLabel.c_str(), wcslen(DebugLabel.c_str()));
+	TextOut(drawDC, 10, 30, DebugLabel.c_str(), wcslen(DebugLabel.c_str()));
+#endif
+
 	for (auto i : m_EffectVec)
 	{
 		i->DrawProc(drawDC);
@@ -112,6 +118,24 @@ BOOL EffectManager::MakeExplodeLightWithFloat(
 	const _In_ Vec floatVec)
 {
 	auto newEffect = new ExplodeLight(createPos, floatSpeed, floatVec);
+	m_EffectVec.push_back(newEffect);
+	return TRUE;
+}
+
+BOOL EffectManager::MakeExplodeHit(
+	const _In_ Vec createPos)
+{
+	auto newEffect = new ExplodeHit(createPos);
+	m_EffectVec.push_back(newEffect);
+	return TRUE;
+}
+
+BOOL EffectManager::MakeExplodeHitWithFloat(
+	const _In_ Vec createPos,
+	const _In_ FLOAT floatSpeed,
+	const _In_ Vec floatVec)
+{
+	auto newEffect = new ExplodeHit(createPos, floatSpeed, floatVec);
 	m_EffectVec.push_back(newEffect);
 	return TRUE;
 }

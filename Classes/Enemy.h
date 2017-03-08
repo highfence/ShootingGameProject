@@ -29,7 +29,7 @@ public :
 
 	        void Fly(const _In_ FLOAT);
 	        void MissileFly(const _In_ FLOAT);
-	        void GetDamage(const _In_ INT);
+	virtual const vRESULT GetDamage(const _In_ INT, const _In_ Vec);
 	        void AccTime(const _In_ FLOAT);
 	        void LoadMissiles(const _In_ ENEMY::MISSILE_SIZE);
 	        void DrawMissiles(_Inout_ HDC);

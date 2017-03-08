@@ -9,6 +9,7 @@ const std::wstring enemyZacoShadePath = _T("../Resources/EnemyZacoS.png");
 const INT enemyZacoSpriteWidth = 32;
 const INT enemyZacoSpriteHeight = 32;
 const INT enemyZacoHp = 1;
+const FLOAT enemyZacoFlightSpeed = 300.f;
 const FLOAT enemyZacoMissileSpeed = 450.f;
 const INT enemyZacoLoadedMissileNumber = 5;
 const FLOAT enemyZacoColideCorrectionRange = 15;
@@ -23,6 +24,7 @@ EnemyZaco::EnemyZaco(
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage;
 	m_Option = flightOption;
+	m_FlightSpeed = enemyZacoFlightSpeed;
 
 	vRESULT retval = init();
 
@@ -99,9 +101,8 @@ void EnemyZaco::Fire()
 	}
 
 	const MissileOption option = MissileOption(Vec(m_PlayerX - m_Pos.x, m_PlayerY - m_Pos.y), 350, MISSILE_TYPE::AIM_FIRE, MISSILE_SIZE::SMALL);
-	const FLOAT initFireTime = 0.5f;
-	const FLOAT fireFrequency = 1.5f;
-	// 첫 발사부분은 0.5f 가 걸리고, 다음부터는 1.5f가 걸리도록.
+	const FLOAT initFireTime = 0.3f;
+	const FLOAT fireFrequency = 2.0f;
 	if (m_AccTime == m_RecordAccTime)
 	{
 		m_RecordAccTime += fireFrequency;

@@ -70,14 +70,21 @@ BOOL PlayerMissile::CheckColide()
 
 	for (auto i : EnemyVec)
 	{
-		if (IsColideWithEnemy(i->m_Pos.x, i->m_Pos.y, i->m_SpriteRange.x, i->m_SpriteRange.y))
+		if (!i->m_IsEnemyDead)
 		{
-			// 面倒 贸府.
-			i->GetDamage(m_Damage);
+			if (IsColideWithEnemy(
+				i->m_Pos.x,
+				i->m_Pos.y,
+				i->m_SpriteRange.x,
+				i->m_SpriteRange.y))
+			{
+				// 面倒 贸府.
+				i->GetDamage(m_Damage, m_Pos);
 
-			// 面倒 饶 固荤老 家戈
-			m_IsMissileLaunched = FALSE;
-			return TRUE;
+				// 面倒 饶 固荤老 家戈
+				m_IsMissileLaunched = FALSE;
+				return TRUE;
+			}
 		}
 	}
 

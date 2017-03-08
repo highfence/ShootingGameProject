@@ -82,13 +82,13 @@ FLOAT GetTanDegree(
 void DebugLogPrint(
 	const _In_ vRESULT retval,
 	const _In_ std::wstring message,
-	const _In_ LPCTSTR callInstance
+	const _In_ LPCTSTR callClass
 )
 {
 #ifdef _DEBUG
 	if (retval != WELL_PERFORMED)
 	{
-		std::wstring guideWord = message + std::to_wstring(retval) + _T("\n") + callInstance;
+		std::wstring guideWord = message + std::to_wstring(retval) + _T("\n") + callClass + _T("\n");
 		OutputDebugString(guideWord.c_str());
 	}
 #endif
