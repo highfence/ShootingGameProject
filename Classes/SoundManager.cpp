@@ -65,10 +65,10 @@ const vRESULT SoundManager::SethInstance(_Inout_ HINSTANCE hInstance)
 /*
 	Soundtype을 이용하여 원하는 사운드를 재생시키는 함수.
 */
-const vRESULT SoundManager::PlaySoundWithSoundNum(
-	const _In_ SOUND::SOUND_TYPE soundTypeNum)
-{
-	PlaySound
-
-	return WELL_PERFORMED;
-}
+//const vRESULT SoundManager::PlaySoundWithSoundNum(
+//	const _In_ SOUND::SOUND_TYPE soundTypeNum)
+//{
+//	PlaySound
+//
+//	return WELL_PERFORMED;
+//}

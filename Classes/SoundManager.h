@@ -12,7 +12,7 @@ public :
 	static SoundManager* getInstance();
 	void deleteInstance();
 	const vRESULT SethInstance(_Inout_ HINSTANCE);
-	const vRESULT PlaySoundWithSoundNum(const _In_ SOUND::SOUND_TYPE);
+	//const vRESULT PlaySoundWithSoundNum(const _In_ SOUND::SOUND_TYPE);
 
 private :
 	SoundManager();

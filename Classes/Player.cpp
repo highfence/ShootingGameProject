@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "PlayerMissile.h"
 #include "EnemyManager.h"
+#include "EffectManager.h"
 #include "SoundManager.h"
 
 const FLOAT playerInitWidth = winWidth / 2;
@@ -21,8 +22,7 @@ const INT playerMaxPowerTier = 4;
 
 
 Player::Player()
-	: m_PosX(0.f),
-	m_PosY(0.f),
+	: m_Pos(0.f, 0.f),
 	m_AccTime(0.f),
 	m_Direction(0),
 	m_PowerTier(1),
@@ -37,8 +37,8 @@ Player::Player()
 
 void Player::init()
 {
-	m_PosX = playerInitWidth;
-	m_PosY = playerInitHeight;
+	m_Pos.x = playerInitWidth;
+	m_Pos.y = playerInitHeight;
 	m_Width = playerSpriteWidth;
 	m_Height = playerSpriteHeight;
 
@@ -69,9 +69,9 @@ void Player::Draw(_Inout_ HDC drawDC)
 #pragma warning(disable : 4244)	
 
 	// 비행기 출력
-	m_pShadeSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2,
+	m_pShadeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
 		m_Width, m_Height, 0, 0, SRCAND);
-	m_pSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2,
+	m_pSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
 		m_Width, m_Height, 0, 0, SRCPAINT);
 
 	MissileDraw(drawDC);
@@ -88,17 +88,17 @@ void Player::Move(const _In_ BYTE* KeyState, const _In_ FLOAT dt)
 {
 	if (KeyState[VK_LEFT] & HOLDKEY)
 	{
-		if (m_PosX > displayBoundaryPixel + m_Width / 2)
+		if (m_Pos.x > displayBoundaryPixel + m_Width / 2)
 		{
-			m_PosX -= playerMoveSpeed * dt;
+			m_Pos.x -= playerMoveSpeed * dt;
 		}
 		CalDirection(VK_LEFT);
 	}
 	else if (KeyState[VK_RIGHT] & HOLDKEY)
 	{
-		if (m_PosX < winWidth - displayBoundaryPixel - m_Width / 2)
+		if (m_Pos.x < winWidth - displayBoundaryPixel - m_Width / 2)
 		{
-			m_PosX += playerMoveSpeed * dt;
+			m_Pos.x += playerMoveSpeed * dt;
 		}
 		CalDirection(VK_RIGHT);
 	}
@@ -108,16 +108,16 @@ void Player::Move(const _In_ BYTE* KeyState, const _In_ FLOAT dt)
 	}
 	if (KeyState[VK_UP] & HOLDKEY)
 	{
-		if (m_PosY > displayBoundaryPixel + m_Height / 2)
+		if (m_Pos.y > displayBoundaryPixel + m_Height / 2)
 		{
-			m_PosY -= playerMoveSpeed * dt;
+			m_Pos.y -= playerMoveSpeed * dt;
 		}
 	}
 	if (KeyState[VK_DOWN] & HOLDKEY)
 	{
-		if (m_PosY < winHeight - displayBoundaryPixel - m_Height / 2)
+		if (m_Pos.y < winHeight - displayBoundaryPixel - m_Height / 2)
 		{
-			m_PosY += playerMoveSpeed * dt;
+			m_Pos.y += playerMoveSpeed * dt;
 		}
 	}
 	if (KeyState[VK_A] & HOLDKEY)
@@ -164,7 +164,7 @@ void Player::LaunchMissile(const _In_ FLOAT dt)
 	{
 		for (auto i : m_MissileVec)
 		{
-			if (i->Launch(m_PosX, m_PosY))
+			if (i->Launch(m_Pos.x, m_Pos.y))
 			{
 				m_AccTime = 0;
 				break;
@@ -216,8 +216,8 @@ void Player::DrawProc(_Inout_ HDC drawDC)
 */
 INT Player::GetPosition(_Out_ FLOAT* posX, _Out_ FLOAT* posY)
 {
-	*posX = m_PosX;
-	*posY = m_PosY;
+	*posX = m_Pos.x;
+	*posY = m_Pos.y;
 
 	return WELL_PERFORMED;
 }
@@ -291,6 +291,9 @@ void Player::LoadImgWithDirection()
 void Player::PlayerDamaged()
 {
 	m_IsPlayerAlive = FALSE;
+	vRESULT retval = MakeDyingExplosion();
+	DebugLogPrint(retval, MESSAGES::explodeFailed, _T("from Player Damaged"));
+
 	return;
 }
 
@@ -376,5 +379,24 @@ INT Player::PrintDebugLabel(_Inout_ HDC drawDC)
 	//SetTextAlign(drawDC, TA_CENTER);
 	//std::wstring DebugLabel = std::to_wstring(m_Direction);
 	//TextOut(drawDC, m_PosX, m_PosY, DebugLabel.c_str(), wcslen(DebugLabel.c_str()));
+	return WELL_PERFORMED;
+}
+
+/*
+	Make 8-ways Explosion when Player died.
+*/
+const vRESULT Player::MakeDyingExplosion()
+{
+	// TODO :: 플레이어 죽을 경우 사방 팔방으로 이펙트 날아가도록.
+	EffectManager* effectManager = EffectManager::getInstance();
+	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.f, 1.f));
+	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.f, -1.f));
+	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.5f, 0.5f));
+	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.5f, -0.5f));
+	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(-0.5f, 0.5f));
+	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(-0.5f, -0.5f));
+	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(1.f, 0.f));
+	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(-1.f, 0.f));
+
 	return WELL_PERFORMED;
 }

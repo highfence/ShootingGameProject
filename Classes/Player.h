@@ -41,10 +41,10 @@ private :
 	void CheckMissileColide();
 	void ChangeMissilesAccordWithPower();
 	INT CalDirection(const _In_ INT);
+	const vRESULT MakeDyingExplosion();
 
 
-	FLOAT m_PosX;
-	FLOAT m_PosY;
+	Vec m_Pos;
 	FLOAT m_Width;
 	FLOAT m_Height;
 	FLOAT m_CollisionPixel;
