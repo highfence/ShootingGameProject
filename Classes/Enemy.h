@@ -44,8 +44,8 @@ public :
 	INT		m_FlightType;
 	Vec		m_FlightVec;
 	FLOAT	m_FlightSpeed;
-	FLOAT	m_Width;
-	FLOAT	m_Height;
+	Vec		m_SpriteRange;
+	Vec		m_ColideRange;
 	FLOAT	m_MissileSpeed;
 	FLOAT	m_MissileDamage;
 	INT		m_Hp;

@@ -5,15 +5,18 @@
 #include "Player.h"
 #include "EnemyManager.h"
 #include "EffectManager.h"
+#include "SoundManager.h"
 
-GameManager::GameManager(_Inout_ HWND hWnd)
-	: m_hWnd(hWnd)
+GameManager::GameManager(_Inout_ HWND hWnd, _Inout_ HINSTANCE hInstance)
+	: m_hWnd(hWnd), m_hInstance(hInstance)
 {
 	m_pTimer = new MyTimer;
 	m_pScroller = new BackGroundScroller;
 	m_pPlayer = new Player;
 	m_pEnemyManager = EnemyManager::getInstance();
 	m_pEffectManager = EffectManager::getInstance();
+	SoundManager::getInstance()->SethInstance(hInstance);
+	
 	init();
 }
 
@@ -117,8 +120,3 @@ void GameManager::GetKeyState()
 	return;
 }
 
-void GameManager::ExchangeInfo()
-{
-	
-	return;
-}

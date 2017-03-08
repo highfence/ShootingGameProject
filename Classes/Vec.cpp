@@ -2,11 +2,14 @@
 #include "Vec.h"
 
 
-Vec::Vec(const _In_ FLOAT vecX, const _In_ FLOAT vecY)
+Vec::Vec(
+	const _In_ FLOAT vecX,
+	const _In_ FLOAT vecY)
 {
 	x = vecX;
 	y = vecY;
 }
+
 
 Vec::Vec()
 {

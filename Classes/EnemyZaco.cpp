@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "EnemyManager.h"
+#include "EffectManager.h"
 #include "EnemyZaco.h"
 
 const std::wstring enemyZacoSpritePath = _T("../Resources/EnemyZaco.png");
@@ -8,6 +10,7 @@ const INT enemyZacoSpriteHeight = 32;
 const INT enemyZacoHp = 1;
 const FLOAT enemyZacoMissileSpeed = 450.f;
 const INT enemyZacoLoadedMissileNumber = 5;
+const FLOAT enemyZacoColideCorrectionRange = 15;
 
 EnemyZaco::EnemyZaco(
 	const _In_ Vec createPos,
@@ -21,36 +24,8 @@ EnemyZaco::EnemyZaco(
 	m_Option = flightOption;
 
 	vRESULT retval = init();
-	if (retval != WELL_PERFORMED)
-	{
-		std::wstring guideWord = MESSAGES::creationFailed + std::to_wstring(retval) + _T("(In Creation ENEMY ZACO)");
-		OutputDebugString(guideWord.c_str());
-		exit(0);
-	}
-}
 
-EnemyZaco::~EnemyZaco()
-{
-}
-
-void EnemyZaco::Draw(HDC)
-{
-	return;
-}
-
-void EnemyZaco::Explode()
-{
-	return;
-}
-
-void EnemyZaco::DeadProc()
-{
-	return;
-}
-
-void EnemyZaco::Fire()
-{
-	return;
+	DebugLogPrint(retval, MESSAGES::creationFailed, _T("from EnemyZaco"));
 }
 
 /*
@@ -59,8 +34,9 @@ void EnemyZaco::Fire()
 */
 const vRESULT EnemyZaco::init()
 {
-	m_Width = enemyZacoSpriteWidth;
-	m_Height = enemyZacoSpriteHeight;
+	m_SpriteRange.x = enemyZacoSpriteWidth;
+	m_SpriteRange.y = enemyZacoSpriteHeight;
+	m_ColideRange = m_SpriteRange + enemyZacoColideCorrectionRange;
 	m_Hp = enemyZacoHp;
 	m_MissileSpeed = enemyZacoMissileSpeed;
 
@@ -73,6 +49,51 @@ const vRESULT EnemyZaco::init()
 	LoadMissiles(ENEMY::MISSILE_SIZE::SMALL);
 	return WELL_PERFORMED;
 }
+
+EnemyZaco::~EnemyZaco()
+{
+}
+
+void EnemyZaco::Draw(_Inout_ HDC drawDC)
+{
+#pragma warning(push)
+#pragma warning(disable : 4244)
+
+	m_pShadeSprite->BitBlt(drawDC, m_Pos.x - m_SpriteRange.x / 2, m_Pos.y - m_SpriteRange.y / 2,
+		m_SpriteRange.x, m_SpriteRange.y, 0, 0, SRCAND);
+	m_pSprite->BitBlt(drawDC, m_Pos.x - m_SpriteRange.x / 2, m_Pos.y - m_SpriteRange.y / 2,
+		m_SpriteRange.x, m_SpriteRange.y, 0, 0, SRCPAINT);
+
+#pragma warning(pop)
+	return;
+}
+
+void EnemyZaco::Explode()
+{
+	EffectManager::getInstance()->MakeEffect(
+		EFFECT::EFFECT_TYPE::EXPLODE_LIGHT,
+		m_Pos,
+		m_Option.m_InitSpeed,
+		m_FlightVec);
+
+	return;
+}
+
+void EnemyZaco::DeadProc()
+{
+	if ((!m_IsEnemyExplode) && (m_IsEnemyDead))
+	{
+		Explode();
+		m_IsEnemyExplode = TRUE;
+	}
+	return;
+}
+
+void EnemyZaco::Fire()
+{
+	return;
+}
+
 
 /*
 	초기화시에 이미지 로드를 담당하는 함수.

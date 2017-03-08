@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "PlayerMissile.h"
 #include "EnemyManager.h"
+#include "SoundManager.h"
 
 const FLOAT playerInitWidth = winWidth / 2;
 const FLOAT playerInitHeight = winHeight * 3 / 4;

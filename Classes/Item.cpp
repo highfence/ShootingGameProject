@@ -22,8 +22,9 @@ void Item::init()
 	m_pSprite->Load(itemSpritePath.c_str());
 	m_pShadeSprite->Load(itemShadePath.c_str());
 	m_FlightSpeed = 150;
-	m_Width = itemWidth;
-	m_Height = itemHeight;
+	m_SpriteRange.x = itemWidth;
+	m_SpriteRange.y = itemHeight;
+	m_ColideRange = m_SpriteRange;
 	m_Hp = 10;
 	m_LoadedMissileNumber = 0;
 	
@@ -55,10 +56,10 @@ void Item::Draw(_Inout_ HDC drawDC)
 #pragma warning(push)
 #pragma warning(disable : 4244)
 
-	m_pShadeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
-		m_Width, m_Height, 0, 0, SRCAND);
-	m_pSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
-		m_Width, m_Height, 0, 0, SRCPAINT);
+	m_pShadeSprite->BitBlt(drawDC, m_Pos.x - m_SpriteRange.x / 2, m_Pos.y - m_SpriteRange.y / 2,
+		m_SpriteRange.x, m_SpriteRange.y, 0, 0, SRCAND);
+	m_pSprite->BitBlt(drawDC, m_Pos.x - m_SpriteRange.x / 2, m_Pos.y - m_SpriteRange.y / 2,
+		m_SpriteRange.x, m_SpriteRange.y, 0, 0, SRCPAINT);
 
 #pragma warning(pop)
 	return;
@@ -88,10 +89,10 @@ BOOL Item::CheckPlayerGetItem()
 	playerInfo.GetPosition(&playerPosX, &playerPosY);
 
 	// TODO :: 이거 충돌판정 하나로 모아서 처리할 함수 만들기.
-	auto x0 = m_Pos.x - m_Width / 2;
-	auto y0 = m_Pos.y - m_Height / 2;
-	auto x1 = m_Pos.x + m_Width / 2;
-	auto y1 = m_Pos.y + m_Height / 2;
+	auto x0 = m_Pos.x - m_SpriteRange.x / 2;
+	auto y0 = m_Pos.y - m_SpriteRange.y / 2;
+	auto x1 = m_Pos.x + m_SpriteRange.x / 2;
+	auto y1 = m_Pos.y + m_SpriteRange.y / 2;
 	auto mx0 = playerPosX - playerCorrectionPixel;
 	auto my0 = playerPosY - playerCorrectionPixel;
 	auto mx1 = playerPosX + playerCorrectionPixel;

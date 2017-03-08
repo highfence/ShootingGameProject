@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "EnemyItem.h"
+#include "EnemyZaco.h"
 #include "EnemyManager.h"
 
 EnemyManager* EnemyManager::_instance = nullptr;
@@ -42,6 +43,7 @@ void EnemyManager::init()
 {
 	m_pMakeHandler[ENEMY_TYPE::ENEMY_ITEM] = &EnemyManager::MakeEnemyItem;
 	m_pMakeHandler[ENEMY_TYPE::ITEM] = &EnemyManager::MakeItem;
+	m_pMakeHandler[ENEMY_TYPE::ENEMY_ZACO] = &EnemyManager::MakeZaco;
 	return;
 }
 
@@ -73,7 +75,20 @@ Enemy* EnemyManager::MakeItem(
 	return newEnemy;
 }
 
-// TODO :: 에너미 매니저 소멸자 호출시 벡터 비워주기.
+/*
+	MakeZaco
+	EnemyZaco를 만드는 함수 포인터에 등록될 함수.
+*/
+Enemy* EnemyManager::MakeZaco(
+	const _In_ Vec createPos,
+	const _In_ INT flightType,
+	const _In_ Vec flightVec,
+	const _In_opt_::CreateOption flightOption)
+{
+	Enemy* newEnemy = new EnemyZaco(createPos, flightType, flightVec, flightOption);
+	return newEnemy;
+}
+
 EnemyManager::~EnemyManager()
 {
 	deleteInstance();
@@ -199,18 +214,18 @@ void EnemyManager::MakeProc()
 	MakeEnemyWithTime(enemyItemCreateTime + 0.75f, ENEMY_ITEM, Vec(175.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemTrue);
 
 	FLOAT enemyZacoCreateTime = 7.f;
-	MakeEnemyWithTime(enemyZacoCreateTime, ENEMY_ITEM, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoCreateTime + 0.25f, ENEMY_ITEM, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoCreateTime + 0.5f, ENEMY_ITEM, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoCreateTime + 0.75f, ENEMY_ITEM, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoCreateTime + 1.f, ENEMY_ITEM, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
+	MakeEnemyWithTime(enemyZacoCreateTime, ENEMY_ZACO, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
+	MakeEnemyWithTime(enemyZacoCreateTime + 0.25f, ENEMY_ZACO, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
+	MakeEnemyWithTime(enemyZacoCreateTime + 0.5f, ENEMY_ZACO, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
+	MakeEnemyWithTime(enemyZacoCreateTime + 0.75f, ENEMY_ZACO, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
+	MakeEnemyWithTime(enemyZacoCreateTime + 1.f, ENEMY_ZACO, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
 
 	FLOAT enemyZacoSecondCreateTime = 7.3f;
-	MakeEnemyWithTime(enemyZacoSecondCreateTime, ENEMY_ITEM, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoSecondCreateTime + 0.25f, ENEMY_ITEM, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoSecondCreateTime + 0.5f, ENEMY_ITEM, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoSecondCreateTime + 0.75f, ENEMY_ITEM, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoSecondCreateTime + 1.f, ENEMY_ITEM, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
+	MakeEnemyWithTime(enemyZacoSecondCreateTime, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
+	MakeEnemyWithTime(enemyZacoSecondCreateTime + 0.25f, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
+	MakeEnemyWithTime(enemyZacoSecondCreateTime + 0.5f, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
+	MakeEnemyWithTime(enemyZacoSecondCreateTime + 0.75f, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
+	MakeEnemyWithTime(enemyZacoSecondCreateTime + 1.f, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
 
 
 /*	MakeEnemyWithTime(4.0f , ENEMY_ITEM, 450, 0, FLY_STRAIGHT, FALSE);

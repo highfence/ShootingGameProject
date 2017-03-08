@@ -158,19 +158,19 @@ BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
 */
 BOOL Enemy::CheckEnemyIsOnDisplay()
 {
-	if ((m_Pos.x + m_Width / 2) <= -boundaryRange)
+	if ((m_Pos.x + m_SpriteRange.x / 2) <= -boundaryRange)
 	{
 		return FALSE;
 	}
-	else if ((m_Pos.x - m_Width / 2) >= winWidth + boundaryRange)
+	else if ((m_Pos.x - m_SpriteRange.y / 2) >= winWidth + boundaryRange)
 	{
 		return FALSE;
 	}
-	else if ((m_Pos.y + m_Height / 2) <= -boundaryRange)
+	else if ((m_Pos.y + m_SpriteRange.y / 2) <= -boundaryRange)
 	{
 		return FALSE;
 	}
-	else if ((m_Pos.y - m_Height) / 2 >= winHeight + boundaryRange)
+	else if ((m_Pos.y - m_SpriteRange.x / 2) >= winHeight + boundaryRange)
 	{
 		return FALSE;
 	}

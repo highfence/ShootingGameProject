@@ -1,6 +1,5 @@
 #pragma once
 using namespace ENEMY;
-#include "Option.h"
 
 // 전방 선언
 class Enemy;
@@ -70,6 +69,11 @@ private :
 		const _In_opt_ Vec,
 		const _In_opt_ ::CreateOption);
 	Enemy* MakeItem(
+		const _In_ Vec,
+		const _In_ INT,
+		const _In_opt_ Vec,
+		const _In_opt_ ::CreateOption);
+	Enemy* MakeZaco(
 		const _In_ Vec,
 		const _In_ INT,
 		const _In_opt_ Vec,
