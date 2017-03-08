@@ -68,10 +68,7 @@ const vRESULT SoundManager::SethInstance(_Inout_ HINSTANCE hInstance)
 const vRESULT SoundManager::PlaySoundWithSoundNum(
 	const _In_ SOUND::SOUND_TYPE soundTypeNum)
 {
-	PlaySound(
-		MAKEINTRESOURCE(soundTypeNum),
-		m_hInstance,
-		SND_RESOURCE | SND_ASYNC);
+	PlaySound
 
 	return WELL_PERFORMED;
 }

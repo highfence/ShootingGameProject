@@ -166,7 +166,6 @@ void Player::LaunchMissile(const _In_ FLOAT dt)
 		{
 			if (i->Launch(m_PosX, m_PosY))
 			{
-				SoundManager::getInstance()->PlaySoundWithSoundNum(SOUND::SOUND_TYPE::PLAYER_SHOT_1);
 				m_AccTime = 0;
 				break;
 			}
@@ -304,8 +303,6 @@ void Player::PlayerPowerUp()
 	{
 		++m_PowerTier;
 		ChangeMissilesAccordWithPower();
-		SoundManager::getInstance()->
-			PlaySoundWithSoundNum(SOUND::SOUND_TYPE::POWER_UP);
 	}
 
 	return;
