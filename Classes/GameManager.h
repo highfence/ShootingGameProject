@@ -22,7 +22,7 @@ class GameManager
 {
 public :
 
-	GameManager(_Inout_ HWND);
+	GameManager(_Inout_ HWND, _Inout_ HINSTANCE);
 	~GameManager();
 
 	void Update();
@@ -37,10 +37,10 @@ private :
 	void CalProc(const _In_ FLOAT);
 	void DrawProc(const _In_ FLOAT);
 	void GetKeyState();
-	void ExchangeInfo();
 
 	HWND m_hWnd;
 	HDC m_hdc;
+	HINSTANCE m_hInstance;
 	MyTimer* m_pTimer;
 	BackGroundScroller* m_pScroller;
 	Player* m_pPlayer;

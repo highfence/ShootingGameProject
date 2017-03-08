@@ -26,14 +26,7 @@ EnemyItem::EnemyItem(
 
 	vRESULT retval = init();
 
-#ifdef _DEBUG
-	if (retval != WELL_PERFORMED)
-	{
-		std::wstring guideWord = MESSAGES::creationFailed + std::to_wstring(retval) + _T(" (In Creation ENEMY ITEM) \n");
-		OutputDebugString(guideWord.c_str());
-		exit(0);
-	}
-#endif
+	DebugLogPrint(retval, MESSAGES::creationFailed, _T(" from EnemyItem"));
 }
 
 const vRESULT EnemyItem::init()
@@ -44,8 +37,9 @@ const vRESULT EnemyItem::init()
 	}
 
 	m_FlightSpeed = enemyItemFlightSpeed;
-	m_Width = enemyItemSpriteWidth;
-	m_Height = enemyItemSpriteHeight;
+	m_SpriteRange.x = enemyItemSpriteWidth;
+	m_SpriteRange.y = enemyItemSpriteHeight;
+	m_ColideRange = m_SpriteRange;
 	m_Hp = enemyItemHp;
 	m_MissileSpeed = enemyItemMissileSpeed;
 	m_LoadedMissileNumber = enemyItemLoadedMissileNumber;
@@ -64,10 +58,10 @@ void EnemyItem::Draw(_Inout_ HDC drawDC)
 #pragma warning(push)
 #pragma warning(disable : 4244)
 
-	m_pShadeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
-		m_Width, m_Height, 0, 0, SRCAND);
-	m_pSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height,
-		m_Width, m_Height, 0, 0, SRCPAINT);
+	m_pShadeSprite->BitBlt(drawDC, m_Pos.x - m_SpriteRange.x / 2, m_Pos.y - m_SpriteRange.y / 2,
+		m_SpriteRange.x, m_SpriteRange.y, 0, 0, SRCAND);
+	m_pSprite->BitBlt(drawDC, m_Pos.x - m_SpriteRange.x / 2, m_Pos.y - m_SpriteRange.y / 2,
+		m_SpriteRange.x, m_SpriteRange.y, 0, 0, SRCPAINT);
 
 #pragma warning(pop)
 	return;
@@ -112,7 +106,7 @@ void EnemyItem::Explode()
 			Vec(0, 1),
 			nullptr);
 	}
-	EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos.x, m_Pos.y);
+	EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos);
 	return;
 }
 

@@ -34,3 +34,10 @@ FLOAT GetTanDegree(
 	const _In_ FLOAT x,
 	const _In_ FLOAT y);
 
+/*
+	디버그시 로그를 남겨주는 함수.
+*/
+void DebugLogPrint(
+	const _In_ vRESULT,
+	const _In_ std::wstring,
+	const _In_ LPCTSTR);

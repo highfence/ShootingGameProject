@@ -78,3 +78,19 @@ FLOAT GetTanDegree(
 	FLOAT degree = radian * 180.f / (FLOAT)M_PI;
 	return degree;
 }
+
+void DebugLogPrint(
+	const _In_ vRESULT retval,
+	const _In_ std::wstring message,
+	const _In_ LPCTSTR callInstance
+)
+{
+#ifdef _DEBUG
+	if (retval != WELL_PERFORMED)
+	{
+		std::wstring guideWord = message + std::to_wstring(retval) + _T("\n") + callInstance;
+		OutputDebugString(guideWord.c_str());
+	}
+#endif
+	return;
+}

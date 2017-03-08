@@ -34,6 +34,8 @@ EffectManager::EffectManager()
 void EffectManager::init()
 {
 	m_pEffectMakerHandler[EXPLODE_LIGHT] = &EffectManager::MakeExplodeLight;
+	m_pEffectMakerHandlerWithFloat[EXPLODE_LIGHT] = &EffectManager::MakeExplodeLightWithFloat;
+
 	return;
 }
 
@@ -93,15 +95,41 @@ void EffectManager::ClearVec()
 	return;
 }
 
-BOOL EffectManager::MakeExplodeLight(const _In_ FLOAT x, const _In_ FLOAT y)
+BOOL EffectManager::MakeExplodeLight(
+	const _In_ Vec createPos)
 {
-	auto newEffect = new ExplodeLight(x, y);
+	auto newEffect = new ExplodeLight(createPos);
 	m_EffectVec.push_back(newEffect);
 	return TRUE;
 }
 
-void EffectManager::MakeEffect(const _In_ INT effectType, const _In_ FLOAT creationX, const _In_ FLOAT creationY)
+BOOL EffectManager::MakeExplodeLightWithFloat(
+	const _In_ Vec createPos,
+	const _In_ FLOAT floatSpeed,
+	const _In_ Vec floatVec)
 {
-	(this->*m_pEffectMakerHandler[effectType])(creationX, creationY);
+	auto newEffect = new ExplodeLight(createPos, floatSpeed, floatVec);
+	m_EffectVec.push_back(newEffect);
+	return TRUE;
+}
+
+void EffectManager::MakeEffect(
+	const _In_ INT effectType,
+	const _In_ Vec createPos)
+{
+	(this->*m_pEffectMakerHandler[effectType])(createPos);
+	return;
+}
+
+void EffectManager::MakeEffect(
+	const _In_ INT effectType,
+	const _In_ Vec createPos,
+	const _In_ FLOAT floatSpeed,
+	const _In_ Vec floatVec)
+{
+	(this->*m_pEffectMakerHandlerWithFloat[effectType])(
+		createPos,
+		floatSpeed,
+		floatVec);
 	return;
 }

@@ -1,8 +1,32 @@
 #include "stdafx.h"
 #include "Effect.h"
 
-Effect::Effect(const _In_ FLOAT x, const _In_ FLOAT y)
-	: m_AccTime(0), m_CutAccTime(0), m_IsEffectDone(FALSE), m_PosX(x), m_PosY(y), m_FrameNum(1), m_IsDrawedOnce(FALSE)
+Effect::Effect(const _In_ Vec createPos)
+	: m_Pos(createPos),
+	m_AccTime(0),
+	m_CutAccTime(0),
+	m_IsEffectDone(FALSE),
+	m_FrameNum(1),
+	m_IsDrawedOnce(FALSE)
+{
+	m_FloatSpeed = 0.f;
+	m_pSprite = new CImage;
+	m_pShade = new CImage;
+	init();
+}
+
+Effect::Effect(
+	const _In_ Vec createPos,
+	const _In_ FLOAT floatSpeed,
+	const _In_ Vec floatVec)
+	: m_FloatVec(floatVec),
+	m_FloatSpeed(floatSpeed),
+	m_Pos(createPos),
+	m_AccTime(0),
+	m_CutAccTime(0),
+	m_IsEffectDone(FALSE),
+	m_FrameNum(1),
+	m_IsDrawedOnce(FALSE)
 {
 	m_pSprite = new CImage;
 	m_pShade = new CImage;
@@ -59,8 +83,10 @@ void Effect::Draw(_Inout_ HDC drawDC)
 #pragma warning(push)
 #pragma warning(disable : 4244)
 
-	m_pShade->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2, m_Width, m_Height, 0, 0, SRCAND);
-	m_pSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2, m_Width, m_Height, 0, 0, SRCPAINT);
+	m_pShade->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
+		m_Width, m_Height, 0, 0, SRCAND);
+	m_pSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
+		m_Width, m_Height, 0, 0, SRCPAINT);
 	m_IsDrawedOnce = TRUE;
 
 #pragma warning(pop)
@@ -86,6 +112,7 @@ void Effect::FrameCheck()
 void Effect::CalProc(const _In_ FLOAT dt)
 {
 	AccTime(dt);
+	CalFloat(dt);
 	FrameCheck();
 	return;
 }
@@ -94,4 +121,15 @@ void Effect::DrawProc(_Inout_ HDC drawDC)
 {
 	Draw(drawDC);
 	return;
+}
+
+vRESULT Effect::CalFloat(const _In_ FLOAT dt)
+{
+	if (m_FloatSpeed != 0.f)
+	{
+		m_Pos.x += m_FloatVec.x * m_FloatSpeed * dt;
+		m_Pos.y += m_FloatVec.y * m_FloatSpeed * dt;
+	}
+
+	return WELL_PERFORMED;
 }

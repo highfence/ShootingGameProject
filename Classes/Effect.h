@@ -7,22 +7,33 @@ using namespace EFFECT;
 class Effect
 {
 public :
-	Effect(const _In_ FLOAT, const _In_ FLOAT);
+	Effect(const _In_ Vec);
+	Effect(
+		const _In_ Vec,
+		const _In_ FLOAT,
+		const _In_ Vec);
+
 	virtual ~Effect();
+	virtual void LoadInitialImg() = 0;
 
 	void CalProc(const _In_ FLOAT);
 	void DrawProc(_Inout_ HDC);
 
 	BOOL GetIsEffectDone() const;
 	void AccTime(const _In_ FLOAT);
-	void ImgLoad(const _In_ std::wstring, const _In_ std::wstring, const _In_ INT);
+	void ImgLoad(
+		const _In_ std::wstring,
+		const _In_ std::wstring,
+		const _In_ INT);
+
 	void Draw(_Inout_ HDC);
+	vRESULT CalFloat(const _In_ FLOAT);
 	void FrameCheck();
 
-	virtual void LoadInitialImg() = 0;
 
-	FLOAT m_PosX;
-	FLOAT m_PosY;
+	Vec m_Pos;
+	Vec m_FloatVec;
+	FLOAT m_FloatSpeed;
 	FLOAT m_Width;
 	FLOAT m_Height;
 	FLOAT m_TimePerFrame;
