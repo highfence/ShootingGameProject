@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "SoundManager.h"
+#include <mmsystem.h>
+#pragma comment(lib,"winmm.lib")
+
 
 
 SoundManager* SoundManager::_instance = nullptr;
@@ -56,5 +59,19 @@ const vRESULT SoundManager::init()
 const vRESULT SoundManager::SethInstance(_Inout_ HINSTANCE hInstance)
 {
 	m_hInstance = hInstance;
+	return WELL_PERFORMED;
+}
+
+/*
+	Soundtype을 이용하여 원하는 사운드를 재생시키는 함수.
+*/
+const vRESULT SoundManager::PlaySoundWithSoundNum(
+	const _In_ SOUND::SOUND_TYPE soundTypeNum)
+{
+	PlaySound(
+		MAKEINTRESOURCE(soundTypeNum),
+		m_hInstance,
+		SND_RESOURCE | SND_ASYNC);
+
 	return WELL_PERFORMED;
 }

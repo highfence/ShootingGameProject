@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "PlayerMissile.h"
 #include "EnemyManager.h"
+#include "SoundManager.h"
 
 const FLOAT playerInitWidth = winWidth / 2;
 const FLOAT playerInitHeight = winHeight * 3 / 4;
@@ -165,6 +166,7 @@ void Player::LaunchMissile(const _In_ FLOAT dt)
 		{
 			if (i->Launch(m_PosX, m_PosY))
 			{
+				SoundManager::getInstance()->PlaySoundWithSoundNum(SOUND::SOUND_TYPE::PLAYER_SHOT_1);
 				m_AccTime = 0;
 				break;
 			}
@@ -302,6 +304,8 @@ void Player::PlayerPowerUp()
 	{
 		++m_PowerTier;
 		ChangeMissilesAccordWithPower();
+		SoundManager::getInstance()->
+			PlaySoundWithSoundNum(SOUND::SOUND_TYPE::POWER_UP);
 	}
 
 	return;

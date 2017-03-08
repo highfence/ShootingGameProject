@@ -35,7 +35,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE PrevhInstance, LPSTR lpszCmd
 		NULL, (HMENU)NULL, hInstance, NULL);
 	ShowWindow(hWnd, nCmdShow);
 
-	gameManager = new GameManager(hWnd);
+	gameManager = new GameManager(hWnd, hInstance);
 	while (true)
 	{
 		if (PeekMessage(&Message, NULL, 0, 0, PM_REMOVE))

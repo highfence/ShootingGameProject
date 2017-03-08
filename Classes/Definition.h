@@ -105,3 +105,13 @@ namespace MESSAGES
 	const std::wstring creationFailed = _T("Creation Falied! \n ERROR CODE : ");
 	const std::wstring error = _T("ERROR!");
 }
+
+namespace SOUND
+{
+	enum SOUND_TYPE
+	{
+		POWER_UP = IDR_WAVE1,
+		PLAYER_SHOT_1 = IDR_WAVE2,
+		SOUND_TYPE_NUM
+	};
+}
