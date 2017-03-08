@@ -179,6 +179,7 @@ void EnemyManager::CalProc(const _In_ FLOAT dt)
 	MakeProc();
 	ClearList();
 	DistributeTime(dt);
+	DistributePlayerInfo();
 	return;
 }
 
@@ -248,19 +249,18 @@ void EnemyManager::DistributeTime(const _In_ FLOAT dt)
 
 void EnemyManager::DistributePlayerInfo()
 {
-	FLOAT x;
-	FLOAT y;
-	m_pPlayerInfo->GetPosition(&x, &y);
-	SetPlayerPos(x, y);
+	Vec playerPos;
+	m_pPlayerInfo->GetPosition(&playerPos);
+	SetPlayerPos(playerPos);
 	return;
 }
 
-void EnemyManager::SetPlayerPos(const _In_ FLOAT playerPosX, const _In_ FLOAT playerPosY)
+void EnemyManager::SetPlayerPos(const _In_ Vec playerPos)
 {
 	for (auto i : m_EnemyList)
 	{
-		i->m_PlayerX = playerPosX;
-		i->m_PlayerY = playerPosY;
+		i->m_PlayerX = playerPos.x;
+		i->m_PlayerY = playerPos.y;
 	}
 
 	return;

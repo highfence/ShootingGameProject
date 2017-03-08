@@ -17,7 +17,7 @@ public :
 		const _In_ INT flightType,
 		const _In_opt_ Vec flightVec);
 	
-		 virtual ~Enemy();
+	virtual ~Enemy();
 
 	virtual void Draw(_Inout_ HDC) = 0;
 	virtual void Explode() = 0;
@@ -25,40 +25,41 @@ public :
 	virtual void Fire() = 0;
 
 	virtual void CalProc(const _In_ FLOAT);
-			void DrawProc(_Inout_ HDC);
+	        void DrawProc(_Inout_ HDC);
 
-			void Fly(const _In_ FLOAT);
-			void MissileFly(const _In_ FLOAT);
-			void GetDamage(const _In_ INT);
-			void AccTime(const _In_ FLOAT);
-			void LoadMissiles(const _In_ ENEMY::MISSILE_SIZE);
-			void DrawMissiles(_Inout_ HDC);
+	        void Fly(const _In_ FLOAT);
+	        void MissileFly(const _In_ FLOAT);
+	        void GetDamage(const _In_ INT);
+	        void AccTime(const _In_ FLOAT);
+	        void LoadMissiles(const _In_ ENEMY::MISSILE_SIZE);
+	        void DrawMissiles(_Inout_ HDC);
 
-			BOOL CheckDead();
-			BOOL CheckEnemyIsOnDisplay();
-			INT  RotateAccordWithVec();
+	BOOL CheckDead();
+	BOOL CheckEnemyIsOnDisplay();
+	INT  RotateAccordWithVec();
+	vRESULT FunctionPointerRegist();
 
-	Vec		m_Pos;
-	FLOAT	m_PlayerX;
-	FLOAT	m_PlayerY;
-	INT		m_FlightType;
-	Vec		m_FlightVec;
-	FLOAT	m_FlightSpeed;
-	Vec		m_SpriteRange;
-	Vec		m_ColideRange;
-	FLOAT	m_MissileSpeed;
-	FLOAT	m_MissileDamage;
-	INT		m_Hp;
-	INT		m_LoadedMissileNumber;
-	FLOAT	m_AccTime;
-	FLOAT	m_RecordAccTime;
-	FLOAT	m_RecordFlyTime;
-	FLOAT	m_UnitVecX;
-	FLOAT	m_UnitVecY;
-	BOOL	m_IsEnemyDead;
-	BOOL	m_IsEnemyExplode;
-	CImage* m_pSprite;
-	CImage* m_pShadeSprite;
+	Vec		     m_Pos;
+	FLOAT	     m_PlayerX;
+	FLOAT	     m_PlayerY;
+	INT		     m_FlightType;
+	Vec		     m_FlightVec;
+	FLOAT	     m_FlightSpeed;
+	Vec		     m_SpriteRange;
+	Vec		     m_ColideRange;
+	FLOAT	     m_MissileSpeed;
+	FLOAT	     m_MissileDamage;
+	INT		     m_Hp;
+	INT		     m_LoadedMissileNumber;
+	FLOAT	     m_AccTime;
+	FLOAT	     m_RecordAccTime;
+	FLOAT	     m_RecordFlyTime;
+	FLOAT	     m_UnitVecX;
+	FLOAT	     m_UnitVecY;
+	BOOL	     m_IsEnemyDead;
+	BOOL	     m_IsEnemyExplode;
+	CImage*      m_pSprite;
+	CImage*      m_pShadeSprite;
 	CreateOption m_Option;
 
 	BOOL(Enemy::*m_pFlightHandler[ENEMY::FLIGHT_TYPE_NUM])(const _In_ FLOAT);
@@ -77,6 +78,7 @@ private :
 
 	// MissileFly 타입 함수 포인터.
 	BOOL MissileFlyStraight(EnemyMissile*, const _In_ FLOAT);
+	BOOL MissileFlyAimed(EnemyMissile*, const _In_ FLOAT);
 
 	void init();
 	void DeleteAllElementsMissileVector();

@@ -4,12 +4,11 @@
 #include "EnemyManager.h"
 
 // 미사일 대기 장소.
-const FLOAT savePlacePos = -300;
+const FLOAT savePlacePos = -300.f;
 
 Missile::Missile()
 	: m_IsMissileLaunched(false),
-	m_PosX(savePlacePos),
-	m_PosY(savePlacePos),
+	m_Pos(savePlacePos, savePlacePos),
 	m_MissileType(NONE)
 {
 	m_pSprite = new CImage;
@@ -36,7 +35,8 @@ Missile::~Missile()
 	If Launch success, it return TRUE.
 	else, it return FALSE.
 */
-BOOL Missile::Launch(const _In_ FLOAT x, const _In_ FLOAT y)
+BOOL Missile::Launch(
+	const _In_ Vec createVec)
 {
 	if (m_IsMissileLaunched)
 	{
@@ -44,8 +44,7 @@ BOOL Missile::Launch(const _In_ FLOAT x, const _In_ FLOAT y)
 	}
 	
 	m_IsMissileLaunched = TRUE;
-	m_PosX = x;
-	m_PosY = y;
+	m_Pos = createVec;
 	
 	return TRUE;
 }
@@ -53,9 +52,11 @@ BOOL Missile::Launch(const _In_ FLOAT x, const _In_ FLOAT y)
 /*
 	Initialize with MissileType (Launch Func Overloading)
 */
-BOOL Missile::Launch(const _In_ ENEMY::MISSILE_TYPE missileType, const _In_ FLOAT x, const _In_ FLOAT y)
+BOOL Missile::Launch(
+	const _In_ ENEMY::MISSILE_TYPE missileType,
+	const _In_ Vec createVec)
 {
-	if (!Launch(x, y))
+	if (!Launch(createVec))
 	{
 		return FALSE;
 	}
@@ -70,19 +71,19 @@ BOOL Missile::Launch(const _In_ ENEMY::MISSILE_TYPE missileType, const _In_ FLOA
 */ 
 BOOL Missile::IsMissileOnDisplay()
 {
-	if (m_PosY < -m_Height)
+	if (m_Pos.y < -m_Height)
 	{
 		return FALSE;
 	}
-	else if (m_PosX < -m_Width)
+	else if (m_Pos.x < -m_Width)
 	{
 		return FALSE;
 	}
-	else if (m_PosX > winWidth + m_Width)
+	else if (m_Pos.x > winWidth + m_Width)
 	{
 		return FALSE;
 	}
-	else if (m_PosY > winHeight + m_Height)
+	else if (m_Pos.y > winHeight + m_Height)
 	{
 		return FALSE;
 	}
@@ -100,10 +101,10 @@ void Missile::Draw(_Inout_ HDC drawDC)
 #pragma warning(push)
 #pragma warning(disable : 4244)
 
-	m_pShapeSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2,
+	m_pShapeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
 		m_Width, m_Height, 0, 0, SRCAND);
 
-	m_pSprite->BitBlt(drawDC, m_PosX - m_Width / 2, m_PosY - m_Height / 2,
+	m_pSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
 		m_Width, m_Height, 0, 0, SRCPAINT);
 
 #pragma warning(pop)

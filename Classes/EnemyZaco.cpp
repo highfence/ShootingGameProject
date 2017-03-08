@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "EnemyManager.h"
+#include "EnemyMissile.h"
 #include "EffectManager.h"
 #include "EnemyZaco.h"
 
@@ -91,6 +92,32 @@ void EnemyZaco::DeadProc()
 
 void EnemyZaco::Fire()
 {
+	// 플레이어보다 낮은 위치에서는 발사하지 않음.
+	if (m_Pos.y > m_PlayerY)
+	{
+		return;
+	}
+
+	const MissileOption option = MissileOption(Vec(m_PlayerX - m_Pos.x, m_PlayerY - m_Pos.y), 350, MISSILE_TYPE::AIM_FIRE, MISSILE_SIZE::SMALL);
+	const FLOAT initFireTime = 0.5f;
+	const FLOAT fireFrequency = 1.5f;
+	// 첫 발사부분은 0.5f 가 걸리고, 다음부터는 1.5f가 걸리도록.
+	if (m_AccTime == m_RecordAccTime)
+	{
+		m_RecordAccTime += fireFrequency;
+	}
+
+	if ((m_AccTime > initFireTime) && (m_RecordAccTime > fireFrequency))
+	{
+		for (auto i : m_MissileVec)
+		{
+			if (i->Launch(m_Pos, option))
+			{
+				m_RecordAccTime = 0.f;
+				break;
+			}
+		}
+	}
 	return;
 }
 

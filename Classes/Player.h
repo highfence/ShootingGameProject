@@ -22,7 +22,7 @@ public :
 	void Draw(_Inout_ HDC);
 	void Move(const _In_ BYTE*, const _In_ FLOAT);
 	void MissileFly(const _In_ FLOAT);
-	INT GetPosition(_Out_ FLOAT*, _Out_ FLOAT*);
+	const vRESULT GetPosition(_Out_ Vec*) ;
 	FLOAT GetCollisionPixel() const;
 	BOOL GetIsPlayerAlived() const;
 	void PlayerDamaged();

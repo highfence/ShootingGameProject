@@ -27,12 +27,10 @@ CreateOption::CreateOption(const std::nullptr_t)
 
 CreateOption::CreateOption()
 {
-
 }
 
 CreateOption::~CreateOption()
 {
-
 }
 
 CreateOption & CreateOption::operator=(const _In_ CreateOption option)

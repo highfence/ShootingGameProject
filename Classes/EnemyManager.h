@@ -53,7 +53,7 @@ private :
 	void ClearList();
 	void DistributeTime(const _In_ FLOAT);
 	void DistributePlayerInfo();
-	void SetPlayerPos(const _In_ FLOAT, const _In_ FLOAT);
+	void SetPlayerPos(const _In_ Vec);
 
 	// 생성 함수 포인터 핸들러.
 	Enemy*(EnemyManager::*m_pMakeHandler[ENEMY_TYPE_NUM])(

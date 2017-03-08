@@ -22,13 +22,14 @@ const INT playerMaxPowerTier = 4;
 
 
 Player::Player()
-	: m_Pos(0.f, 0.f),
+	: 
 	m_AccTime(0.f),
 	m_Direction(0),
 	m_PowerTier(1),
 	m_IsPlayerAlive(TRUE),
 	m_CollisionPixel(playerColisionPixel)
 {
+	m_Pos = Vec(playerInitWidth, playerInitHeight);
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage;
 	m_pMissile = new PlayerMissile;
@@ -164,7 +165,7 @@ void Player::LaunchMissile(const _In_ FLOAT dt)
 	{
 		for (auto i : m_MissileVec)
 		{
-			if (i->Launch(m_Pos.x, m_Pos.y))
+			if (i->Missile::Launch(m_Pos))
 			{
 				m_AccTime = 0;
 				break;
@@ -212,12 +213,17 @@ void Player::DrawProc(_Inout_ HDC drawDC)
 }
 
 /*
-	인자로 넣은 FLOAT 데이터에 플레이어의 포지션을 반환해주는 함수.
+	플레이어의 포지션을 반환해주는 함수.
 */
-INT Player::GetPosition(_Out_ FLOAT* posX, _Out_ FLOAT* posY)
+const vRESULT Player::GetPosition(_Out_ Vec* vec) 
 {
-	*posX = m_Pos.x;
-	*posY = m_Pos.y;
+	if (vec == nullptr)
+	{
+		return vRESULT::ERROR_INVALID_INPUT;
+	}
+
+	vec->x = m_Pos.x;
+	vec->y = m_Pos.y;
 
 	return WELL_PERFORMED;
 }
@@ -387,7 +393,6 @@ INT Player::PrintDebugLabel(_Inout_ HDC drawDC)
 */
 const vRESULT Player::MakeDyingExplosion()
 {
-	// TODO :: 플레이어 죽을 경우 사방 팔방으로 이펙트 날아가도록.
 	EffectManager* effectManager = EffectManager::getInstance();
 	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.f, 1.f));
 	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.f, -1.f));

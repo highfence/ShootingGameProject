@@ -53,8 +53,8 @@ void PlayerMissile::Fly(
 
 	GetUnitVec(vecX, vecY, &unitVecX, &unitVecY);
 
-	m_PosX += unitVecX * speed * dt;
-	m_PosY += unitVecY * speed * dt;
+	m_Pos.x += unitVecX * speed * dt;
+	m_Pos.y += unitVecY * speed * dt;
 
 	if (!IsMissileOnDisplay())
 	{
@@ -95,10 +95,10 @@ BOOL PlayerMissile::IsColideWithEnemy(
 	FLOAT enemyX2 = enemyPosX + enemyWidth / 2 - colideCorrectionPixel;
 	FLOAT enemyY2 = enemyPosY + enemyHeight / 2 - colideCorrectionPixel;
 
-	FLOAT thisX1 = m_PosX - m_Width / 2;
-	FLOAT thisY1 = m_PosY - m_Height / 2;
-	FLOAT thisX2 = m_PosX + m_Width / 2;
-	FLOAT thisY2 = m_PosY + m_Height / 2;
+	FLOAT thisX1 = m_Pos.x - m_Width / 2;
+	FLOAT thisY1 = m_Pos.y - m_Height / 2;
+	FLOAT thisX2 = m_Pos.x + m_Width / 2;
+	FLOAT thisY2 = m_Pos.y + m_Height / 2;
 
 	if (!(thisX2 < enemyX1 || enemyX2 < thisX1 || thisY2 < enemyY1 || enemyY2 < thisY1))
 	{

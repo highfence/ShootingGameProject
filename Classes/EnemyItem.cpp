@@ -85,7 +85,7 @@ void EnemyItem::Fire()
 	{
 		for (auto i : m_MissileVec)
 		{
-			if (i->Launch(ENEMY::MISSILE_TYPE::STRAIGHT_FIRE, m_Pos.x, m_Pos.y))
+			if (i->Missile::Launch(ENEMY::MISSILE_TYPE::STRAIGHT_FIRE, m_Pos))
 			{
 				break;
 			}

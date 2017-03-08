@@ -26,18 +26,17 @@ BOOL EnemyMissile::CheckColideWithPlayer()
 {
 	Player& playerInfo = EnemyManager::getInstance()->getPlayerInfo();
 	FLOAT playerCorrectionPixel = playerInfo.GetCollisionPixel();
-	FLOAT playerPosX;
-	FLOAT playerPosY;
-	playerInfo.GetPosition(&playerPosX, &playerPosY);
+	Vec playerPos;
+	playerInfo.GetPosition(&playerPos);
 
-	auto x0 = m_PosX - m_Width / 2;
-	auto y0 = m_PosY - m_Height / 2;
-	auto x1 = m_PosX + m_Width / 2;
-	auto y1 = m_PosY + m_Height / 2;
-	auto mx0 = playerPosX - playerCorrectionPixel;
-	auto my0 = playerPosY - playerCorrectionPixel;
-	auto mx1 = playerPosX + playerCorrectionPixel;
-	auto my1 = playerPosY + playerCorrectionPixel;
+	auto x0 = m_Pos.x - m_Width / 2;
+	auto y0 = m_Pos.y - m_Height / 2;
+	auto x1 = m_Pos.x + m_Width / 2;
+	auto y1 = m_Pos.y + m_Height / 2;
+	auto mx0 = playerPos.x - playerCorrectionPixel;
+	auto my0 = playerPos.y - playerCorrectionPixel;
+	auto mx1 = playerPos.x + playerCorrectionPixel;
+	auto my1 = playerPos.y + playerCorrectionPixel;
 
 	if (!(x1 <= mx0 || mx1 <= x0 || y1 <= my0 || my1 <= y0))
 	{
@@ -68,8 +67,8 @@ void EnemyMissile::Fly(
 
 	GetUnitVec(vecX, vecY, &unitVecX, &unitVecY);
 
-	m_PosX += unitVecX * speed * dt;
-	m_PosY += unitVecY * speed * dt;
+	m_Pos.x += unitVecX * speed * dt;
+	m_Pos.y += unitVecY * speed * dt;
 
 	if (!IsMissileOnDisplay())
 	{
@@ -88,4 +87,31 @@ void EnemyMissile::SetPlayerPos(
 	m_PlayerPosY = playerPosY;
 
 	return;
+}
+
+
+/*
+	Initialize with MissileOption (Launch Func Overloading)
+	Using in EnemyMissile
+*/
+BOOL EnemyMissile::Launch(
+	const _In_ Vec createVec,
+	const _In_::MissileOption option)
+{
+	if (m_IsMissileLaunched)
+	{
+		return FALSE;
+	}
+
+	m_IsMissileLaunched = TRUE;
+	m_Pos = createVec;
+	m_Option = option;
+	m_MissileType = option.m_MissileType;
+
+	return TRUE;
+}
+
+::MissileOption EnemyMissile::GetOption() const
+{
+	return m_Option;
 }

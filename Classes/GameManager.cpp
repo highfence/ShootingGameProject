@@ -47,12 +47,12 @@ void GameManager::Update()
 void GameManager::CalProc(const _In_ FLOAT dt)
 {
 	GetKeyState();
-	m_pEnemyManager->CalProc(dt);
-	m_pEffectManager->CalProc(dt);
 	if (m_pPlayer->GetIsPlayerAlived())
 	{
 		m_pPlayer->CalProc(m_ByKey, dt);
 	}
+	m_pEnemyManager->CalProc(dt);
+	m_pEffectManager->CalProc(dt);
 
 	return;
 }

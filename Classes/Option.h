@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Enemy 생성시에 들어갈 여러가지 정보를 담는 클래스.
+*/
+
 class CreateOption
 {
 public :

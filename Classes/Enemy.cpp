@@ -24,16 +24,9 @@ Enemy::Enemy(
 
 void Enemy::init()
 {
-	m_pFlightHandler[FLIGHT_TYPE::FLY_STRAIGHT] = &Enemy::FlyStraight;
-	m_pFlightHandler[FLIGHT_TYPE::FLY_ITEM] = &Enemy::FlyItem;
-	m_pFlightHandler[FLIGHT_TYPE::FLY_ACCELERATE] = &Enemy::FlyAccelerate;
-	m_pFlightHandler[FLIGHT_TYPE::FLY_GO_AND_SLOW] = &Enemy::FlyGoAndSlow;
-
-	m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &Enemy::MissileFlyStraight;
-
+	FunctionPointerRegist();
 	return;
 }
-
 
 /*
 	~Enemy
@@ -44,6 +37,23 @@ Enemy::~Enemy()
 	DeleteAllElementsMissileVector();
 }
 
+/*
+	Regist All Function Pointer which Enemy will manage.
+*/
+vRESULT Enemy::FunctionPointerRegist()
+{
+	// Flight Function Pointer Regist
+	m_pFlightHandler[FLIGHT_TYPE::FLY_STRAIGHT] = &Enemy::FlyStraight;
+	m_pFlightHandler[FLIGHT_TYPE::FLY_ITEM] = &Enemy::FlyItem;
+	m_pFlightHandler[FLIGHT_TYPE::FLY_ACCELERATE] = &Enemy::FlyAccelerate;
+	m_pFlightHandler[FLIGHT_TYPE::FLY_GO_AND_SLOW] = &Enemy::FlyGoAndSlow;
+
+	// Missile Fly Function Pointer Regist
+	m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &Enemy::MissileFlyStraight;
+	m_pMissileFlyHandler[MISSILE_TYPE::AIM_FIRE] = &Enemy::MissileFlyAimed;
+
+	return WELL_PERFORMED;
+}
 
 void Enemy::CalProc(const _In_ FLOAT dt)
 {
@@ -77,7 +87,10 @@ void Enemy::MissileFly(const _In_ FLOAT dt)
 		if (i->GetMissileLaunched())
 		{
 			auto MissileType = i->GetMissileType();
-			(this->*m_pMissileFlyHandler[MissileType])(i, dt);
+			if (MissileType != MISSILE_TYPE::NONE)
+			{
+				(this->*m_pMissileFlyHandler[MissileType])(i, dt);
+			}
 		}
 	}
 	return;
@@ -150,6 +163,24 @@ BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
 {
 	missile->Fly(dt, 0, 1, m_MissileSpeed);
 	missile->CheckColideWithPlayer();
+	return TRUE;
+}
+
+/*
+	조준탄으로 미사일을 날아가게 하는 방식.
+	EnemyMissile에서 정의된 MissileOption을 이용한 Launch를 사용해야만 미사일이 작동한다.
+*/
+BOOL Enemy::MissileFlyAimed(EnemyMissile* missile, const FLOAT dt)
+{
+	MissileOption option = missile->GetOption();
+	if (!option.IsOptionCanUse())
+	{
+		return FALSE;
+	}
+
+	missile->Fly(dt, option.m_MissileVec.x, option.m_MissileVec.y, option.m_MissileSpeed);
+	missile->CheckColideWithPlayer();
+
 	return TRUE;
 }
 
