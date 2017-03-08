@@ -34,6 +34,8 @@ public :
 	        void LoadMissiles(const _In_ ENEMY::MISSILE_SIZE);
 	        void DrawMissiles(_Inout_ HDC);
 
+	BOOL IsAllMissilesEndFly();
+	void CheckEnemyReadyToDelete();
 	BOOL CheckDead();
 	BOOL CheckEnemyIsOnDisplay();
 	INT  RotateAccordWithVec();
@@ -56,6 +58,7 @@ public :
 	FLOAT	     m_RecordFlyTime;
 	FLOAT	     m_UnitVecX;
 	FLOAT	     m_UnitVecY;
+	BOOL		 m_IsEnemyReadyToDelete;
 	BOOL	     m_IsEnemyDead;
 	BOOL	     m_IsEnemyExplode;
 	CImage*      m_pSprite;

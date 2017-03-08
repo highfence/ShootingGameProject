@@ -157,10 +157,8 @@ void EnemyManager::ClearList()
 	std::list<Enemy*>::iterator iter = m_EnemyList.begin();
 	while (iter != m_EnemyList.end())
 	{
-		if ((!(*iter)->CheckEnemyIsOnDisplay())
-			|| ((*iter)->m_IsEnemyDead))
+		if ((*iter)->m_IsEnemyReadyToDelete)
 		{
-			(*iter)->DeadProc();
 			delete (*iter);
 			iter = m_EnemyList.erase(iter);
 		}
@@ -185,6 +183,9 @@ void EnemyManager::CalProc(const _In_ FLOAT dt)
 
 void EnemyManager::DrawProc(_Inout_ HDC drawDC)
 {
+	SetTextAlign(drawDC, TA_CENTER);
+	std::wstring DebugLabel = _T("Enemy List Size : ") + std::to_wstring(m_EnemyList.size());
+	TextOut(drawDC, 300, 300, DebugLabel.c_str(), wcslen(DebugLabel.c_str()));
 	Draw(drawDC);
 	return;
 }

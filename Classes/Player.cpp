@@ -296,9 +296,12 @@ void Player::LoadImgWithDirection()
 */
 void Player::PlayerDamaged()
 {
+	if (m_IsPlayerAlive)
+	{
+		vRESULT retval = MakeDyingExplosion();
+		DebugLogPrint(retval, MESSAGES::explodeFailed, _T("from Player Damaged"));
+	}
 	m_IsPlayerAlive = FALSE;
-	vRESULT retval = MakeDyingExplosion();
-	DebugLogPrint(retval, MESSAGES::explodeFailed, _T("from Player Damaged"));
 
 	return;
 }

@@ -61,6 +61,9 @@ void EffectManager::CalProc(const _In_ FLOAT dt)
 // 출력 담당 함수 (GameManager->Update->DrawProc에서 호출)
 void EffectManager::DrawProc(_Inout_ HDC drawDC)
 {
+	SetTextAlign(drawDC, TA_CENTER);
+	std::wstring DebugLabel = _T("Effect Vector Size : ") + std::to_wstring(m_EffectVec.size());
+	TextOut(drawDC, 300, 350, DebugLabel.c_str(), wcslen(DebugLabel.c_str()));
 	for (auto i : m_EffectVec)
 	{
 		i->DrawProc(drawDC);

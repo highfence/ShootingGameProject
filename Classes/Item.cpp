@@ -40,13 +40,13 @@ Item::~Item()
 
 void Item::CalProc(const _In_ FLOAT dt)
 {
-	if (!CheckDead())
+	AccTime(dt);
+	Fly(dt);
+	CheckPlayerGetItem();
+
+	if (!CheckEnemyIsOnDisplay())
 	{
-		AccTime(dt);
-		Fly(dt);
-		MissileFly(dt);
-		Fire();
-		CheckPlayerGetItem();
+		m_IsEnemyReadyToDelete = TRUE;
 	}
 	return;
 }
@@ -101,6 +101,7 @@ BOOL Item::CheckPlayerGetItem()
 	{
 		m_Hp -= 10;
 		playerInfo.PlayerPowerUp();
+		m_IsEnemyReadyToDelete = TRUE;
 		return TRUE;
 	}
 	return FALSE;

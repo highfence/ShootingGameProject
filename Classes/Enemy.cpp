@@ -16,7 +16,8 @@ Enemy::Enemy(
 	m_PlayerX(0.f),
 	m_PlayerY(0.f),
 	m_FlightType(flightType),
-	m_IsEnemyDead(FALSE)
+	m_IsEnemyDead(FALSE),
+	m_IsEnemyReadyToDelete(FALSE)
 {
 	m_FlightVec = flightVec;
 	init();
@@ -61,9 +62,15 @@ void Enemy::CalProc(const _In_ FLOAT dt)
 	{
 		AccTime(dt);
 		Fly(dt);
-		MissileFly(dt);
 		Fire();
 	}
+	else
+	{
+		DeadProc();
+	}
+
+	MissileFly(dt);
+	CheckEnemyReadyToDelete();
 	return;
 }
 
@@ -206,7 +213,7 @@ BOOL Enemy::CheckEnemyIsOnDisplay()
 		return FALSE;
 	}
 
-	return true;
+	return TRUE;
 }
 
 /*
@@ -290,6 +297,42 @@ void Enemy::DeleteAllElementsMissileVector()
 	{
 		delete (*iter);
 		iter = m_MissileVec.erase(iter);
+	}
+
+	return;
+}
+
+/*
+	미사일의 비행이 모두 끝났는지를 반환해주는 함수.
+*/
+BOOL Enemy::IsAllMissilesEndFly()
+{
+	for (auto i : m_MissileVec)
+	{
+		if (i->GetMissileLaunched())
+		{
+			return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
+/*
+	Enemy가 지워져도 좋은 상태인지 확인한다.
+	IsAllMissilesEndFly가 TRUE이고, EnemyDead이거나 화면상에 없으면 Delete 준비가 완료된 상태이다.
+*/
+void Enemy::CheckEnemyReadyToDelete()
+{
+	// 미사일이 Fly를 끝내지 못했다면 그냥 return.
+	if (!IsAllMissilesEndFly())
+	{
+		return;
+	}
+	// Enemy가 Dead상태이거나 화면상에 없을 경우 delete ready.
+	if (m_IsEnemyDead || !CheckEnemyIsOnDisplay())
+	{
+		m_IsEnemyReadyToDelete = TRUE;
 	}
 
 	return;
