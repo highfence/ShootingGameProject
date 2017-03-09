@@ -40,6 +40,7 @@ public :
 	BOOL CheckEnemyIsOnDisplay();
 	INT  RotateAccordWithVec();
 	vRESULT FunctionPointerRegist();
+	EnemyMissile* GetLaunchableMissile();
 
 	Vec		     m_Pos;
 	FLOAT	     m_PlayerX;

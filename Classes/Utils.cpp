@@ -95,7 +95,7 @@ void DebugLogPrint(
 	return;
 }
 
-vRESULT RotateVec(
+const vRESULT RotateVec(
 	const _In_ FLOAT theta,
 	const _In_ FLOAT refVecX,
 	const _In_ FLOAT refVecY,
@@ -107,7 +107,7 @@ vRESULT RotateVec(
 	FLOAT sinVal = sin(radian);
 
 	rotateVecX = refVecX * cosVal - refVecY * sinVal;
-	rotateVecY = refVecX * sinVal + refVecX * cosVal;
+	rotateVecY = refVecX * sinVal + refVecY * cosVal;
 
 	return WELL_PERFORMED;
 }

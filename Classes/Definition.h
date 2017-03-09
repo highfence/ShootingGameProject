@@ -43,7 +43,7 @@ namespace ENEMY
 	const std::wstring enemyMissileSmall = _T("../Resources/FX/proton_02.png");
 	const std::wstring enemyMissileShadeSmall = _T("../Resources/FX/proton_02S.png");
 	const INT enemyMissileSmallWidth = 9;
-	const INT enemyMissileSmallHeigth = 10;
+	const INT enemyMissileSmallHeight = 10;
 	const std::wstring enemyMissileMedium = _T("../Resources/FX/proton_01.png");
 	const std::wstring enemyMissileShadeMedium = _T("../Resources/FX/proton_01S.png");
 	const INT enemyMissileMediumWidth = 13;

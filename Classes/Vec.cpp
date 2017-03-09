@@ -100,3 +100,17 @@ Vec & Vec::operator/(const INT intForDivide)
 	return *this;
 }
 
+Vec Vec::GetMinusVec() const
+{
+	return Vec(-x, -y);
+}
+
+Vec Vec::GetYSymmetryVec() const
+{
+	return Vec(x, -y);
+}
+
+Vec Vec::GetXSymmetryVec() const
+{
+	return Vec(-x, y);
+}

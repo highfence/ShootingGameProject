@@ -27,4 +27,11 @@ private :
 
 	const vRESULT init();
 	const vRESULT InitialImgLoad();
+	const vRESULT NWayBulletLaunch(const _In_ INT);
+
+	Vec m_RightHandPos;
+	Vec m_LeftHandPos;
+	BOOL m_IsLaunchRightHand;
+	INT m_ShotNum;
+
 };

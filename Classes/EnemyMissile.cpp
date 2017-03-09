@@ -12,7 +12,14 @@ EnemyMissile::EnemyMissile(ENEMY::MISSILE_SIZE missileSize)
 		m_pSprite->Load(enemyMissileSmall.c_str());
 		m_pShapeSprite->Load(enemyMissileShadeSmall.c_str());
 		m_Width = enemyMissileSmallWidth;
-		m_Height = enemyMissileSmallHeigth;
+		m_Height = enemyMissileSmallHeight;
+	}
+	else if (missileSize == ENEMY::MISSILE_SIZE::MEDIUM)
+	{
+		m_pSprite->Load(enemyMissileMedium.c_str());
+		m_pShapeSprite->Load(enemyMissileShadeMedium.c_str());
+		m_Width = enemyMissileMediumWidth;
+		m_Height = enemyMissileMediumHeight;
 	}
 	return;
 }

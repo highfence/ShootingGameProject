@@ -56,6 +56,23 @@ vRESULT Enemy::FunctionPointerRegist()
 	return WELL_PERFORMED;
 }
 
+/*
+	Launch가능한 미사일이 있다면 찾아서 반환해주는 함수.
+	없다면 nullptr 반환.
+*/
+EnemyMissile * Enemy::GetLaunchableMissile()
+{
+	for (auto i : m_MissileVec)
+	{
+		if (!i->m_IsMissileLaunched)
+		{
+			return i;
+		}
+	}
+
+	return nullptr;
+}
+
 void Enemy::CalProc(const _In_ FLOAT dt)
 {
 	if (!CheckDead())

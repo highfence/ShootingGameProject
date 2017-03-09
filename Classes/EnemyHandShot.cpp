@@ -11,17 +11,26 @@ const INT enemyHandShotSpriteHeight = 74;
 const INT enemyHandShotHp = 320;
 const INT enemyHandShotLoadedMissileNumber = 30;
 
+const FLOAT fireIntevalDelayTime = 0.3f;
+const FLOAT fireInitialDelayTime = 1.5f;
+const FLOAT degreeOfOddWayLaunch = 22.5f;
+const FLOAT degreeOfEvenWayLaunch = 22.5f;
+
 EnemyHandShot::EnemyHandShot(
 	const _In_ Vec createPos,
 	const _In_ INT flightType,
 	const _In_opt_ Vec flightVec,
 	const _In_opt_::CreateOption flightOption)
 	:
-	Enemy(createPos, flightType, flightVec)
+	Enemy(createPos, flightType, flightVec),
+	m_IsLaunchRightHand(TRUE),
+	m_ShotNum(0)
 {
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage;
 	m_Option = flightOption;
+	m_RightHandPos = Vec(32, 32);
+	m_LeftHandPos = Vec(-32, 32);
 
 	vRESULT retval = init();
 
@@ -77,7 +86,104 @@ void EnemyHandShot::DeadProc()
 void EnemyHandShot::Fire()
 {
 	// TODO :: N-Way탄 구현.
+	if (m_AccTime > fireInitialDelayTime)
+	{
+		if (m_ShotNum == 0 && (m_RecordAccTime > fireInitialDelayTime))
+		{
+			NWayBulletLaunch(5);
+			m_RecordAccTime = 0.f;
+			++m_ShotNum;
+		}
+		else if (m_ShotNum == 1 && (m_RecordAccTime > fireIntevalDelayTime))
+		{
+			NWayBulletLaunch(6);
+			m_RecordAccTime = 0.f;
+			++m_ShotNum;
+		}
+		else if (m_ShotNum == 2 && (m_RecordAccTime > fireIntevalDelayTime))
+		{
+			NWayBulletLaunch(5);
+			m_RecordAccTime = 0.f;
+			++m_ShotNum;
+		}
+		else if (m_ShotNum == 3)
+		{
+			m_ShotNum = 0;
+			if (m_IsLaunchRightHand)
+			{
+				m_IsLaunchRightHand = FALSE;
+			}
+			else
+			{
+				m_IsLaunchRightHand = TRUE;
+			}
+		}
+	}
+
 	return;
+}
+
+const vRESULT EnemyHandShot::NWayBulletLaunch(const _In_ INT bulletNumber)
+{
+	Vec LaunchPos;
+	Vec ShotVec;
+	if (m_IsLaunchRightHand)
+	{
+		LaunchPos = Vec(m_Pos.x + m_RightHandPos.x, m_Pos.y + m_RightHandPos.y);
+	}
+	else
+	{
+		LaunchPos = Vec(m_Pos.x + m_LeftHandPos.x, m_Pos.y + m_LeftHandPos.y);
+	}
+
+	// TODO :: 중복코드 정리.
+	// 홀수일 경우.
+	INT IsBulletNumberOdd = bulletNumber % 2;
+	if (IsBulletNumberOdd == TRUE)
+	{
+		INT shotNumber = (bulletNumber - 1) / 2 + 1;
+		for (int i = 0; i < shotNumber; ++i)
+		{
+			RotateVec(i * degreeOfOddWayLaunch, 0.f, 1.f, ShotVec.x, ShotVec.y);
+			MissileOption option1(ShotVec, 300.f, AIM_FIRE, MEDIUM);
+			MissileOption option2(ShotVec.GetXSymmetryVec(), 300.f, AIM_FIRE, MEDIUM);
+			EnemyMissile* leftBullet = GetLaunchableMissile();
+			if (leftBullet != nullptr)
+			{
+				leftBullet->Launch(LaunchPos, option1);
+			}
+
+			EnemyMissile* rightBullet = GetLaunchableMissile();
+			if (rightBullet != nullptr)
+			{
+				rightBullet->Launch(LaunchPos, option2);
+			}
+		}
+	}
+	// 짝수일 경우.
+	else
+	{
+		INT shotNumber = bulletNumber / 2;
+		for (int i = 0; i < shotNumber; ++i)
+		{
+			RotateVec(i * degreeOfEvenWayLaunch + 12.25f, 0.f, 1.f, ShotVec.x, ShotVec.y);
+			MissileOption option1(ShotVec, 300.f, AIM_FIRE, MEDIUM);
+			MissileOption option2(ShotVec.GetXSymmetryVec(), 300.f, AIM_FIRE, MEDIUM);
+			EnemyMissile* leftBullet = GetLaunchableMissile();
+			if (leftBullet != nullptr)
+			{
+				leftBullet->Launch(LaunchPos, option1);
+			}
+
+			EnemyMissile* rightBullet = GetLaunchableMissile();
+			if (rightBullet != nullptr)
+			{
+				rightBullet->Launch(LaunchPos, option2);
+			}
+		}
+	}
+
+	return WELL_PERFORMED;
 }
 
 void EnemyHandShot::Explode()

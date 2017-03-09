@@ -21,6 +21,9 @@ public :
 	Vec& operator * (const _In_ INT intForMulti);
 	Vec& operator / (const _In_ Vec &vecForDivide);
 	Vec& operator / (const _In_ INT intForDivide);
+	Vec GetMinusVec() const;
+	Vec GetYSymmetryVec() const;
+	Vec GetXSymmetryVec() const;
 
 	FLOAT x;
 	FLOAT y;
