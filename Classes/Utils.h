@@ -41,3 +41,13 @@ void DebugLogPrint(
 	const _In_ vRESULT,
 	const _In_ std::wstring,
 	const _In_ LPCTSTR);
+
+/*
+	돌리려는 각도(Degree)와 기준 벡터를 넣어주면 회전벡터를 반환해주는 함수.
+*/
+vRESULT RotateVec(
+	const _In_ FLOAT theta,
+	const _In_ FLOAT refVecX,
+	const _In_ FLOAT refVecY,
+	_Out_ FLOAT& rotateVecX,
+	_Out_ FLOAT& rotateVecY);

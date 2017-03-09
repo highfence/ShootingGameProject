@@ -94,3 +94,20 @@ void DebugLogPrint(
 #endif
 	return;
 }
+
+vRESULT RotateVec(
+	const _In_ FLOAT theta,
+	const _In_ FLOAT refVecX,
+	const _In_ FLOAT refVecY,
+	_Out_ FLOAT& rotateVecX,
+	_Out_ FLOAT& rotateVecY)
+{
+	FLOAT radian = M_PI / 180 * theta;
+	FLOAT cosVal = cos(radian);
+	FLOAT sinVal = sin(radian);
+
+	rotateVecX = refVecX * cosVal - refVecY * sinVal;
+	rotateVecY = refVecX * sinVal + refVecX * cosVal;
+
+	return WELL_PERFORMED;
+}
