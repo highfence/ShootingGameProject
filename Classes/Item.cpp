@@ -24,8 +24,8 @@ void Item::init()
 	m_FlightSpeed = 150;
 	m_SpriteRange.x = itemWidth;
 	m_SpriteRange.y = itemHeight;
-	m_ColideRange = m_SpriteRange;
-	m_Hp = 10;
+	m_ColideRange = Vec(0, 0);
+	m_Hp = 100000;
 	m_LoadedMissileNumber = 0;
 	
 	return;
@@ -99,7 +99,6 @@ BOOL Item::CheckPlayerGetItem()
 
 	if (!(x1 <= mx0 || mx1 <= x0 || y1 <= my0 || my1 <= y0))
 	{
-		m_Hp -= 10;
 		playerInfo.PlayerPowerUp();
 		m_IsEnemyReadyToDelete = TRUE;
 		return TRUE;

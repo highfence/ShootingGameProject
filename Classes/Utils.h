@@ -51,3 +51,8 @@ const vRESULT RotateVec(
 	const _In_ FLOAT refVecY,
 	_Out_ FLOAT& rotateVecX,
 	_Out_ FLOAT& rotateVecY);
+
+/*
+	INT형 값의 계승을 구하는 함수.
+*/
+INT GetPoweredValue(const _In_ INT originValue, const _In_ INT multiplier);

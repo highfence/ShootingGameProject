@@ -144,12 +144,38 @@ BOOL Enemy::FlyItem(const _In_ FLOAT dt)
 	if ((m_UnitVecX == 0 && m_UnitVecY == 0) || (m_RecordFlyTime > itemFlyTime))
 	{
 		GetUnitVec((FLOAT)(rand() % 100), (FLOAT)(rand() % 100), &m_UnitVecX, &m_UnitVecY);
+		FixUnitVecForRemainOnDisplay();
 		m_RecordFlyTime = 0.f;
 	}
 
 	m_Pos.x += m_UnitVecX * dt * m_FlightSpeed;
 	m_Pos.y += m_UnitVecY * dt * m_FlightSpeed;
 	return TRUE;
+}
+
+/*
+	아이템이 랜덤 비행을 할 때 밖으로 나가더라도 다시 화면에 들어올 수 있도록 유닛벡터를 고쳐주는 함수.
+*/
+void Enemy::FixUnitVecForRemainOnDisplay()
+{
+	INT boundaryRange = 150;
+	if (m_Pos.x < boundaryRange)
+	{
+		m_UnitVecX = fabs(m_UnitVecX);
+	}
+	else if (m_Pos.x > winWidth - boundaryRange)
+	{
+		m_UnitVecX = -fabs(m_UnitVecX);
+	}
+
+	if (m_Pos.y < boundaryRange)
+	{
+		m_UnitVecY = fabs(m_UnitVecY);
+	}
+	else if (m_Pos.y > winWidth - boundaryRange)
+	{
+		m_UnitVecY = -fabs(m_UnitVecY);
+	}
 }
 
 /*

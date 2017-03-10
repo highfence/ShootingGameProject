@@ -24,5 +24,4 @@ public :
 	ENEMY::MISSILE_TYPE m_MissileType;
 	ENEMY::MISSILE_SIZE m_MissileSize;
 	BOOL m_IsOptionCanUse;
-
 };

@@ -28,6 +28,10 @@ private :
 	const vRESULT init();
 	const vRESULT InitialImgLoad();
 	const vRESULT NWayBulletLaunch(const _In_ INT);
+	Vec GetLaunchPos() const;
+	void FindBulletAndLaunch(
+		const _In_ Vec,
+		const _In_ MissileOption);
 
 	Vec m_RightHandPos;
 	Vec m_LeftHandPos;

@@ -86,4 +86,5 @@ private :
 
 	void init();
 	void DeleteAllElementsMissileVector();
+	void FixUnitVecForRemainOnDisplay();
 };

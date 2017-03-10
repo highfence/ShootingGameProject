@@ -2,6 +2,7 @@
 #include "EnemyHandShot.h"
 #include "EffectManager.h"
 #include "EnemyManager.h"
+#include "UIManager.h"
 #include "EnemyMissile.h"
 
 const std::wstring enemyHandShotSpritePath = _T("../Resources/EnemyHandShot.png");
@@ -77,6 +78,7 @@ void EnemyHandShot::DeadProc()
 {
 	if ((!m_IsEnemyExplode) && (m_IsEnemyDead))
 	{
+		UIManager::getInstance()->PlusScore(2700);
 		Explode();
 		m_IsEnemyExplode = TRUE;
 	}
@@ -125,66 +127,66 @@ void EnemyHandShot::Fire()
 
 const vRESULT EnemyHandShot::NWayBulletLaunch(const _In_ INT bulletNumber)
 {
-	Vec LaunchPos;
-	Vec ShotVec;
-	if (m_IsLaunchRightHand)
-	{
-		LaunchPos = Vec(m_Pos.x + m_RightHandPos.x, m_Pos.y + m_RightHandPos.y);
-	}
-	else
-	{
-		LaunchPos = Vec(m_Pos.x + m_LeftHandPos.x, m_Pos.y + m_LeftHandPos.y);
-	}
+	Vec launchPos = GetLaunchPos();
+	Vec shotVec;
+	INT shotNumber;
 
-	// TODO :: 중복코드 정리.
 	// 홀수일 경우.
 	INT IsBulletNumberOdd = bulletNumber % 2;
 	if (IsBulletNumberOdd == TRUE)
 	{
-		INT shotNumber = (bulletNumber - 1) / 2 + 1;
+		shotNumber = (bulletNumber - 1) / 2 + 1;
 		for (int i = 0; i < shotNumber; ++i)
 		{
-			RotateVec(i * degreeOfOddWayLaunch, 0.f, 1.f, ShotVec.x, ShotVec.y);
-			MissileOption option1(ShotVec, 300.f, AIM_FIRE, MEDIUM);
-			MissileOption option2(ShotVec.GetXSymmetryVec(), 300.f, AIM_FIRE, MEDIUM);
-			EnemyMissile* leftBullet = GetLaunchableMissile();
-			if (leftBullet != nullptr)
-			{
-				leftBullet->Launch(LaunchPos, option1);
-			}
-
-			EnemyMissile* rightBullet = GetLaunchableMissile();
-			if (rightBullet != nullptr)
-			{
-				rightBullet->Launch(LaunchPos, option2);
-			}
+			RotateVec(i * degreeOfOddWayLaunch, 0.f, 1.f, shotVec.x, shotVec.y);
+			MissileOption optionLeft(shotVec, 300.f, AIM_FIRE, MEDIUM);
+			MissileOption optionRight(shotVec.GetXSymmetryVec(), 300.f, AIM_FIRE, MEDIUM);
+			FindBulletAndLaunch(launchPos, optionLeft);
+			FindBulletAndLaunch(launchPos, optionRight);
 		}
 	}
 	// 짝수일 경우.
 	else
 	{
-		INT shotNumber = bulletNumber / 2;
+		shotNumber = bulletNumber / 2;
 		for (int i = 0; i < shotNumber; ++i)
 		{
-			RotateVec(i * degreeOfEvenWayLaunch + 12.25f, 0.f, 1.f, ShotVec.x, ShotVec.y);
-			MissileOption option1(ShotVec, 300.f, AIM_FIRE, MEDIUM);
-			MissileOption option2(ShotVec.GetXSymmetryVec(), 300.f, AIM_FIRE, MEDIUM);
-			EnemyMissile* leftBullet = GetLaunchableMissile();
-			if (leftBullet != nullptr)
-			{
-				leftBullet->Launch(LaunchPos, option1);
-			}
-
-			EnemyMissile* rightBullet = GetLaunchableMissile();
-			if (rightBullet != nullptr)
-			{
-				rightBullet->Launch(LaunchPos, option2);
-			}
+			RotateVec(i * degreeOfEvenWayLaunch + 12.25f, 0.f, 1.f, shotVec.x, shotVec.y);
+			MissileOption optionLeft(shotVec, 300.f, AIM_FIRE, MEDIUM);
+			MissileOption optionRight(shotVec.GetXSymmetryVec(), 300.f, AIM_FIRE, MEDIUM);
+			FindBulletAndLaunch(launchPos, optionLeft);
+			FindBulletAndLaunch(launchPos, optionRight);
 		}
 	}
 
 	return WELL_PERFORMED;
 }
+
+/*
+	RightHand에서 발사할 것인지 LeftHand에서 발사할 것인지 판단하고 발사 위치를 반환해주는 함수.
+*/
+Vec EnemyHandShot::GetLaunchPos() const
+{
+	if (m_IsLaunchRightHand)
+	{
+		return Vec(m_Pos.x + m_RightHandPos.x, m_Pos.y + m_RightHandPos.y);
+	}
+
+	return Vec(m_Pos.x + m_LeftHandPos.x, m_Pos.y + m_LeftHandPos.y);
+}
+
+/*
+	미사일 풀에서 발사 가능한 미사일을 찾고 입력받은 인자에 따라 발사하는 함수.
+*/
+void EnemyHandShot::FindBulletAndLaunch(Vec launchPos, MissileOption option)
+{
+	EnemyMissile* shotBullet = GetLaunchableMissile();
+	if (shotBullet != nullptr)
+	{
+		shotBullet->Launch(launchPos, option);
+	}
+}
+
 
 void EnemyHandShot::Explode()
 {

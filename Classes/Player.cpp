@@ -215,7 +215,7 @@ void Player::DrawProc(_Inout_ HDC drawDC)
 /*
 	플레이어의 포지션을 반환해주는 함수.
 */
-const vRESULT Player::GetPosition(_Out_ Vec* vec) 
+const vRESULT Player::GetPosition(_Out_ Vec* vec) const 
 {
 	if (vec == nullptr)
 	{
@@ -380,6 +380,7 @@ INT Player::CalDirection(const _In_ INT pushedKey)
 }
 
 
+#ifdef _DEBUG
 /*
 	Debug모드에서 라벨을 출력시키는 함수.
 */
@@ -390,6 +391,7 @@ INT Player::PrintDebugLabel(_Inout_ HDC drawDC)
 	//TextOut(drawDC, m_PosX, m_PosY, DebugLabel.c_str(), wcslen(DebugLabel.c_str()));
 	return WELL_PERFORMED;
 }
+#endif
 
 /*
 	Make 8-ways Explosion when Player died.

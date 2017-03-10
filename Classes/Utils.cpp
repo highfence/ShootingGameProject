@@ -111,3 +111,14 @@ const vRESULT RotateVec(
 
 	return WELL_PERFORMED;
 }
+
+INT GetPoweredValue(const _In_ INT originValue, const _In_ INT multiplier)
+{
+	INT retval = 1;
+	for (INT i = 0; i < multiplier; ++i)
+	{
+		retval *= originValue;
+	}
+
+	return retval;
+}

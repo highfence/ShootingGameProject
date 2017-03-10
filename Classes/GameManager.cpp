@@ -5,16 +5,23 @@
 #include "Player.h"
 #include "EnemyManager.h"
 #include "EffectManager.h"
+#include "UIManager.h"
 #include "SoundManager.h"
 
 GameManager::GameManager(_Inout_ HWND hWnd, _Inout_ HINSTANCE hInstance)
-	: m_hWnd(hWnd), m_hInstance(hInstance)
+	: m_hWnd(hWnd),
+	m_hInstance(hInstance),
+	m_AccTime(0.f),
+	m_pTimer(nullptr),
+	m_pScroller(nullptr),
+	m_pPlayer(nullptr)
 {
-	m_pTimer = new MyTimer;
-	m_pScroller = new BackGroundScroller;
-	m_pPlayer = new Player;
+	m_pTimer = new MyTimer();
+	m_pScroller = new BackGroundScroller();
+	m_pPlayer = new Player();
 	m_pEnemyManager = EnemyManager::getInstance();
 	m_pEffectManager = EffectManager::getInstance();
+	m_pUIManager = UIManager::getInstance();
 	SoundManager::getInstance()->SethInstance(hInstance);
 	
 	init();
@@ -38,9 +45,15 @@ void GameManager::Update()
 {
 	m_pTimer->ProcessTime();
 	FLOAT dt = m_pTimer->GetElapsedTime();
+	m_AccTime += dt;
 
-	CalProc(dt);
-	DrawProc(dt);
+	// 60ÇÁ·¹ÀÓ
+	if (m_AccTime > 0.0167f)
+	{
+		CalProc(m_AccTime);
+		DrawProc(m_AccTime);
+		m_AccTime = 0.f;
+	}
 	return;
 }
 
@@ -53,6 +66,7 @@ void GameManager::CalProc(const _In_ FLOAT dt)
 	}
 	m_pEnemyManager->CalProc(dt);
 	m_pEffectManager->CalProc(dt);
+	m_pUIManager->CalProc(dt);
 
 	return;
 }
@@ -72,6 +86,7 @@ void GameManager::DrawProc(const _In_ FLOAT dt)
 	}
 	m_pEnemyManager->DrawProc(memoryDC);
 	m_pEffectManager->DrawProc(memoryDC);
+	m_pUIManager->DrawProc(memoryDC);
 
 	BitBlt(m_hdc, 0, 0, winWidth, winHeight, memoryDC, 0, 0, SRCCOPY);
 

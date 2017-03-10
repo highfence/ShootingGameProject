@@ -2,6 +2,7 @@
 #include "EnemyItem.h"
 #include "EffectManager.h"
 #include "EnemyManager.h"
+#include "UIManager.h"
 #include "EnemyMissile.h"
 
 const std::wstring enemyItemSpritePath = _T("../Resources/EnemyItem.png");
@@ -71,6 +72,7 @@ void EnemyItem::DeadProc()
 {
 	if ((!m_IsEnemyExplode) && (m_IsEnemyDead))
 	{
+		UIManager::getInstance()->PlusScore(300);
 		Explode();
 		m_IsEnemyExplode = TRUE;
 	}

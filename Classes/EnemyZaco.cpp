@@ -2,6 +2,7 @@
 #include "EnemyManager.h"
 #include "EnemyMissile.h"
 #include "EffectManager.h"
+#include "UIManager.h"
 #include "EnemyZaco.h"
 
 const std::wstring enemyZacoSpritePath = _T("../Resources/EnemyZaco.png");
@@ -86,6 +87,7 @@ void EnemyZaco::DeadProc()
 {
 	if ((!m_IsEnemyExplode) && (m_IsEnemyDead))
 	{
+		UIManager::getInstance()->PlusScore(300);
 		Explode();
 		m_IsEnemyExplode = TRUE;
 	}
@@ -121,7 +123,6 @@ void EnemyZaco::Fire()
 	}
 	return;
 }
-
 
 /*
 	초기화시에 이미지 로드를 담당하는 함수.

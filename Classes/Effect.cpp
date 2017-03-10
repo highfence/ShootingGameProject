@@ -7,11 +7,13 @@ Effect::Effect(const _In_ Vec createPos)
 	m_CutAccTime(0),
 	m_IsEffectDone(FALSE),
 	m_FrameNum(1),
-	m_IsDrawedOnce(FALSE)
+	m_IsDrawedOnce(FALSE),
+	// TODO :: 널포인터 생성
+	m_pSprite(nullptr)
 {
 	m_FloatSpeed = 0.f;
-	m_pSprite = new CImage;
-	m_pShade = new CImage;
+	m_pSprite = new CImage();
+	m_pShade = new CImage();
 	init();
 }
 
@@ -40,7 +42,9 @@ void Effect::init()
 
 Effect::~Effect()
 {
+	// TODO :: 널포인터까지 (Release 함수)
 	delete m_pSprite;
+	m_pSprite = nullptr;
 	delete m_pShade;
 }
 
