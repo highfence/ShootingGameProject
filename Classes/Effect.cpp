@@ -9,7 +9,8 @@ Effect::Effect(const _In_ Vec createPos)
 	m_FrameNum(1),
 	m_IsDrawedOnce(FALSE),
 	// TODO :: 널포인터 생성
-	m_pSprite(nullptr)
+	m_pSprite(nullptr),
+	m_pShade(nullptr)
 {
 	m_FloatSpeed = 0.f;
 	m_pSprite = new CImage();
@@ -28,7 +29,9 @@ Effect::Effect(
 	m_CutAccTime(0),
 	m_IsEffectDone(FALSE),
 	m_FrameNum(1),
-	m_IsDrawedOnce(FALSE)
+	m_IsDrawedOnce(FALSE),
+	m_pSprite(nullptr),
+	m_pShade(nullptr)
 {
 	m_pSprite = new CImage;
 	m_pShade = new CImage;
@@ -46,6 +49,7 @@ Effect::~Effect()
 	delete m_pSprite;
 	m_pSprite = nullptr;
 	delete m_pShade;
+	m_pShade = nullptr;
 }
 
 
@@ -61,9 +65,11 @@ void Effect::AccTime(const _In_ FLOAT dt)
 	return;
 }
 
+
 void Effect::ImgLoad(
 	const _In_ std::wstring spriteStr,
 	const _In_ std::wstring shadeStr,
+	const _In_ std::wstring fileExtension,
 	const _In_ INT frameNum)
 {
 	if (m_IsDrawedOnce == TRUE)
@@ -74,10 +80,10 @@ void Effect::ImgLoad(
 	}
 
 	std::wstring frameNumString = std::to_wstring(frameNum);
-	std::wstring spriteFrame = spriteStr + frameNumString + SpriteExtension;
+	std::wstring spriteFrame = spriteStr + frameNumString + fileExtension;
 	m_pSprite->Load(spriteFrame.c_str());
 
-	std::wstring shadeFrame = shadeStr + frameNumString + SpriteExtension;
+	std::wstring shadeFrame = shadeStr + frameNumString + fileExtension;
 	m_pShade->Load(shadeFrame.c_str());
 	return;
 }
@@ -102,7 +108,7 @@ void Effect::FrameCheck()
 	if ((m_CutAccTime > m_TimePerFrame) && (m_FrameNum <= m_MaxFrameNum))
 	{
 		++m_FrameNum;
-		ImgLoad(m_SpriteStr, m_ShadeStr, m_FrameNum);
+		ImgLoad(m_SpriteStr, m_ShadeStr, m_FileExtensionStr, m_FrameNum);
 		m_CutAccTime = 0.f;
 	}
 	else if (m_FrameNum == m_MaxFrameNum)

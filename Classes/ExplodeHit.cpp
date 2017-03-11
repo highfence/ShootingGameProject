@@ -48,6 +48,7 @@ void ExplodeHit::LoadInitialImg()
 {
 	m_SpriteStr = explodeHitSpritePath;
 	m_ShadeStr = explodeHitShadePath;
-	ImgLoad(explodeHitSpritePath, explodeHitShadePath, 1);
+	m_FileExtensionStr = explodeHitExtension;
+	ImgLoad(explodeHitSpritePath, explodeHitShadePath, explodeHitExtension, 1);
 	return;
 }

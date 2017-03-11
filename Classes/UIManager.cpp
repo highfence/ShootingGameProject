@@ -97,7 +97,7 @@ void UIManager::DrawScore(_Inout_ HDC drawDC)
 
 #pragma warning(push)
 #pragma warning(disable : 4244)
-	const Vec scoreDrawPos = Vec(200.f, winHeight - 350.f);
+	const Vec scoreDrawPos = Vec(200.f, 50.f);
 
 	for (int i = 0; i < maxNumberPos; ++i)
 	{

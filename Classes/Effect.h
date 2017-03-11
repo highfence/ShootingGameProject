@@ -21,7 +21,9 @@ public :
 
 	BOOL GetIsEffectDone() const;
 	void AccTime(const _In_ FLOAT);
+
 	void ImgLoad(
+		const _In_ std::wstring,
 		const _In_ std::wstring,
 		const _In_ std::wstring,
 		const _In_ INT);
@@ -45,6 +47,7 @@ public :
 	FLOAT m_CutAccTime;
 	std::wstring m_SpriteStr;
 	std::wstring m_ShadeStr;
+	std::wstring m_FileExtensionStr;
 
 private :
 	// 인자 없이 생성 불가.

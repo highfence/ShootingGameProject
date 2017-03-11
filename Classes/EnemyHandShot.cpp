@@ -10,7 +10,7 @@ const std::wstring enemyHandShotShadePath = _T("../Resources/EnemyHandShotS.png"
 const INT enemyHandShotSpriteWidth = 90;
 const INT enemyHandShotSpriteHeight = 74;
 const INT enemyHandShotHp = 320;
-const INT enemyHandShotLoadedMissileNumber = 30;
+const INT enemyHandShotLoadedMissileNumber = 40;
 
 const FLOAT fireIntevalDelayTime = 0.3f;
 const FLOAT fireInitialDelayTime = 1.5f;
@@ -190,7 +190,7 @@ void EnemyHandShot::FindBulletAndLaunch(Vec launchPos, MissileOption option)
 
 void EnemyHandShot::Explode()
 {
-	// TODO :: Å« Æø¹ß ±¸Çö.
+	EffectManager::getInstance()->MakeEffect(EFFECT::EXPLODE_SMOKE, m_Pos);
 	return;
 }
 

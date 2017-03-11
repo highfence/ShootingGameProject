@@ -2,6 +2,7 @@
 #include "Effect.h"
 #include "ExplodeLight.h"
 #include "ExplodeHit.h"
+#include "ExplodeSmoke.h"
 #include "EffectManager.h"
 
 EffectManager* EffectManager::_instance = nullptr;
@@ -36,8 +37,11 @@ void EffectManager::init()
 {
 	m_pEffectMakerHandler[EXPLODE_LIGHT] = &EffectManager::MakeExplodeLight;
 	m_pEffectMakerHandler[EXPLODE_HIT] = &EffectManager::MakeExplodeHit;
+	m_pEffectMakerHandler[EXPLODE_SMOKE] = &EffectManager::MakeExplodeSmoke;
+
 	m_pEffectMakerHandlerWithFloat[EXPLODE_LIGHT] = &EffectManager::MakeExplodeLightWithFloat;
 	m_pEffectMakerHandlerWithFloat[EXPLODE_HIT] = &EffectManager::MakeExplodeHitWithFloat;
+	m_pEffectMakerHandlerWithFloat[EXPLODE_SMOKE] = &EffectManager::MakeExplodeSmokeWithFloat;
 
 	return;
 }
@@ -136,6 +140,24 @@ BOOL EffectManager::MakeExplodeHitWithFloat(
 	const _In_ Vec floatVec)
 {
 	auto newEffect = new ExplodeHit(createPos, floatSpeed, floatVec);
+	m_EffectVec.push_back(newEffect);
+	return TRUE;
+}
+
+BOOL EffectManager::MakeExplodeSmoke(
+	const _In_ Vec createPos)
+{
+	auto newEffect = new ExplodeSmoke(createPos);
+	m_EffectVec.push_back(newEffect);
+	return TRUE;
+}
+
+BOOL EffectManager::MakeExplodeSmokeWithFloat(
+	const _In_ Vec createPos,
+	const _In_ FLOAT floatSpeed,
+	const _In_ Vec floatVec)
+{
+	auto newEffect = new ExplodeSmoke(createPos, floatSpeed, floatVec);
 	m_EffectVec.push_back(newEffect);
 	return TRUE;
 }

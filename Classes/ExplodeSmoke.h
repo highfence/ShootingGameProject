@@ -1,20 +1,20 @@
 #pragma once
 #include "Effect.h"
 
-class ExplodeLight : public Effect
+class ExplodeSmoke : public Effect
 {
 public :
-	ExplodeLight(const _In_ Vec);
-	ExplodeLight(
+	ExplodeSmoke(const _In_ Vec);
+	ExplodeSmoke(
 		const _In_ Vec,
 		const _In_ FLOAT,
 		const _In_ Vec);
-	~ExplodeLight();
+	~ExplodeSmoke();
 
 private :
-	// 인자 없이 생성 불가.
-	ExplodeLight();
+	ExplodeSmoke();
 
 	void init();
+	void InitialDataSubstitude();
 	void LoadInitialImg() override;
 };

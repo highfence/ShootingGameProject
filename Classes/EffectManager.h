@@ -55,6 +55,12 @@ private :
 		const _In_ FLOAT,
 		const _In_ Vec);
 
+	BOOL MakeExplodeSmoke(const _In_ Vec);
+	BOOL MakeExplodeSmokeWithFloat(
+		const _In_ Vec,
+		const _In_ FLOAT,
+		const _In_ Vec);
+
 	void init();
 	void AccTime(const _In_ FLOAT);
 	void ClearVec();
