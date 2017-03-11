@@ -2,6 +2,20 @@
 #include "Enemy.h"
 #include "EnemyMissile.h"
 
+const Vec waitingPosition = Vec(-300.f, -300.f);
+const Vec zeroVec = Vec(0.f, 0.f);
+
+Enemy::Enemy()
+	: m_Pos(waitingPosition),
+	m_AccTime(0.f),
+	m_RecordAccTime(0.f),
+	m_FlightUnitVec(zeroVec),
+	m_PlayerPos(zeroVec),
+	m_IsEnemyDead(TRUE)
+{
+	init();
+}
+
 Enemy::Enemy(
 	const _In_ Vec createPos,
 	const _In_ INT flightType,
@@ -9,12 +23,10 @@ Enemy::Enemy(
 	: 
 	m_Pos(createPos),
 	m_AccTime(0.f),
+	m_FlightUnitVec(zeroVec),
 	m_RecordAccTime(0.f),
-	m_UnitVecX(0),
-	m_UnitVecY(0),
 	m_RecordFlyTime(0.f),
-	m_PlayerX(0.f),
-	m_PlayerY(0.f),
+	m_PlayerPos(zeroVec),
 	m_FlightType(flightType),
 	m_IsEnemyDead(FALSE),
 	m_IsEnemyReadyToDelete(FALSE)
@@ -25,6 +37,8 @@ Enemy::Enemy(
 
 void Enemy::init()
 {
+	m_pSprite = new CImage();
+	m_pShadeSprite = new CImage();
 	FunctionPointerRegist();
 	return;
 }
@@ -35,6 +49,7 @@ void Enemy::init()
 */
 Enemy::~Enemy()
 {
+	ReleaseCImages();
 	DeleteAllElementsMissileVector();
 }
 
@@ -141,15 +156,15 @@ BOOL Enemy::FlyStraight(const _In_ FLOAT dt)
 BOOL Enemy::FlyItem(const _In_ FLOAT dt)
 {
 	const FLOAT itemFlyTime = 1.0f;
-	if ((m_UnitVecX == 0 && m_UnitVecY == 0) || (m_RecordFlyTime > itemFlyTime))
+	if ((m_FlightUnitVec.x == 0 && m_FlightUnitVec.y == 0) || (m_RecordFlyTime > itemFlyTime))
 	{
-		GetUnitVec((FLOAT)(rand() % 100), (FLOAT)(rand() % 100), &m_UnitVecX, &m_UnitVecY);
+		GetUnitVec((FLOAT)(rand() % 100), (FLOAT)(rand() % 100), &m_FlightUnitVec.x, &m_FlightUnitVec.y);
 		FixUnitVecForRemainOnDisplay();
 		m_RecordFlyTime = 0.f;
 	}
 
-	m_Pos.x += m_UnitVecX * dt * m_FlightSpeed;
-	m_Pos.y += m_UnitVecY * dt * m_FlightSpeed;
+	m_Pos.x += m_FlightUnitVec.x * dt * m_FlightSpeed;
+	m_Pos.y += m_FlightUnitVec.y * dt * m_FlightSpeed;
 	return TRUE;
 }
 
@@ -161,20 +176,20 @@ void Enemy::FixUnitVecForRemainOnDisplay()
 	INT boundaryRange = 150;
 	if (m_Pos.x < boundaryRange)
 	{
-		m_UnitVecX = fabs(m_UnitVecX);
+		m_FlightUnitVec.x = fabs(m_FlightUnitVec.x);
 	}
 	else if (m_Pos.x > winWidth - boundaryRange)
 	{
-		m_UnitVecX = -fabs(m_UnitVecX);
+		m_FlightUnitVec.x = -fabs(m_FlightUnitVec.x);
 	}
 
 	if (m_Pos.y < boundaryRange)
 	{
-		m_UnitVecY = fabs(m_UnitVecY);
+		m_FlightUnitVec.y = fabs(m_FlightUnitVec.y);
 	}
 	else if (m_Pos.y > winWidth - boundaryRange)
 	{
-		m_UnitVecY = -fabs(m_UnitVecY);
+		m_FlightUnitVec.y = -fabs(m_FlightUnitVec.y);
 	}
 }
 
@@ -384,3 +399,17 @@ void Enemy::CheckEnemyReadyToDelete()
 
 	return;
 }
+
+/*
+	할당된 CImage를 Delete해준다. 
+*/
+void Enemy::ReleaseCImages()
+{
+	delete m_pSprite;
+	m_pSprite = nullptr;
+	delete m_pShadeSprite;
+	m_pShadeSprite = nullptr;
+
+	return;
+}
+

@@ -15,6 +15,11 @@ const FLOAT enemyZacoMissileSpeed = 450.f;
 const INT enemyZacoLoadedMissileNumber = 5;
 const FLOAT enemyZacoColideCorrectionRange = 15;
 
+EnemyZaco::EnemyZaco()
+{
+	init();
+}
+
 EnemyZaco::EnemyZaco(
 	const _In_ Vec createPos,
 	const _In_ INT flightType,
@@ -22,8 +27,6 @@ EnemyZaco::EnemyZaco(
 	const _In_opt_ ::CreateOption flightOption)
 	: Enemy(createPos, flightType, flightVec)
 {
-	m_pSprite = new CImage;
-	m_pShadeSprite = new CImage;
 	m_Option = flightOption;
 	m_FlightSpeed = enemyZacoFlightSpeed;
 
@@ -97,12 +100,12 @@ void EnemyZaco::DeadProc()
 void EnemyZaco::Fire()
 {
 	// 플레이어보다 낮은 위치에서는 발사하지 않음.
-	if (m_Pos.y > m_PlayerY)
+	if (m_Pos.y > m_PlayerPos.y)
 	{
 		return;
 	}
 
-	const MissileOption option = MissileOption(Vec(m_PlayerX - m_Pos.x, m_PlayerY - m_Pos.y), 350, MISSILE_TYPE::AIM_FIRE, MISSILE_SIZE::SMALL);
+	const MissileOption option = MissileOption(Vec(m_PlayerPos.x - m_Pos.x, m_PlayerPos.y - m_Pos.y), 350, MISSILE_TYPE::AIM_FIRE, MISSILE_SIZE::SMALL);
 	const FLOAT initFireTime = 0.3f;
 	const FLOAT fireFrequency = 2.0f;
 	if (m_AccTime == m_RecordAccTime)

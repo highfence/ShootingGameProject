@@ -36,10 +36,9 @@ public :
 		const _In_opt_ ::CreateOption flightOption);
 
 	void CalProc(const _In_ FLOAT);
-	void MakeProc();
+	//void MakeProc();
 	void DrawProc(_Inout_ HDC);
 	void SetPlayerInfo(_Inout_ Player*);
-	std::list<Enemy*>& getEnemyList();
 	Player& getPlayerInfo();
 
 private :
@@ -50,10 +49,13 @@ private :
 	void init();
 	void AccTime(const _In_ FLOAT);
 	void Draw(_Inout_ HDC);
-	void ClearList();
 	void DistributeTime(const _In_ FLOAT);
 	void DistributePlayerInfo();
 	void SetPlayerPos(const _In_ Vec);
+	void SetEnemyMemoryPool();
+
+	template <typename T>
+	void AllocEnemyMemory(const _In_ T, const _In_ INT);
 
 	// 생성 함수 포인터 핸들러.
 	Enemy*(EnemyManager::*m_pMakeHandler[ENEMY_TYPE_NUM])(
@@ -84,7 +86,6 @@ private :
 		const _In_opt_ Vec,
 		const _In_opt_ ::CreateOption);
 
-	std::list<Enemy*> m_EnemyList;
 
 	FLOAT m_AccTime;
 	FLOAT m_RecordCreateTime;
@@ -92,4 +93,5 @@ private :
 	Player* m_pPlayerInfo;
 
 	// Enemy 메모리 풀.
+	std::vector<Enemy*> m_EnemyMemoryVector;
 };

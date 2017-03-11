@@ -9,6 +9,7 @@
 class EnemyItem : public Enemy
 {
 public : 
+	EnemyItem();
 	EnemyItem(
 		const _In_ Vec createPos,
 		const _In_ INT flightType,

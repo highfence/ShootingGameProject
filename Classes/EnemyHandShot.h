@@ -9,6 +9,7 @@
 class EnemyHandShot : public Enemy
 {
 public :
+	EnemyHandShot();
 	EnemyHandShot(
 		const _In_ Vec createPos,
 		const _In_ INT flightType,

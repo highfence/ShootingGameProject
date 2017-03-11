@@ -17,6 +17,11 @@ const FLOAT fireInitialDelayTime = 1.5f;
 const FLOAT degreeOfOddWayLaunch = 22.5f;
 const FLOAT degreeOfEvenWayLaunch = 22.5f;
 
+EnemyHandShot::EnemyHandShot()
+{
+	init();
+}
+
 EnemyHandShot::EnemyHandShot(
 	const _In_ Vec createPos,
 	const _In_ INT flightType,

@@ -42,10 +42,12 @@ EnemyManager::EnemyManager()
 */
 void EnemyManager::init()
 {
+	SetEnemyMemoryPool();
+/*
 	m_pMakeHandler[ENEMY_TYPE::ENEMY_ITEM] = &EnemyManager::MakeEnemyItem;
 	m_pMakeHandler[ENEMY_TYPE::ITEM] = &EnemyManager::MakeItem;
 	m_pMakeHandler[ENEMY_TYPE::ENEMY_ZACO] = &EnemyManager::MakeZaco;
-	m_pMakeHandler[ENEMY_TYPE::ENEMY_HAND_SHOT] = &EnemyManager::MakeHandShot;
+	m_pMakeHandler[ENEMY_TYPE::ENEMY_HAND_SHOT] = &EnemyManager::MakeHandShot;*/
 	return;
 }
 
@@ -127,9 +129,9 @@ void EnemyManager::MakeEnemyWithTime(
 		auto newEnemy = (this->*m_pMakeHandler[enemyType])(
 			createPos, flightType, flightVec, flightOption);
 
-		m_EnemyList.push_back(newEnemy);
+	/*	m_EnemyList.push_back(newEnemy);
 		m_RecordCreateTime = createTime;
-	}
+	*/}
 
 	return;
 }
@@ -146,37 +148,17 @@ void EnemyManager::MakeEnemyOneTime(
 	const _In_opt_ Vec flightVec,
 	const _In_opt_ ::CreateOption flightOption)
 {
-	auto newEnemy = (this->*m_pMakeHandler[enemyType])(
-		createPos, flightType, flightVec, flightOption);
+	//auto newEnemy = (this->*m_pMakeHandler[enemyType])(
+	//	createPos, flightType, flightVec, flightOption);
 
-	m_EnemyList.push_back(newEnemy);
 	return;
 }
 
 void EnemyManager::Draw(_Inout_ HDC drawDC)
 {
-	for (auto i : m_EnemyList)
+	for (auto i : m_EnemyMemoryVector)
 	{
 		i->DrawProc(drawDC);
-	}
-
-	return;
-}
-
-void EnemyManager::ClearList()
-{
-	std::list<Enemy*>::iterator iter = m_EnemyList.begin();
-	while (iter != m_EnemyList.end())
-	{
-		if ((*iter)->m_IsEnemyReadyToDelete)
-		{
-			delete (*iter);
-			iter = m_EnemyList.erase(iter);
-		}
-		else
-		{
-			++iter;
-		}
 	}
 
 	return;
@@ -185,8 +167,7 @@ void EnemyManager::ClearList()
 void EnemyManager::CalProc(const _In_ FLOAT dt)
 {
 	AccTime(dt);
-	MakeProc();
-	ClearList();
+	//MakeProc();
 	DistributeTime(dt);
 	DistributePlayerInfo();
 	return;
@@ -203,16 +184,12 @@ void EnemyManager::DrawProc(_Inout_ HDC drawDC)
 	return;
 }
 
-std::list<Enemy*>& EnemyManager::getEnemyList() 
-{
-	return m_EnemyList;
-}
-
 Player& EnemyManager::getPlayerInfo() 
 {
 	return *m_pPlayerInfo;
 }
 
+/*
 void EnemyManager::MakeProc()
 { 
 	CreateOption enemyItemOptionFalse((FALSE), 0, 0, 0, 0, 0);
@@ -269,10 +246,11 @@ void EnemyManager::MakeProc()
 
 	return;
 }
+*/
 
 void EnemyManager::DistributeTime(const _In_ FLOAT dt)
 {
-	for (auto i : m_EnemyList)
+	for (auto i : m_EnemyMemoryVector)
 	{
 		i->CalProc(dt);
 	}
@@ -290,10 +268,9 @@ void EnemyManager::DistributePlayerInfo()
 
 void EnemyManager::SetPlayerPos(const _In_ Vec playerPos)
 {
-	for (auto i : m_EnemyList)
+	for (auto i : m_EnemyMemoryVector)
 	{
-		i->m_PlayerX = playerPos.x;
-		i->m_PlayerY = playerPos.y;
+		i->m_PlayerPos = playerPos;
 	}
 
 	return;
@@ -302,5 +279,39 @@ void EnemyManager::SetPlayerPos(const _In_ Vec playerPos)
 void EnemyManager::SetPlayerInfo(Player* playerInfo)
 {
 	m_pPlayerInfo = playerInfo;
+	return;
+}
+
+void EnemyManager::SetEnemyMemoryPool()
+{
+	const INT enemyItemAllocTime = 5;
+	const INT ItemAllocTime = 3;
+	const INT enemyZacoAllocNumber = 15;
+	const INT enemyHandShotAllocTime = 5;
+
+	EnemyItem enemyItem();
+	Item item();
+	EnemyZaco enemyZaco();
+	EnemyHandShot enemyHandShot();
+
+	AllocEnemyMemory(enemyItem, enemyItemAllocTime);
+	AllocEnemyMemory(item, ItemAllocTime);
+	AllocEnemyMemory(enemyZaco, enemyItemAllocTime);
+	AllocEnemyMemory(enemyHandShot, enemyHandShotAllocTime);
+
+	return;
+}
+
+template <typename T>
+void EnemyManager::AllocEnemyMemory(
+	const _In_ T enemyType,
+	const _In_ INT allocTime)
+{
+	for (int i = 0; i < allocTime; ++i)
+	{
+		T* newEnemy = new T();
+		m_EnemyMemoryVector.push_back((Enemy*)newEnemy);
+	}
+	
 	return;
 }

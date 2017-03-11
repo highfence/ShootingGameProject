@@ -4,6 +4,7 @@
 class Item : public Enemy 
 {
 public :
+	Item(void);
 	Item(
 		const _In_ Vec createPos,
 		const _In_ INT flightType,
@@ -18,7 +19,6 @@ public :
 
 private :
 
-	Item();
 	void init();
 
 	BOOL CheckPlayerGetItem();

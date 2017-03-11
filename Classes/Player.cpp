@@ -250,7 +250,7 @@ void Player::CheckMissileColide()
 	{
 		if (i->GetMissileLaunched())
 		{
-			i->CheckColide();
+			//i->CheckColide();
 		}
 	}
 

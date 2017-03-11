@@ -17,7 +17,7 @@ public :
 		const _In_ FLOAT,
 		const _In_ FLOAT,
 		const _In_ FLOAT) override;
-	BOOL CheckColide();
+	//BOOL CheckColide();
 	BOOL ChangeMissileTier(const _In_ INT);
 
 private :

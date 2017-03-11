@@ -4,6 +4,7 @@
 class EnemyZaco : public Enemy
 {
 public :
+	EnemyZaco();
 	EnemyZaco(
 		const _In_ Vec createPos,
 		const _In_ INT flightType,

@@ -12,6 +12,7 @@ class EnemyMissile;
 class Enemy
 {
 public :
+	Enemy();
 	Enemy(
 		const _In_ Vec createPos,
 		const _In_ INT flightType,
@@ -33,6 +34,7 @@ public :
 	        void AccTime(const _In_ FLOAT);
 	        void LoadMissiles(const _In_ ENEMY::MISSILE_SIZE);
 	        void DrawMissiles(_Inout_ HDC);
+			void ReleaseCImages();
 
 	BOOL IsAllMissilesEndFly();
 	void CheckEnemyReadyToDelete();
@@ -43,8 +45,7 @@ public :
 	EnemyMissile* GetLaunchableMissile();
 
 	Vec		     m_Pos;
-	FLOAT	     m_PlayerX;
-	FLOAT	     m_PlayerY;
+	Vec			 m_PlayerPos;
 	INT		     m_FlightType;
 	Vec		     m_FlightVec;
 	FLOAT	     m_FlightSpeed;
@@ -57,8 +58,7 @@ public :
 	FLOAT	     m_AccTime;
 	FLOAT	     m_RecordAccTime;
 	FLOAT	     m_RecordFlyTime;
-	FLOAT	     m_UnitVecX;
-	FLOAT	     m_UnitVecY;
+	Vec			 m_FlightUnitVec;
 	BOOL		 m_IsEnemyReadyToDelete;
 	BOOL	     m_IsEnemyDead;
 	BOOL	     m_IsEnemyExplode;

@@ -2,13 +2,18 @@
 #include "Option.h"
 
 CreateOption::CreateOption(
+	const _In_opt_ Vec   InitFlightVec,
+	const _In_opt_ Vec   SecondFlightVec,
 	const _In_opt_ BOOL  IsItemLaunched,
 	const _In_opt_ FLOAT AccSpeed,
 	const _In_opt_ FLOAT InitSpeed,
 	const _In_opt_ FLOAT SlowSpeed,
 	const _In_opt_ FLOAT SlowDistance,
 	const _In_opt_ FLOAT SlowTime)
-	: m_IsItemLaunched(IsItemLaunched),
+	: 
+	m_InitFlightVec(InitFlightVec),
+	m_SecondFlightVec(SecondFlightVec),
+	m_IsItemLaunched(IsItemLaunched),
 	m_AccSpeedPerSec(AccSpeed),
 	m_InitSpeed(InitSpeed),
 	m_SlowedSpeed(SlowSpeed),

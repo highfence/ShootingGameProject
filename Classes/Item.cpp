@@ -6,14 +6,18 @@
 
 using namespace ENEMY;
 
+Item::Item(void)
+	: Enemy()
+{
+	init();
+}
+
 Item::Item(
 	const _In_ Vec createPos,
 	const _In_ INT flightType,
 	const _In_ Vec flightVec)
 	: Enemy(createPos, flightType, flightVec)
 {
-	m_pSprite = new CImage;
-	m_pShadeSprite = new CImage;
 	init();
 }
 
@@ -34,8 +38,6 @@ void Item::init()
 
 Item::~Item()
 {
-	delete m_pSprite;
-	delete m_pShadeSprite;
 }
 
 void Item::CalProc(const _In_ FLOAT dt)

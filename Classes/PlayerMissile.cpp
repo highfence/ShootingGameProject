@@ -64,32 +64,32 @@ void PlayerMissile::Fly(
 	return;
 }
 
-BOOL PlayerMissile::CheckColide()
-{
-	auto EnemyVec = EnemyManager::getInstance()->getEnemyList();
-
-	for (auto i : EnemyVec)
-	{
-		if (!i->m_IsEnemyDead)
-		{
-			if (IsColideWithEnemy(
-				i->m_Pos.x,
-				i->m_Pos.y,
-				i->m_SpriteRange.x,
-				i->m_SpriteRange.y))
-			{
-				// 面倒 贸府.
-				i->GetDamage(m_Damage, m_Pos);
-
-				// 面倒 饶 固荤老 家戈
-				m_IsMissileLaunched = FALSE;
-				return TRUE;
-			}
-		}
-	}
-
-	return FALSE;
-}
+//BOOL PlayerMissile::CheckColide()
+//{
+//	auto EnemyVec = EnemyManager::getInstance()->getEnemyList();
+//
+//	for (auto i : EnemyVec)
+//	{
+//		if (!i->m_IsEnemyDead)
+//		{
+//			if (IsColideWithEnemy(
+//				i->m_Pos.x,
+//				i->m_Pos.y,
+//				i->m_SpriteRange.x,
+//				i->m_SpriteRange.y))
+//			{
+//				// 面倒 贸府.
+//				i->GetDamage(m_Damage, m_Pos);
+//
+//				// 面倒 饶 固荤老 家戈
+//				m_IsMissileLaunched = FALSE;
+//				return TRUE;
+//			}
+//		}
+//	}
+//
+//	return FALSE;
+//}
 
 BOOL PlayerMissile::IsColideWithEnemy(
 	const _In_ FLOAT enemyPosX,

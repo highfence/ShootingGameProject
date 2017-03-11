@@ -8,6 +8,8 @@ class CreateOption
 {
 public :
 	CreateOption(
+		const _In_opt_ Vec InitFlightVec,
+		const _In_opt_ Vec SecondFlightVec, 
 		const _In_opt_ BOOL IsItemLaunched,
 		const _In_opt_ FLOAT AccSpeed,
 		const _In_opt_ FLOAT InitSpeed,
@@ -20,12 +22,13 @@ public :
 
 	CreateOption& operator=(const _In_ CreateOption);
 
+	Vec m_InitFlightVec;
+	Vec m_SecondFlightVec;
 	BOOL m_IsItemLaunched;
 	FLOAT m_AccSpeedPerSec;
 	FLOAT m_InitSpeed;
 	FLOAT m_SlowedSpeed;
 	FLOAT m_TimeToSlow;
 	FLOAT m_SlowedTime;
-
 
 };
