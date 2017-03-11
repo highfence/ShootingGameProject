@@ -14,6 +14,6 @@
 #include "Definition.h"
 #include "Utils.h"
 #include "Vec.h"
-#include "Option.h"
-#include "MissileOption.h"
+#include "CreateOption.h"
+#include "FireOption.h"
 
