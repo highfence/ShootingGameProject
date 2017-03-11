@@ -25,6 +25,7 @@ class CreateOption
 public :
 	CreateOption(
 		const _In_ Vec createPos,
+		const _In_ INT enemyHp,
 		const _In_ ENEMY::ENEMY_TYPE enemyType,
 		const _In_ ENEMY::FLIGHT_TYPE flightType,
 		const _In_ Vec flightVec,
@@ -39,6 +40,7 @@ public :
 	// Getter, Setter
 	BOOL GetIsOptionCanUse() const;
 	Vec GetCreatePos() const;
+	INT GetEnemyHp() const;
 	ENEMY::ENEMY_TYPE GetEnemyType() const;
 	ENEMY::FLIGHT_TYPE GetFlightType() const;
 	Vec GetFlightVec() const;
@@ -47,6 +49,7 @@ public :
 	GoAndSlowData GetGoAndSlowData() const;
 
 	void SetCreatePos(const _In_ Vec);
+	void SetEnemyHp(const _In_ INT);
 	void SetEnemyType(const _In_ ENEMY::ENEMY_TYPE);
 	void SetFlightType(const _In_ ENEMY::FLIGHT_TYPE);
 	void SetFlightVec(const _In_ Vec);
@@ -62,6 +65,7 @@ private :
 	*/
 	BOOL m_IsOptionCanUse;
 	Vec m_CreatePosition;
+	INT m_EnemyHp;
 	ENEMY::ENEMY_TYPE m_EnemyType;
 	ENEMY::FLIGHT_TYPE m_FlightType;
 	Vec m_FlightVec;

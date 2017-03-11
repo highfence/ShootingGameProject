@@ -3,6 +3,7 @@
 
 CreateOption::CreateOption(
 	const Vec createPos,
+	const INT enemyHp,
 	const ENEMY::ENEMY_TYPE enemyType,
 	const ENEMY::FLIGHT_TYPE flightType,
 	const Vec flightVec,
@@ -12,6 +13,7 @@ CreateOption::CreateOption(
 	: m_IsOptionCanUse(TRUE)
 {
 	SetCreatePos(createPos);
+	SetEnemyHp(enemyHp);
 	SetEnemyType(enemyType);
 	SetFlightType(flightType);
 	SetFlightVec(flightVec);
@@ -34,6 +36,7 @@ CreateOption& CreateOption::operator=(const _In_ CreateOption op)
 {
 	m_IsOptionCanUse = TRUE;
 	SetCreatePos(op.GetCreatePos());
+	SetEnemyHp(op.GetEnemyHp());
 	SetEnemyType(op.GetEnemyType());
 	SetFlightType(op.GetFlightType());
 	SetFlightVec(op.GetFlightVec());
@@ -54,6 +57,11 @@ BOOL CreateOption::GetIsOptionCanUse() const
 Vec CreateOption::GetCreatePos() const
 {
 	return m_CreatePosition;
+}
+
+INT CreateOption::GetEnemyHp() const
+{
+	return m_EnemyHp;
 }
 
 ENEMY::ENEMY_TYPE CreateOption::GetEnemyType() const
@@ -89,6 +97,11 @@ GoAndSlowData CreateOption::GetGoAndSlowData() const
 void CreateOption::SetCreatePos(const _In_ Vec createPos)
 {
 	m_CreatePosition = createPos;
+}
+
+void CreateOption::SetEnemyHp(const INT hp)
+{
+	m_EnemyHp = hp;
 }
 
 void CreateOption::SetEnemyType(const _In_ ENEMY::ENEMY_TYPE enemyType)
