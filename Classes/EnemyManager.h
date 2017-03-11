@@ -20,10 +20,11 @@ public :
 	EnemyManager();
 	~EnemyManager();
 	
+	// TODO :: 구조체는 참조자로 전달하자.
 	void ActivateEnemy(
 		const _In_ FLOAT activateTime, 
-		const _In_ CreateOption flightOption,
-		const _In_ FireOption fireOption);
+		_In_ CreateOption& flightOption,
+		_In_ FireOption& fireOption);
 
 	void CalcProc(const _In_ FLOAT);
 	//void MakeProc();
@@ -52,25 +53,25 @@ private :
 
 	// 생성 함수 포인터 핸들러.
 	BOOL(EnemyManager::*m_pActivateHandler[ENEMY_TYPE_NUM])(
-		const _In_ CreateOption,
-		const _In_ FireOption);
+		_In_ CreateOption&,
+		_In_ FireOption&);
 
 	// 함수 포인터에 들어갈 함수
 	BOOL ActivateEnemyItem(
-		const _In_ CreateOption,
-		const _In_ FireOption);
+		_In_ CreateOption&,
+		_In_ FireOption&);
 
 	BOOL ActivateItem(
-		const _In_ CreateOption,
-		const _In_ FireOption);
+		_In_ CreateOption&,
+		_In_ FireOption&);
 
 	BOOL ActivateZaco(
-		const _In_ CreateOption,
-		const _In_ FireOption);
+		_In_ CreateOption&,
+		_In_ FireOption&);
 
 	BOOL ActivateHandShot(
-		const _In_ CreateOption,
-		const _In_ FireOption);
+		_In_ CreateOption&,
+		_In_ FireOption&);
 
 	FLOAT m_AccTime;
 	FLOAT m_RecordCreateTime;

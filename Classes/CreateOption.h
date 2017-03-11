@@ -36,7 +36,7 @@ public :
 	CreateOption();
 	~CreateOption();
 
-	CreateOption& operator=(const _In_ CreateOption);
+	CreateOption& operator=(const _In_ CreateOption&);
 
 	// Getter, Setter
 	BOOL GetIsOptionCanUse() const;

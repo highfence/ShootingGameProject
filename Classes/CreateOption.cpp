@@ -37,7 +37,7 @@ CreateOption::~CreateOption()
 
 }
 
-CreateOption& CreateOption::operator=(const _In_ CreateOption op)
+CreateOption& CreateOption::operator=(const _In_ CreateOption& op)
 {
 	m_IsOptionCanUse = TRUE;
 	SetCreatePos(op.GetCreatePos());

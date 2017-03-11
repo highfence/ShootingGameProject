@@ -62,8 +62,8 @@ void EnemyManager::RegisterFunctionPointer()
 	EnemyItem을 만들어주는 함수 포인터에 등록될 함수.
 */
 BOOL EnemyManager::ActivateEnemyItem(
-	const _In_ CreateOption createOption,
-	const _In_ FireOption fireOption)
+	_In_ CreateOption& createOption,
+	_In_ FireOption& fireOption)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_ITEM);
 	newEnemy->Activate(createOption, fireOption);
@@ -74,8 +74,8 @@ BOOL EnemyManager::ActivateEnemyItem(
 	Item을 만드는 함수 포인터에 등록될 함수.
 */
 BOOL EnemyManager::ActivateItem(
-	const _In_ CreateOption createOption,
-	const _In_ FireOption fireOption)
+	_In_ CreateOption& createOption,
+	_In_ FireOption& fireOption)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ITEM);
 	newEnemy->Activate(createOption, fireOption);
@@ -86,8 +86,8 @@ BOOL EnemyManager::ActivateItem(
 	EnemyZaco를 만드는 함수 포인터에 등록될 함수.
 */
 BOOL EnemyManager::ActivateZaco(
-	const _In_ CreateOption createOption,
-	const _In_ FireOption fireOption)
+	_In_ CreateOption& createOption,
+	_In_ FireOption& fireOption)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_ZACO);
 	newEnemy->Activate(createOption, fireOption);
@@ -98,8 +98,8 @@ BOOL EnemyManager::ActivateZaco(
 	EnemyHandShot를 만드는 함수 포인터에 등록될 함수.
 */
 BOOL EnemyManager::ActivateHandShot(
-	const _In_ CreateOption createOption,
-	const _In_ FireOption fireOption)
+	_In_ CreateOption& createOption,
+	_In_ FireOption& fireOption)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_HAND_SHOT);
 	newEnemy->Activate(createOption, fireOption);
@@ -119,8 +119,8 @@ void EnemyManager::AccTime(const _In_ FLOAT dt)
 
 void EnemyManager::ActivateEnemy(
 	const _In_ FLOAT activateTime,
-	const _In_ CreateOption createOption,
-	const _In_opt_ FireOption fireOption)
+	_In_ CreateOption& createOption,
+	_In_ FireOption& fireOption)
 {
 	if ((m_AccTime > activateTime) && (m_RecordCreateTime < activateTime))
 	{

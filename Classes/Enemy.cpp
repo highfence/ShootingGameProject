@@ -372,7 +372,7 @@ void Enemy::DeleteAllElementsMissileVector()
 /*
 	비활성화된 Enemy를 활성화 시켜준다.
 */
-void Enemy::Activate(CreateOption createOption, FireOption fireOption)
+void Enemy::Activate(CreateOption& createOption, FireOption& fireOption)
 {
 	SetIsEnemyActivated(TRUE);
 	SetCreateOption(createOption);
