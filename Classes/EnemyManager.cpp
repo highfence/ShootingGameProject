@@ -258,7 +258,7 @@ void EnemyManager::MakeProc()
 	FLOAT enemyHandShotCreateTime = 15.f;
 	MakeEnemyWithTime(enemyHandShotCreateTime, ENEMY_HAND_SHOT, Vec(650.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowQuiteLong);
 	MakeEnemyWithTime(enemyHandShotCreateTime + 4.f, ENEMY_HAND_SHOT, Vec(250.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowQuiteLong);
-	MakeEnemyWithTime(enemyHandShotCreateTime + 6.5f, ENEMY_HAND_SHOT, Vec(550.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowQuiteLong);
+	MakeEnemyWithTime(enemyHandShotCreateTime + 7.5f, ENEMY_HAND_SHOT, Vec(550.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowQuiteLong);
 
 	FLOAT enemyItemSecondCreateTime = 19.5f;
 	MakeEnemyWithTime(enemyItemSecondCreateTime, ENEMY_ITEM, Vec(450.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemFalse);

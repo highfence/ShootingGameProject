@@ -6,6 +6,7 @@ const std::wstring explodeSmokeShadePath = _T("../Resources/FX/ExplodeSmokeS_0")
 const std::wstring explodeSmokeFileExtension = _T(".gif");
 const INT explodeSmokeWidth = 82;
 const INT explodeSmokeHeight = 72;
+const FLOAT explodeSmokeFrameTime = 0.1f;
 const INT explodeSmokeMaxFrameNum = 8;
 
 ExplodeSmoke::ExplodeSmoke(const _In_ Vec createPos)
@@ -48,7 +49,7 @@ void ExplodeSmoke::InitialDataSubstitude()
 {
 	m_Width = explodeSmokeWidth;
 	m_Height = explodeSmokeHeight;
-	m_TimePerFrame = explodeLightFrameTime;
+	m_TimePerFrame = explodeSmokeFrameTime;
 	m_MaxFrameNum = explodeSmokeMaxFrameNum;
 	return;
 }

@@ -61,6 +61,12 @@ private :
 		const _In_ FLOAT,
 		const _In_ Vec);
 
+	BOOL MakeExplodeArc(const _In_ Vec);
+	BOOL MakeExplodeArcWithFloat(
+		const _In_ Vec,
+		const _In_ FLOAT,
+		const _In_ Vec);
+
 	void init();
 	void AccTime(const _In_ FLOAT);
 	void ClearVec();
