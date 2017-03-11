@@ -90,4 +90,6 @@ private :
 	FLOAT m_RecordCreateTime;
 	
 	Player* m_pPlayerInfo;
+
+	// Enemy 메모리 풀.
 };
