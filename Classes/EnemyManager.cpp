@@ -176,9 +176,9 @@ void EnemyManager::CalProc(const _In_ FLOAT dt)
 void EnemyManager::DrawProc(_Inout_ HDC drawDC)
 {
 #ifdef _DEBUG
-	SetTextAlign(drawDC, TA_LEFT);
-	std::wstring DebugLabel = _T("Enemy List Size : ") + std::to_wstring(m_EnemyList.size());
-	TextOut(drawDC, 10, 10, DebugLabel.c_str(), wcslen(DebugLabel.c_str()));
+	//SetTextAlign(drawDC, TA_LEFT);
+	//std::wstring DebugLabel = _T("Enemy List Size : ") + std::to_wstring(m_EnemyList.size());
+	//TextOut(drawDC, 10, 10, DebugLabel.c_str(), wcslen(DebugLabel.c_str()));
 #endif
 	Draw(drawDC);
 	return;
@@ -286,25 +286,19 @@ void EnemyManager::SetEnemyMemoryPool()
 {
 	const INT enemyItemAllocTime = 5;
 	const INT ItemAllocTime = 3;
-	const INT enemyZacoAllocNumber = 15;
+	const INT enemyZacoAllocTime = 15;
 	const INT enemyHandShotAllocTime = 5;
 
-	EnemyItem enemyItem();
-	Item item();
-	EnemyZaco enemyZaco();
-	EnemyHandShot enemyHandShot();
-
-	AllocEnemyMemory(enemyItem, enemyItemAllocTime);
-	AllocEnemyMemory(item, ItemAllocTime);
-	AllocEnemyMemory(enemyZaco, enemyItemAllocTime);
-	AllocEnemyMemory(enemyHandShot, enemyHandShotAllocTime);
+	AllocEnemyMemory<EnemyItem>(enemyItemAllocTime);
+	AllocEnemyMemory<Item>(ItemAllocTime);
+	AllocEnemyMemory<EnemyZaco>(enemyZacoAllocTime);
+	AllocEnemyMemory<EnemyHandShot>(enemyHandShotAllocTime);
 
 	return;
 }
 
 template <typename T>
 void EnemyManager::AllocEnemyMemory(
-	const _In_ T enemyType,
 	const _In_ INT allocTime)
 {
 	for (int i = 0; i < allocTime; ++i)

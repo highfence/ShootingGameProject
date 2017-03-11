@@ -55,7 +55,7 @@ private :
 	void SetEnemyMemoryPool();
 
 	template <typename T>
-	void AllocEnemyMemory(const _In_ T, const _In_ INT);
+	void AllocEnemyMemory(const _In_ INT);
 
 	// 생성 함수 포인터 핸들러.
 	Enemy*(EnemyManager::*m_pMakeHandler[ENEMY_TYPE_NUM])(
