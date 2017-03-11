@@ -27,7 +27,7 @@ EnemyZaco::EnemyZaco(
 	const _In_opt_ ::CreateOption flightOption)
 	: Enemy(createPos, flightType, flightVec)
 {
-	m_Option = flightOption;
+	m_CreateOption = flightOption;
 	m_FlightSpeed = enemyZacoFlightSpeed;
 
 	vRESULT retval = init();
@@ -80,7 +80,7 @@ void EnemyZaco::Explode()
 	EffectManager::getInstance()->MakeEffect(
 		EFFECT::EFFECT_TYPE::EXPLODE_LIGHT,
 		m_Pos,
-		m_Option.m_InitSpeed,
+		m_CreateOption.m_InitSpeed,
 		m_FlightVec);
 
 	return;

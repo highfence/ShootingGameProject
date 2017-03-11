@@ -200,9 +200,6 @@ void Player::CalProc(const _In_ BYTE* keyByte, const _In_ FLOAT dt)
 	MissileFly(dt);
 	CheckMissileColide();
 
-	// EnemyManager에게 자신의 위치 정보 전달.
-	EnemyManager::getInstance()->SetPlayerInfo(this);
-
 	return;
 }
 
@@ -244,6 +241,9 @@ BOOL Player::GetIsPlayerAlived() const
 	return m_IsPlayerAlive;
 }
 
+/*
+	발사된 미사일이 적기에 맞았는지 확인해주는 함수.
+*/
 void Player::CheckMissileColide()
 {
 	for (auto i : m_MissileVec)

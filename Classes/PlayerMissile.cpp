@@ -25,7 +25,6 @@ PlayerMissile::~PlayerMissile()
 }
 
 /*
-	InitialImgLoad
 	init에서 호출. 
 	맨 처음 이미지를 로드해주는 함수.
 */
@@ -37,6 +36,9 @@ INT PlayerMissile::InitialImgLoad()
 	return WELL_PERFORMED;
 }
 
+/*
+	입력받은 방향과 속도로 자신의 위치를 계산하는 함수.
+*/
 void PlayerMissile::Fly(
 	const _In_ FLOAT dt,
 	const _In_ FLOAT vecX,
@@ -64,51 +66,19 @@ void PlayerMissile::Fly(
 	return;
 }
 
-//BOOL PlayerMissile::CheckColide()
-//{
-//	auto EnemyVec = EnemyManager::getInstance()->getEnemyList();
-//
-//	for (auto i : EnemyVec)
-//	{
-//		if (!i->m_IsEnemyDead)
-//		{
-//			if (IsColideWithEnemy(
-//				i->m_Pos.x,
-//				i->m_Pos.y,
-//				i->m_SpriteRange.x,
-//				i->m_SpriteRange.y))
-//			{
-//				// 충돌 처리.
-//				i->GetDamage(m_Damage, m_Pos);
-//
-//				// 충돌 후 미사일 소멸
-//				m_IsMissileLaunched = FALSE;
-//				return TRUE;
-//			}
-//		}
-//	}
-//
-//	return FALSE;
-//}
-
-BOOL PlayerMissile::IsColideWithEnemy(
-	const _In_ FLOAT enemyPosX,
-	const _In_ FLOAT enemyPosY,
-	const _In_ FLOAT enemyWidth,
-	const _In_ FLOAT enemyHeight)
+/*
+	충돌이 일어났는지 확인하고 일어났다면 데미지를 주고 비행을 끝낸다.
+*/
+BOOL PlayerMissile::CheckColide()
 {
-	FLOAT enemyX1 = enemyPosX - enemyWidth / 2 + colideCorrectionPixel;
-	FLOAT enemyY1 = enemyPosY - enemyHeight / 2 + colideCorrectionPixel;
-	FLOAT enemyX2 = enemyPosX + enemyWidth / 2 - colideCorrectionPixel;
-	FLOAT enemyY2 = enemyPosY + enemyHeight / 2 - colideCorrectionPixel;
-
-	FLOAT thisX1 = m_Pos.x - m_Width / 2;
-	FLOAT thisY1 = m_Pos.y - m_Height / 2;
-	FLOAT thisX2 = m_Pos.x + m_Width / 2;
-	FLOAT thisY2 = m_Pos.y + m_Height / 2;
-
-	if (!(thisX2 < enemyX1 || enemyX2 < thisX1 || thisY2 < enemyY1 || enemyY2 < thisY1))
+	Enemy* i = EnemyManager::getInstance()->FindEnemyColideWith(m_Pos, Vec(m_Width, m_Height));
+	if (i != nullptr)
 	{
+		// 충돌 처리.
+		i->GetDamage(m_Damage, m_Pos);
+
+		// 충돌 후 미사일 소멸
+		m_IsMissileLaunched = FALSE;
 		return TRUE;
 	}
 

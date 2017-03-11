@@ -22,6 +22,11 @@ CreateOption::CreateOption(
 	SetGoAndSlowData(goAndSlowData);
 }
 
+CreateOption::CreateOption(const std::nullptr_t)
+{
+	m_IsOptionCanUse = FALSE;
+}
+
 CreateOption::CreateOption()
 {
 	m_IsOptionCanUse = FALSE;

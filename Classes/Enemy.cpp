@@ -6,7 +6,9 @@ const Vec waitingPosition = Vec(-300.f, -300.f);
 const Vec zeroVec = Vec(0.f, 0.f);
 
 Enemy::Enemy()
-	: m_Pos(waitingPosition),
+	:
+	m_IsEnemyActivated(FALSE),
+	m_Pos(waitingPosition),
 	m_AccTime(0.f),
 	m_RecordAccTime(0.f),
 	m_FlightUnitVec(zeroVec),
@@ -16,24 +18,6 @@ Enemy::Enemy()
 	init();
 }
 
-Enemy::Enemy(
-	const _In_ Vec createPos,
-	const _In_ INT flightType,
-	const _In_opt_ Vec flightVec)
-	: 
-	m_Pos(createPos),
-	m_AccTime(0.f),
-	m_FlightUnitVec(zeroVec),
-	m_RecordAccTime(0.f),
-	m_RecordFlyTime(0.f),
-	m_PlayerPos(zeroVec),
-	m_FlightType(flightType),
-	m_IsEnemyDead(FALSE),
-	m_IsEnemyReadyToDelete(FALSE)
-{
-	m_FlightVec = flightVec;
-	init();
-}
 
 void Enemy::init()
 {
@@ -88,7 +72,7 @@ EnemyMissile * Enemy::GetLaunchableMissile()
 	return nullptr;
 }
 
-void Enemy::CalProc(const _In_ FLOAT dt)
+void Enemy::CalcProc(const _In_ FLOAT dt)
 {
 	if (!CheckDead())
 	{
@@ -102,12 +86,17 @@ void Enemy::CalProc(const _In_ FLOAT dt)
 	}
 
 	MissileFly(dt);
-	CheckEnemyReadyToDelete();
 	return;
 }
 
 void Enemy::DrawProc(_Inout_ HDC drawDC)
 {
+	// 비활성화 상태라면 바로 return
+	if (!GetIsEnemyActivated())
+	{
+		return;
+	}
+
 	// Enemy가 죽어도 미사일은 그리도록.
 	if (!m_IsEnemyDead)
 	{
@@ -117,12 +106,18 @@ void Enemy::DrawProc(_Inout_ HDC drawDC)
 	return;
 }
 
+/*
+	FlightHandler에 연결되어 있는 함수를 활성화시켜주는 함수.
+*/
 void Enemy::Fly(const _In_ FLOAT dt)
 {
-	(this->*m_pFlightHandler[m_FlightType])(dt);
+	(this->*m_pFlightHandler[m_CreateOption.GetFlightType()])(dt);
 	return;
 }
 
+/*
+	소유하고 있는 미사일들을 이동시키는 함수.
+*/
 void Enemy::MissileFly(const _In_ FLOAT dt)
 {
 	for (auto i : m_MissileVec)
@@ -144,8 +139,10 @@ void Enemy::MissileFly(const _In_ FLOAT dt)
 */
 BOOL Enemy::FlyStraight(const _In_ FLOAT dt)
 {
-	m_Pos.x += m_FlightVec.x * m_FlightSpeed * dt;
-	m_Pos.y += m_FlightVec.y * m_FlightSpeed * dt;
+	Vec flightVec = m_CreateOption.GetFlightVec();
+	FLOAT flightSpeed = m_CreateOption.GetFlightSpeed();
+	m_Pos.x += flightVec.x * flightSpeed * dt;
+	m_Pos.y += flightVec.y * flightSpeed * dt;
 	return TRUE;
 }
 
@@ -156,15 +153,17 @@ BOOL Enemy::FlyStraight(const _In_ FLOAT dt)
 BOOL Enemy::FlyItem(const _In_ FLOAT dt)
 {
 	const FLOAT itemFlyTime = 1.0f;
-	if ((m_FlightUnitVec.x == 0 && m_FlightUnitVec.y == 0) || (m_RecordFlyTime > itemFlyTime))
+	if ((m_FlightUnitVec.x == 0 && m_FlightUnitVec.y == 0)
+		|| (m_RecordFlyTime > itemFlyTime))
 	{
 		GetUnitVec((FLOAT)(rand() % 100), (FLOAT)(rand() % 100), &m_FlightUnitVec.x, &m_FlightUnitVec.y);
 		FixUnitVecForRemainOnDisplay();
 		m_RecordFlyTime = 0.f;
 	}
 
-	m_Pos.x += m_FlightUnitVec.x * dt * m_FlightSpeed;
-	m_Pos.y += m_FlightUnitVec.y * dt * m_FlightSpeed;
+	FLOAT flightSpeed = m_CreateOption.GetFlightSpeed();
+	m_Pos.x += m_FlightUnitVec.x * dt * flightSpeed;
+	m_Pos.y += m_FlightUnitVec.y * dt * flightSpeed;
 	return TRUE;
 }
 
@@ -198,9 +197,10 @@ void Enemy::FixUnitVecForRemainOnDisplay()
 */
 BOOL Enemy::FlyAccelerate(const _In_ FLOAT dt)
 {
-	FLOAT currentSpeed = (m_Option.m_InitSpeed + m_Option.m_AccSpeedPerSec * m_AccTime);
-	m_Pos.x += m_FlightVec.x * currentSpeed * dt;
-	m_Pos.y += m_FlightVec.y * currentSpeed * dt;
+	CreateOption op = GetCreateOption();
+	FLOAT currentSpeed = (op.GetFlightSpeed() + op.GetAccFlightSpeed() * m_AccTime);
+	m_Pos.x += op.GetFlightVec().x * currentSpeed * dt;
+	m_Pos.y += op.GetFlightVec().y * currentSpeed * dt;
 	return TRUE;
 }
 
@@ -209,17 +209,22 @@ BOOL Enemy::FlyAccelerate(const _In_ FLOAT dt)
 */
 BOOL Enemy::FlyGoAndSlow(const _In_ FLOAT dt)
 {
-	// 누적 시간이 m_TimeToSlow와 m_TimeToSlow + m_SlowedTime 사이일 경우 느린 비행.
-	if ((m_AccTime < m_Option.m_TimeToSlow + m_Option.m_SlowedTime) 
-		&& (m_AccTime > m_Option.m_TimeToSlow))
+	CreateOption op = GetCreateOption();
+	GoAndSlowData data = op.GetGoAndSlowData();
+
+	// 누적 시간이 SlowDownStartTime과 SlowDownStartTime + SlowDonwDurationTime사이일 경우 느린 비행.
+	if ((m_AccTime < data.SlowDownStartTime + data.SlowDownDurationTime) 
+		&& (m_AccTime > data.SlowDownStartTime))
 	{
-		m_Pos.x += m_FlightVec.x * m_Option.m_SlowedSpeed * dt;
-		m_Pos.y += m_FlightVec.y * m_Option.m_SlowedSpeed * dt;
+		m_Pos.x += data.SlowDownMoveVec.x * data.SlowDownMoveSpeed * dt;
+		m_Pos.y += data.SlowDownMoveVec.y * data.SlowDownMoveSpeed * dt;
 	}
 	else
 	{
-		m_Pos.x += m_FlightVec.x * m_Option.m_InitSpeed * dt;
-		m_Pos.y += m_FlightVec.y * m_Option.m_InitSpeed * dt;
+		Vec flightVec = op.GetFlightVec();
+		FLOAT flightSpeed = op.GetFlightSpeed();
+		m_Pos.x += flightVec.x * flightSpeed * dt;
+		m_Pos.y += flightVec.y * flightSpeed * dt;
 	}
 
 	return TRUE;
@@ -230,8 +235,12 @@ BOOL Enemy::FlyGoAndSlow(const _In_ FLOAT dt)
 */
 BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
 {
-	missile->Fly(dt, 0, 1, m_MissileSpeed);
-	missile->CheckColideWithPlayer();
+	FireOption op;
+	if ((op = GetFireOption()).GetIsOptionCanUse())
+	{
+		missile->Fly(dt, 0, 1, op.GetMissileSpeed);
+		missile->CheckColideWithPlayer();
+	}
 	return TRUE;
 }
 
@@ -241,13 +250,13 @@ BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
 */
 BOOL Enemy::MissileFlyAimed(EnemyMissile* missile, const FLOAT dt)
 {
-	MissileOption option = missile->GetOption();
-	if (!option.IsOptionCanUse())
+	FireOption option = missile->GetOption();
+	if (!option.GetIsOptionCanUse())
 	{
 		return FALSE;
 	}
 
-	missile->Fly(dt, option.m_MissileVec.x, option.m_MissileVec.y, option.m_MissileSpeed);
+	missile->Fly(dt, option.GetMissileVec().x, option.GetMissileVec().y, option.GetMissileSpeed());
 	missile->CheckColideWithPlayer();
 
 	return TRUE;
@@ -279,29 +288,21 @@ BOOL Enemy::CheckEnemyIsOnDisplay()
 }
 
 /*
-	m_FlightVec에 맞도록 CImage를 회전시켜주는 함수.
-	Enemy 상속 클래스에서 호출.
+	Enemy에게 데미지를 주는 함수.
+	Enemy가 맞을 때 이펙트가 있어야하는 경우는 상속받은 클래스에서 재정의 해주어야 함.
 */
-INT Enemy::RotateAccordWithVec()
-{
-	// TODO :: CImage 회전 함수.
-
-	return WELL_PERFORMED;
-}
-
-const vRESULT Enemy::GetDamage(const _In_ INT damage, const _In_ Vec playerMissile)
+void Enemy::GetDamage(const _In_ INT damage, const _In_ Vec playerMissile)
 {
 	m_Hp -= damage;
-
 	if (m_Hp <= 0)
 	{
 		m_IsEnemyDead = TRUE;
 	}
-	
-	return WELL_PERFORMED;
 }
 
-// Enemy안에 시간을 누적해주는 함수.
+/*
+	Enemy안에 시간을 누적해주는 함수.
+*/
 void Enemy::AccTime(const _In_ FLOAT dt)
 {
 	m_AccTime += dt;
@@ -310,7 +311,9 @@ void Enemy::AccTime(const _In_ FLOAT dt)
 	return;
 }
 
-// 자신이 죽었는지 아닌지 판단하는 함수. 죽었다면 TRUE를 반환.
+/*
+	자신이 죽었는지 아닌지 판단하는 함수. 죽었다면 TRUE를 반환.
+*/
 BOOL Enemy::CheckDead()
 {
 	if (m_Hp <= 0)
@@ -324,7 +327,9 @@ BOOL Enemy::CheckDead()
 	}
 }
 
-// 미사일들을 적재하는 함수. Enemy를 상속받는 클래스의 init에서 호출.
+/*
+	미사일들을 적재하는 함수. Enemy를 상속받는 클래스의 init에서 호출.
+*/
 void Enemy::LoadMissiles(const _In_ ENEMY::MISSILE_SIZE missileSize)
 {
 	for (int i = 0; i < m_LoadedMissileNumber; ++i)
@@ -365,6 +370,30 @@ void Enemy::DeleteAllElementsMissileVector()
 }
 
 /*
+	비활성화된 Enemy를 활성화 시켜준다.
+*/
+void Enemy::Activate(CreateOption createOption, FireOption fireOption)
+{
+	SetIsEnemyActivated(TRUE);
+	SetCreateOption(createOption);
+	SetFireOption(fireOption);
+	if (GetCreateOption().GetIsOptionCanUse())
+	{
+		m_Pos = GetCreateOption().GetCreatePos();
+	}
+}
+
+/*
+	활성화된 Enemy를 다시 비활성화해주는 함수.
+*/
+void Enemy::Deactivate()
+{
+	SetIsEnemyActivated(FALSE);
+	SetCreateOption(nullptr);
+	SetFireOption(nullptr);
+}
+
+/*
 	미사일의 비행이 모두 끝났는지를 반환해주는 함수.
 */
 BOOL Enemy::IsAllMissilesEndFly()
@@ -381,26 +410,6 @@ BOOL Enemy::IsAllMissilesEndFly()
 }
 
 /*
-	Enemy가 지워져도 좋은 상태인지 확인한다.
-	IsAllMissilesEndFly가 TRUE이고, EnemyDead이거나 화면상에 없으면 Delete 준비가 완료된 상태이다.
-*/
-void Enemy::CheckEnemyReadyToDelete()
-{
-	// 미사일이 Fly를 끝내지 못했다면 그냥 return.
-	if (!IsAllMissilesEndFly())
-	{
-		return;
-	}
-	// Enemy가 Dead상태이거나 화면상에 없을 경우 delete ready.
-	if (m_IsEnemyDead || !CheckEnemyIsOnDisplay())
-	{
-		m_IsEnemyReadyToDelete = TRUE;
-	}
-
-	return;
-}
-
-/*
 	할당된 CImage를 Delete해준다. 
 */
 void Enemy::ReleaseCImages()
@@ -413,3 +422,55 @@ void Enemy::ReleaseCImages()
 	return;
 }
 
+/*
+	Getter, Setter Zone
+*/
+BOOL Enemy::GetIsEnemyActivated() const
+{
+	return m_IsEnemyActivated;
+}
+
+CreateOption Enemy::GetCreateOption() const
+{
+	return m_CreateOption;
+}
+
+FireOption Enemy::GetFireOption() const
+{
+	return m_FireOption;
+}
+
+Vec Enemy::GetPosition() const
+{
+	return m_Pos;
+}
+
+Vec Enemy::GetColideRange() const
+{
+	return m_ColideRange;
+}
+
+void Enemy::SetIsEnemyActivated(const BOOL input)
+{
+	m_IsEnemyActivated = input;
+}
+
+void Enemy::SetCreateOption(const CreateOption option)
+{
+	m_CreateOption = option;
+}
+
+void Enemy::SetFireOption(const FireOption option)
+{
+	m_FireOption = option;
+}
+
+void Enemy::SetPosition(const Vec position)
+{
+	m_Pos = position;
+}
+
+void Enemy::SetColideRange(const Vec range)
+{
+	m_ColideRange = range;
+}

@@ -122,3 +122,33 @@ INT GetPoweredValue(const _In_ INT originValue, const _In_ INT multiplier)
 
 	return retval;
 }
+
+BOOL IsObjectColided(
+	const _In_ Vec pos1,
+	const _In_ Vec range1,
+	const _In_ Vec pos2,
+	const _In_ Vec range2
+)
+{
+	Vec obj1RightTop, obj1LeftBottom;
+	obj1RightTop.x = pos1.x - range1.x / 2;
+	obj1RightTop.y = pos1.y - range1.y / 2;
+	obj1LeftBottom.x = pos1.x + range1.x / 2;
+	obj1LeftBottom.y = pos1.y + range1.y / 2;
+
+	Vec obj2RightTop, obj2LeftBottom;
+	obj2RightTop.x = pos2.x - range2.x / 2;
+	obj2RightTop.y = pos2.y - range2.y / 2;
+	obj2LeftBottom.x = pos2.x + range2.x / 2;
+	obj2LeftBottom.y = pos2.y + range2.y / 2;
+
+	if (!(obj2LeftBottom.x < obj1RightTop.x
+		|| obj1LeftBottom.x < obj2RightTop.x 
+		|| obj2LeftBottom.y < obj1RightTop.y
+		|| obj1LeftBottom.y < obj2RightTop.y))
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}

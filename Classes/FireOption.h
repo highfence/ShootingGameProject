@@ -7,7 +7,6 @@
 class FireOption
 {
 public :
-	FireOption();
 	FireOption(
 		const _In_ ENEMY::FIRE_TYPE fireType,
 		const _In_ ENEMY::MISSILE_TYPE missileType,
@@ -16,6 +15,8 @@ public :
 		const _In_ FLOAT accMissileSpeed,
 		const _In_ FLOAT waitingTime,
 		const _In_ Vec missileVec);
+	FireOption(const _In_ std::nullptr_t);
+	FireOption();
 	~FireOption();
 
 	FireOption& operator=(const _In_ FireOption);
@@ -23,22 +24,22 @@ public :
 	/*
 		Getter, Setter
 	*/
-	BOOL getIsOptionCanUse() const;
-	ENEMY::FIRE_TYPE getFireType() const;
-	ENEMY::MISSILE_TYPE getMissileType() const;
-	ENEMY::MISSILE_SIZE getMissileSize() const;
-	FLOAT getMissileSpeed() const;
-	FLOAT getAccMissileSpeed() const;
-	FLOAT getWaitingTime() const;
-	Vec getMissileVec() const;
+	BOOL GetIsOptionCanUse() const;
+	ENEMY::FIRE_TYPE GetFireType() const;
+	ENEMY::MISSILE_TYPE GetMissileType() const;
+	ENEMY::MISSILE_SIZE GetMissileSize() const;
+	FLOAT GetMissileSpeed() const;
+	FLOAT GetAccMissileSpeed() const;
+	FLOAT GetWaitingTime() const;
+	Vec GetMissileVec() const;
 
-	void setFireType(const _In_ ENEMY::FIRE_TYPE);
-	void setMissileType(const _In_ ENEMY::MISSILE_TYPE);
-	void setMissileSize(const _In_ ENEMY::MISSILE_SIZE);
-	void setMissileSpeed(const _In_ FLOAT);
-	void setAccMissileSpeed(const _In_ FLOAT);
-	void setWaitingTime(const _In_ FLOAT);
-	void setMissileVec(const _In_ Vec);
+	void SetFireType(const _In_ ENEMY::FIRE_TYPE);
+	void SetMissileType(const _In_ ENEMY::MISSILE_TYPE);
+	void SetMissileSize(const _In_ ENEMY::MISSILE_SIZE);
+	void SetMissileSpeed(const _In_ FLOAT);
+	void SetAccMissileSpeed(const _In_ FLOAT);
+	void SetWaitingTime(const _In_ FLOAT);
+	void SetMissileVec(const _In_ Vec);
 
 private :
 

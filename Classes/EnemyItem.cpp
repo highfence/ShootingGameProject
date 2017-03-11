@@ -28,7 +28,7 @@ EnemyItem::EnemyItem(
 {
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage; 
-	m_Option = flightOption;
+	m_CreateOption = flightOption;
 
 	vRESULT retval = init();
 
@@ -103,7 +103,7 @@ void EnemyItem::Fire()
 
 void EnemyItem::Explode()
 {
-	if (m_Option.m_IsItemLaunched)
+	if (m_CreateOption.m_IsItemLaunched)
 	{
 		EnemyManager::getInstance()->MakeEnemyOneTime(
 			ENEMY::ENEMY_TYPE::ITEM,
@@ -118,7 +118,7 @@ void EnemyItem::Explode()
 
 const vRESULT EnemyItem::InitialImgLoad()
 {
-	if (m_Option.m_IsItemLaunched == TRUE)
+	if (m_CreateOption.m_IsItemLaunched == TRUE)
 	{
 		if (m_pSprite->Load(enemyItemSpriteOnPath.c_str()) == E_FAIL)
 		{

@@ -32,6 +32,7 @@ public :
 		const _In_ FLOAT flightSpeed,
 		const _In_ FLOAT accFlightSpeed,
 		const _In_ GoAndSlowData goAndSlowData);
+	CreateOption(const _In_ std::nullptr_t);
 	CreateOption();
 	~CreateOption();
 

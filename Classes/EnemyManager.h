@@ -20,26 +20,18 @@ public :
 	EnemyManager();
 	~EnemyManager();
 	
-	void MakeEnemyWithTime(
-		const _In_ FLOAT createTime,
-		const _In_ INT enemyType,
-		const _In_ Vec createPos,
-		const _In_ INT flightType,
-		const _In_opt_ Vec flightVec,
-		const _In_opt_ ::CreateOption flightOption);
+	void ActivateEnemy(
+		const _In_ FLOAT activateTime, 
+		const _In_ CreateOption flightOption,
+		const _In_ FireOption fireOption);
 
-	void MakeEnemyOneTime(
-		const _In_ INT enemyType,
-		const _In_ Vec createPos,
-		const _In_ INT flightType,
-		const _In_opt_ Vec flightVec,
-		const _In_opt_ ::CreateOption flightOption);
-
-	void CalProc(const _In_ FLOAT);
+	void CalcProc(const _In_ FLOAT);
 	//void MakeProc();
 	void DrawProc(_Inout_ HDC);
 	void SetPlayerInfo(_Inout_ Player*);
 	Player& getPlayerInfo();
+	Enemy* FindEnemyColideWith(const _In_ Vec, const _In_ Vec);
+	Enemy* FindDeactivatedEnemy(const _In_ ENEMY::ENEMY_TYPE);
 
 private :
 
@@ -53,39 +45,32 @@ private :
 	void DistributePlayerInfo();
 	void SetPlayerPos(const _In_ Vec);
 	void SetEnemyMemoryPool();
+	void RegisterFunctionPointer();
 
 	template <typename T>
 	void AllocEnemyMemory(const _In_ INT);
 
 	// 생성 함수 포인터 핸들러.
-	Enemy*(EnemyManager::*m_pMakeHandler[ENEMY_TYPE_NUM])(
-		const _In_ Vec,
-		const _In_ INT,
-		const _In_opt_ Vec,
-		const _In_opt_ ::CreateOption);
+	BOOL(EnemyManager::*m_pActivateHandler[ENEMY_TYPE_NUM])(
+		const _In_ CreateOption,
+		const _In_ FireOption);
 
 	// 함수 포인터에 들어갈 함수
-	Enemy* MakeEnemyItem(
-		const _In_ Vec,
-		const _In_ INT,
-		const _In_opt_ Vec,
-		const _In_opt_ ::CreateOption);
-	Enemy* MakeItem(
-		const _In_ Vec,
-		const _In_ INT,
-		const _In_opt_ Vec,
-		const _In_opt_ ::CreateOption);
-	Enemy* MakeZaco(
-		const _In_ Vec,
-		const _In_ INT,
-		const _In_opt_ Vec,
-		const _In_opt_ ::CreateOption);
-	Enemy* MakeHandShot(
-		const _In_ Vec,
-		const _In_ INT,
-		const _In_opt_ Vec,
-		const _In_opt_ ::CreateOption);
+	BOOL ActivateEnemyItem(
+		const _In_ CreateOption,
+		const _In_ FireOption);
 
+	BOOL ActivateItem(
+		const _In_ CreateOption,
+		const _In_ FireOption);
+
+	BOOL ActivateZaco(
+		const _In_ CreateOption,
+		const _In_ FireOption);
+
+	BOOL ActivateHandShot(
+		const _In_ CreateOption,
+		const _In_ FireOption);
 
 	FLOAT m_AccTime;
 	FLOAT m_RecordCreateTime;

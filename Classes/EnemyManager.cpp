@@ -37,72 +37,73 @@ EnemyManager::EnemyManager()
 }
 
 /*
-	init
 	Enemy 생성 함수 포인터 핸들러에 함수를 등록해 주는 함수.
 */
 void EnemyManager::init()
 {
 	SetEnemyMemoryPool();
-/*
-	m_pMakeHandler[ENEMY_TYPE::ENEMY_ITEM] = &EnemyManager::MakeEnemyItem;
-	m_pMakeHandler[ENEMY_TYPE::ITEM] = &EnemyManager::MakeItem;
-	m_pMakeHandler[ENEMY_TYPE::ENEMY_ZACO] = &EnemyManager::MakeZaco;
-	m_pMakeHandler[ENEMY_TYPE::ENEMY_HAND_SHOT] = &EnemyManager::MakeHandShot;*/
+	RegisterFunctionPointer();
 	return;
 }
 
 /*
-	MakeEnemyItem
-	EnemyItem을 만들어주는 함수 포인터에 등록될 함수.
+	함수 포인터를 등록해주는 함수. (init에서 호출)
 */
-Enemy * EnemyManager::MakeEnemyItem(
-	const _In_ Vec createPos,
-	const _In_ INT flightType,
-	const _In_ Vec flightVec,
-	const _In_opt_ ::CreateOption flightOption)
+void EnemyManager::RegisterFunctionPointer()
 {
-	Enemy* newEnemy = new EnemyItem(createPos, flightType, flightVec, flightOption);
-	return newEnemy;
-}
- 
-/*
-	MakeItem
-	Item을 만드는 함수 포인터에 등록될 함수.
-*/
-Enemy* EnemyManager::MakeItem(
-	const _In_ Vec createPos,
-	const _In_ INT flightType,
-	const _In_ Vec flightVec,
-	const _In_opt_ ::CreateOption flightOption)
-{
-	Enemy* newEnemy = new Item(createPos, flightType, flightVec);
-	return newEnemy;
+	m_pActivateHandler[ENEMY_TYPE::ENEMY_ITEM] = &EnemyManager::ActivateEnemyItem;
+	m_pActivateHandler[ENEMY_TYPE::ITEM] = &EnemyManager::ActivateItem;
+	m_pActivateHandler[ENEMY_TYPE::ENEMY_ZACO] = &EnemyManager::ActivateZaco;
+	m_pActivateHandler[ENEMY_TYPE::ENEMY_HAND_SHOT] = &EnemyManager::ActivateHandShot;
+	return;
 }
 
 /*
-	MakeZaco
+	EnemyItem을 만들어주는 함수 포인터에 등록될 함수.
+*/
+BOOL EnemyManager::ActivateEnemyItem(
+	const _In_ CreateOption createOption,
+	const _In_ FireOption fireOption)
+{
+	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_ITEM);
+	newEnemy->Activate(createOption, fireOption);
+	return TRUE;
+}
+ 
+/*
+	Item을 만드는 함수 포인터에 등록될 함수.
+*/
+BOOL EnemyManager::ActivateItem(
+	const _In_ CreateOption createOption,
+	const _In_ FireOption fireOption)
+{
+	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ITEM);
+	newEnemy->Activate(createOption, fireOption);
+	return TRUE;
+}
+
+/*
 	EnemyZaco를 만드는 함수 포인터에 등록될 함수.
 */
-Enemy* EnemyManager::MakeZaco(
-	const _In_ Vec createPos,
-	const _In_ INT flightType,
-	const _In_ Vec flightVec,
-	const _In_opt_::CreateOption flightOption)
+BOOL EnemyManager::ActivateZaco(
+	const _In_ CreateOption createOption,
+	const _In_ FireOption fireOption)
 {
-	Enemy* newEnemy = new EnemyZaco(createPos, flightType, flightVec, flightOption);
-	return newEnemy;
+	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_ZACO);
+	newEnemy->Activate(createOption, fireOption);
+	return TRUE;
 }
+
 /*
 	EnemyHandShot를 만드는 함수 포인터에 등록될 함수.
 */
-Enemy* EnemyManager::MakeHandShot(
-	const _In_ Vec createPos,
-	const _In_ INT flightType,
-	const _In_ Vec flightVec,
-	const _In_opt_::CreateOption flightOption)
+BOOL EnemyManager::ActivateHandShot(
+	const _In_ CreateOption createOption,
+	const _In_ FireOption fireOption)
 {
-	Enemy* newEnemy = new EnemyHandShot(createPos, flightType, flightVec, flightOption);
-	return newEnemy;
+	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_HAND_SHOT);
+	newEnemy->Activate(createOption, fireOption);
+	return TRUE;
 }
 
 EnemyManager::~EnemyManager()
@@ -116,40 +117,15 @@ void EnemyManager::AccTime(const _In_ FLOAT dt)
 	return;
 }
 
-void EnemyManager::MakeEnemyWithTime(
-	const _In_ FLOAT createTime,
-	const _In_ INT enemyType,
-	const _In_ Vec createPos,
-	const _In_ INT flightType,
-	const _In_opt_ Vec flightVec,
-	const _In_opt_ ::CreateOption flightOption)
+void EnemyManager::ActivateEnemy(
+	const _In_ FLOAT activateTime,
+	const _In_ CreateOption createOption,
+	const _In_opt_ FireOption fireOption)
 {
-	if ((m_AccTime > createTime) && (m_RecordCreateTime < createTime))
+	if ((m_AccTime > activateTime) && (m_RecordCreateTime < activateTime))
 	{
-		auto newEnemy = (this->*m_pMakeHandler[enemyType])(
-			createPos, flightType, flightVec, flightOption);
-
-	/*	m_EnemyList.push_back(newEnemy);
-		m_RecordCreateTime = createTime;
-	*/}
-
-	return;
-}
-
-/*
-	MakeEnemyOneTime
-	시간에 구애받지 않고 Enemy를 생성해야만 할 때 사용하는 함수.
-	기본적으로 MakeEnemyWithTime과 시간을 제외한 인자가 모두 같다.
-*/
-void EnemyManager::MakeEnemyOneTime(
-	const _In_ INT enemyType, 
-	const _In_ Vec createPos,
-	const _In_ INT flightType, 
-	const _In_opt_ Vec flightVec,
-	const _In_opt_ ::CreateOption flightOption)
-{
-	//auto newEnemy = (this->*m_pMakeHandler[enemyType])(
-	//	createPos, flightType, flightVec, flightOption);
+		(this->*m_pActivateHandler[createOption.GetEnemyType()])(createOption, fireOption);
+	}
 
 	return;
 }
@@ -164,7 +140,7 @@ void EnemyManager::Draw(_Inout_ HDC drawDC)
 	return;
 }
 
-void EnemyManager::CalProc(const _In_ FLOAT dt)
+void EnemyManager::CalcProc(const _In_ FLOAT dt)
 {
 	AccTime(dt);
 	//MakeProc();
@@ -248,11 +224,14 @@ void EnemyManager::MakeProc()
 }
 */
 
+/*
+	각 Enemy의 CalcProc을 진행시키는 함수.
+*/
 void EnemyManager::DistributeTime(const _In_ FLOAT dt)
 {
 	for (auto i : m_EnemyMemoryVector)
 	{
-		i->CalProc(dt);
+		i->CalcProc(dt);
 	}
 	
 	return;
@@ -266,6 +245,9 @@ void EnemyManager::DistributePlayerInfo()
 	return;
 }
 
+/*
+	GameManager로부터 입력받은 player의 위치 정보를 전파해주는 함수.
+*/
 void EnemyManager::SetPlayerPos(const _In_ Vec playerPos)
 {
 	for (auto i : m_EnemyMemoryVector)
@@ -282,6 +264,9 @@ void EnemyManager::SetPlayerInfo(Player* playerInfo)
 	return;
 }
 
+/*
+	일정한 Enemy 타입별 개수만큼 벡터에 미리 할당해놓는 함수.
+*/
 void EnemyManager::SetEnemyMemoryPool()
 {
 	const INT enemyItemAllocTime = 5;
@@ -297,15 +282,66 @@ void EnemyManager::SetEnemyMemoryPool()
 	return;
 }
 
+/*
+	EnemyManager 생성시 메모리풀을 잡아놓는 함수.
+*/
 template <typename T>
-void EnemyManager::AllocEnemyMemory(
-	const _In_ INT allocTime)
+void EnemyManager::AllocEnemyMemory(const _In_ INT allocTime)
 {
+	// 할당 회수만큼 for문을 루프
 	for (int i = 0; i < allocTime; ++i)
 	{
+		// 생성은 템플릿 형태지만 vector에는 Enemy*의 형태로 캐스팅.
 		T* newEnemy = new T();
 		m_EnemyMemoryVector.push_back((Enemy*)newEnemy);
 	}
 	
 	return;
+}
+
+/*
+	인자로 받은 ENEMY_TYPE과 맞고, Activated상태가 아닌 Enemy를 반환해주는 함수. 
+*/
+Enemy * EnemyManager::FindDeactivatedEnemy(const ENEMY::ENEMY_TYPE findEnemyType)
+{
+	std::vector<Enemy*>::iterator iter = m_EnemyMemoryVector.begin();
+	while (iter != m_EnemyMemoryVector.end())
+	{
+		// Enemy Type이 일치하는지 우선 확인.
+		if ((*iter)->GetCreateOption().GetEnemyType == findEnemyType)
+		{
+			// Enemy가 Deactivated 상태인지 확인.
+			if (!(*iter)->GetIsEnemyActivated())
+			{
+				// 맞다면 반환.
+				return *iter;
+			}
+		}
+		// 아닐 경우 iterator를 다음 원소로. 
+		++iter;
+	}
+	// 해당하는 Enemy가 없다면 nullptr 반환.
+	return nullptr;
+}
+
+/*
+	중심 위치와 가로 세로 길이를 가진 Vec 자료형을 넣으면 그와 충돌한 Enemy를 반환해주는 함수.
+	충돌한 Enemy가 없을 경우 nullptr 반환.
+*/
+Enemy * EnemyManager::FindEnemyColideWith(const Vec position, const Vec range)
+{
+	for (auto i : m_EnemyMemoryVector)
+	{
+		// 활성화 상태인 Enemy만 조건 검사.
+		if (i->GetIsEnemyActivated())
+		{
+			// 충돌 검사
+			if (IsObjectColided(position, range, i->GetPosition(), i->GetColideRange()))
+			{
+				// 충돌했을 경우 반환.
+				return i;
+			}
+		}
+	}
+	return nullptr;
 }

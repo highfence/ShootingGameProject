@@ -20,19 +20,24 @@ FireOption::FireOption(
 {
 }
 
+FireOption::FireOption(const std::nullptr_t)
+{
+	m_IsOptionCanUse = FALSE;
+}
+
 FireOption::~FireOption()
 {
 }
 
 FireOption & FireOption::operator=(const FireOption op)
 {
-	setFireType(op.getFireType());
-	setMissileType(op.getMissileType());
-	setMissileSize(op.getMissileSize());
-	setMissileSpeed(op.getMissileSpeed());
-	setAccMissileSpeed(op.getAccMissileSpeed());
-	setWaitingTime(op.getWaitingTime());
-	setMissileVec(op.getMissileVec());
+	SetFireType(op.GetFireType());
+	SetMissileType(op.GetMissileType());
+	SetMissileSize(op.GetMissileSize());
+	SetMissileSpeed(op.GetMissileSpeed());
+	SetAccMissileSpeed(op.GetAccMissileSpeed());
+	SetWaitingTime(op.GetWaitingTime());
+	SetMissileVec(op.GetMissileVec());
 	m_IsOptionCanUse = TRUE;
 	return *this;
 }
@@ -40,77 +45,77 @@ FireOption & FireOption::operator=(const FireOption op)
 /*
 	Getter, Setter Zone
 */
-BOOL FireOption::getIsOptionCanUse() const
+BOOL FireOption::GetIsOptionCanUse() const
 {
 	return m_IsOptionCanUse;
 }
 
-ENEMY::FIRE_TYPE FireOption::getFireType() const
+ENEMY::FIRE_TYPE FireOption::GetFireType() const
 {
 	return m_FireType;
 }
 
-ENEMY::MISSILE_TYPE FireOption::getMissileType() const
+ENEMY::MISSILE_TYPE FireOption::GetMissileType() const
 {
 	return m_MissileType;
 }
 
-ENEMY::MISSILE_SIZE FireOption::getMissileSize() const
+ENEMY::MISSILE_SIZE FireOption::GetMissileSize() const
 {
 	return m_MissileSize;
 }
 
-FLOAT FireOption::getMissileSpeed() const
+FLOAT FireOption::GetMissileSpeed() const
 {
 	return m_MissileSpeed;
 }
 
-FLOAT FireOption::getAccMissileSpeed() const
+FLOAT FireOption::GetAccMissileSpeed() const
 {
 	return m_AccMissileSpeed;
 }
 
-FLOAT FireOption::getWaitingTime() const
+FLOAT FireOption::GetWaitingTime() const
 {
 	return m_WaitingTime;
 }
 
-Vec FireOption::getMissileVec() const
+Vec FireOption::GetMissileVec() const
 {
 	return m_MissileVec;
 }
 
-void FireOption::setFireType(const ENEMY::FIRE_TYPE fireType)
+void FireOption::SetFireType(const ENEMY::FIRE_TYPE fireType)
 {
 	m_FireType = fireType;
 }
 
-void FireOption::setMissileType(const ENEMY::MISSILE_TYPE missileType)
+void FireOption::SetMissileType(const ENEMY::MISSILE_TYPE missileType)
 {
 	m_MissileType = missileType;
 }
 
-void FireOption::setMissileSize(const ENEMY::MISSILE_SIZE missileSize)
+void FireOption::SetMissileSize(const ENEMY::MISSILE_SIZE missileSize)
 {
 	m_MissileSize = missileSize;
 }
 
-void FireOption::setMissileSpeed(const FLOAT missileSpeed)
+void FireOption::SetMissileSpeed(const FLOAT missileSpeed)
 {
 	m_MissileSpeed = missileSpeed;
 }
 
-void FireOption::setAccMissileSpeed(const FLOAT accMissileSpeed)
+void FireOption::SetAccMissileSpeed(const FLOAT accMissileSpeed)
 {
 	m_AccMissileSpeed = accMissileSpeed;
 }
 
-void FireOption::setWaitingTime(const FLOAT waitingTime)
+void FireOption::SetWaitingTime(const FLOAT waitingTime)
 {
 	m_WaitingTime = waitingTime;
 }
 
-void FireOption::setMissileVec(const Vec missileVec)
+void FireOption::SetMissileVec(const Vec missileVec)
 {
 	m_MissileVec = missileVec;
 }

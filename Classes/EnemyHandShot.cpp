@@ -34,7 +34,7 @@ EnemyHandShot::EnemyHandShot(
 {
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage;
-	m_Option = flightOption;
+	m_CreateOption = flightOption;
 	m_RightHandPos = Vec(32, 32);
 	m_LeftHandPos = Vec(-32, 32);
 
