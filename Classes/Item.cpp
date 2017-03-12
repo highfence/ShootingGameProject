@@ -22,6 +22,7 @@ void Item::init()
 	m_ColideRange = Vec(0, 0);
 	m_Hp = 100000;
 	m_LoadedMissileNumber = 0;
+	m_EnemyType = ENEMY::ENEMY_TYPE::ITEM;
 	
 	return;
 }
@@ -37,10 +38,6 @@ void Item::CalProc(const _In_ FLOAT dt)
 	Fly(dt);
 	CheckPlayerGetItem();
 
-	if (!CheckEnemyIsOnDisplay())
-	{
-		//m_IsEnemyReadyToDelete = TRUE;
-	}
 	return;
 }
 

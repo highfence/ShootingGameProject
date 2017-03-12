@@ -39,14 +39,18 @@ public :
 	FireOption GetFireOption() const;
 	Vec GetPosition() const;
 	Vec GetColideRange() const;
+	BOOL GetIsEnemyDead() const;
+	ENEMY_TYPE GetEnemyType() const;
 	void SetIsEnemyActivated(const _In_ BOOL);
 	void SetCreateOption(const _In_ CreateOption);
 	void SetFireOption(const _In_ FireOption);
 	void SetPosition(const _In_ Vec);
 	void SetColideRange(const _In_ Vec);
 	void SetPlayerPos(const _In_ Vec);
+	void SetIsEnemyDead(const _In_ BOOL);
+	void SetEnemyType(const _In_ ENEMY_TYPE);
 
-	void Activate(_In_ CreateOption&, _In_ FireOption&);
+	virtual void Activate(const _In_ Vec, _In_ CreateOption&, _In_ FireOption&);
 	void Deactivate();
 	BOOL IsAllMissilesEndFly();
 	BOOL CheckDead();
@@ -65,6 +69,7 @@ protected :
 	// 기존 멤버 변수 (지워야할 것을 찾자)
 	Vec		     m_Pos;
 	INT		     m_Hp;
+	ENEMY_TYPE	 m_EnemyType;
 	Vec			 m_PlayerPos;
 	Vec		     m_SpriteRange;
 	Vec		     m_ColideRange;

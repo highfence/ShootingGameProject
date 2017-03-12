@@ -62,48 +62,80 @@ void EnemyManager::RegisterFunctionPointer()
 	EnemyItem을 만들어주는 함수 포인터에 등록될 함수.
 */
 BOOL EnemyManager::ActivateEnemyItem(
+	const _In_ Vec createPos,
 	_In_ CreateOption& createOption,
 	_In_ FireOption& fireOption)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_ITEM);
-	newEnemy->Activate(createOption, fireOption);
-	return TRUE;
+	if (newEnemy != nullptr)
+	{
+		newEnemy->Activate(createPos, createOption, fireOption);
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
  
 /*
 	Item을 만드는 함수 포인터에 등록될 함수.
 */
 BOOL EnemyManager::ActivateItem(
+	const _In_ Vec createPos,
 	_In_ CreateOption& createOption,
 	_In_ FireOption& fireOption)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ITEM);
-	newEnemy->Activate(createOption, fireOption);
-	return TRUE;
+	if (newEnemy != nullptr)
+	{
+		newEnemy->Activate(createPos, createOption, fireOption);
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 /*
 	EnemyZaco를 만드는 함수 포인터에 등록될 함수.
 */
 BOOL EnemyManager::ActivateZaco(
+	const _In_ Vec createPos,
 	_In_ CreateOption& createOption,
 	_In_ FireOption& fireOption)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_ZACO);
-	newEnemy->Activate(createOption, fireOption);
-	return TRUE;
+	if (newEnemy != nullptr)
+	{
+		newEnemy->Activate(createPos, createOption, fireOption);
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 /*
 	EnemyHandShot를 만드는 함수 포인터에 등록될 함수.
 */
 BOOL EnemyManager::ActivateHandShot(
+	const _In_ Vec createPos,
 	_In_ CreateOption& createOption,
 	_In_ FireOption& fireOption)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_HAND_SHOT);
-	newEnemy->Activate(createOption, fireOption);
-	return TRUE;
+	if (newEnemy != nullptr)
+	{
+		newEnemy->Activate(createPos, createOption, fireOption);
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 EnemyManager::~EnemyManager()
@@ -119,13 +151,28 @@ void EnemyManager::AccTime(const _In_ FLOAT dt)
 
 void EnemyManager::ActivateEnemy(
 	const _In_ FLOAT activateTime,
+	const _In_ Vec createPos,
 	_In_ CreateOption& createOption,
 	_In_ FireOption& fireOption)
 {
 	if ((m_AccTime > activateTime) && (m_RecordCreateTime < activateTime))
 	{
-		(this->*m_pActivateHandler[createOption.GetEnemyType()])(createOption, fireOption);
+		(this->*m_pActivateHandler[createOption.GetEnemyType()])
+			(createPos, createOption, fireOption);
+		m_RecordCreateTime = activateTime;
 	}
+
+	return;
+}
+
+void EnemyManager::ActivateEnemyOnce(
+	const _In_ Vec createPos,
+	_In_ CreateOption& createOption,
+	_In_ FireOption& fireOption)
+{
+
+	(this->*m_pActivateHandler[createOption.GetEnemyType()])
+		(createPos, createOption, fireOption);
 
 	return;
 }
@@ -163,8 +210,7 @@ void EnemyManager::CalcProc(const _In_ FLOAT dt)
 {
 	AccTime(dt);
 	MakeProc();
-	DistributeTime(dt);
-	DistributePlayerInfo();
+	DistributeData(dt);
 	return;
 }
 
@@ -186,40 +232,16 @@ Player& EnemyManager::getPlayerInfo()
 
 void EnemyManager::MakeProc()
 {
-	return;
-}
+	GoAndSlowData enemyItemData = GoAndSlowData(0.5f, 5.f, Vec(0.f, 1.f), 50.f);
+	CreateOption enemyItemNormal = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, FALSE);
+	CreateOption enemyItemLaunched = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, TRUE);
+	FireOption enemyNoFire = FireOption(FIRE_TYPE::FIRE_TYPE_NUM, MISSILE_TYPE::NONE, MISSILE_SIZE::SMALL, 0.f, 0.f, 0.f, Vec(0.f, 0.f));
 
-/*
-	각 Enemy의 CalcProc을 진행시키는 함수.
-*/
-void EnemyManager::DistributeTime(const _In_ FLOAT dt)
-{
-	for (auto i : m_EnemyMemoryVector)
-	{
-		i->CalcProc(dt);
-	}
-	
-	return;
-}
-
-void EnemyManager::DistributePlayerInfo()
-{
-	Vec playerPos;
-	m_pPlayerInfo->GetPosition(&playerPos);
-	SetPlayerPos(playerPos);
-	return;
-}
-
-/*
-	GameManager로부터 입력받은 player의 위치 정보를 전파해주는 함수.
-*/
-void EnemyManager::SetPlayerPos(const _In_ Vec playerPos)
-{
-	for (auto i : m_EnemyMemoryVector)
-	{
-		i->m_PlayerPos = playerPos;
-	}
-
+	FLOAT line1 = 4.f;
+	ActivateEnemy(line1, Vec(350.f, 0.f), enemyItemNormal, enemyNoFire);
+	ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), enemyItemNormal, enemyNoFire);
+	ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), enemyItemNormal, enemyNoFire);
+	ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), enemyItemLaunched, enemyNoFire);
 	return;
 }
 
@@ -239,10 +261,10 @@ void EnemyManager::SetEnemyMemoryPool()
 	const INT enemyZacoAllocTime = 15;
 	const INT enemyHandShotAllocTime = 5;
 
+	AllocEnemyMemory<EnemyHandShot>(enemyHandShotAllocTime);
 	AllocEnemyMemory<EnemyItem>(enemyItemAllocTime);
 	AllocEnemyMemory<Item>(ItemAllocTime);
 	AllocEnemyMemory<EnemyZaco>(enemyZacoAllocTime);
-	AllocEnemyMemory<EnemyHandShot>(enemyHandShotAllocTime);
 
 	return;
 }
@@ -256,7 +278,7 @@ void EnemyManager::AllocEnemyMemory(const _In_ INT allocTime)
 	// 할당 회수만큼 for문을 루프
 	for (int i = 0; i < allocTime; ++i)
 	{
-		// 생성은 템플릿 형태지만 vector에는 Enemy*의 형태로 캐스팅.
+		// 생성은 각각의 Enemy타입의 형태지만 vector에 push하기 위해 Enemy*의 형태로 캐스팅.
 		T* newEnemy = new T();
 		m_EnemyMemoryVector.push_back((Enemy*)newEnemy);
 	}
@@ -265,7 +287,7 @@ void EnemyManager::AllocEnemyMemory(const _In_ INT allocTime)
 }
 
 /*
-	인자로 받은 ENEMY_TYPE과 맞고, Activated상태가 아닌 Enemy를 반환해주는 함수. 
+	인자로 받은 ENEMY_TYPE과 일치하고, Activated상태가 아닌 Enemy를 반환해주는 함수. 
 */
 Enemy * EnemyManager::FindDeactivatedEnemy(const ENEMY::ENEMY_TYPE findEnemyType)
 {
@@ -273,7 +295,7 @@ Enemy * EnemyManager::FindDeactivatedEnemy(const ENEMY::ENEMY_TYPE findEnemyType
 	while (iter != m_EnemyMemoryVector.end())
 	{
 		// Enemy Type이 일치하는지 우선 확인.
-		if ((*iter)->GetCreateOption().GetEnemyType() == findEnemyType)
+		if ((*iter)->GetEnemyType() == findEnemyType)
 		{
 			// Enemy가 Deactivated 상태인지 확인.
 			if (!(*iter)->GetIsEnemyActivated())

@@ -23,7 +23,13 @@ public :
 	// TODO :: 구조체는 참조자로 전달하자.
 	void ActivateEnemy(
 		const _In_ FLOAT activateTime, 
-		_In_ CreateOption& flightOption,
+		const _In_ Vec createPos,
+		_In_ CreateOption& createOption,
+		_In_ FireOption& fireOption);
+
+	void ActivateEnemyOnce(
+		const _In_ Vec createPos,
+		_In_ CreateOption& createOption,
 		_In_ FireOption& fireOption);
 
 	void CalcProc(const _In_ FLOAT);
@@ -43,9 +49,6 @@ private :
 	void AccTime(const _In_ FLOAT);
 	void Draw(_Inout_ HDC);
 	void DistributeData(const _In_ FLOAT);
-	void DistributeTime(const _In_ FLOAT);
-	void DistributePlayerInfo();
-	void SetPlayerPos(const _In_ Vec);
 	void SetEnemyMemoryPool();
 	void RegisterFunctionPointer();
 
@@ -54,23 +57,28 @@ private :
 
 	// 생성 함수 포인터 핸들러.
 	BOOL(EnemyManager::*m_pActivateHandler[ENEMY_TYPE_NUM])(
+		const _In_ Vec,
 		_In_ CreateOption&,
 		_In_ FireOption&);
 
 	// 함수 포인터에 들어갈 함수
 	BOOL ActivateEnemyItem(
+		const _In_ Vec,
 		_In_ CreateOption&,
 		_In_ FireOption&);
 
 	BOOL ActivateItem(
+		const _In_ Vec,
 		_In_ CreateOption&,
 		_In_ FireOption&);
 
 	BOOL ActivateZaco(
+		const _In_ Vec,
 		_In_ CreateOption&,
 		_In_ FireOption&);
 
 	BOOL ActivateHandShot(
+		const _In_ Vec,
 		_In_ CreateOption&,
 		_In_ FireOption&);
 

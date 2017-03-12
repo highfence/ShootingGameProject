@@ -1,5 +1,6 @@
 #pragma once
 
+
 // 윈도우 사이즈
 const INT winWidth = 900;
 const INT winHeight = 1200;
@@ -64,6 +65,7 @@ namespace ENEMY
 	const std::wstring itemShadePath = _T("../Resources/PowerUpS.png");
 	const FLOAT itemWidth = 24;
 	const FLOAT itemHeight = 19;
+
 }
 
 

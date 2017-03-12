@@ -17,10 +17,14 @@ public :
 	void Explode() override;
 	void DeadProc() override;
 	void Fire() override;
+	void Activate(
+		const _In_ Vec,
+		_In_ CreateOption&,
+		_In_ FireOption&) override;
 
 private :
 
 	const vRESULT init();
-	const vRESULT InitialImgLoad();
+	const vRESULT InitialImgLoad(const _In_ BOOL);
 
 };

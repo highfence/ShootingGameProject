@@ -11,9 +11,8 @@
 #include "../ShootingGameProject/resource.h"
 #include "../Include/json/json.h"
 #include "KeyState.h"
-#include "Definition.h"
-#include "Utils.h"
 #include "Vec.h"
+#include "Definition.h"
 #include "CreateOption.h"
 #include "FireOption.h"
-
+#include "Utils.h"

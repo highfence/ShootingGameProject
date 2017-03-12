@@ -36,10 +36,10 @@ const vRESULT EnemyHandShot::init()
 		return ERROR_IMG_LOAD_FAILED;
 	}
 
+	m_EnemyType = ENEMY::ENEMY_TYPE::ENEMY_HAND_SHOT;
 	m_SpriteRange.x = enemyHandShotSpriteWidth;
 	m_SpriteRange.y = enemyHandShotSpriteHeight;
 	m_ColideRange = m_SpriteRange;
-	m_Hp = enemyHandShotHp;
 	m_LoadedMissileNumber = enemyHandShotLoadedMissileNumber;
 	LoadMissiles(ENEMY::MISSILE_SIZE::MEDIUM);
 	return WELL_PERFORMED;

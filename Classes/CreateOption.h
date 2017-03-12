@@ -13,6 +13,7 @@ struct GoAndSlowData
 		const _In_ Vec slowDonwMoveVec,
 		const _In_ FLOAT slowDownMoveSpeed
 	);
+	GoAndSlowData(int);
 	GoAndSlowData& operator=(const GoAndSlowData);
 	FLOAT SlowDownStartTime;
 	FLOAT SlowDownDurationTime;
@@ -24,7 +25,6 @@ class CreateOption
 {
 public :
 	CreateOption(
-		const _In_ Vec createPos,
 		const _In_ INT enemyHp,
 		const _In_ ENEMY::ENEMY_TYPE enemyType,
 		const _In_ ENEMY::FLIGHT_TYPE flightType,
@@ -41,7 +41,6 @@ public :
 
 	// Getter, Setter
 	BOOL GetIsOptionCanUse() const;
-	Vec GetCreatePos() const;
 	INT GetEnemyHp() const;
 	ENEMY::ENEMY_TYPE GetEnemyType() const;
 	ENEMY::FLIGHT_TYPE GetFlightType() const;
@@ -51,7 +50,6 @@ public :
 	GoAndSlowData GetGoAndSlowData() const;
 	BOOL GetIsItemLaunched() const;
 
-	void SetCreatePos(const _In_ Vec);
 	void SetEnemyHp(const _In_ INT);
 	void SetEnemyType(const _In_ ENEMY::ENEMY_TYPE);
 	void SetFlightType(const _In_ ENEMY::FLIGHT_TYPE);
@@ -68,7 +66,6 @@ private :
 		(외부에서 Option의 사용가능여부를 변경할 수 없음)
 	*/
 	BOOL m_IsOptionCanUse;
-	Vec m_CreatePosition;
 	INT m_EnemyHp;
 	ENEMY::ENEMY_TYPE m_EnemyType;
 	ENEMY::FLIGHT_TYPE m_FlightType;

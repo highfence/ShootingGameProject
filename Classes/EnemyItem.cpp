@@ -21,11 +21,7 @@ EnemyItem::EnemyItem()
 
 const vRESULT EnemyItem::init()
 {
-	if (InitialImgLoad() != WELL_PERFORMED)
-	{
-		return ERROR_IMG_LOAD_FAILED;
-	}
-
+	m_EnemyType = ENEMY::ENEMY_TYPE::ENEMY_ITEM;
 	m_SpriteRange.x = enemyItemSpriteWidth;
 	m_SpriteRange.y = enemyItemSpriteHeight;
 	m_ColideRange = m_SpriteRange;
@@ -83,25 +79,39 @@ void EnemyItem::Fire()
 	return;
 }
 
+void EnemyItem::Activate(
+	const Vec createPos,
+	CreateOption & createOption,
+	FireOption & fireOption)
+{
+	SetIsEnemyActivated(TRUE);
+	SetIsEnemyDead(FALSE);
+	SetCreateOption(createOption);
+	SetFireOption(fireOption);
+	m_Pos = createPos;
+	m_Hp = createOption.GetEnemyHp();
+	InitialImgLoad(TRUE);
+}
+
 void EnemyItem::Explode()
 {
+	CreateOption itemOption = CreateOption(100000, ITEM, FLY_ITEM, Vec(0, 0), 150.f, 0, NULL, FALSE);
+	FireOption enemyNoFire = FireOption(FIRE_TYPE::FIRE_TYPE_NUM, MISSILE_TYPE::NONE, MISSILE_SIZE::SMALL, 0.f, 0.f, 0.f, Vec(0.f, 0.f));
 	if (m_CreateOption.GetIsItemLaunched())
 	{
-		/*
-		EnemyManager::getInstance()->MakeEnemyOneTime(
-			ENEMY::ENEMY_TYPE::ITEM,
-			m_Pos,
-			ENEMY::FLIGHT_TYPE::FLY_ITEM,
-			Vec(0, 1),
-			nullptr);
-		*/
+		EnemyManager::getInstance()->ActivateEnemyOnce(m_Pos, itemOption, enemyNoFire);
 	}
 	EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos);
 	return;
 }
 
-const vRESULT EnemyItem::InitialImgLoad()
+const vRESULT EnemyItem::InitialImgLoad(const _In_ BOOL isImgLoadedOnce)
 {
+	if (isImgLoadedOnce)
+	{
+		m_pShadeSprite->Destroy();
+		m_pSprite->Destroy();
+	}
 	if (m_CreateOption.GetIsItemLaunched() == TRUE)
 	{
 		if (m_pSprite->Load(enemyItemSpriteOnPath.c_str()) == E_FAIL)

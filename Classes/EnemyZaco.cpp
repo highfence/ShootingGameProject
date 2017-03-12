@@ -26,6 +26,7 @@ EnemyZaco::EnemyZaco()
 */
 const vRESULT EnemyZaco::init()
 {
+	m_EnemyType = ENEMY::ENEMY_TYPE::ENEMY_ZACO;
 	m_SpriteRange.x = enemyZacoSpriteWidth;
 	m_SpriteRange.y = enemyZacoSpriteHeight;
 	m_ColideRange = m_SpriteRange + enemyZacoColideCorrectionRange;

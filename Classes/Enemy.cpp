@@ -74,8 +74,9 @@ EnemyMissile * Enemy::GetLaunchableMissile()
 
 void Enemy::CalcProc(const _In_ FLOAT dt)
 {
+
 	// 비활성화 상태일 경우 바로 리턴.
-	if (m_IsEnemyActivated)
+	if (!m_IsEnemyActivated)
 	{
 		return;
 	}
@@ -355,7 +356,7 @@ BOOL Enemy::CheckActEnd()
 	{
 		return FALSE;
 	}
-	if (m_IsEnemyDead || CheckEnemyIsOnDisplay())
+	if (m_IsEnemyDead || !CheckEnemyIsOnDisplay())
 	{
 		return TRUE;
 	}
@@ -407,15 +408,17 @@ void Enemy::DeleteAllElementsMissileVector()
 /*
 	비활성화된 Enemy를 활성화 시켜준다.
 */
-void Enemy::Activate(CreateOption& createOption, FireOption& fireOption)
+void Enemy::Activate(
+	const Vec createPos,
+	CreateOption& createOption,
+	FireOption& fireOption)
 {
 	SetIsEnemyActivated(TRUE);
+	SetIsEnemyDead(FALSE);
 	SetCreateOption(createOption);
 	SetFireOption(fireOption);
-	if (GetCreateOption().GetIsOptionCanUse())
-	{
-		m_Pos = GetCreateOption().GetCreatePos();
-	}
+	m_Pos = createPos;
+	m_Hp = createOption.GetEnemyHp();
 }
 
 /*
@@ -485,6 +488,16 @@ Vec Enemy::GetColideRange() const
 	return m_ColideRange;
 }
 
+BOOL Enemy::GetIsEnemyDead() const
+{
+	return m_IsEnemyDead;
+}
+
+ENEMY_TYPE Enemy::GetEnemyType() const
+{
+	return m_EnemyType;
+}
+
 void Enemy::SetIsEnemyActivated(const BOOL input)
 {
 	m_IsEnemyActivated = input;
@@ -513,4 +526,14 @@ void Enemy::SetColideRange(const Vec range)
 void Enemy::SetPlayerPos(const Vec playerPos)
 {
 	m_PlayerPos = playerPos;
+}
+
+void Enemy::SetIsEnemyDead(const BOOL input)
+{
+	m_IsEnemyDead = input;
+}
+
+void Enemy::SetEnemyType(const ENEMY_TYPE enemyType)
+{
+	m_EnemyType = enemyType;
 }
