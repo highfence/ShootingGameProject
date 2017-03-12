@@ -12,20 +12,11 @@ Item::Item(void)
 	init();
 }
 
-Item::Item(
-	const _In_ Vec createPos,
-	const _In_ INT flightType,
-	const _In_ Vec flightVec)
-	: Enemy(createPos, flightType, flightVec)
-{
-	init();
-}
 
 void Item::init()
 {
 	m_pSprite->Load(itemSpritePath.c_str());
 	m_pShadeSprite->Load(itemShadePath.c_str());
-	m_FlightSpeed = 150;
 	m_SpriteRange.x = itemWidth;
 	m_SpriteRange.y = itemHeight;
 	m_ColideRange = Vec(0, 0);
@@ -48,7 +39,7 @@ void Item::CalProc(const _In_ FLOAT dt)
 
 	if (!CheckEnemyIsOnDisplay())
 	{
-		m_IsEnemyReadyToDelete = TRUE;
+		//m_IsEnemyReadyToDelete = TRUE;
 	}
 	return;
 }
@@ -102,7 +93,7 @@ BOOL Item::CheckPlayerGetItem()
 	if (!(x1 <= mx0 || mx1 <= x0 || y1 <= my0 || my1 <= y0))
 	{
 		playerInfo.PlayerPowerUp();
-		m_IsEnemyReadyToDelete = TRUE;
+		//m_IsEnemyReadyToDelete = TRUE;
 		return TRUE;
 	}
 	return FALSE;

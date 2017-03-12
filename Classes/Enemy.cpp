@@ -74,18 +74,34 @@ EnemyMissile * Enemy::GetLaunchableMissile()
 
 void Enemy::CalcProc(const _In_ FLOAT dt)
 {
+	// 비활성화 상태일 경우 바로 리턴.
+	if (m_IsEnemyActivated)
+	{
+		return;
+	}
+
+	// 죽지 않았다면 비행기 이동 & 미사일 발사. 
 	if (!CheckDead())
 	{
 		AccTime(dt);
 		Fly(dt);
 		Fire();
 	}
+	// 죽은 상태라면 DeadProc진행.
 	else
 	{
 		DeadProc();
 	}
 
+	// 죽건 죽지 않았건 미사일은 진행.
 	MissileFly(dt);
+
+	// 행동이 끝났다면 비활성화.
+	if (CheckActEnd())
+	{
+		Deactivate();
+	}
+
 	return;
 }
 
@@ -238,7 +254,7 @@ BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
 	FireOption op;
 	if ((op = GetFireOption()).GetIsOptionCanUse())
 	{
-		missile->Fly(dt, 0, 1, op.GetMissileSpeed);
+		missile->Fly(dt, 0, 1, op.GetMissileSpeed());
 		missile->CheckColideWithPlayer();
 	}
 	return TRUE;
@@ -325,6 +341,25 @@ BOOL Enemy::CheckDead()
 	{
 		return FALSE;
 	}
+}
+
+/*
+	Act가 끝났는지 확인하는 함수.
+	1. 모든 미사일의 비행이 끝나야 하고
+	2. 죽거나 화면 바깥에 있어야 한다.
+*/
+BOOL Enemy::CheckActEnd()
+{
+	// 미사일이 비행이 끝나지 않았다면 FALSE 리턴.
+	if (!IsAllMissilesEndFly())
+	{
+		return FALSE;
+	}
+	if (m_IsEnemyDead || CheckEnemyIsOnDisplay())
+	{
+		return TRUE;
+	}
+	return FALSE;
 }
 
 /*
@@ -473,4 +508,9 @@ void Enemy::SetPosition(const Vec position)
 void Enemy::SetColideRange(const Vec range)
 {
 	m_ColideRange = range;
+}
+
+void Enemy::SetPlayerPos(const Vec playerPos)
+{
+	m_PlayerPos = playerPos;
 }

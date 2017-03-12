@@ -5,12 +5,6 @@ class EnemyZaco : public Enemy
 {
 public :
 	EnemyZaco();
-	EnemyZaco(
-		const _In_ Vec createPos,
-		const _In_ INT flightType,
-		const _In_opt_ Vec flightVec,
-		const _In_opt_::CreateOption flightOption
-	);
 	~EnemyZaco() override;
 
 	void Draw(_Inout_ HDC) override;

@@ -44,15 +44,19 @@ public :
 	void SetFireOption(const _In_ FireOption);
 	void SetPosition(const _In_ Vec);
 	void SetColideRange(const _In_ Vec);
+	void SetPlayerPos(const _In_ Vec);
 
 	void Activate(_In_ CreateOption&, _In_ FireOption&);
 	void Deactivate();
 	BOOL IsAllMissilesEndFly();
 	BOOL CheckDead();
+	BOOL CheckActEnd();
 	BOOL CheckEnemyIsOnDisplay();
 	vRESULT FunctionPointerRegist();
 	EnemyMissile* GetLaunchableMissile();
 
+
+protected :
 	// 리팩토링에서 새로 들어간 부분들
 	BOOL		 m_IsEnemyActivated;
 	CreateOption m_CreateOption;
@@ -79,6 +83,7 @@ public :
 		EnemyMissile*,
 		const _In_ FLOAT);
 	std::vector<EnemyMissile*> m_MissileVec;
+
 
 private :
 

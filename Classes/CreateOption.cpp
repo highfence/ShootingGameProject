@@ -9,7 +9,8 @@ CreateOption::CreateOption(
 	const Vec flightVec,
 	const FLOAT flightSpeed,
 	const FLOAT accFlightSpeed,
-	const GoAndSlowData goAndSlowData)
+	const GoAndSlowData goAndSlowData,
+	const BOOL isItemLaunched)
 	: m_IsOptionCanUse(TRUE)
 {
 	SetCreatePos(createPos);
@@ -20,6 +21,7 @@ CreateOption::CreateOption(
 	SetFlightSpeed(flightSpeed);
 	SetAccFlightSpeed(accFlightSpeed);
 	SetGoAndSlowData(goAndSlowData);
+	SetIsItemLaunched(isItemLaunched);
 }
 
 CreateOption::CreateOption(const std::nullptr_t)
@@ -48,6 +50,7 @@ CreateOption& CreateOption::operator=(const _In_ CreateOption& op)
 	SetFlightSpeed(op.GetFlightSpeed());
 	SetAccFlightSpeed(op.GetAccFlightSpeed());
 	SetGoAndSlowData(op.GetGoAndSlowData());
+	SetIsItemLaunched(op.GetIsItemLaunched());
 	return *this;
 }
 
@@ -99,6 +102,11 @@ GoAndSlowData CreateOption::GetGoAndSlowData() const
 	return m_GoAndSlowData;
 }
 
+BOOL CreateOption::GetIsItemLaunched() const
+{
+	return m_IsItemLaunched;
+}
+
 void CreateOption::SetCreatePos(const _In_ Vec createPos)
 {
 	m_CreatePosition = createPos;
@@ -137,6 +145,11 @@ void CreateOption::SetAccFlightSpeed(const _In_ FLOAT accFlightSpeed)
 void CreateOption::SetGoAndSlowData(const _In_ GoAndSlowData data)
 {
 	m_GoAndSlowData = data;
+}
+
+void CreateOption::SetIsItemLaunched(const BOOL isItemLaunched)
+{
+	m_IsItemLaunched = isItemLaunched;
 }
 
 GoAndSlowData::GoAndSlowData()

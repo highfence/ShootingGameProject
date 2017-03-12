@@ -4,7 +4,7 @@
 	Enemy 생성시에 들어갈 여러가지 정보를 담는 클래스.
 */
 
-typedef struct GoAndSlowData
+struct GoAndSlowData
 {
 	GoAndSlowData();
 	GoAndSlowData(
@@ -31,7 +31,8 @@ public :
 		const _In_ Vec flightVec,
 		const _In_ FLOAT flightSpeed,
 		const _In_ FLOAT accFlightSpeed,
-		const _In_ GoAndSlowData goAndSlowData);
+		const _In_ GoAndSlowData goAndSlowData,
+		const _In_ BOOL isItemLaunched);
 	CreateOption(const _In_ std::nullptr_t);
 	CreateOption();
 	~CreateOption();
@@ -48,6 +49,7 @@ public :
 	FLOAT GetFlightSpeed() const;
 	FLOAT GetAccFlightSpeed() const;
 	GoAndSlowData GetGoAndSlowData() const;
+	BOOL GetIsItemLaunched() const;
 
 	void SetCreatePos(const _In_ Vec);
 	void SetEnemyHp(const _In_ INT);
@@ -57,6 +59,7 @@ public :
 	void SetFlightSpeed(const _In_ FLOAT);
 	void SetAccFlightSpeed(const _In_ FLOAT);
 	void SetGoAndSlowData(const _In_ GoAndSlowData);
+	void SetIsItemLaunched(const _In_ BOOL);
 
 private :
 
@@ -73,4 +76,5 @@ private :
 	FLOAT m_FlightSpeed;
 	FLOAT m_AccFlightSpeed;
 	GoAndSlowData m_GoAndSlowData;
+	BOOL m_IsItemLaunched;
 };

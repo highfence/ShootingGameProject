@@ -17,9 +17,9 @@ public :
 
 	BOOL Launch(
 		const _In_ Vec,
-		const _In_ ::MissileOption);
+		const _In_ FireOption);
 
-	::MissileOption GetOption() const;
+	FireOption GetOption() const;
 
 private :
 
@@ -27,5 +27,5 @@ private :
 	void init();
 	FLOAT m_PlayerPosX;
 	FLOAT m_PlayerPosY;
-	::MissileOption m_Option;
+	FireOption m_Option;
 };

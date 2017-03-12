@@ -20,21 +20,6 @@ EnemyZaco::EnemyZaco()
 	init();
 }
 
-EnemyZaco::EnemyZaco(
-	const _In_ Vec createPos,
-	const _In_ INT flightType,
-	const _In_opt_ Vec flightVec,
-	const _In_opt_ ::CreateOption flightOption)
-	: Enemy(createPos, flightType, flightVec)
-{
-	m_CreateOption = flightOption;
-	m_FlightSpeed = enemyZacoFlightSpeed;
-
-	vRESULT retval = init();
-
-	DebugLogPrint(retval, MESSAGES::creationFailed, _T("from EnemyZaco"));
-}
-
 /*
 	Width, Height, Hp, MissileSpeed를 지정해주고
 	이미지 로드, 미사일 적재등을 초기화 해주는 함수.
@@ -45,7 +30,6 @@ const vRESULT EnemyZaco::init()
 	m_SpriteRange.y = enemyZacoSpriteHeight;
 	m_ColideRange = m_SpriteRange + enemyZacoColideCorrectionRange;
 	m_Hp = enemyZacoHp;
-	m_MissileSpeed = enemyZacoMissileSpeed;
 
 	if (InitialImgLoad() != WELL_PERFORMED)
 	{
@@ -80,8 +64,8 @@ void EnemyZaco::Explode()
 	EffectManager::getInstance()->MakeEffect(
 		EFFECT::EFFECT_TYPE::EXPLODE_LIGHT,
 		m_Pos,
-		m_CreateOption.m_InitSpeed,
-		m_FlightVec);
+		m_CreateOption.GetFlightSpeed(),
+		m_CreateOption.GetFlightVec());
 
 	return;
 }
@@ -105,6 +89,7 @@ void EnemyZaco::Fire()
 		return;
 	}
 
+	/*
 	const MissileOption option = MissileOption(Vec(m_PlayerPos.x - m_Pos.x, m_PlayerPos.y - m_Pos.y), 350, MISSILE_TYPE::AIM_FIRE, MISSILE_SIZE::SMALL);
 	const FLOAT initFireTime = 0.3f;
 	const FLOAT fireFrequency = 2.0f;
@@ -123,7 +108,8 @@ void EnemyZaco::Fire()
 				break;
 			}
 		}
-	}
+	}*/
+
 	return;
 }
 

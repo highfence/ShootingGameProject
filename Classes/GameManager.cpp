@@ -66,7 +66,7 @@ void GameManager::CalProc(const _In_ FLOAT dt)
 	}
 
 	// EnemyManager에게 자신의 위치 정보 전달.
-	EnemyManager::getInstance()->SetPlayerInfo(m_pPlayer);
+	EnemyManager::getInstance()->SetPlayerInfo(*m_pPlayer);
 
 	m_pEnemyManager->CalcProc(dt);
 	m_pEffectManager->CalProc(dt);

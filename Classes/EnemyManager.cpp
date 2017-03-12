@@ -31,7 +31,7 @@ void EnemyManager::deleteInstance()
 }
 
 EnemyManager::EnemyManager()
-	: m_AccTime(0.f), m_RecordCreateTime(0.f)
+	: m_AccTime(0.f), m_RecordCreateTime(0.f), m_pPlayerInfo(nullptr)
 {
 	init();
 }
@@ -140,10 +140,29 @@ void EnemyManager::Draw(_Inout_ HDC drawDC)
 	return;
 }
 
+/*
+	활성화 된 Enemy들에게 정보를 전파해주는 함수.
+	이전의 DistributeTime과 DistributePlayerInfo를 계승한다.
+*/
+void EnemyManager::DistributeData(const FLOAT dt)
+{
+	Vec playerPos;
+	m_pPlayerInfo->GetPosition(&playerPos);
+
+	for (auto i : m_EnemyMemoryVector)
+	{
+		if (i->GetIsEnemyActivated())
+		{
+			i->SetPlayerPos(playerPos);
+			i->CalcProc(dt);
+		}
+	}
+}
+
 void EnemyManager::CalcProc(const _In_ FLOAT dt)
 {
 	AccTime(dt);
-	//MakeProc();
+	MakeProc();
 	DistributeTime(dt);
 	DistributePlayerInfo();
 	return;
@@ -165,64 +184,10 @@ Player& EnemyManager::getPlayerInfo()
 	return *m_pPlayerInfo;
 }
 
-/*
 void EnemyManager::MakeProc()
-{ 
-	CreateOption enemyItemOptionFalse((FALSE), 0, 0, 0, 0, 0);
-	CreateOption enemyItemOptionTrue((TRUE), 0, 0, 0, 0, 0);
-	CreateOption flyAccelerate((FALSE), 150, 200, 0, 0, 0);
-	CreateOption flyGoAndSlowItemFalse((FALSE), 0, 400, 75, 0.5f, 2.5f);
-	CreateOption flyGoAndSlowItemTrue((TRUE), 0, 400, 75, 0.5f, 2.5f);
-	CreateOption flyGoAndSlowQuiteLong((FALSE), 0, 400, 30, 0.3f, 15.f);
-
-	FLOAT enemyItemCreateTime = 3.0f;
-	FLOAT createIntervalTime = 0.25f;
-	MakeEnemyWithTime(enemyItemCreateTime , ENEMY_ITEM, Vec(400.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemFalse);
-	MakeEnemyWithTime(enemyItemCreateTime + 0.25f, ENEMY_ITEM, Vec(325.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemFalse);
-	MakeEnemyWithTime(enemyItemCreateTime + 0.5f , ENEMY_ITEM, Vec(250.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemFalse);
-	MakeEnemyWithTime(enemyItemCreateTime + 0.75f, ENEMY_ITEM, Vec(175.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemTrue);
-
-	FLOAT enemyZacoCreateTime = 7.f;
-	MakeEnemyWithTime(enemyZacoCreateTime, ENEMY_ZACO, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoCreateTime + 0.25f, ENEMY_ZACO, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoCreateTime + 0.5f, ENEMY_ZACO, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoCreateTime + 0.75f, ENEMY_ZACO, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoCreateTime + 1.f, ENEMY_ZACO, Vec(winWidth, 200.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-
-	FLOAT enemyZacoSecondCreateTime = 7.3f;
-	MakeEnemyWithTime(enemyZacoSecondCreateTime, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoSecondCreateTime + 0.25f, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoSecondCreateTime + 0.5f, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoSecondCreateTime + 0.75f, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-	MakeEnemyWithTime(enemyZacoSecondCreateTime + 1.f, ENEMY_ZACO, Vec(winWidth, 130.f), FLY_ACCELERATE, Vec(-1, 0.7), flyAccelerate);
-
-	FLOAT enemyZacoThirdCreateTime = 9.4f;
-	MakeEnemyWithTime(enemyZacoThirdCreateTime, ENEMY_ZACO, Vec(400.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
-	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.25f, ENEMY_ZACO, Vec(400.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
-	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.5f, ENEMY_ZACO, Vec(400.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
-	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.75f, ENEMY_ZACO, Vec(400.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
-	MakeEnemyWithTime(enemyZacoThirdCreateTime + 1.f, ENEMY_ZACO, Vec(400.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
-	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.01f, ENEMY_ZACO, Vec(320.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
-	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.26f, ENEMY_ZACO, Vec(320.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
-	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.51f, ENEMY_ZACO, Vec(320.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
-	MakeEnemyWithTime(enemyZacoThirdCreateTime + 0.76f, ENEMY_ZACO, Vec(320.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
-	MakeEnemyWithTime(enemyZacoThirdCreateTime + 1.01f, ENEMY_ZACO, Vec(320.f, 0.f), FLY_STRAIGHT, Vec(0.f, 1.f), enemyItemOptionFalse);
-
-	FLOAT enemyHandShotCreateTime = 15.f;
-	MakeEnemyWithTime(enemyHandShotCreateTime, ENEMY_HAND_SHOT, Vec(650.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowQuiteLong);
-	MakeEnemyWithTime(enemyHandShotCreateTime + 4.f, ENEMY_HAND_SHOT, Vec(250.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowQuiteLong);
-	MakeEnemyWithTime(enemyHandShotCreateTime + 7.5f, ENEMY_HAND_SHOT, Vec(550.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowQuiteLong);
-
-	FLOAT enemyItemSecondCreateTime = 19.5f;
-	MakeEnemyWithTime(enemyItemSecondCreateTime, ENEMY_ITEM, Vec(450.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemFalse);
-	MakeEnemyWithTime(enemyItemSecondCreateTime + 0.25f, ENEMY_ITEM, Vec(525.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemFalse);
-	MakeEnemyWithTime(enemyItemSecondCreateTime + 0.5f, ENEMY_ITEM, Vec(600.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemFalse);
-	MakeEnemyWithTime(enemyItemSecondCreateTime + 0.75f, ENEMY_ITEM, Vec(675.f, 0.f), FLY_GO_AND_SLOW, Vec(0, 1), flyGoAndSlowItemTrue);
-
-
+{
 	return;
 }
-*/
 
 /*
 	각 Enemy의 CalcProc을 진행시키는 함수.
@@ -258,9 +223,9 @@ void EnemyManager::SetPlayerPos(const _In_ Vec playerPos)
 	return;
 }
 
-void EnemyManager::SetPlayerInfo(Player* playerInfo)
+void EnemyManager::SetPlayerInfo(Player& playerInfo)
 {
-	m_pPlayerInfo = playerInfo;
+	m_pPlayerInfo = &playerInfo;
 	return;
 }
 
@@ -308,7 +273,7 @@ Enemy * EnemyManager::FindDeactivatedEnemy(const ENEMY::ENEMY_TYPE findEnemyType
 	while (iter != m_EnemyMemoryVector.end())
 	{
 		// Enemy Type이 일치하는지 우선 확인.
-		if ((*iter)->GetCreateOption().GetEnemyType == findEnemyType)
+		if ((*iter)->GetCreateOption().GetEnemyType() == findEnemyType)
 		{
 			// Enemy가 Deactivated 상태인지 확인.
 			if (!(*iter)->GetIsEnemyActivated())

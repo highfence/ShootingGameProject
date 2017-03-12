@@ -103,7 +103,7 @@ void EnemyMissile::SetPlayerPos(
 */
 BOOL EnemyMissile::Launch(
 	const _In_ Vec createVec,
-	const _In_::MissileOption option)
+	const _In_ FireOption option)
 {
 	if (m_IsMissileLaunched)
 	{
@@ -113,12 +113,12 @@ BOOL EnemyMissile::Launch(
 	m_IsMissileLaunched = TRUE;
 	m_Pos = createVec;
 	m_Option = option;
-	m_MissileType = option.m_MissileType;
+	m_MissileType = option.GetMissileType();
 
 	return TRUE;
 }
 
-::MissileOption EnemyMissile::GetOption() const
+FireOption EnemyMissile::GetOption() const
 {
 	return m_Option;
 }

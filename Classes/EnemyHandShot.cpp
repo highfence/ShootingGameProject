@@ -18,30 +18,16 @@ const FLOAT degreeOfOddWayLaunch = 22.5f;
 const FLOAT degreeOfEvenWayLaunch = 22.5f;
 
 EnemyHandShot::EnemyHandShot()
-{
-	init();
-}
-
-EnemyHandShot::EnemyHandShot(
-	const _In_ Vec createPos,
-	const _In_ INT flightType,
-	const _In_opt_ Vec flightVec,
-	const _In_opt_::CreateOption flightOption)
-	:
-	Enemy(createPos, flightType, flightVec),
+	: 
+	Enemy(),
 	m_IsLaunchRightHand(TRUE),
 	m_ShotNum(0)
 {
-	m_pSprite = new CImage;
-	m_pShadeSprite = new CImage;
-	m_CreateOption = flightOption;
 	m_RightHandPos = Vec(32, 32);
 	m_LeftHandPos = Vec(-32, 32);
-
-	vRESULT retval = init();
-
-	DebugLogPrint(retval, MESSAGES::creationFailed, _T(" from EnemyHandShot"));
+	init();
 }
+
 
 const vRESULT EnemyHandShot::init()
 {
@@ -97,19 +83,19 @@ void EnemyHandShot::Fire()
 	{
 		if (m_ShotNum == 0 && (m_RecordAccTime > fireInitialDelayTime))
 		{
-			NWayBulletLaunch(5);
+			//NWayBulletLaunch(5);
 			m_RecordAccTime = 0.f;
 			++m_ShotNum;
 		}
 		else if (m_ShotNum == 1 && (m_RecordAccTime > fireIntevalDelayTime))
 		{
-			NWayBulletLaunch(6);
+			//NWayBulletLaunch(6);
 			m_RecordAccTime = 0.f;
 			++m_ShotNum;
 		}
 		else if (m_ShotNum == 2 && (m_RecordAccTime > fireIntevalDelayTime))
 		{
-			NWayBulletLaunch(5);
+			//NWayBulletLaunch(5);
 			m_RecordAccTime = 0.f;
 			++m_ShotNum;
 		}
@@ -130,6 +116,7 @@ void EnemyHandShot::Fire()
 	return;
 }
 
+/*
 const vRESULT EnemyHandShot::NWayBulletLaunch(const _In_ INT bulletNumber)
 {
 	Vec launchPos = GetLaunchPos();
@@ -144,7 +131,7 @@ const vRESULT EnemyHandShot::NWayBulletLaunch(const _In_ INT bulletNumber)
 		for (int i = 0; i < shotNumber; ++i)
 		{
 			RotateVec(i * degreeOfOddWayLaunch, 0.f, 1.f, shotVec.x, shotVec.y);
-			MissileOption optionLeft(shotVec, 300.f, AIM_FIRE, MEDIUM);
+			FireOption optionLeft(shotVec, 300.f, AIM_FIRE, MEDIUM);
 			MissileOption optionRight(shotVec.GetXSymmetryVec(), 300.f, AIM_FIRE, MEDIUM);
 			FindBulletAndLaunch(launchPos, optionLeft);
 			FindBulletAndLaunch(launchPos, optionRight);
@@ -166,6 +153,7 @@ const vRESULT EnemyHandShot::NWayBulletLaunch(const _In_ INT bulletNumber)
 
 	return WELL_PERFORMED;
 }
+*/
 
 /*
 	RightHand에서 발사할 것인지 LeftHand에서 발사할 것인지 판단하고 발사 위치를 반환해주는 함수.
@@ -183,14 +171,15 @@ Vec EnemyHandShot::GetLaunchPos() const
 /*
 	미사일 풀에서 발사 가능한 미사일을 찾고 입력받은 인자에 따라 발사하는 함수.
 */
-void EnemyHandShot::FindBulletAndLaunch(Vec launchPos, MissileOption option)
-{
-	EnemyMissile* shotBullet = GetLaunchableMissile();
-	if (shotBullet != nullptr)
-	{
-		shotBullet->Launch(launchPos, option);
-	}
-}
+//
+//void EnemyHandShot::FindBulletAndLaunch(Vec launchPos, MissileOption option)
+//{
+//	EnemyMissile* shotBullet = GetLaunchableMissile();
+//	if (shotBullet != nullptr)
+//	{
+//		shotBullet->Launch(launchPos, option);
+//	}
+//}
 
 
 void EnemyHandShot::Explode()
@@ -215,7 +204,7 @@ const vRESULT EnemyHandShot::InitialImgLoad()
 /*
 	EnemyHandShot이 맞았을 경우 특별한 이펙트를 발생시키기 위해 오버라이딩.
 */
-const vRESULT EnemyHandShot::GetDamage(const _In_ INT damage, const _In_ Vec playerMissileVec)
+void EnemyHandShot::GetDamage(const _In_ INT damage, const _In_ Vec playerMissileVec)
 {
 	m_Hp -= damage;
 
@@ -227,6 +216,4 @@ const vRESULT EnemyHandShot::GetDamage(const _In_ INT damage, const _In_ Vec pla
 	{
 		EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_HIT, Vec(playerMissileVec.x + rand() % 10 - 5, m_Pos.y + m_SpriteRange.y / 2), 150, Vec(0, -1));
 	}
-
-	return WELL_PERFORMED;
 }

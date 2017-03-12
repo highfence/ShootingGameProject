@@ -27,9 +27,9 @@ public :
 		_In_ FireOption& fireOption);
 
 	void CalcProc(const _In_ FLOAT);
-	//void MakeProc();
+	void MakeProc();
 	void DrawProc(_Inout_ HDC);
-	void SetPlayerInfo(_Inout_ Player*);
+	void SetPlayerInfo(_Inout_ Player&);
 	Player& getPlayerInfo();
 	Enemy* FindEnemyColideWith(const _In_ Vec, const _In_ Vec);
 	Enemy* FindDeactivatedEnemy(const _In_ ENEMY::ENEMY_TYPE);
@@ -42,6 +42,7 @@ private :
 	void init();
 	void AccTime(const _In_ FLOAT);
 	void Draw(_Inout_ HDC);
+	void DistributeData(const _In_ FLOAT);
 	void DistributeTime(const _In_ FLOAT);
 	void DistributePlayerInfo();
 	void SetPlayerPos(const _In_ Vec);
