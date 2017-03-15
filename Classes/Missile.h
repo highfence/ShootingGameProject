@@ -31,6 +31,7 @@ public :
 	BOOL m_IsMissileLaunched;
 	BOOL IsMissileOnDisplay();
 	Vec m_Pos;
+	FLOAT m_AccTime = 0.f;
 	INT m_Width;
 	INT m_Height;
 	INT m_Damage;

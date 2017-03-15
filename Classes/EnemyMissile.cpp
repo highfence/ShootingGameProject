@@ -31,18 +31,40 @@ void EnemyMissile::init()
 	return;
 }
 
+/*
+	함수 포인터를 등록시켜주는 함수.
+*/
 void EnemyMissile::RegisterFunctionPointer()
 {
 	m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &EnemyMissile::MissileFlyNormal;
+	m_pMissileFlyHandler[MISSILE_TYPE::ACCELERATE_FIRE] = &EnemyMissile::MissileAccelerate;
 	return;
 }
 
+/*
+	FireOption에 등록되어있는대로 일정하게 날아가는 미사일.
+*/
 BOOL EnemyMissile::MissileFlyNormal(const FLOAT deltaTime)
 {
 	FireOption op = GetOption();
 	Vec missileVec = op.GetMissileVec();
 	Fly(deltaTime, missileVec.x, missileVec.y, op.GetMissileSpeed());
 
+	return TRUE;
+}
+
+/*
+	일정하게 가/감속 하는 스타일의 미사일.
+*/
+BOOL EnemyMissile::MissileAccelerate(const FLOAT deltaTime)
+{
+	FireOption op = GetOption();
+	Vec missileVec = op.GetMissileVec();
+	FLOAT initSpeed = op.GetMissileSpeed();
+	FLOAT accSpeed = op.GetAccMissileSpeed();
+	FLOAT currentSpeed = initSpeed + accSpeed * m_AccTime;
+	Fly(deltaTime, missileVec.x, missileVec.y, currentSpeed);
+	
 	return TRUE;
 }
 
@@ -82,6 +104,9 @@ void EnemyMissile::CalcProc(const FLOAT deltaTime)
 	{
 		return;
 	}
+
+	// 시간 누적
+	m_AccTime += deltaTime;
 
 	// 충돌 검사.
 	CheckColideWithPlayer();

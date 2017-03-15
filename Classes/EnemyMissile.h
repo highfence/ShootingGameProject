@@ -39,5 +39,6 @@ private :
 
 	// 함수 포인터 핸들러에 등록될 함수.
 	BOOL MissileFlyNormal(const _In_ FLOAT);
+	BOOL MissileAccelerate(const _In_ FLOAT);
 	
 };

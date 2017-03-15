@@ -79,9 +79,7 @@ protected :
 
 	BOOL(Enemy::*m_pFlightHandler[ENEMY::FLIGHT_TYPE_NUM])(const _In_ FLOAT);
 	BOOL(Enemy::*m_pFireHandler[ENEMY::FIRE_TYPE_NUM])();
-	/*BOOL(Enemy::*m_pMissileFlyHandler[ENEMY::MISSILE_TYPE_NUM])(
-		EnemyMissile*,
-		const _In_ FLOAT);*/
+
 	std::vector<EnemyMissile*> m_MissileVec;
 
 
@@ -98,10 +96,6 @@ private :
 	BOOL FlyItem(const _In_ FLOAT);
 	BOOL FlyAccelerate(const _In_ FLOAT);
 	BOOL FlyGoAndSlow(const _In_ FLOAT);
-
-	// MissileFly 타입 함수 포인터.
-	/*BOOL MissileFlyStraight(EnemyMissile*, const _In_ FLOAT);
-	BOOL MissileFlyAimed(EnemyMissile*, const _In_ FLOAT);*/
 
 	// Fire 타입 함수 포인터.
 	BOOL FireNormal();
