@@ -12,7 +12,7 @@ public :
 	void Draw(_Inout_ HDC) override;
 	void Explode() override;
 	void DeadProc() override;
-	void Fire() override;
+	//void Fire() override;
 
 private :
 

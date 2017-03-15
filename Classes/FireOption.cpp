@@ -15,9 +15,20 @@ FireOption::FireOption(
 	const FLOAT missileSpeed,
 	const FLOAT accMissileSpeed,
 	const FLOAT waitingTime,
-	const Vec missileVec)
+	const Vec missileVec,
+	const FLOAT initShootDelay,
+	const FLOAT intervalShootDelay)
 	: m_IsOptionCanUse(TRUE)
 {
+	SetFireType(fireType);
+	SetMissileType(missileType);
+	SetMissileSize(missileSize);
+	SetMissileSpeed(missileSpeed);
+	SetAccMissileSpeed(accMissileSpeed);
+	SetWaitingTime(waitingTime);
+	SetMissileVec(missileVec);
+	SetInitShootDelay(initShootDelay);
+	SetIntervalShootDelay(intervalShootDelay);
 }
 
 FireOption::FireOption(const std::nullptr_t)
@@ -38,6 +49,8 @@ FireOption & FireOption::operator=(const FireOption op)
 	SetAccMissileSpeed(op.GetAccMissileSpeed());
 	SetWaitingTime(op.GetWaitingTime());
 	SetMissileVec(op.GetMissileVec());
+	SetInitShootDelay(op.GetInitShootDelay());
+	SetIntervalShootDelay(op.GetIntervalShootDelay());
 	m_IsOptionCanUse = TRUE;
 	return *this;
 }
@@ -85,6 +98,16 @@ Vec FireOption::GetMissileVec() const
 	return m_MissileVec;
 }
 
+FLOAT FireOption::GetInitShootDelay() const
+{
+	return m_InitShootDelay;
+}
+
+FLOAT FireOption::GetIntervalShootDelay() const
+{
+	return m_IntervalShootDelay;
+}
+
 void FireOption::SetFireType(const ENEMY::FIRE_TYPE fireType)
 {
 	m_FireType = fireType;
@@ -118,4 +141,14 @@ void FireOption::SetWaitingTime(const FLOAT waitingTime)
 void FireOption::SetMissileVec(const Vec missileVec)
 {
 	m_MissileVec = missileVec;
+}
+
+void FireOption::SetInitShootDelay(const FLOAT time)
+{
+	m_InitShootDelay = time;
+}
+
+void FireOption::SetIntervalShootDelay(const FLOAT time)
+{
+	m_IntervalShootDelay = time;
 }

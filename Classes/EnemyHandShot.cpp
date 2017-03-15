@@ -75,46 +75,46 @@ void EnemyHandShot::DeadProc()
 	}
 	return;
 }
-
-void EnemyHandShot::Fire()
-{
-	// TODO :: N-WayÅº ±¸Çö.
-	if (m_AccTime > fireInitialDelayTime)
-	{
-		if (m_ShotNum == 0 && (m_RecordAccTime > fireInitialDelayTime))
-		{
-			//NWayBulletLaunch(5);
-			m_RecordAccTime = 0.f;
-			++m_ShotNum;
-		}
-		else if (m_ShotNum == 1 && (m_RecordAccTime > fireIntevalDelayTime))
-		{
-			//NWayBulletLaunch(6);
-			m_RecordAccTime = 0.f;
-			++m_ShotNum;
-		}
-		else if (m_ShotNum == 2 && (m_RecordAccTime > fireIntevalDelayTime))
-		{
-			//NWayBulletLaunch(5);
-			m_RecordAccTime = 0.f;
-			++m_ShotNum;
-		}
-		else if (m_ShotNum == 3)
-		{
-			m_ShotNum = 0;
-			if (m_IsLaunchRightHand)
-			{
-				m_IsLaunchRightHand = FALSE;
-			}
-			else
-			{
-				m_IsLaunchRightHand = TRUE;
-			}
-		}
-	}
-
-	return;
-}
+//
+//void EnemyHandShot::Fire()
+//{
+//	// TODO :: N-WayÅº ±¸Çö.
+//	if (m_AccTime > fireInitialDelayTime)
+//	{
+//		if (m_ShotNum == 0 && (m_RecordAccTime > fireInitialDelayTime))
+//		{
+//			//NWayBulletLaunch(5);
+//			m_RecordAccTime = 0.f;
+//			++m_ShotNum;
+//		}
+//		else if (m_ShotNum == 1 && (m_RecordAccTime > fireIntevalDelayTime))
+//		{
+//			//NWayBulletLaunch(6);
+//			m_RecordAccTime = 0.f;
+//			++m_ShotNum;
+//		}
+//		else if (m_ShotNum == 2 && (m_RecordAccTime > fireIntevalDelayTime))
+//		{
+//			//NWayBulletLaunch(5);
+//			m_RecordAccTime = 0.f;
+//			++m_ShotNum;
+//		}
+//		else if (m_ShotNum == 3)
+//		{
+//			m_ShotNum = 0;
+//			if (m_IsLaunchRightHand)
+//			{
+//				m_IsLaunchRightHand = FALSE;
+//			}
+//			else
+//			{
+//				m_IsLaunchRightHand = TRUE;
+//			}
+//		}
+//	}
+//
+//	return;
+//}
 
 /*
 const vRESULT EnemyHandShot::NWayBulletLaunch(const _In_ INT bulletNumber)

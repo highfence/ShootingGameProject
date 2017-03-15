@@ -5,6 +5,7 @@ class EnemyMissile : public Missile
 {
 public :
 	EnemyMissile(ENEMY::MISSILE_SIZE);
+	EnemyMissile() = delete;
 	~EnemyMissile() override;
 
 	void Fly(
@@ -17,13 +18,12 @@ public :
 
 	BOOL Launch(
 		const _In_ Vec,
-		const _In_ FireOption);
+		const _In_ FireOption&);
 
 	FireOption GetOption() const;
 
 private :
 
-	EnemyMissile();
 	void init();
 	FLOAT m_PlayerPosX;
 	FLOAT m_PlayerPosY;

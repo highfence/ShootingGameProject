@@ -15,7 +15,7 @@ public :
 	void Draw(_Inout_ HDC) override;
 	void Explode() override;
 	void DeadProc() override;
-	void Fire() override;
+	//void Fire() override;
 	
 	void GetDamage(const _In_ INT, const _In_ Vec);
 

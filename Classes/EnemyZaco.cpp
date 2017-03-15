@@ -81,38 +81,38 @@ void EnemyZaco::DeadProc()
 	}
 	return;
 }
-
-void EnemyZaco::Fire()
-{
-	// 플레이어보다 낮은 위치에서는 발사하지 않음.
-	if (m_Pos.y > m_PlayerPos.y)
-	{
-		return;
-	}
-
-	/*
-	const MissileOption option = MissileOption(Vec(m_PlayerPos.x - m_Pos.x, m_PlayerPos.y - m_Pos.y), 350, MISSILE_TYPE::AIM_FIRE, MISSILE_SIZE::SMALL);
-	const FLOAT initFireTime = 0.3f;
-	const FLOAT fireFrequency = 2.0f;
-	if (m_AccTime == m_RecordAccTime)
-	{
-		m_RecordAccTime += fireFrequency;
-	}
-
-	if ((m_AccTime > initFireTime) && (m_RecordAccTime > fireFrequency))
-	{
-		for (auto i : m_MissileVec)
-		{
-			if (i->Launch(m_Pos, option))
-			{
-				m_RecordAccTime = 0.f;
-				break;
-			}
-		}
-	}*/
-
-	return;
-}
+//
+//void EnemyZaco::Fire()
+//{
+//	// 플레이어보다 낮은 위치에서는 발사하지 않음.
+//	if (m_Pos.y > m_PlayerPos.y)
+//	{
+//		return;
+//	}
+//
+//	/*
+//	const MissileOption option = MissileOption(Vec(m_PlayerPos.x - m_Pos.x, m_PlayerPos.y - m_Pos.y), 350, MISSILE_TYPE::AIM_FIRE, MISSILE_SIZE::SMALL);
+//	const FLOAT initFireTime = 0.3f;
+//	const FLOAT fireFrequency = 2.0f;
+//	if (m_AccTime == m_RecordAccTime)
+//	{
+//		m_RecordAccTime += fireFrequency;
+//	}
+//
+//	if ((m_AccTime > initFireTime) && (m_RecordAccTime > fireFrequency))
+//	{
+//		for (auto i : m_MissileVec)
+//		{
+//			if (i->Launch(m_Pos, option))
+//			{
+//				m_RecordAccTime = 0.f;
+//				break;
+//			}
+//		}
+//	}*/
+//
+//	return;
+//}
 
 /*
 	초기화시에 이미지 로드를 담당하는 함수.

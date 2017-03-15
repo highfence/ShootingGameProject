@@ -61,23 +61,23 @@ void EnemyItem::DeadProc()
 	}
 	return;
 }
-
-void EnemyItem::Fire()
-{
-	const FLOAT fireFrequency = 1.5f;
-	if (m_RecordAccTime > fireFrequency)
-	{
-		for (auto i : m_MissileVec)
-		{
-			if (i->Missile::Launch(ENEMY::MISSILE_TYPE::STRAIGHT_FIRE, m_Pos))
-			{
-				break;
-			}
-		}
-		m_RecordAccTime = 0.f;
-	}
-	return;
-}
+//
+//void EnemyItem::Fire()
+//{
+//	const FLOAT fireFrequency = 1.5f;
+//	if (m_RecordAccTime > fireFrequency)
+//	{
+//		for (auto i : m_MissileVec)
+//		{
+//			if (i->Missile::Launch(ENEMY::MISSILE_TYPE::STRAIGHT_FIRE, m_Pos))
+//			{
+//				break;
+//			}
+//		}
+//		m_RecordAccTime = 0.f;
+//	}
+//	return;
+//}
 
 void EnemyItem::Activate(
 	const Vec createPos,
@@ -96,7 +96,7 @@ void EnemyItem::Activate(
 void EnemyItem::Explode()
 {
 	CreateOption itemOption = CreateOption(100000, ITEM, FLY_ITEM, Vec(0, 0), 150.f, 0, NULL, FALSE);
-	FireOption enemyNoFire = FireOption(FIRE_TYPE::FIRE_TYPE_NUM, MISSILE_TYPE::NONE, MISSILE_SIZE::SMALL, 0.f, 0.f, 0.f, Vec(0.f, 0.f));
+	FireOption enemyNoFire = FireOption(FIRE_TYPE::FIRE_TYPE_NUM, MISSILE_TYPE::NONE, MISSILE_SIZE::SMALL, 0.f, 0.f, 0.f, Vec(0.f, 0.f), 0.f, 0.f);
 	if (m_CreateOption.GetIsItemLaunched())
 	{
 		EnemyManager::getInstance()->ActivateEnemyOnce(m_Pos, itemOption, enemyNoFire);

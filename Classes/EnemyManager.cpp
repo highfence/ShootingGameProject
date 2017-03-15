@@ -235,13 +235,13 @@ void EnemyManager::MakeProc()
 	GoAndSlowData enemyItemData = GoAndSlowData(0.5f, 5.f, Vec(0.f, 1.f), 50.f);
 	CreateOption enemyItemNormal = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, FALSE);
 	CreateOption enemyItemLaunched = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, TRUE);
-	FireOption enemyNoFire = FireOption(FIRE_TYPE::FIRE_TYPE_NUM, MISSILE_TYPE::NONE, MISSILE_SIZE::SMALL, 0.f, 0.f, 0.f, Vec(0.f, 0.f));
+	FireOption enemyFireFront = FireOption(NORMAL_FIRE, MISSILE_TYPE::NONE, SMALL, 300.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 0.3f);
 
 	FLOAT line1 = 4.f;
-	ActivateEnemy(line1, Vec(350.f, 0.f), enemyItemNormal, enemyNoFire);
-	ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), enemyItemNormal, enemyNoFire);
-	ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), enemyItemNormal, enemyNoFire);
-	ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), enemyItemLaunched, enemyNoFire);
+	ActivateEnemy(line1, Vec(350.f, 0.f), enemyItemNormal, enemyFireFront);
+	ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), enemyItemNormal, enemyFireFront);
+	ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), enemyItemNormal, enemyFireFront);
+	ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), enemyItemLaunched, enemyFireFront);
 	return;
 }
 

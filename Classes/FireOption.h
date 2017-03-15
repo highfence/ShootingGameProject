@@ -14,7 +14,9 @@ public :
 		const _In_ FLOAT missileSpeed,
 		const _In_ FLOAT accMissileSpeed,
 		const _In_ FLOAT waitingTime,
-		const _In_ Vec missileVec);
+		const _In_ Vec missileVec,
+		const _In_ FLOAT initShootDelay,
+		const _In_ FLOAT intervalShootDelay);
 	FireOption(const _In_ std::nullptr_t);
 	FireOption();
 	~FireOption();
@@ -32,6 +34,8 @@ public :
 	FLOAT GetAccMissileSpeed() const;
 	FLOAT GetWaitingTime() const;
 	Vec GetMissileVec() const;
+	FLOAT GetInitShootDelay() const;
+	FLOAT GetIntervalShootDelay() const;
 
 	void SetFireType(const _In_ ENEMY::FIRE_TYPE);
 	void SetMissileType(const _In_ ENEMY::MISSILE_TYPE);
@@ -40,6 +44,8 @@ public :
 	void SetAccMissileSpeed(const _In_ FLOAT);
 	void SetWaitingTime(const _In_ FLOAT);
 	void SetMissileVec(const _In_ Vec);
+	void SetInitShootDelay(const _In_ FLOAT);
+	void SetIntervalShootDelay(const _In_ FLOAT);
 
 private :
 
@@ -54,4 +60,7 @@ private :
 	FLOAT m_AccMissileSpeed;
 	FLOAT m_WaitingTime;
 	Vec m_MissileVec;
+	FLOAT m_InitShootDelay;
+	FLOAT m_IntervalShootDelay;
+
 };
