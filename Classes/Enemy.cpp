@@ -59,6 +59,17 @@ void Enemy::FunctionPointerRegist()
 	return;
 }
 
+void Enemy::DistributeFireOption()
+{
+	FireOption op = GetFireOption();
+	for (auto& i : m_MissileVec)
+	{
+		i->SetFireOption(op);
+	}
+
+	return;
+}
+
 /*
 	Launch가능한 미사일이 있다면 찾아서 반환해주는 함수.
 	없다면 nullptr 반환.
@@ -146,7 +157,7 @@ void Enemy::MissileFly(const _In_ FLOAT dt)
 		if (i->GetMissileLaunched())
 		{
 			// TODO :: 미사일은 자기가 그냥 이동시키도록.
-			
+			i->CalcProc(dt);
 		}
 	}
 	return;
@@ -384,7 +395,7 @@ void Enemy::LoadMissiles(const _In_ ENEMY::MISSILE_SIZE missileSize)
 */
 void Enemy::DrawMissiles(_Inout_ HDC drawDC)
 {
-	for (auto i : m_MissileVec)
+	for (auto& i : m_MissileVec)
 	{
 		i->Draw(drawDC);
 	}
@@ -419,6 +430,9 @@ void Enemy::Activate(
 	SetIsEnemyDead(FALSE);
 	SetCreateOption(createOption);
 	SetFireOption(fireOption);
+
+	// 소유 미사일들의 FireOption 변경.
+	DistributeFireOption();
 	m_Pos = createPos;
 	m_Hp = createOption.GetEnemyHp();
 }
@@ -484,7 +498,7 @@ BOOL Enemy::FireNormal()
 		auto missile = GetLaunchableMissile();
 		if (missile != nullptr)
 		{
-			missile->Launch(op.GetMissileVec(), op);
+			missile->Launch(m_Pos, op);
 		}
 		m_RecordFireTime = 0.f;
 	}

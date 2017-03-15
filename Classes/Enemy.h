@@ -110,4 +110,5 @@ private :
 	void DeleteAllElementsMissileVector();
 	void FixUnitVecForRemainOnDisplay();
 	void FunctionPointerRegist();
+	void DistributeFireOption();
 };

@@ -235,7 +235,7 @@ void EnemyManager::MakeProc()
 	GoAndSlowData enemyItemData = GoAndSlowData(0.5f, 5.f, Vec(0.f, 1.f), 50.f);
 	CreateOption enemyItemNormal = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, FALSE);
 	CreateOption enemyItemLaunched = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, TRUE);
-	FireOption enemyFireFront = FireOption(NORMAL_FIRE, MISSILE_TYPE::NONE, SMALL, 300.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 0.3f);
+	FireOption enemyFireFront = FireOption(NORMAL_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f);
 
 	FLOAT line1 = 4.f;
 	ActivateEnemy(line1, Vec(350.f, 0.f), enemyItemNormal, enemyFireFront);
@@ -317,10 +317,10 @@ Enemy * EnemyManager::FindDeactivatedEnemy(const ENEMY::ENEMY_TYPE findEnemyType
 */
 Enemy * EnemyManager::FindEnemyColideWith(const Vec position, const Vec range)
 {
-	for (auto i : m_EnemyMemoryVector)
+	for (auto& i : m_EnemyMemoryVector)
 	{
-		// 활성화 상태인 Enemy만 조건 검사.
-		if (i->GetIsEnemyActivated())
+		// 활성화 상태 & 살아있는 상태인 Enemy만 조건 검사.
+		if (i->GetIsEnemyActivated() && !i->GetIsEnemyDead())
 		{
 			// 충돌 검사
 			if (IsObjectColided(position, range, i->GetPosition(), i->GetColideRange()))

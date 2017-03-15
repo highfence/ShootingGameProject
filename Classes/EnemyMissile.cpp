@@ -21,12 +21,29 @@ EnemyMissile::EnemyMissile(ENEMY::MISSILE_SIZE missileSize)
 		m_Width = enemyMissileMediumWidth;
 		m_Height = enemyMissileMediumHeight;
 	}
+	init();
 	return;
 }
 
 void EnemyMissile::init()
 {
+	RegisterFunctionPointer();
 	return;
+}
+
+void EnemyMissile::RegisterFunctionPointer()
+{
+	m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &EnemyMissile::MissileFlyNormal;
+	return;
+}
+
+BOOL EnemyMissile::MissileFlyNormal(const FLOAT deltaTime)
+{
+	FireOption op = GetOption();
+	Vec missileVec = op.GetMissileVec();
+	Fly(deltaTime, missileVec.x, missileVec.y, op.GetMissileSpeed());
+
+	return TRUE;
 }
 
 BOOL EnemyMissile::CheckColideWithPlayer()
@@ -56,6 +73,25 @@ BOOL EnemyMissile::CheckColideWithPlayer()
 EnemyMissile::~EnemyMissile()
 {
 
+}
+
+void EnemyMissile::CalcProc(const FLOAT deltaTime)
+{
+	// 미사일이 아직 발사되지 않은 경우 바로 리턴.
+	if (!m_IsMissileLaunched)
+	{
+		return;
+	}
+
+	FireOption op = GetOption();
+	// 옵션이 이상할 경우 바로 리턴.
+	if (!op.GetIsOptionCanUse())
+	{
+		return;
+	}
+
+	(this->*m_pMissileFlyHandler[op.GetMissileType()])(deltaTime);
+	return;
 }
 
 void EnemyMissile::Fly(
@@ -96,7 +132,6 @@ void EnemyMissile::SetPlayerPos(
 	return;
 }
 
-
 /*
 	Initialize with MissileOption (Launch Func Overloading)
 	Using in EnemyMissile
@@ -121,4 +156,9 @@ BOOL EnemyMissile::Launch(
 FireOption EnemyMissile::GetOption() const
 {
 	return m_Option;
+}
+
+void EnemyMissile::SetFireOption(const FireOption & op)
+{
+	m_Option = op;
 }
