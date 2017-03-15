@@ -83,8 +83,11 @@ void EnemyMissile::CalcProc(const FLOAT deltaTime)
 		return;
 	}
 
+	// 충돌 검사.
+	CheckColideWithPlayer();
+
+	// 옵션 호출 및 이상할 경우 바로 리턴.
 	FireOption op = GetOption();
-	// 옵션이 이상할 경우 바로 리턴.
 	if (!op.GetIsOptionCanUse())
 	{
 		return;
