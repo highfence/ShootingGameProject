@@ -51,6 +51,7 @@ void Enemy::FunctionPointerRegist()
 
 	// Fire Function Pointer Regist
 	m_pFireHandler[FIRE_TYPE::NORMAL_FIRE] = &Enemy::FireNormal;
+	m_pFireHandler[FIRE_TYPE::AIMED_FIRE] = &Enemy::FireAimed;
 
 	// Missile Fly Function Pointer Regist
 	//m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &Enemy::MissileFlyStraight;
@@ -135,6 +136,11 @@ void Enemy::DrawProc(_Inout_ HDC drawDC)
 		Draw(drawDC);
 	}
 	DrawMissiles(drawDC);
+
+#ifdef _DEBUG
+	//std::wstring debugLabel = _T("Player X : ") + std::to_wstring(m_PlayerPos.x) + _T(", Y : ") + std::to_wstring(m_PlayerPos.y);
+	//TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
+#endif
 	return;
 }
 
@@ -503,6 +509,37 @@ BOOL Enemy::FireNormal()
 		m_RecordFireTime = 0.f;
 	}
 	return TRUE;
+}
+
+/*
+	플레이어의 위치로 미사일을 발사해주는 함수.
+	매번 Fire가 호출 될 때마다 옵션의 미사일 벡터를 플레이어에게 바꿔주고 FireNormal을 호출한다.
+	만약 옵션에 RandomRange가 있을 경우, 미사일에 흔들림을 더해준다.
+*/
+BOOL Enemy::FireAimed()
+{
+	FireOption op = GetFireOption();
+	FLOAT range = op.GetRandomRange();
+	
+	// RandomRange 옵션이 있을 경우
+	if (range != 0)
+	{
+		// 난수 생성기를 통해 -range ~ range 범위의 값을 생성해준다.
+		std::mt19937 rng;
+		std::uniform_real_distribution<float> dist(-range, range);
+		op.SetMissileVec(Vec(m_PlayerPos.x + dist(rng), m_PlayerPos.y + dist(rng)));
+	}
+	else
+	{
+		// 아닐 경우 그냥 플레이어의 위치를 등록해준다.
+		op.SetMissileVec(Vec(m_PlayerPos.x, m_PlayerPos.y));
+	}
+
+	// 등록한 옵션으로 수정.
+	SetFireOption(op);
+
+	// 등록한 옵션을 실행할 FireNormal 호출.
+	return FireNormal();
 }
 
 /*

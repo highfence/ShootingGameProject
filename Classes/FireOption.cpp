@@ -9,15 +9,17 @@ FireOption::FireOption()
 }
 
 FireOption::FireOption(
-	const ENEMY::FIRE_TYPE fireType,
-	const ENEMY::MISSILE_TYPE missileType,
-	const ENEMY::MISSILE_SIZE missileSize,
-	const FLOAT missileSpeed,
-	const FLOAT accMissileSpeed,
-	const FLOAT waitingTime,
-	const Vec missileVec,
-	const FLOAT initShootDelay,
-	const FLOAT intervalShootDelay)
+	const ENEMY::FIRE_TYPE& fireType,
+	const ENEMY::MISSILE_TYPE& missileType,
+	const ENEMY::MISSILE_SIZE& missileSize,
+	const FLOAT& missileSpeed,
+	const FLOAT& accMissileSpeed,
+	const FLOAT& waitingTime,
+	const Vec& missileVec,
+	const FLOAT& initShootDelay,
+	const FLOAT& intervalShootDelay,
+	const FLOAT& randomRange,
+	const INT& shotNum)
 	: m_IsOptionCanUse(TRUE)
 {
 	SetFireType(fireType);
@@ -29,6 +31,8 @@ FireOption::FireOption(
 	SetMissileVec(missileVec);
 	SetInitShootDelay(initShootDelay);
 	SetIntervalShootDelay(intervalShootDelay);
+	SetRandomRange(randomRange);
+	SetShotNumber(shotNum);
 }
 
 FireOption::FireOption(const std::nullptr_t)
@@ -51,6 +55,8 @@ FireOption & FireOption::operator=(const FireOption op)
 	SetMissileVec(op.GetMissileVec());
 	SetInitShootDelay(op.GetInitShootDelay());
 	SetIntervalShootDelay(op.GetIntervalShootDelay());
+	SetRandomRange(op.GetRandomRange());
+	SetShotNumber(op.GetShotNumber());
 	m_IsOptionCanUse = TRUE;
 	return *this;
 }
@@ -108,47 +114,67 @@ FLOAT FireOption::GetIntervalShootDelay() const
 	return m_IntervalShootDelay;
 }
 
-void FireOption::SetFireType(const ENEMY::FIRE_TYPE fireType)
+FLOAT FireOption::GetRandomRange() const
+{
+	return m_RandomRange;
+}
+
+INT FireOption::GetShotNumber() const
+{
+	return m_ShotNumber;
+}
+
+void FireOption::SetFireType(const ENEMY::FIRE_TYPE& fireType)
 {
 	m_FireType = fireType;
 }
 
-void FireOption::SetMissileType(const ENEMY::MISSILE_TYPE missileType)
+void FireOption::SetMissileType(const ENEMY::MISSILE_TYPE& missileType)
 {
 	m_MissileType = missileType;
 }
 
-void FireOption::SetMissileSize(const ENEMY::MISSILE_SIZE missileSize)
+void FireOption::SetMissileSize(const ENEMY::MISSILE_SIZE& missileSize)
 {
 	m_MissileSize = missileSize;
 }
 
-void FireOption::SetMissileSpeed(const FLOAT missileSpeed)
+void FireOption::SetMissileSpeed(const FLOAT& missileSpeed)
 {
 	m_MissileSpeed = missileSpeed;
 }
 
-void FireOption::SetAccMissileSpeed(const FLOAT accMissileSpeed)
+void FireOption::SetAccMissileSpeed(const FLOAT& accMissileSpeed)
 {
 	m_AccMissileSpeed = accMissileSpeed;
 }
 
-void FireOption::SetWaitingTime(const FLOAT waitingTime)
+void FireOption::SetWaitingTime(const FLOAT& waitingTime)
 {
 	m_WaitingTime = waitingTime;
 }
 
-void FireOption::SetMissileVec(const Vec missileVec)
+void FireOption::SetMissileVec(const Vec& missileVec)
 {
 	m_MissileVec = missileVec;
 }
 
-void FireOption::SetInitShootDelay(const FLOAT time)
+void FireOption::SetInitShootDelay(const FLOAT& time)
 {
 	m_InitShootDelay = time;
 }
 
-void FireOption::SetIntervalShootDelay(const FLOAT time)
+void FireOption::SetIntervalShootDelay(const FLOAT& time)
 {
 	m_IntervalShootDelay = time;
+}
+
+void FireOption::SetRandomRange(const FLOAT& range)
+{
+	m_RandomRange = range;
+}
+
+void FireOption::SetShotNumber(const INT& shotNum)
+{
+	m_ShotNumber = shotNum;
 }

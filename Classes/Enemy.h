@@ -99,6 +99,7 @@ private :
 
 	// Fire 타입 함수 포인터.
 	BOOL FireNormal();
+	BOOL FireAimed();
 
 	void init();
 	void DeleteAllElementsMissileVector();

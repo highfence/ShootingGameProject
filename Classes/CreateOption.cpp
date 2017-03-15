@@ -2,14 +2,14 @@
 #include "CreateOption.h"
 
 CreateOption::CreateOption(
-	const INT enemyHp,
-	const ENEMY::ENEMY_TYPE enemyType,
-	const ENEMY::FLIGHT_TYPE flightType,
-	const Vec flightVec,
-	const FLOAT flightSpeed,
-	const FLOAT accFlightSpeed,
-	const GoAndSlowData goAndSlowData,
-	const BOOL isItemLaunched)
+	const INT& enemyHp,
+	const ENEMY::ENEMY_TYPE& enemyType,
+	const ENEMY::FLIGHT_TYPE& flightType,
+	const Vec& flightVec,
+	const FLOAT& flightSpeed,
+	const FLOAT& accFlightSpeed,
+	const GoAndSlowData& goAndSlowData,
+	const BOOL& isItemLaunched)
 	: m_IsOptionCanUse(TRUE)
 {
 	SetEnemyHp(enemyHp);
@@ -99,42 +99,42 @@ BOOL CreateOption::GetIsItemLaunched() const
 	return m_IsItemLaunched;
 }
 
-void CreateOption::SetEnemyHp(const INT hp)
+void CreateOption::SetEnemyHp(const INT& hp)
 {
 	m_EnemyHp = hp;
 }
 
-void CreateOption::SetEnemyType(const _In_ ENEMY::ENEMY_TYPE enemyType)
+void CreateOption::SetEnemyType(const _In_ ENEMY::ENEMY_TYPE& enemyType)
 {
 	m_EnemyType = enemyType;
 }
 
-void CreateOption::SetFlightType(const _In_ ENEMY::FLIGHT_TYPE flightType)
+void CreateOption::SetFlightType(const _In_ ENEMY::FLIGHT_TYPE& flightType)
 {
 	m_FlightType = flightType;
 }
 
-void CreateOption::SetFlightVec(const _In_ Vec flightVec)
+void CreateOption::SetFlightVec(const _In_ Vec& flightVec)
 {
 	m_FlightVec = flightVec;
 }
 
-void CreateOption::SetFlightSpeed(const _In_ FLOAT flightSpeed)
+void CreateOption::SetFlightSpeed(const _In_ FLOAT& flightSpeed)
 {
 	m_FlightSpeed = flightSpeed;
 }
 
-void CreateOption::SetAccFlightSpeed(const _In_ FLOAT accFlightSpeed)
+void CreateOption::SetAccFlightSpeed(const _In_ FLOAT& accFlightSpeed)
 {
 	m_AccFlightSpeed = accFlightSpeed;
 }
 
-void CreateOption::SetGoAndSlowData(const _In_ GoAndSlowData data)
+void CreateOption::SetGoAndSlowData(const _In_ GoAndSlowData& data)
 {
 	m_GoAndSlowData = data;
 }
 
-void CreateOption::SetIsItemLaunched(const BOOL isItemLaunched)
+void CreateOption::SetIsItemLaunched(const BOOL& isItemLaunched)
 {
 	m_IsItemLaunched = isItemLaunched;
 }
@@ -144,10 +144,10 @@ GoAndSlowData::GoAndSlowData()
 }
 
 GoAndSlowData::GoAndSlowData(
-	const FLOAT slowDownStartTime,
-	const FLOAT slowDownDurationTime,
-	const Vec slowDownMoveVec,
-	const FLOAT slowDownMoveSpeed)
+	const FLOAT& slowDownStartTime,
+	const FLOAT& slowDownDurationTime,
+	const Vec& slowDownMoveVec,
+	const FLOAT& slowDownMoveSpeed)
 {
 	SlowDownStartTime = slowDownStartTime;
 	SlowDownDurationTime = slowDownDurationTime;
@@ -163,7 +163,7 @@ GoAndSlowData::GoAndSlowData(int)
 	SlowDownMoveSpeed = 0.f;
 }
 
-GoAndSlowData & GoAndSlowData::operator=(const GoAndSlowData data)
+GoAndSlowData & GoAndSlowData::operator=(const GoAndSlowData& data)
 {
 	SlowDownStartTime = data.SlowDownStartTime;
 	SlowDownDurationTime = data.SlowDownDurationTime;

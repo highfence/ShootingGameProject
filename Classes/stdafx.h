@@ -8,6 +8,7 @@
 #include <string>
 #include <atlimage.h>
 #include <iostream>
+#include <random>
 #include "../ShootingGameProject/resource.h"
 #include "../Include/json/json.h"
 #include "KeyState.h"

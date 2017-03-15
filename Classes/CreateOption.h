@@ -8,13 +8,13 @@ struct GoAndSlowData
 {
 	GoAndSlowData();
 	GoAndSlowData(
-		const _In_ FLOAT slowDownStartTime,
-		const _In_ FLOAT slowDownDurationTime,
-		const _In_ Vec slowDonwMoveVec,
-		const _In_ FLOAT slowDownMoveSpeed
+		const _In_ FLOAT& slowDownStartTime,
+		const _In_ FLOAT& slowDownDurationTime,
+		const _In_ Vec& slowDonwMoveVec,
+		const _In_ FLOAT& slowDownMoveSpeed
 	);
 	GoAndSlowData(int);
-	GoAndSlowData& operator=(const GoAndSlowData);
+	GoAndSlowData& operator=(const GoAndSlowData&);
 	FLOAT SlowDownStartTime;
 	FLOAT SlowDownDurationTime;
 	Vec SlowDownMoveVec;
@@ -25,14 +25,14 @@ class CreateOption
 {
 public :
 	CreateOption(
-		const _In_ INT enemyHp,
-		const _In_ ENEMY::ENEMY_TYPE enemyType,
-		const _In_ ENEMY::FLIGHT_TYPE flightType,
-		const _In_ Vec flightVec,
-		const _In_ FLOAT flightSpeed,
-		const _In_ FLOAT accFlightSpeed,
-		const _In_ GoAndSlowData goAndSlowData,
-		const _In_ BOOL isItemLaunched);
+		const _In_ INT& enemyHp,
+		const _In_ ENEMY::ENEMY_TYPE& enemyType,
+		const _In_ ENEMY::FLIGHT_TYPE& flightType,
+		const _In_ Vec& flightVec,
+		const _In_ FLOAT& flightSpeed,
+		const _In_ FLOAT& accFlightSpeed,
+		const _In_ GoAndSlowData& goAndSlowData,
+		const _In_ BOOL& isItemLaunched);
 	CreateOption(const _In_ std::nullptr_t);
 	CreateOption();
 	~CreateOption();
@@ -50,14 +50,14 @@ public :
 	GoAndSlowData GetGoAndSlowData() const;
 	BOOL GetIsItemLaunched() const;
 
-	void SetEnemyHp(const _In_ INT);
-	void SetEnemyType(const _In_ ENEMY::ENEMY_TYPE);
-	void SetFlightType(const _In_ ENEMY::FLIGHT_TYPE);
-	void SetFlightVec(const _In_ Vec);
-	void SetFlightSpeed(const _In_ FLOAT);
-	void SetAccFlightSpeed(const _In_ FLOAT);
-	void SetGoAndSlowData(const _In_ GoAndSlowData);
-	void SetIsItemLaunched(const _In_ BOOL);
+	void SetEnemyHp(const _In_ INT&);
+	void SetEnemyType(const _In_ ENEMY::ENEMY_TYPE&);
+	void SetFlightType(const _In_ ENEMY::FLIGHT_TYPE&);
+	void SetFlightVec(const _In_ Vec&);
+	void SetFlightSpeed(const _In_ FLOAT&);
+	void SetAccFlightSpeed(const _In_ FLOAT&);
+	void SetGoAndSlowData(const _In_ GoAndSlowData&);
+	void SetIsItemLaunched(const _In_ BOOL&);
 
 private :
 
