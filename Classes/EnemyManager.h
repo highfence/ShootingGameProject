@@ -14,8 +14,8 @@ class Player;
 class EnemyManager
 {
 public :
-	static EnemyManager* getInstance();
-	void deleteInstance();
+	static EnemyManager* GetInstance();
+	void DeleteInstance();
 
 	EnemyManager();
 	~EnemyManager();
@@ -43,9 +43,9 @@ public :
 private :
 
 	// ΩÃ±€≈Ê ¿ŒΩ∫≈œΩ∫
-	static EnemyManager* _instance;
+	static EnemyManager* m_pInstance;
 	
-	void init();
+	void Init();
 	void AccTime(const _In_ FLOAT);
 	void Draw(_Inout_ HDC);
 	void DistributeData(const _In_ FLOAT);

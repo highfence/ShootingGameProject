@@ -24,5 +24,5 @@ private :
 
 	INT InitialImgLoad();
 
-	void init();
+	void Init();
 };

@@ -9,8 +9,8 @@
 class SoundManager
 {
 public :
-	static SoundManager* getInstance();
-	void deleteInstance();
+	static SoundManager* GetInstance();
+	void DeleteInstance();
 	const vRESULT SethInstance(_Inout_ HINSTANCE);
 	//const vRESULT PlaySoundWithSoundNum(const _In_ SOUND::SOUND_TYPE);
 
@@ -19,9 +19,9 @@ private :
 	~SoundManager();
 
 	// ΩÃ±€≈Ê ¿ŒΩ∫≈œΩ∫.
-	static SoundManager* _instance;
+	static SoundManager* m_pInstance;
 	
-	const vRESULT init();
+	void Init();
 
 	HINSTANCE m_hInstance;
 	FLOAT m_AccTime;

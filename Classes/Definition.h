@@ -45,6 +45,16 @@ namespace ENEMY
 	{
 		SMALL, MEDIUM, MISSILE_SIZE_NUM
 	};
+	
+	enum CREATE_OPTION
+	{
+		CREATE_OPTION_NUM
+	};
+	
+	enum FIRE_OPTION
+	{
+		FIRE_OPTION_NUM
+	};
 
 	const std::wstring enemyMissileSmall = _T("../Resources/FX/proton_02.png");
 	const std::wstring enemyMissileShadeSmall = _T("../Resources/FX/proton_02S.png");

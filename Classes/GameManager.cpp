@@ -19,10 +19,10 @@ GameManager::GameManager(_Inout_ HWND hWnd, _Inout_ HINSTANCE hInstance)
 	m_pTimer = new MyTimer();
 	m_pScroller = new BackGroundScroller();
 	m_pPlayer = new Player();
-	m_pEnemyManager = EnemyManager::getInstance();
-	m_pEffectManager = EffectManager::getInstance();
-	m_pUIManager = UIManager::getInstance();
-	SoundManager::getInstance()->SethInstance(hInstance);
+	m_pEnemyManager = EnemyManager::GetInstance();
+	m_pEffectManager = EffectManager::GetInstance();
+	m_pUIManager = UIManager::GetInstance();
+	SoundManager::GetInstance()->SethInstance(hInstance);
 	
 	init();
 }
@@ -66,7 +66,7 @@ void GameManager::CalProc(const _In_ FLOAT dt)
 	}
 
 	// EnemyManager에게 자신의 위치 정보 전달.
-	EnemyManager::getInstance()->SetPlayerInfo(*m_pPlayer);
+	EnemyManager::GetInstance()->SetPlayerInfo(*m_pPlayer);
 
 	m_pEnemyManager->CalcProc(dt);
 	m_pEffectManager->CalProc(dt);

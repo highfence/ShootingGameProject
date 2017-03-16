@@ -6,23 +6,23 @@
 #include "ExplodeArc.h"
 #include "EffectManager.h"
 
-EffectManager* EffectManager::_instance = nullptr;
+EffectManager* EffectManager::m_pInstance = nullptr;
 
 // EffectManager 싱글톤 구현.
-EffectManager* EffectManager::getInstance()
+EffectManager* EffectManager::GetInstance()
 {
-	if (!_instance)
+	if (!m_pInstance)
 	{
-		_instance = new EffectManager();
+		m_pInstance = new EffectManager();
 	}
-	return _instance;
+	return m_pInstance;
 }
 
 // 싱글톤 삭제 함수.
-void EffectManager::deleteInstance()
+void EffectManager::DeleteInstance()
 {
-	delete _instance;
-	_instance = nullptr;
+	delete m_pInstance;
+	m_pInstance = nullptr;
 	return;
 }
 
@@ -30,11 +30,11 @@ void EffectManager::deleteInstance()
 EffectManager::EffectManager()
 	: m_AccTime(0)
 {
-	init();
+	Init();
 }
 
 // 초기화 함수.
-void EffectManager::init()
+void EffectManager::Init()
 {
 	m_pEffectMakerHandler[EXPLODE_LIGHT] = &EffectManager::MakeExplodeLight;
 	m_pEffectMakerHandler[EXPLODE_HIT] = &EffectManager::MakeExplodeHit;
@@ -52,7 +52,7 @@ void EffectManager::init()
 // 소멸자.
 EffectManager::~EffectManager()
 {
-	deleteInstance();
+	DeleteInstance();
 }
 
 // 계산 담당 함수 (GameManager->Update->CalProc에서 호출)

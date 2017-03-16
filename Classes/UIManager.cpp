@@ -8,23 +8,23 @@ const INT numberSpriteWidth = 19;
 const INT numberSpriteHeight = 19;
 
 
-UIManager* UIManager::_instance = nullptr;
+UIManager* UIManager::m_pInstance = nullptr;
 
-// SoundManager ½Ì±ÛÅæ ±¸Çö.
-UIManager* UIManager::getInstance()
+// UIManager ½Ì±ÛÅæ ±¸Çö.
+UIManager* UIManager::GetInstance()
 {
-	if (!_instance)
+	if (!m_pInstance)
 	{
-		_instance = new UIManager();
+		m_pInstance = new UIManager();
 	}
-	return _instance;
+	return m_pInstance;
 }
 
 // ½Ì±ÛÅæ »èÁ¦ ÇÔ¼ö.
-void UIManager::deleteInstance()
+void UIManager::DeleteInstance()
 {
-	delete _instance;
-	_instance = nullptr;
+	delete m_pInstance;
+	m_pInstance = nullptr;
 	return;
 }
 
@@ -34,8 +34,7 @@ void UIManager::deleteInstance()
 UIManager::UIManager()
 	: m_AccTime(0.f), m_Score(0), m_IsScoreCalcNeeded(TRUE)
 {
-	vRESULT retval = init();
-	DebugLogPrint(retval, MESSAGES::creationFailed, _T("In SoundMananger Creation"));
+	Init();
 }
 
 /*
@@ -43,13 +42,13 @@ UIManager::UIManager()
 */
 UIManager::~UIManager()
 {
-	deleteInstance();
+	DeleteInstance();
 }
 
 /*
 	ÃÊ±âÈ­ ÇÔ¼ö.
 */
-const vRESULT UIManager::init()
+void UIManager::Init()
 {
 	for (int i = 0; i < maxNumberPos; ++i)
 	{
@@ -59,7 +58,7 @@ const vRESULT UIManager::init()
 		ImgLoad(m_ScoreShadeArr[i], numberShadePath, 0, numberFileExtension, FALSE);
 	}
 
-	return WELL_PERFORMED;
+	return;
 }
 
 /*
