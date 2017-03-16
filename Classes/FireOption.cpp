@@ -1,11 +1,24 @@
 #include "stdafx.h"
 #include "FireOption.h"
 
-NwayShotData::NwayShotData()
+NwayShotData::NwayShotData(
+	const INT shotTimes,
+	const INT* shotNumberArr,
+	const INT* shotAngleArr,
+	const BOOL isMissileShotToPlayer)
 {
-
+	ShotTimes = shotTimes;
+	for (int i = 0; i < ShotTimes; ++i)
+	{
+		ShotNumber[i] = shotNumberArr[i];
+		ShotAngle[i] = shotAngleArr[i];
+	}
+	IsMissileShotToPlayer = isMissileShotToPlayer;
 }
 
+/*
+	nullptr로 초기화할 경우, 아무것도 하지 않음.
+*/
 NwayShotData::NwayShotData(const char *)
 {
 

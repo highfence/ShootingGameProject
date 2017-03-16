@@ -8,7 +8,12 @@ const INT maxShotTimes = 5;
 
 struct NwayShotData
 {
-	NwayShotData();
+	NwayShotData() = default;
+	NwayShotData(
+		const _In_ INT,
+		const _In_ INT*,
+		const _In_ INT*,
+		const _In_ BOOL);
 	NwayShotData(const _In_ NwayShotData&) = default;
 	NwayShotData(const _In_ char*);
 	NwayShotData& operator=(const _In_ NwayShotData&);

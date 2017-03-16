@@ -33,7 +33,6 @@ public :
 			BOOL CheckDead();
 			BOOL CheckActEnd();
 			BOOL CheckEnemyIsOnDisplay();
-			EnemyMissile* GetLaunchableMissile();
 
 	// Getter, Setter
 	BOOL GetIsEnemyActivated() const;
@@ -54,7 +53,8 @@ public :
 
 
 protected :
-	// 리팩토링에서 새로 들어간 부분들
+
+	// 상속 클래스에서도 쓸 일이 있을 변수들.
 	BOOL		 m_IsEnemyActivated;
 	CreateOption m_CreateOption;
 	FireOption	 m_FireOption;
@@ -82,6 +82,8 @@ protected :
 
 	std::vector<EnemyMissile*> m_MissileVec;
 
+	// Protected 함수.
+	EnemyMissile* GetLaunchableMissile();
 
 private :
 
@@ -107,6 +109,7 @@ private :
 	BOOL LaunchOddNumberWaysMissiles();
 	BOOL LaunchEvenNumberWaysMissiles();
 
+	// 그 외 사용 함수.
 	void init();
 	void DeleteAllElementsMissileVector();
 	void FixUnitVecForRemainOnDisplay();
