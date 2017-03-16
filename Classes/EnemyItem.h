@@ -24,7 +24,7 @@ public :
 
 private :
 
-	const vRESULT init();
+	void Init();
 	const vRESULT InitialImgLoad(const _In_ BOOL);
 
 };

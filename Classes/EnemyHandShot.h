@@ -21,7 +21,7 @@ public :
 
 private :
 
-	const vRESULT init();
+	void Init();
 	const vRESULT InitialImgLoad();
 	//const vRESULT NWayBulletLaunch(const _In_ INT);
 	Vec GetLaunchPos() const;

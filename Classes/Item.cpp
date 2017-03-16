@@ -72,7 +72,7 @@ void Item::DeadProc()
 
 BOOL Item::CheckPlayerGetItem()
 {
-	Player& playerInfo = EnemyManager::getInstance()->getPlayerInfo();
+	Player& playerInfo = EnemyManager::GetInstance()->getPlayerInfo();
 	FLOAT playerCorrectionPixel = playerInfo.GetCollisionPixel();
 	Vec playerPos;
 	playerInfo.GetPosition(&playerPos);

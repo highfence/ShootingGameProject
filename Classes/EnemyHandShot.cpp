@@ -25,15 +25,15 @@ EnemyHandShot::EnemyHandShot()
 {
 	m_RightHandPos = Vec(32, 32);
 	m_LeftHandPos = Vec(-32, 32);
-	init();
+	Init();
 }
 
 
-const vRESULT EnemyHandShot::init()
+void EnemyHandShot::Init()
 {
 	if (InitialImgLoad() != WELL_PERFORMED)
 	{
-		return ERROR_IMG_LOAD_FAILED;
+		return;
 	}
 
 	m_EnemyType = ENEMY::ENEMY_TYPE::ENEMY_HAND_SHOT;
@@ -42,7 +42,7 @@ const vRESULT EnemyHandShot::init()
 	m_ColideRange = m_SpriteRange;
 	m_LoadedMissileNumber = enemyHandShotLoadedMissileNumber;
 	LoadMissiles(ENEMY::MISSILE_SIZE::MEDIUM);
-	return WELL_PERFORMED;
+	return;
 }
 
 EnemyHandShot::~EnemyHandShot()
@@ -69,7 +69,7 @@ void EnemyHandShot::DeadProc()
 {
 	if ((!m_IsEnemyExplode) && (m_IsEnemyDead))
 	{
-		UIManager::getInstance()->PlusScore(2700);
+		UIManager::GetInstance()->PlusScore(2700);
 		Explode();
 		m_IsEnemyExplode = TRUE;
 	}
@@ -184,7 +184,7 @@ Vec EnemyHandShot::GetLaunchPos() const
 
 void EnemyHandShot::Explode()
 {
-	EffectManager::getInstance()->MakeEffect(EFFECT::EXPLODE_SMOKE, m_Pos);
+	EffectManager::GetInstance()->MakeEffect(EFFECT::EXPLODE_SMOKE, m_Pos);
 	return;
 }
 
@@ -214,6 +214,6 @@ void EnemyHandShot::GetDamage(const _In_ INT damage, const _In_ Vec playerMissil
 	}
 	else
 	{
-		EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_HIT, Vec(playerMissileVec.x + rand() % 10 - 5, m_Pos.y + m_SpriteRange.y / 2), 150, Vec(0, -1));
+		EffectManager::GetInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_HIT, Vec(playerMissileVec.x + rand() % 10 - 5, m_Pos.y + m_SpriteRange.y / 2), 150, Vec(0, -1));
 	}
 }

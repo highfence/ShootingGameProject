@@ -7,39 +7,39 @@
 #include "EnemyHandShot.h"
 #include "EnemyManager.h"
 
-EnemyManager* EnemyManager::_instance = nullptr;
+EnemyManager* EnemyManager::m_pInstance = nullptr;
 
 // EnemyManager 싱글톤 구현.
-EnemyManager* EnemyManager::getInstance()
+EnemyManager* EnemyManager::GetInstance()
 {
-	if (!_instance)
+	if (!m_pInstance)
 	{
-		_instance = new EnemyManager();
+		m_pInstance = new EnemyManager();
 	}
-	return _instance;
+	return m_pInstance;
 }
 
 /*
 	deleteInstance
 	싱글톤 소멸 함수.
 */
-void EnemyManager::deleteInstance()
+void EnemyManager::DeleteInstance()
 {
-	delete _instance;
-	_instance = nullptr;
+	delete m_pInstance;
+	m_pInstance = nullptr;
 	return;
 }
 
 EnemyManager::EnemyManager()
 	: m_AccTime(0.f), m_RecordCreateTime(0.f), m_pPlayerInfo(nullptr)
 {
-	init();
+	Init();
 }
 
 /*
 	Enemy 생성 함수 포인터 핸들러에 함수를 등록해 주는 함수.
 */
-void EnemyManager::init()
+void EnemyManager::Init()
 {
 	SetEnemyMemoryPool();
 	RegisterFunctionPointer();
@@ -140,7 +140,7 @@ BOOL EnemyManager::ActivateHandShot(
 
 EnemyManager::~EnemyManager()
 {
-	deleteInstance();
+	DeleteInstance();
 }
 
 void EnemyManager::AccTime(const _In_ FLOAT dt)

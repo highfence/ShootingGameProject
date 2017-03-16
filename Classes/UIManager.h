@@ -4,8 +4,8 @@ const INT maxNumberPos = 6;
 class UIManager
 {
 public:
-	static UIManager* getInstance();
-	void deleteInstance();
+	static UIManager* GetInstance();
+	void DeleteInstance();
 
 	void CalProc(const _In_ FLOAT);
 	void DrawProc(_Inout_ HDC);
@@ -16,9 +16,9 @@ private:
 	~UIManager();
 
 	// ΩÃ±€≈Ê ¿ŒΩ∫≈œΩ∫.
-	static UIManager* _instance;
+	static UIManager* m_pInstance;
 
-	const vRESULT init();
+	void Init();
 	void DrawScore(_Inout_ HDC);
 	void CalcScore();
 

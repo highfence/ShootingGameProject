@@ -110,7 +110,7 @@ private :
 	BOOL LaunchEvenNumberWaysMissiles();
 
 	// 그 외 사용 함수.
-	void init();
+	void Init();
 	void DeleteAllElementsMissileVector();
 	void FixUnitVecForRemainOnDisplay();
 	void FunctionPointerRegist();

@@ -398,7 +398,7 @@ INT Player::PrintDebugLabel(_Inout_ HDC drawDC)
 */
 const vRESULT Player::MakeDyingExplosion()
 {
-	EffectManager* effectManager = EffectManager::getInstance();
+	EffectManager* effectManager = EffectManager::GetInstance();
 	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.f, 1.f));
 	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.f, -1.f));
 	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.5f, 0.5f));

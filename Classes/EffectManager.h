@@ -13,8 +13,8 @@ class EffectManager
 {
 public :
 	// 싱글톤 호출 / 삭제
-	static EffectManager* getInstance();
-	void deleteInstance();
+	static EffectManager* GetInstance();
+	void DeleteInstance();
 
 	void CalProc(const _In_ FLOAT);
 	void DrawProc(_Inout_ HDC);
@@ -34,7 +34,7 @@ private :
 	~EffectManager();
 
 	// 싱글톤 인스턴스.
-	static EffectManager* _instance;
+	static EffectManager* m_pInstance;
 
 	// 핸들러와 핸들러 함수들.
 	BOOL(EffectManager::*m_pEffectMakerHandler[EFFECT::EFFECT_TYPE_NUM])(const _In_ Vec);
@@ -67,7 +67,7 @@ private :
 		const _In_ FLOAT,
 		const _In_ Vec);
 
-	void init();
+	void Init();
 	void AccTime(const _In_ FLOAT);
 	void ClearVec();
 

@@ -70,7 +70,7 @@ BOOL EnemyMissile::MissileAccelerate(const FLOAT deltaTime)
 
 BOOL EnemyMissile::CheckColideWithPlayer()
 {
-	Player& playerInfo = EnemyManager::getInstance()->getPlayerInfo();
+	Player& playerInfo = EnemyManager::GetInstance()->getPlayerInfo();
 	FLOAT playerCorrectionPixel = playerInfo.GetCollisionPixel();
 	Vec playerPos;
 	playerInfo.GetPosition(&playerPos);

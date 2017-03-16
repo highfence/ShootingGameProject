@@ -15,11 +15,11 @@ Enemy::Enemy()
 	m_PlayerPos(zeroVec),
 	m_IsEnemyDead(TRUE)
 {
-	init();
+	Init();
 }
 
 
-void Enemy::init()
+void Enemy::Init()
 {
 	m_pSprite = new CImage();
 	m_pShadeSprite = new CImage();
