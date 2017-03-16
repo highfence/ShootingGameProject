@@ -40,23 +40,23 @@ public :
 	CreateOption& operator=(const _In_ CreateOption&);
 
 	// Getter, Setter
-	BOOL GetIsOptionCanUse() const;
-	INT GetEnemyHp() const;
-	ENEMY::ENEMY_TYPE GetEnemyType() const;
-	ENEMY::FLIGHT_TYPE GetFlightType() const;
-	Vec GetFlightVec() const;
-	FLOAT GetFlightSpeed() const;
-	FLOAT GetAccFlightSpeed() const;
-	GoAndSlowData GetGoAndSlowData() const;
-	BOOL GetIsItemLaunched() const;
+	BOOL               GetIsOptionCanUse() const;
+	INT                GetEnemyHp()        const;
+	ENEMY::ENEMY_TYPE  GetEnemyType()      const;
+	ENEMY::FLIGHT_TYPE GetFlightType()     const;
+	Vec                GetFlightVec()      const;
+	FLOAT              GetFlightSpeed()    const;
+	FLOAT              GetAccFlightSpeed() const;
+	GoAndSlowData      GetGoAndSlowData()  const;
+	BOOL               GetIsItemLaunched() const;
 
-	void SetEnemyHp(const _In_ INT&);
-	void SetEnemyType(const _In_ ENEMY::ENEMY_TYPE&);
-	void SetFlightType(const _In_ ENEMY::FLIGHT_TYPE&);
-	void SetFlightVec(const _In_ Vec&);
-	void SetFlightSpeed(const _In_ FLOAT&);
+	void SetEnemyHp       (const _In_ INT&);
+	void SetEnemyType     (const _In_ ENEMY::ENEMY_TYPE&);
+	void SetFlightType    (const _In_ ENEMY::FLIGHT_TYPE&);
+	void SetFlightVec     (const _In_ Vec&);
+	void SetFlightSpeed   (const _In_ FLOAT&);
 	void SetAccFlightSpeed(const _In_ FLOAT&);
-	void SetGoAndSlowData(const _In_ GoAndSlowData&);
+	void SetGoAndSlowData (const _In_ GoAndSlowData&);
 	void SetIsItemLaunched(const _In_ BOOL&);
 
 private :

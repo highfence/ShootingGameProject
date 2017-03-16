@@ -100,6 +100,12 @@ private :
 	// Fire 타입 함수 포인터.
 	BOOL FireNormal();
 	BOOL FireAimed();
+	BOOL FireNways();
+
+	// Fire 보조 함수.
+	BOOL SetOptionMissileVecToPlayer();
+	BOOL LaunchOddNumberWaysMissiles();
+	BOOL LaunchEvenNumberWaysMissiles();
 
 	void init();
 	void DeleteAllElementsMissileVector();

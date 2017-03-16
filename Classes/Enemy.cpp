@@ -19,7 +19,6 @@ Enemy::Enemy()
 }
 
 
-
 void Enemy::init()
 {
 	m_pSprite = new CImage();
@@ -52,6 +51,7 @@ void Enemy::FunctionPointerRegist()
 	// Fire Function Pointer Regist
 	m_pFireHandler[FIRE_TYPE::NORMAL_FIRE] = &Enemy::FireNormal;
 	m_pFireHandler[FIRE_TYPE::AIMED_FIRE] = &Enemy::FireAimed;
+	m_pFireHandler[FIRE_TYPE::N_WAY_FIRE] = &Enemy::FireNways;
 
 	// Missile Fly Function Pointer Regist
 	//m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &Enemy::MissileFlyStraight;
@@ -514,13 +514,90 @@ BOOL Enemy::FireNormal()
 /*
 	플레이어의 위치로 미사일을 발사해주는 함수.
 	매번 Fire가 호출 될 때마다 옵션의 미사일 벡터를 플레이어에게 바꿔주고 FireNormal을 호출한다.
-	만약 옵션에 RandomRange가 있을 경우, 미사일에 흔들림을 더해준다.
 */
 BOOL Enemy::FireAimed()
 {
+	// 벡터를 플레이어 쪽으로 바꿔줌.
+	SetOptionMissileVecToPlayer();
+
+	// 등록한 옵션을 실행할 FireNormal 호출.
+	return FireNormal();
+}
+
+/*
+	N-way방향으로 나가는 함수 구현. 
+*/
+BOOL Enemy::FireNways()
+{
+	FireOption op = GetFireOption();
+	NwayShotData data = op.GetNwayShotData();
+
+	// 이상한 옵션이 들어오거나 초기화 실패.
+	if (!data.GetNwayShotDataValid())
+	{
+		return FALSE;
+	}
+
+	// 플레이어 쪽으로 발사하는 옵션이 있을 경우, 벡터를 플레이어 쪽으로 바꿔줌.
+	if (data.IsMissileShotToPlayer)
+	{
+		SetOptionMissileVecToPlayer();
+	}
+
+	// 발사 시간 조정.
+	// RecordFireTime이 초기 딜레이 이상, 초기 딜레이 + 인터벌 딜레이 이하일 경우 발사.
+	if (m_RecordFireTime > op.GetInitShootDelay() &&
+		m_RecordFireTime <= (op.GetInitShootDelay() + op.GetIntervalShootDelay()))
+	{
+		// 미사일에 인터벌 딜레이가 필요할 경우 발사 불가. 
+		if (data.IsMissileNeedDelay)
+		{
+			return FALSE;
+		}
+
+		// 이번 발사하는 미사일 개수가 짝수일 경우 처리.
+		if (data.ShotNumber[data.RecordShotTimes] % 2 == 0)
+		{
+			LaunchOddNumberWaysMissiles();
+			// 딜레이 처리.
+			data.IsMissileNeedDelay = TRUE;
+		}
+		// 발사하는 미사일 개수가 홀수일 경우 처리.
+		else
+		{
+			LaunchEvenNumberWaysMissiles();
+			// 딜레이 처리.
+			data.IsMissileNeedDelay = TRUE;
+		}
+		
+		// 재장전 처리.
+		// RecordShotTimes == ShotTimes일 경우 재장전 시간이 필요하다.
+		if (data.RecordShotTimes == data.ShotTimes)
+		{
+			data.RecordShotTimes = 0;
+			m_RecordFireTime = 0.f;
+		}
+	}
+	// 인터벌 딜레이 처리.
+	else if (m_RecordFireTime > (op.GetInitShootDelay() + op.GetIntervalShootDelay()))
+	{
+		// 인터벌 딜레이가 끝났으므로 미사일 발사 가능. 
+		data.IsMissileNeedDelay = FALSE;
+	}
+
+	return TRUE;
+}
+
+
+/*
+	가지고 있는 옵션의 벡터를 플레이어 쪽으로 향하게 하는 함수.
+	만약 옵션에 RandomRange가 있을 경우, 미사일에 흔들림을 더해준다.
+*/
+BOOL Enemy::SetOptionMissileVecToPlayer()
+{
 	FireOption op = GetFireOption();
 	FLOAT range = op.GetRandomRange();
-	
+
 	// RandomRange 옵션이 있을 경우
 	if (range != 0)
 	{
@@ -538,8 +615,28 @@ BOOL Enemy::FireAimed()
 	// 등록한 옵션으로 수정.
 	SetFireOption(op);
 
-	// 등록한 옵션을 실행할 FireNormal 호출.
-	return FireNormal();
+	return TRUE;
+}
+
+/*
+	홀수 개의 미사일을 Launch시키는 함수.
+	FireNways에서 호출.
+*/
+BOOL Enemy::LaunchOddNumberWaysMissiles()
+{
+
+
+	return TRUE;
+}
+
+/*
+	짝수 개의 미사일을 Launch시키는 함수.
+	FireNways에서 호출.
+*/
+BOOL Enemy::LaunchEvenNumberWaysMissiles()
+{
+
+	return TRUE;
 }
 
 /*

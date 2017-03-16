@@ -4,6 +4,27 @@
 	Enemy의 Missile 생성시에 들어갈 정보를 담는 클래스.
 */
 
+const INT maxShotTimes = 5;
+
+struct NwayShotData
+{
+	NwayShotData();
+	NwayShotData(const _In_ NwayShotData&) = default;
+	NwayShotData(const _In_ char*);
+	NwayShotData& operator=(const _In_ NwayShotData&);
+	BOOL GetNwayShotDataValid();
+	
+	INT ShotTimes = 0;
+	INT ShotNumber[maxShotTimes] = { 0 };
+	FLOAT ShotAngle[maxShotTimes] = { 0.f };
+	BOOL IsMissileShotToPlayer = FALSE;
+
+	// 계산에 필요한 인자.
+	INT RecordShotTimes = 0;
+	BOOL IsMissileNeedDelay = FALSE;
+
+};
+
 class FireOption
 {
 public :
@@ -18,7 +39,7 @@ public :
 		const _In_ FLOAT&  initShootDelay,
 		const _In_ FLOAT&  intervalShootDelay,
 		const _In_ FLOAT&  randomRange,
-		const _In_ INT&  shotNum);
+		const _In_ NwayShotData& shotData);
 	FireOption(const _In_ std::nullptr_t);
 	FireOption();
 	~FireOption();
@@ -28,30 +49,30 @@ public :
 	/*
 		Getter, Setter
 	*/
-	BOOL GetIsOptionCanUse() const;
-	ENEMY::FIRE_TYPE GetFireType() const;
-	ENEMY::MISSILE_TYPE GetMissileType() const;
-	ENEMY::MISSILE_SIZE GetMissileSize() const;
-	FLOAT GetMissileSpeed() const;
-	FLOAT GetAccMissileSpeed() const;
-	FLOAT GetWaitingTime() const;
-	Vec GetMissileVec() const;
-	FLOAT GetInitShootDelay() const;
-	FLOAT GetIntervalShootDelay() const;
-	FLOAT GetRandomRange() const;
-	INT GetShotNumber() const;
+	BOOL                GetIsOptionCanUse()     const;
+	ENEMY::FIRE_TYPE    GetFireType()           const;
+	ENEMY::MISSILE_TYPE GetMissileType()        const;
+	ENEMY::MISSILE_SIZE GetMissileSize()        const;
+	FLOAT               GetMissileSpeed()       const;
+	FLOAT               GetAccMissileSpeed()    const;
+	FLOAT               GetWaitingTime()        const;
+	Vec                 GetMissileVec()         const;
+	FLOAT               GetInitShootDelay()     const;
+	FLOAT               GetIntervalShootDelay() const;
+	FLOAT               GetRandomRange()        const;
+	NwayShotData        GetNwayShotData()       const;
 
-	void SetFireType(const _In_ ENEMY::FIRE_TYPE&);
-	void SetMissileType(const _In_ ENEMY::MISSILE_TYPE&);
-	void SetMissileSize(const _In_ ENEMY::MISSILE_SIZE&);
-	void SetMissileSpeed(const _In_ FLOAT&);
-	void SetAccMissileSpeed(const _In_ FLOAT&);
-	void SetWaitingTime(const _In_ FLOAT&);
-	void SetMissileVec(const _In_ Vec&);
-	void SetInitShootDelay(const _In_ FLOAT&);
+	void SetFireType          (const _In_ ENEMY::FIRE_TYPE&);
+	void SetMissileType       (const _In_ ENEMY::MISSILE_TYPE&);
+	void SetMissileSize       (const _In_ ENEMY::MISSILE_SIZE&);
+	void SetMissileSpeed      (const _In_ FLOAT&);
+	void SetAccMissileSpeed   (const _In_ FLOAT&);
+	void SetWaitingTime       (const _In_ FLOAT&);
+	void SetMissileVec        (const _In_ Vec&);
+	void SetInitShootDelay    (const _In_ FLOAT&);
 	void SetIntervalShootDelay(const _In_ FLOAT&);
-	void SetRandomRange(const _In_ FLOAT&);
-	void SetShotNumber(const _In_ INT&);
+	void SetRandomRange       (const _In_ FLOAT&);
+	void SetNwayShotData      (const _In_ NwayShotData&);
 
 
 private :
@@ -70,6 +91,6 @@ private :
 	FLOAT m_InitShootDelay;
 	FLOAT m_IntervalShootDelay;
 	FLOAT m_RandomRange;
-	INT m_ShotNumber;
+	NwayShotData m_NwayShotData;
 
 };
