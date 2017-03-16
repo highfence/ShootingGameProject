@@ -107,10 +107,10 @@ Vec Vec::GetMinusVec() const
 
 Vec Vec::GetYSymmetryVec() const
 {
-	return Vec(x, -y);
+	return Vec(-x, y);
 }
 
 Vec Vec::GetXSymmetryVec() const
 {
-	return Vec(-x, y);
+	return Vec(x, -y);
 }

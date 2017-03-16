@@ -36,6 +36,8 @@ NwayShotData & NwayShotData::operator=(const NwayShotData & data)
 		ShotAngle[i] = data.ShotAngle[i];
 	}
 	IsMissileShotToPlayer = data.IsMissileShotToPlayer;
+	IsMissileNeedDelay = data.IsMissileNeedDelay;
+	RecordShotTimes = data.RecordShotTimes;
 	
 	return *this;
 }

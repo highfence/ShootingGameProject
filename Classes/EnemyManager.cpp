@@ -239,9 +239,10 @@ void EnemyManager::MakeProc()
 	FireOption enemyFireAimed = FireOption(FIRE_TYPE::AIMED_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 50.f, nullptr);
 	INT shotTimes[] = { 5, 6, 5, 0, 0 };
 	INT shotAngle[] = { 22.5f, 22.5f, 22.5f, 0, 0};
-	NwayShotData enemyHandShotData = NwayShotData(3, shotTimes, shotAngle, FALSE);
-	FireOption enemyHandShotFire = FireOption(FIRE_TYPE::N_WAY_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 0.3f, 0.f, enemyHandShotData);
-	CreateOption enemyHandShotCreate = CreateOption(380, ENEMY_HAND_SHOT, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, FALSE);
+	GoAndSlowData enemyHandShotGASData = GoAndSlowData(0.5f, 15.f, Vec(0.f, 1.f), 50.f);
+	NwayShotData enemyHandShotNwayData = NwayShotData(3, shotTimes, shotAngle, FALSE);
+	FireOption enemyHandShotFire = FireOption(FIRE_TYPE::N_WAY_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0.f, enemyHandShotNwayData);
+	CreateOption enemyHandShotCreate = CreateOption(380, ENEMY_HAND_SHOT, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyHandShotGASData, FALSE);
 
 	FLOAT line1 = 4.f;
 	ActivateEnemy(line1, Vec(350.f, 0.f), enemyItemNormal, enemyFireAimed);

@@ -558,16 +558,18 @@ BOOL Enemy::FireNways()
 		// 이번 발사하는 미사일 개수가 짝수일 경우 처리.
 		if (data.ShotNumber[data.RecordShotTimes] % 2 == 0)
 		{
-			LaunchOddNumberWaysMissiles();
+			LaunchEvenNumberWaysMissiles();
 			// 딜레이 처리.
 			data.IsMissileNeedDelay = TRUE;
+			++data.RecordShotTimes;
 		}
 		// 발사하는 미사일 개수가 홀수일 경우 처리.
 		else
 		{
-			LaunchEvenNumberWaysMissiles();
+			LaunchOddNumberWaysMissiles();
 			// 딜레이 처리.
 			data.IsMissileNeedDelay = TRUE;
+			++data.RecordShotTimes;
 		}
 		
 		// 재장전 처리.
@@ -583,8 +585,12 @@ BOOL Enemy::FireNways()
 	{
 		// 인터벌 딜레이가 끝났으므로 미사일 발사 가능. 
 		data.IsMissileNeedDelay = FALSE;
+		m_RecordFireTime = opt.GetInitShootDelay();
 	}
 
+	// 변경점 적용.
+	opt.SetNwayShotData(data);
+	SetFireOption(opt);
 	return TRUE;
 }
 
