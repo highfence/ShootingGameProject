@@ -9,6 +9,7 @@
 #include <atlimage.h>
 #include <iostream>
 #include <random>
+#include <unordered_map>
 #include "../ShootingGameProject/resource.h"
 #include "../Include/json/json.h"
 #include "KeyState.h"

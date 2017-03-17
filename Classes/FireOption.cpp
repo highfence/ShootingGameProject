@@ -123,6 +123,11 @@ FireOption & FireOption::operator=(const FireOption op)
 	return *this;
 }
 
+FireOption & FireOption::GetOption() 
+{
+	return *this;
+}
+
 /*
 	Getter, Setter Zone
 */
