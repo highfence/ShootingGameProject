@@ -1,21 +1,5 @@
 #pragma once
 
-/*
-	Option을 간편하게 정의하기 위해 만들어낸 구조체.
-	Option과 ID를 같이 저장한다.
-*/
-
-struct CreateOptionWithId
-{
-	CreateOption* opt;
-	ENEMY::CREATE_OPTION id;
-};
-
-struct FireOptionWithId
-{
-	FireOption* opt;
-	ENEMY::FIRE_OPTION id;
-};
 
 /*
 	EnemyManager에서 옵션을 생성하고 만들기가 너무 귀찮고 힘들어서 만든 클래스.
@@ -29,8 +13,8 @@ public :
 	static OptionHandler* GetInstance();
 	void DeleteInstance();
 
-	CreateOption* GetCreateOption();
-	FireOption* GetFireOption();
+	CreateOption& GetCreateOption(const _In_ ENEMY::CREATE_OPTION);
+	FireOption& GetFireOption(const _In_ ENEMY::FIRE_OPTION);
 	~OptionHandler();
 
 private:
@@ -44,6 +28,6 @@ private:
 	void Init();
 
 	// 옵션 저장 풀.
-	std::vector<CreateOptionWithId> m_CreateOptionVec;
-	std::vector<FireOptionWithId> m_FireOptionVec;
+	std::unordered_map<INT, CreateOption> m_CreateOptionMap;
+	std::unordered_map<INT, FireOption> m_FireOptionMap;
 };

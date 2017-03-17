@@ -54,6 +54,7 @@ public :
 	/*
 		Getter, Setter
 	*/
+	FireOption&			GetOption();
 	BOOL                GetIsOptionCanUse()     const;
 	ENEMY::FIRE_TYPE    GetFireType()           const;
 	ENEMY::MISSILE_TYPE GetMissileType()        const;

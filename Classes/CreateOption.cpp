@@ -54,6 +54,11 @@ CreateOption& CreateOption::operator=(const _In_ CreateOption& op)
 /*
 	Getter, Setter Zone
 */
+CreateOption & CreateOption::GetOption()
+{
+	return *this;
+}
+
 BOOL CreateOption::GetIsOptionCanUse() const
 {
 	return m_IsOptionCanUse;

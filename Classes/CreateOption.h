@@ -40,6 +40,7 @@ public :
 	CreateOption& operator=(const _In_ CreateOption&);
 
 	// Getter, Setter
+	CreateOption&	   GetOption();
 	BOOL               GetIsOptionCanUse() const;
 	INT                GetEnemyHp()        const;
 	ENEMY::ENEMY_TYPE  GetEnemyType()      const;
