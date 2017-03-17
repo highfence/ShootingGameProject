@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "Enemy.h"
 #include "EnemyMissile.h"
 
@@ -15,12 +15,11 @@ Enemy::Enemy()
 	m_PlayerPos(zeroVec),
 	m_IsEnemyDead(TRUE)
 {
-	init();
+	Init();
 }
 
 
-
-void Enemy::init()
+void Enemy::Init()
 {
 	m_pSprite = new CImage();
 	m_pShadeSprite = new CImage();
@@ -30,7 +29,7 @@ void Enemy::init()
 
 /*
 	~Enemy
-	m_MissileVec¿¡ ÀÖ´Â ¹Ì»çÀÏµé Áö¿öÁÖ±â.
+	m_MissileVecì— ìˆëŠ” ë¯¸ì‚¬ì¼ë“¤ ì§€ì›Œì£¼ê¸°.
 */
 Enemy::~Enemy()
 {
@@ -52,6 +51,7 @@ void Enemy::FunctionPointerRegist()
 	// Fire Function Pointer Regist
 	m_pFireHandler[FIRE_TYPE::NORMAL_FIRE] = &Enemy::FireNormal;
 	m_pFireHandler[FIRE_TYPE::AIMED_FIRE] = &Enemy::FireAimed;
+	m_pFireHandler[FIRE_TYPE::N_WAY_FIRE] = &Enemy::FireNways;
 
 	// Missile Fly Function Pointer Regist
 	//m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &Enemy::MissileFlyStraight;
@@ -72,8 +72,8 @@ void Enemy::DistributeFireOption()
 }
 
 /*
-	Launch°¡´ÉÇÑ ¹Ì»çÀÏÀÌ ÀÖ´Ù¸é Ã£¾Æ¼­ ¹İÈ¯ÇØÁÖ´Â ÇÔ¼ö.
-	¾ø´Ù¸é nullptr ¹İÈ¯.
+	Launchê°€ëŠ¥í•œ ë¯¸ì‚¬ì¼ì´ ìˆë‹¤ë©´ ì°¾ì•„ì„œ ë°˜í™˜í•´ì£¼ëŠ” í•¨ìˆ˜.
+	ì—†ë‹¤ë©´ nullptr ë°˜í™˜.
 */
 EnemyMissile * Enemy::GetLaunchableMissile()
 {
@@ -91,29 +91,29 @@ EnemyMissile * Enemy::GetLaunchableMissile()
 void Enemy::CalcProc(const _In_ FLOAT dt)
 {
 
-	// ºñÈ°¼ºÈ­ »óÅÂÀÏ °æ¿ì ¹Ù·Î ¸®ÅÏ.
+	// ë¹„í™œì„±í™” ìƒíƒœì¼ ê²½ìš° ë°”ë¡œ ë¦¬í„´.
 	if (!m_IsEnemyActivated)
 	{
 		return;
 	}
 
-	// Á×Áö ¾Ê¾Ò´Ù¸é ºñÇà±â ÀÌµ¿ & ¹Ì»çÀÏ ¹ß»ç. 
+	// ì£½ì§€ ì•Šì•˜ë‹¤ë©´ ë¹„í–‰ê¸° ì´ë™ & ë¯¸ì‚¬ì¼ ë°œì‚¬. 
 	if (!CheckDead())
 	{
 		AccTime(dt);
 		Fly(dt);
 		Fire();
 	}
-	// Á×Àº »óÅÂ¶ó¸é DeadProcÁøÇà.
+	// ì£½ì€ ìƒíƒœë¼ë©´ DeadProcì§„í–‰.
 	else
 	{
 		DeadProc();
 	}
 
-	// Á×°Ç Á×Áö ¾Ê¾Ò°Ç ¹Ì»çÀÏÀº ÁøÇà.
+	// ì£½ê±´ ì£½ì§€ ì•Šì•˜ê±´ ë¯¸ì‚¬ì¼ì€ ì§„í–‰.
 	MissileFly(dt);
 
-	// Çàµ¿ÀÌ ³¡³µ´Ù¸é ºñÈ°¼ºÈ­.
+	// í–‰ë™ì´ ëë‚¬ë‹¤ë©´ ë¹„í™œì„±í™”.
 	if (CheckActEnd())
 	{
 		Deactivate();
@@ -124,13 +124,13 @@ void Enemy::CalcProc(const _In_ FLOAT dt)
 
 void Enemy::DrawProc(_Inout_ HDC drawDC)
 {
-	// ºñÈ°¼ºÈ­ »óÅÂ¶ó¸é ¹Ù·Î return
+	// ë¹„í™œì„±í™” ìƒíƒœë¼ë©´ ë°”ë¡œ return
 	if (!GetIsEnemyActivated())
 	{
 		return;
 	}
 
-	// Enemy°¡ Á×¾îµµ ¹Ì»çÀÏÀº ±×¸®µµ·Ï.
+	// Enemyê°€ ì£½ì–´ë„ ë¯¸ì‚¬ì¼ì€ ê·¸ë¦¬ë„ë¡.
 	if (!m_IsEnemyDead)
 	{
 		Draw(drawDC);
@@ -145,7 +145,7 @@ void Enemy::DrawProc(_Inout_ HDC drawDC)
 }
 
 /*
-	FlightHandler¿¡ ¿¬°áµÇ¾î ÀÖ´Â ÇÔ¼ö¸¦ È°¼ºÈ­½ÃÄÑÁÖ´Â ÇÔ¼ö.
+	FlightHandlerì— ì—°ê²°ë˜ì–´ ìˆëŠ” í•¨ìˆ˜ë¥¼ í™œì„±í™”ì‹œì¼œì£¼ëŠ” í•¨ìˆ˜.
 */
 void Enemy::Fly(const _In_ FLOAT dt)
 {
@@ -154,7 +154,7 @@ void Enemy::Fly(const _In_ FLOAT dt)
 }
 
 /*
-	¼ÒÀ¯ÇÏ°í ÀÖ´Â ¹Ì»çÀÏµéÀ» ÀÌµ¿½ÃÅ°´Â ÇÔ¼ö.
+	ì†Œìœ í•˜ê³  ìˆëŠ” ë¯¸ì‚¬ì¼ë“¤ì„ ì´ë™ì‹œí‚¤ëŠ” í•¨ìˆ˜.
 */
 void Enemy::MissileFly(const _In_ FLOAT dt)
 {
@@ -162,7 +162,7 @@ void Enemy::MissileFly(const _In_ FLOAT dt)
 	{
 		if (i->GetMissileLaunched())
 		{
-			// TODO :: ¹Ì»çÀÏÀº ÀÚ±â°¡ ±×³É ÀÌµ¿½ÃÅ°µµ·Ï.
+			// TODO :: ë¯¸ì‚¬ì¼ì€ ìê¸°ê°€ ê·¸ëƒ¥ ì´ë™ì‹œí‚¤ë„ë¡.
 			i->CalcProc(dt);
 		}
 	}
@@ -203,7 +203,7 @@ BOOL Enemy::FlyItem(const _In_ FLOAT dt)
 }
 
 /*
-	¾ÆÀÌÅÛÀÌ ·£´ı ºñÇàÀ» ÇÒ ¶§ ¹ÛÀ¸·Î ³ª°¡´õ¶óµµ ´Ù½Ã È­¸é¿¡ µé¾î¿Ã ¼ö ÀÖµµ·Ï À¯´Öº¤ÅÍ¸¦ °íÃÄÁÖ´Â ÇÔ¼ö.
+	ì•„ì´í…œì´ ëœë¤ ë¹„í–‰ì„ í•  ë•Œ ë°–ìœ¼ë¡œ ë‚˜ê°€ë”ë¼ë„ ë‹¤ì‹œ í™”ë©´ì— ë“¤ì–´ì˜¬ ìˆ˜ ìˆë„ë¡ ìœ ë‹›ë²¡í„°ë¥¼ ê³ ì³ì£¼ëŠ” í•¨ìˆ˜.
 */
 void Enemy::FixUnitVecForRemainOnDisplay()
 {
@@ -228,26 +228,26 @@ void Enemy::FixUnitVecForRemainOnDisplay()
 }
 
 /*
-	Á¡Á¡ »¡¶óÁö´Â ºñÇà
+	ì ì  ë¹¨ë¼ì§€ëŠ” ë¹„í–‰
 */
 BOOL Enemy::FlyAccelerate(const _In_ FLOAT dt)
 {
-	CreateOption op = GetCreateOption();
-	FLOAT currentSpeed = (op.GetFlightSpeed() + op.GetAccFlightSpeed() * m_AccTime);
-	m_Pos.x += op.GetFlightVec().x * currentSpeed * dt;
-	m_Pos.y += op.GetFlightVec().y * currentSpeed * dt;
+	CreateOption opt = GetCreateOption();
+	FLOAT currentSpeed = (opt.GetFlightSpeed() + opt.GetAccFlightSpeed() * m_AccTime);
+	m_Pos.x += opt.GetFlightVec().x * currentSpeed * dt;
+	m_Pos.y += opt.GetFlightVec().y * currentSpeed * dt;
 	return TRUE;
 }
 
 /*
-	¾î´À Á¤µµ °Å¸®±îÁö´Â ºü¸£°Ô ÁøÇàÇÏ´Ù°¡ ÀÏÁ¤ ½Ã°£ ±× ÀÚ¸®¿¡¼­ ´À¸®°Ô °¡´Â ºñÇà.
+	ì–´ëŠ ì •ë„ ê±°ë¦¬ê¹Œì§€ëŠ” ë¹ ë¥´ê²Œ ì§„í–‰í•˜ë‹¤ê°€ ì¼ì • ì‹œê°„ ê·¸ ìë¦¬ì—ì„œ ëŠë¦¬ê²Œ ê°€ëŠ” ë¹„í–‰.
 */
 BOOL Enemy::FlyGoAndSlow(const _In_ FLOAT dt)
 {
-	CreateOption op = GetCreateOption();
-	GoAndSlowData data = op.GetGoAndSlowData();
+	CreateOption opt = GetCreateOption();
+	GoAndSlowData data = opt.GetGoAndSlowData();
 
-	// ´©Àû ½Ã°£ÀÌ SlowDownStartTime°ú SlowDownStartTime + SlowDonwDurationTime»çÀÌÀÏ °æ¿ì ´À¸° ºñÇà.
+	// ëˆ„ì  ì‹œê°„ì´ SlowDownStartTimeê³¼ SlowDownStartTime + SlowDonwDurationTimeì‚¬ì´ì¼ ê²½ìš° ëŠë¦° ë¹„í–‰.
 	if ((m_AccTime < data.SlowDownStartTime + data.SlowDownDurationTime) 
 		&& (m_AccTime > data.SlowDownStartTime))
 	{
@@ -256,8 +256,8 @@ BOOL Enemy::FlyGoAndSlow(const _In_ FLOAT dt)
 	}
 	else
 	{
-		Vec flightVec = op.GetFlightVec();
-		FLOAT flightSpeed = op.GetFlightSpeed();
+		Vec flightVec = opt.GetFlightVec();
+		FLOAT flightSpeed = opt.GetFlightSpeed();
 		m_Pos.x += flightVec.x * flightSpeed * dt;
 		m_Pos.y += flightVec.y * flightSpeed * dt;
 	}
@@ -266,7 +266,7 @@ BOOL Enemy::FlyGoAndSlow(const _In_ FLOAT dt)
 }
 
 ///*
-//	Á÷¼±À¸·Î ¹Ì»çÀÏÀ» ³¯¾Æ°¡°Ô ÇÏ´Â ¹æ½Ä.
+//	ì§ì„ ìœ¼ë¡œ ë¯¸ì‚¬ì¼ì„ ë‚ ì•„ê°€ê²Œ í•˜ëŠ” ë°©ì‹.
 //*/
 //BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
 //{
@@ -280,8 +280,8 @@ BOOL Enemy::FlyGoAndSlow(const _In_ FLOAT dt)
 //}
 //
 ///*
-//	Á¶ÁØÅºÀ¸·Î ¹Ì»çÀÏÀ» ³¯¾Æ°¡°Ô ÇÏ´Â ¹æ½Ä.
-//	EnemyMissile¿¡¼­ Á¤ÀÇµÈ MissileOptionÀ» ÀÌ¿ëÇÑ Launch¸¦ »ç¿ëÇØ¾ß¸¸ ¹Ì»çÀÏÀÌ ÀÛµ¿ÇÑ´Ù.
+//	ì¡°ì¤€íƒ„ìœ¼ë¡œ ë¯¸ì‚¬ì¼ì„ ë‚ ì•„ê°€ê²Œ í•˜ëŠ” ë°©ì‹.
+//	EnemyMissileì—ì„œ ì •ì˜ëœ MissileOptionì„ ì´ìš©í•œ Launchë¥¼ ì‚¬ìš©í•´ì•¼ë§Œ ë¯¸ì‚¬ì¼ì´ ì‘ë™í•œë‹¤.
 //*/
 //BOOL Enemy::MissileFlyAimed(EnemyMissile* missile, const FLOAT dt)
 //{
@@ -323,8 +323,8 @@ BOOL Enemy::CheckEnemyIsOnDisplay()
 }
 
 /*
-	Enemy¿¡°Ô µ¥¹ÌÁö¸¦ ÁÖ´Â ÇÔ¼ö.
-	Enemy°¡ ¸ÂÀ» ¶§ ÀÌÆåÆ®°¡ ÀÖ¾î¾ßÇÏ´Â °æ¿ì´Â »ó¼Ó¹ŞÀº Å¬·¡½º¿¡¼­ ÀçÁ¤ÀÇ ÇØÁÖ¾î¾ß ÇÔ.
+	Enemyì—ê²Œ ë°ë¯¸ì§€ë¥¼ ì£¼ëŠ” í•¨ìˆ˜.
+	Enemyê°€ ë§ì„ ë•Œ ì´í™íŠ¸ê°€ ìˆì–´ì•¼í•˜ëŠ” ê²½ìš°ëŠ” ìƒì†ë°›ì€ í´ë˜ìŠ¤ì—ì„œ ì¬ì •ì˜ í•´ì£¼ì–´ì•¼ í•¨.
 */
 void Enemy::GetDamage(const _In_ INT damage, const _In_ Vec playerMissile)
 {
@@ -336,7 +336,7 @@ void Enemy::GetDamage(const _In_ INT damage, const _In_ Vec playerMissile)
 }
 
 /*
-	Enemy¾È¿¡ ½Ã°£À» ´©ÀûÇØÁÖ´Â ÇÔ¼ö.
+	Enemyì•ˆì— ì‹œê°„ì„ ëˆ„ì í•´ì£¼ëŠ” í•¨ìˆ˜.
 */
 void Enemy::AccTime(const _In_ FLOAT dt)
 {
@@ -348,7 +348,7 @@ void Enemy::AccTime(const _In_ FLOAT dt)
 }
 
 /*
-	ÀÚ½ÅÀÌ Á×¾ú´ÂÁö ¾Æ´ÑÁö ÆÇ´ÜÇÏ´Â ÇÔ¼ö. Á×¾ú´Ù¸é TRUE¸¦ ¹İÈ¯.
+	ìì‹ ì´ ì£½ì—ˆëŠ”ì§€ ì•„ë‹Œì§€ íŒë‹¨í•˜ëŠ” í•¨ìˆ˜. ì£½ì—ˆë‹¤ë©´ TRUEë¥¼ ë°˜í™˜.
 */
 BOOL Enemy::CheckDead()
 {
@@ -364,13 +364,13 @@ BOOL Enemy::CheckDead()
 }
 
 /*
-	Act°¡ ³¡³µ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö.
-	1. ¸ğµç ¹Ì»çÀÏÀÇ ºñÇàÀÌ ³¡³ª¾ß ÇÏ°í
-	2. Á×°Å³ª È­¸é ¹Ù±ù¿¡ ÀÖ¾î¾ß ÇÑ´Ù.
+	Actê°€ ëë‚¬ëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜.
+	1. ëª¨ë“  ë¯¸ì‚¬ì¼ì˜ ë¹„í–‰ì´ ëë‚˜ì•¼ í•˜ê³ 
+	2. ì£½ê±°ë‚˜ í™”ë©´ ë°”ê¹¥ì— ìˆì–´ì•¼ í•œë‹¤.
 */
 BOOL Enemy::CheckActEnd()
 {
-	// ¹Ì»çÀÏÀÌ ºñÇàÀÌ ³¡³ªÁö ¾Ê¾Ò´Ù¸é FALSE ¸®ÅÏ.
+	// ë¯¸ì‚¬ì¼ì´ ë¹„í–‰ì´ ëë‚˜ì§€ ì•Šì•˜ë‹¤ë©´ FALSE ë¦¬í„´.
 	if (!IsAllMissilesEndFly())
 	{
 		return FALSE;
@@ -383,7 +383,7 @@ BOOL Enemy::CheckActEnd()
 }
 
 /*
-	¹Ì»çÀÏµéÀ» ÀûÀçÇÏ´Â ÇÔ¼ö. Enemy¸¦ »ó¼Ó¹Ş´Â Å¬·¡½ºÀÇ init¿¡¼­ È£Ãâ.
+	ë¯¸ì‚¬ì¼ë“¤ì„ ì ì¬í•˜ëŠ” í•¨ìˆ˜. Enemyë¥¼ ìƒì†ë°›ëŠ” í´ë˜ìŠ¤ì˜ initì—ì„œ í˜¸ì¶œ.
 */
 void Enemy::LoadMissiles(const _In_ ENEMY::MISSILE_SIZE missileSize)
 {
@@ -397,7 +397,7 @@ void Enemy::LoadMissiles(const _In_ ENEMY::MISSILE_SIZE missileSize)
 }
 
 /*
-	¹Ì»çÀÏ º¤ÅÍ¸¦ ¼øÈ¸ÇÏ¸ç Draw¸¦ È£ÃâÇØÁÖ´Â ÇÔ¼ö.
+	ë¯¸ì‚¬ì¼ ë²¡í„°ë¥¼ ìˆœíšŒí•˜ë©° Drawë¥¼ í˜¸ì¶œí•´ì£¼ëŠ” í•¨ìˆ˜.
 */
 void Enemy::DrawMissiles(_Inout_ HDC drawDC)
 {
@@ -410,7 +410,7 @@ void Enemy::DrawMissiles(_Inout_ HDC drawDC)
 }
 
 /*
-	¸â¹ö º¯¼ö m_MissileVec¿¡ ÀÖ´Â ¸ğµç ¿ø¼ÒµéÀ» ¼øÈ¸ÇÏ¸é¼­ ¼Ò¸êÀÚ¸¦ È£ÃâÇØÁÖ´Â ÇÔ¼ö.
+	ë©¤ë²„ ë³€ìˆ˜ m_MissileVecì— ìˆëŠ” ëª¨ë“  ì›ì†Œë“¤ì„ ìˆœíšŒí•˜ë©´ì„œ ì†Œë©¸ìë¥¼ í˜¸ì¶œí•´ì£¼ëŠ” í•¨ìˆ˜.
 */
 void Enemy::DeleteAllElementsMissileVector()
 {
@@ -425,7 +425,7 @@ void Enemy::DeleteAllElementsMissileVector()
 }
 
 /*
-	ºñÈ°¼ºÈ­µÈ Enemy¸¦ È°¼ºÈ­ ½ÃÄÑÁØ´Ù.
+	ë¹„í™œì„±í™”ëœ Enemyë¥¼ í™œì„±í™” ì‹œì¼œì¤€ë‹¤.
 */
 void Enemy::Activate(
 	const Vec createPos,
@@ -437,14 +437,14 @@ void Enemy::Activate(
 	SetCreateOption(createOption);
 	SetFireOption(fireOption);
 
-	// ¼ÒÀ¯ ¹Ì»çÀÏµéÀÇ FireOption º¯°æ.
+	// ì†Œìœ  ë¯¸ì‚¬ì¼ë“¤ì˜ FireOption ë³€ê²½.
 	DistributeFireOption();
 	m_Pos = createPos;
 	m_Hp = createOption.GetEnemyHp();
 }
 
 /*
-	È°¼ºÈ­µÈ Enemy¸¦ ´Ù½Ã ºñÈ°¼ºÈ­ÇØÁÖ´Â ÇÔ¼ö.
+	í™œì„±í™”ëœ Enemyë¥¼ ë‹¤ì‹œ ë¹„í™œì„±í™”í•´ì£¼ëŠ” í•¨ìˆ˜.
 */
 void Enemy::Deactivate()
 {
@@ -454,7 +454,7 @@ void Enemy::Deactivate()
 }
 
 /*
-	¹Ì»çÀÏÀÇ ºñÇàÀÌ ¸ğµÎ ³¡³µ´ÂÁö¸¦ ¹İÈ¯ÇØÁÖ´Â ÇÔ¼ö.
+	ë¯¸ì‚¬ì¼ì˜ ë¹„í–‰ì´ ëª¨ë‘ ëë‚¬ëŠ”ì§€ë¥¼ ë°˜í™˜í•´ì£¼ëŠ” í•¨ìˆ˜.
 */
 BOOL Enemy::IsAllMissilesEndFly()
 {
@@ -470,7 +470,7 @@ BOOL Enemy::IsAllMissilesEndFly()
 }
 
 /*
-	ÇÒ´çµÈ CImage¸¦ DeleteÇØÁØ´Ù. 
+	í• ë‹¹ëœ CImageë¥¼ Deleteí•´ì¤€ë‹¤. 
 */
 void Enemy::ReleaseCImages()
 {
@@ -483,28 +483,28 @@ void Enemy::ReleaseCImages()
 }
 
 /*
-	È°¼ºÈ­½Ã µî·ÏµÈ FireOption¿¡ µû¶ó ¹Ì»çÀÏÀ» ¹ß»çÇØ ÁÖ´Â ÇÔ¼ö.	
+	í™œì„±í™”ì‹œ ë“±ë¡ëœ FireOptionì— ë”°ë¼ ë¯¸ì‚¬ì¼ì„ ë°œì‚¬í•´ ì£¼ëŠ” í•¨ìˆ˜.	
 */
 void Enemy::Fire()
 {
-	// FireOptionÀÇ Å¸ÀÔ¿¡ µû¶ó ¾Ë¸ÂÀº ÇÔ¼ö Æ÷ÀÎÅÍ È£Ãâ.
+	// FireOptionì˜ íƒ€ì…ì— ë”°ë¼ ì•Œë§ì€ í•¨ìˆ˜ í¬ì¸í„° í˜¸ì¶œ.
 	(this->*m_pFireHandler[GetFireOption().GetFireType()])();
 	return;
 }
 
 /*
-	ÀÏÁ¤ÇÑ ½Ã°£¿¡ µû¶ó ¹Ì»çÀÏÀ» ¹ß»çÇØÁÖ´Â ÇÔ¼ö.
+	ì¼ì •í•œ ì‹œê°„ì— ë”°ë¼ ë¯¸ì‚¬ì¼ì„ ë°œì‚¬í•´ì£¼ëŠ” í•¨ìˆ˜.
 */
 BOOL Enemy::FireNormal()
 {
-	FireOption op = GetFireOption();
+	FireOption opt = GetFireOption();
 	
-	if (m_AccTime > op.GetInitShootDelay() && m_RecordFireTime > op.GetIntervalShootDelay())
+	if (m_AccTime > opt.GetInitShootDelay() && m_RecordFireTime > opt.GetIntervalShootDelay())
 	{
 		auto missile = GetLaunchableMissile();
 		if (missile != nullptr)
 		{
-			missile->Launch(m_Pos, op);
+			missile->Launch(m_Pos, opt);
 		}
 		m_RecordFireTime = 0.f;
 	}
@@ -512,34 +512,207 @@ BOOL Enemy::FireNormal()
 }
 
 /*
-	ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡·Î ¹Ì»çÀÏÀ» ¹ß»çÇØÁÖ´Â ÇÔ¼ö.
-	¸Å¹ø Fire°¡ È£Ãâ µÉ ¶§¸¶´Ù ¿É¼ÇÀÇ ¹Ì»çÀÏ º¤ÅÍ¸¦ ÇÃ·¹ÀÌ¾î¿¡°Ô ¹Ù²ãÁÖ°í FireNormalÀ» È£ÃâÇÑ´Ù.
-	¸¸¾à ¿É¼Ç¿¡ RandomRange°¡ ÀÖÀ» °æ¿ì, ¹Ì»çÀÏ¿¡ Èçµé¸²À» ´õÇØÁØ´Ù.
+	í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ë¡œ ë¯¸ì‚¬ì¼ì„ ë°œì‚¬í•´ì£¼ëŠ” í•¨ìˆ˜.
+	ë§¤ë²ˆ Fireê°€ í˜¸ì¶œ ë  ë•Œë§ˆë‹¤ ì˜µì…˜ì˜ ë¯¸ì‚¬ì¼ ë²¡í„°ë¥¼ í”Œë ˆì´ì–´ì—ê²Œ ë°”ê¿”ì£¼ê³  FireNormalì„ í˜¸ì¶œí•œë‹¤.
 */
 BOOL Enemy::FireAimed()
 {
-	FireOption op = GetFireOption();
-	FLOAT range = op.GetRandomRange();
-	
-	// RandomRange ¿É¼ÇÀÌ ÀÖÀ» °æ¿ì
+	// ë²¡í„°ë¥¼ í”Œë ˆì´ì–´ ìª½ìœ¼ë¡œ ë°”ê¿”ì¤Œ.
+	SetOptionMissileVecToPlayer();
+
+	// ë“±ë¡í•œ ì˜µì…˜ì„ ì‹¤í–‰í•  FireNormal í˜¸ì¶œ.
+	return FireNormal();
+}
+
+/*
+	N-wayë°©í–¥ìœ¼ë¡œ ë‚˜ê°€ëŠ” í•¨ìˆ˜ êµ¬í˜„. 
+*/
+BOOL Enemy::FireNways()
+{
+	FireOption opt = GetFireOption();
+	NwayShotData data = opt.GetNwayShotData();
+
+	// ì´ìƒí•œ ì˜µì…˜ì´ ë“¤ì–´ì˜¤ê±°ë‚˜ ì´ˆê¸°í™” ì‹¤íŒ¨.
+	if (!data.GetNwayShotDataValid())
+	{
+		return FALSE;
+	}
+
+	// í”Œë ˆì´ì–´ ìª½ìœ¼ë¡œ ë°œì‚¬í•˜ëŠ” ì˜µì…˜ì´ ìˆì„ ê²½ìš°, ë²¡í„°ë¥¼ í”Œë ˆì´ì–´ ìª½ìœ¼ë¡œ ë°”ê¿”ì¤Œ.
+	if (data.IsMissileShotToPlayer)
+	{
+		SetOptionMissileVecToPlayer();
+	}
+
+	// ë°œì‚¬ ì‹œê°„ ì¡°ì •.
+	// RecordFireTimeì´ ì´ˆê¸° ë”œë ˆì´ ì´ìƒ, ì´ˆê¸° ë”œë ˆì´ + ì¸í„°ë²Œ ë”œë ˆì´ ì´í•˜ì¼ ê²½ìš° ë°œì‚¬.
+	if (m_RecordFireTime > opt.GetInitShootDelay() &&
+		m_RecordFireTime <= (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
+	{
+		// ë¯¸ì‚¬ì¼ì— ì¸í„°ë²Œ ë”œë ˆì´ê°€ í•„ìš”í•  ê²½ìš° ë°œì‚¬ ë¶ˆê°€. 
+		if (data.IsMissileNeedDelay)
+		{
+			return FALSE;
+		}
+
+		// ì´ë²ˆ ë°œì‚¬í•˜ëŠ” ë¯¸ì‚¬ì¼ ê°œìˆ˜ê°€ ì§ìˆ˜ì¼ ê²½ìš° ì²˜ë¦¬.
+		if (data.ShotNumber[data.RecordShotTimes] % 2 == 0)
+		{
+			LaunchEvenNumberWaysMissiles();
+			// ë”œë ˆì´ ì²˜ë¦¬.
+			data.IsMissileNeedDelay = TRUE;
+			++data.RecordShotTimes;
+		}
+		// ë°œì‚¬í•˜ëŠ” ë¯¸ì‚¬ì¼ ê°œìˆ˜ê°€ í™€ìˆ˜ì¼ ê²½ìš° ì²˜ë¦¬.
+		else
+		{
+			LaunchOddNumberWaysMissiles();
+			// ë”œë ˆì´ ì²˜ë¦¬.
+			data.IsMissileNeedDelay = TRUE;
+			++data.RecordShotTimes;
+		}
+		
+		// ì¬ì¥ì „ ì²˜ë¦¬.
+		// RecordShotTimes == ShotTimesì¼ ê²½ìš° ì¬ì¥ì „ ì‹œê°„ì´ í•„ìš”í•˜ë‹¤.
+		if (data.RecordShotTimes == data.ShotTimes)
+		{
+			data.RecordShotTimes = 0;
+			m_RecordFireTime = 0.f;
+		}
+	}
+	// ì¸í„°ë²Œ ë”œë ˆì´ ì²˜ë¦¬.
+	else if (m_RecordFireTime > (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
+	{
+		// ì¸í„°ë²Œ ë”œë ˆì´ê°€ ëë‚¬ìœ¼ë¯€ë¡œ ë¯¸ì‚¬ì¼ ë°œì‚¬ ê°€ëŠ¥. 
+		data.IsMissileNeedDelay = FALSE;
+		m_RecordFireTime = opt.GetInitShootDelay();
+	}
+
+	// ë³€ê²½ì  ì ìš©.
+	opt.SetNwayShotData(data);
+	SetFireOption(opt);
+	return TRUE;
+}
+
+
+/*
+	ê°€ì§€ê³  ìˆëŠ” ì˜µì…˜ì˜ ë²¡í„°ë¥¼ í”Œë ˆì´ì–´ ìª½ìœ¼ë¡œ í–¥í•˜ê²Œ í•˜ëŠ” í•¨ìˆ˜.
+	ë§Œì•½ ì˜µì…˜ì— RandomRangeê°€ ìˆì„ ê²½ìš°, ë¯¸ì‚¬ì¼ì— í”ë“¤ë¦¼ì„ ë”í•´ì¤€ë‹¤.
+*/
+BOOL Enemy::SetOptionMissileVecToPlayer()
+{
+	FireOption opt = GetFireOption();
+	FLOAT range = opt.GetRandomRange();
+
+	// RandomRange ì˜µì…˜ì´ ìˆì„ ê²½ìš°
 	if (range != 0)
 	{
-		// ³­¼ö »ı¼º±â¸¦ ÅëÇØ -range ~ range ¹üÀ§ÀÇ °ªÀ» »ı¼ºÇØÁØ´Ù.
+		// ë‚œìˆ˜ ìƒì„±ê¸°ë¥¼ í†µí•´ -range ~ range ë²”ìœ„ì˜ ê°’ì„ ìƒì„±í•´ì¤€ë‹¤.
 		std::mt19937 rng;
 		std::uniform_real_distribution<float> dist(-range, range);
-		op.SetMissileVec(Vec(m_PlayerPos.x + dist(rng), m_PlayerPos.y + dist(rng)));
+		opt.SetMissileVec(Vec(m_PlayerPos.x + dist(rng), m_PlayerPos.y + dist(rng)));
 	}
 	else
 	{
-		// ¾Æ´Ò °æ¿ì ±×³É ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¸¦ µî·ÏÇØÁØ´Ù.
-		op.SetMissileVec(Vec(m_PlayerPos.x, m_PlayerPos.y));
+		// ì•„ë‹ ê²½ìš° ê·¸ëƒ¥ í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ë¥¼ ë“±ë¡í•´ì¤€ë‹¤.
+		opt.SetMissileVec(Vec(m_PlayerPos.x, m_PlayerPos.y));
 	}
 
-	// µî·ÏÇÑ ¿É¼ÇÀ¸·Î ¼öÁ¤.
-	SetFireOption(op);
+	// ë“±ë¡í•œ ì˜µì…˜ìœ¼ë¡œ ìˆ˜ì •.
+	SetFireOption(opt);
 
-	// µî·ÏÇÑ ¿É¼ÇÀ» ½ÇÇàÇÒ FireNormal È£Ãâ.
-	return FireNormal();
+	return TRUE;
+}
+
+/*
+	í™€ìˆ˜ ê°œì˜ ë¯¸ì‚¬ì¼ì„ Launchì‹œí‚¤ëŠ” í•¨ìˆ˜.
+	FireNwaysì—ì„œ í˜¸ì¶œ.
+*/
+BOOL Enemy::LaunchOddNumberWaysMissiles()
+{
+	FireOption opt = GetFireOption();
+	NwayShotData data = opt.GetNwayShotData();
+
+	// ë¯¸ì‚¬ì¼ì— ëŒ€ì…ë˜ì–´ ì‹¤ì œë¡œ ë°œì‚¬ì‹œí‚¬ ì˜µì…˜.
+	FireOption inputOption = opt;
+
+	// ì¢Œìš°ê°€ ê°™ì€ ëª¨ì–‘ìœ¼ë¡œ í¼ì§€ê¸° ë•Œë¬¸ì— ê°ë„ ì²˜ë¦¬ë¥¼ í•´ì¤˜ì•¼ í•  íšŸìˆ˜ êµ¬í•˜ê¸°.
+	INT LaunchTimes = (data.ShotNumber[data.RecordShotTimes] + 1) / 2;
+
+	// ë¶€ì±„ê¼´ ëª¨ì–‘ìœ¼ë¡œ í¼ì§ˆ ë¯¸ì‚¬ì¼ë“¤ì˜ ê¸°ì¤€ì´ ë  ì •ì¤‘Âˆì•™ ë²¡í„° 
+	Vec standardVec = opt.GetMissileVec();
+	Vec rotateVec = standardVec;
+	FLOAT theta = data.ShotAngle[data.RecordShotTimes];
+
+	for (INT i = 0; i < LaunchTimes; ++i)
+	{
+		// i * thetaë§Œí¼ ë²Œì–´ì§„ ë²¡í„° êµ¬í•˜ê³ , ê·¸ ë°©í–¥ìœ¼ë¡œ ë¯¸ì‚¬ì¼ ë°œì‚¬.
+		RotateVec(i * theta, standardVec.x, standardVec.y, rotateVec.x, rotateVec.y);
+
+		EnemyMissile* missile = GetLaunchableMissile();
+		if (missile != nullptr)
+		{
+			// ë¯¸ì‚¬ì¼ ë²¡í„°ë§Œ ë‹¬ë¼ì§„ ì˜µì…˜ìœ¼ë¡œ ë°œì‚¬.
+			inputOption.SetMissileVec(rotateVec);
+			missile->Launch(m_Pos, inputOption);
+		}
+		// ì •ì¤‘ì•™ ë¯¸ì‚¬ì¼ì´ ì•„ë‹Œ ê²½ìš°, ë°˜ëŒ€ ë²¡í„°ë¡œë„ í•œ ë²ˆ ë” ì´ì£¼ê¸°.
+		if (i != 0)
+		{
+			missile = GetLaunchableMissile();
+			if (missile != nullptr)
+			{
+				inputOption.SetMissileVec(rotateVec.GetYSymmetryVec());
+				missile->Launch(m_Pos, inputOption);
+			}
+		}
+	}
+
+	return TRUE;
+}
+
+/*
+	ì§ìˆ˜ ê°œì˜ ë¯¸ì‚¬ì¼ì„ Launchì‹œí‚¤ëŠ” í•¨ìˆ˜.
+	FireNwaysì—ì„œ í˜¸ì¶œ.
+*/
+BOOL Enemy::LaunchEvenNumberWaysMissiles()
+{
+	FireOption opt = GetFireOption();
+	NwayShotData data = opt.GetNwayShotData();
+
+	// ë¯¸ì‚¬ì¼ì— ëŒ€ì…ë˜ì–´ ì‹¤ì œë¡œ ë°œì‚¬ì‹œí‚¬ ì˜µì…˜.
+	FireOption inputOption = opt;
+
+	// ì¢Œìš°ê°€ ê°™ì€ ëª¨ì–‘ìœ¼ë¡œ í¼ì§€ê¸° ë•Œë¬¸ì— ê°ë„ ì²˜ë¦¬ë¥¼ í•´ì¤˜ì•¼ í•  íšŸìˆ˜ êµ¬í•˜ê¸°.
+	INT LaunchTimes = (data.ShotNumber[data.RecordShotTimes]) / 2;
+
+	// ë¶€ì±„ê¼´ ëª¨ì–‘ìœ¼ë¡œ í¼ì§ˆ ë¯¸ì‚¬ì¼ë“¤ì˜ ê¸°ì¤€ì´ ë  ì •ì¤‘Âˆì•™ ë²¡í„° 
+	Vec standardVec = opt.GetMissileVec();
+	Vec rotateVec = standardVec;
+	FLOAT theta = data.ShotAngle[data.RecordShotTimes];
+
+	for (INT i = 0; i < LaunchTimes; ++i)
+	{
+		// i * theta + theta / 2ë§Œí¼ ë²Œì–´ì§„ ë²¡í„° êµ¬í•˜ê³ , ê·¸ ë°©í–¥ìœ¼ë¡œ ë¯¸ì‚¬ì¼ ë°œì‚¬.
+		RotateVec(i * theta + theta / 2, standardVec.x, standardVec.y, rotateVec.x, rotateVec.y);
+
+		// Y ëŒ€ì¹­ ë°©í–¥ìœ¼ë¡œ ì´ì£¼ê¸°.
+		EnemyMissile* missile = GetLaunchableMissile();
+		if (missile != nullptr)
+		{
+			inputOption.SetMissileVec(rotateVec);
+			missile->Launch(m_Pos, inputOption);
+		}
+
+		missile = GetLaunchableMissile();
+		if (missile != nullptr)
+		{
+			inputOption.SetMissileVec(rotateVec.GetYSymmetryVec());
+			missile->Launch(m_Pos, inputOption);
+		}
+	}
+
+	return TRUE;
 }
 
 /*

@@ -29,10 +29,10 @@ Vec& Vec::operator=(const _In_ Vec &vecForCopy)
 	return *this;
 }
 
-Vec& Vec::operator=(const _In_ INT intForCopy)
+Vec& Vec::operator=(const _In_ FLOAT floatForCopy)
 {
-	x = intForCopy;
-	y = intForCopy;
+	x = floatForCopy;
+	y = floatForCopy;
 	return *this;
 }
 
@@ -43,10 +43,10 @@ Vec& Vec::operator+(const _In_ Vec &vecForPlus)
 	return *this;
 }
 
-Vec& Vec::operator+(const _In_ INT intForPlus)
+Vec& Vec::operator+(const _In_ FLOAT floatForPlus)
 {
-	x += intForPlus;
-	y += intForPlus;
+	x += floatForPlus;
+	y += floatForPlus;
 	return *this;
 }
 
@@ -57,10 +57,10 @@ Vec& Vec::operator-(const _In_ Vec &vecForMinus)
 	return *this;
 }
 
-Vec& Vec::operator-(const _In_ INT intForMinus)
+Vec& Vec::operator-(const _In_ FLOAT floatForMinus)
 {
-	x -= intForMinus;
-	y -= intForMinus;
+	x -= floatForMinus;
+	y -= floatForMinus;
 	return *this;
 }
 
@@ -71,10 +71,10 @@ Vec& Vec::operator*(const _In_ Vec &vecForMulti)
 	return *this;
 }
 
-Vec& Vec::operator*(const _In_ INT intForMulti)
+Vec& Vec::operator*(const _In_ FLOAT floatForMulti)
 {
-	x *= intForMulti;
-	y *= intForMulti;
+	x *= floatForMulti;
+	y *= floatForMulti;
 	return *this;
 }
 
@@ -89,13 +89,13 @@ Vec& Vec::operator/(const _In_ Vec &vecForDivide)
 	return *this;
 }
 
-Vec & Vec::operator/(const INT intForDivide)
+Vec & Vec::operator/(const FLOAT floatForDivide)
 {
 	// 나누는 인자가 0일 경우 그냥 리턴.
-	if (!intForDivide)
+	if (!floatForDivide)
 	{
-		x /= intForDivide;
-		y /= intForDivide;
+		x /= floatForDivide;
+		y /= floatForDivide;
 	}
 	return *this;
 }
@@ -107,10 +107,10 @@ Vec Vec::GetMinusVec() const
 
 Vec Vec::GetYSymmetryVec() const
 {
-	return Vec(x, -y);
+	return Vec(-x, y);
 }
 
 Vec Vec::GetXSymmetryVec() const
 {
-	return Vec(-x, y);
+	return Vec(x, -y);
 }

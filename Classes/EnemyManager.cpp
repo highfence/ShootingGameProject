@@ -7,39 +7,39 @@
 #include "EnemyHandShot.h"
 #include "EnemyManager.h"
 
-EnemyManager* EnemyManager::_instance = nullptr;
+EnemyManager* EnemyManager::m_pInstance = nullptr;
 
-// EnemyManager ½Ì±ÛÅæ ±¸Çö.
-EnemyManager* EnemyManager::getInstance()
+// EnemyManager ï¿½Ì±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+EnemyManager* EnemyManager::GetInstance()
 {
-	if (!_instance)
+	if (!m_pInstance)
 	{
-		_instance = new EnemyManager();
+		m_pInstance = new EnemyManager();
 	}
-	return _instance;
+	return m_pInstance;
 }
 
 /*
 	deleteInstance
-	½Ì±ÛÅæ ¼Ò¸ê ÇÔ¼ö.
+	ï¿½Ì±ï¿½ï¿½ï¿½ ï¿½Ò¸ï¿½ ï¿½Ô¼ï¿½.
 */
-void EnemyManager::deleteInstance()
+void EnemyManager::DeleteInstance()
 {
-	delete _instance;
-	_instance = nullptr;
+	delete m_pInstance;
+	m_pInstance = nullptr;
 	return;
 }
 
 EnemyManager::EnemyManager()
 	: m_AccTime(0.f), m_RecordCreateTime(0.f), m_pPlayerInfo(nullptr)
 {
-	init();
+	Init();
 }
 
 /*
-	Enemy »ý¼º ÇÔ¼ö Æ÷ÀÎÅÍ ÇÚµé·¯¿¡ ÇÔ¼ö¸¦ µî·ÏÇØ ÁÖ´Â ÇÔ¼ö.
+	Enemy ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµé·¯ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½.
 */
-void EnemyManager::init()
+void EnemyManager::Init()
 {
 	SetEnemyMemoryPool();
 	RegisterFunctionPointer();
@@ -47,7 +47,7 @@ void EnemyManager::init()
 }
 
 /*
-	ÇÔ¼ö Æ÷ÀÎÅÍ¸¦ µî·ÏÇØÁÖ´Â ÇÔ¼ö. (init¿¡¼­ È£Ãâ)
+	ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½. (initï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½)
 */
 void EnemyManager::RegisterFunctionPointer()
 {
@@ -59,7 +59,7 @@ void EnemyManager::RegisterFunctionPointer()
 }
 
 /*
-	EnemyItemÀ» ¸¸µé¾îÁÖ´Â ÇÔ¼ö Æ÷ÀÎÅÍ¿¡ µî·ÏµÉ ÇÔ¼ö.
+	EnemyItemï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½ï¿½ï¿½Ïµï¿½ ï¿½Ô¼ï¿½.
 */
 BOOL EnemyManager::ActivateEnemyItem(
 	const _In_ Vec createPos,
@@ -77,9 +77,9 @@ BOOL EnemyManager::ActivateEnemyItem(
 		return FALSE;
 	}
 }
- 
+
 /*
-	ItemÀ» ¸¸µå´Â ÇÔ¼ö Æ÷ÀÎÅÍ¿¡ µî·ÏµÉ ÇÔ¼ö.
+	Itemï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½ï¿½ï¿½Ïµï¿½ ï¿½Ô¼ï¿½.
 */
 BOOL EnemyManager::ActivateItem(
 	const _In_ Vec createPos,
@@ -99,7 +99,7 @@ BOOL EnemyManager::ActivateItem(
 }
 
 /*
-	EnemyZaco¸¦ ¸¸µå´Â ÇÔ¼ö Æ÷ÀÎÅÍ¿¡ µî·ÏµÉ ÇÔ¼ö.
+	EnemyZacoï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½ï¿½ï¿½Ïµï¿½ ï¿½Ô¼ï¿½.
 */
 BOOL EnemyManager::ActivateZaco(
 	const _In_ Vec createPos,
@@ -119,7 +119,7 @@ BOOL EnemyManager::ActivateZaco(
 }
 
 /*
-	EnemyHandShot¸¦ ¸¸µå´Â ÇÔ¼ö Æ÷ÀÎÅÍ¿¡ µî·ÏµÉ ÇÔ¼ö.
+	EnemyHandShotï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½ï¿½ï¿½Ïµï¿½ ï¿½Ô¼ï¿½.
 */
 BOOL EnemyManager::ActivateHandShot(
 	const _In_ Vec createPos,
@@ -140,7 +140,7 @@ BOOL EnemyManager::ActivateHandShot(
 
 EnemyManager::~EnemyManager()
 {
-	deleteInstance();
+	DeleteInstance();
 }
 
 void EnemyManager::AccTime(const _In_ FLOAT dt)
@@ -188,8 +188,8 @@ void EnemyManager::Draw(_Inout_ HDC drawDC)
 }
 
 /*
-	È°¼ºÈ­ µÈ Enemyµé¿¡°Ô Á¤º¸¸¦ ÀüÆÄÇØÁÖ´Â ÇÔ¼ö.
-	ÀÌÀüÀÇ DistributeTime°ú DistributePlayerInfo¸¦ °è½ÂÇÑ´Ù.
+	È°ï¿½ï¿½È­ ï¿½ï¿½ Enemyï¿½é¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½.
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ DistributeTimeï¿½ï¿½ DistributePlayerInfoï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 */
 void EnemyManager::DistributeData(const FLOAT dt)
 {
@@ -225,7 +225,7 @@ void EnemyManager::DrawProc(_Inout_ HDC drawDC)
 	return;
 }
 
-Player& EnemyManager::getPlayerInfo() 
+Player& EnemyManager::getPlayerInfo()
 {
 	return *m_pPlayerInfo;
 }
@@ -235,14 +235,23 @@ void EnemyManager::MakeProc()
 	GoAndSlowData enemyItemData = GoAndSlowData(0.5f, 5.f, Vec(0.f, 1.f), 50.f);
 	CreateOption enemyItemNormal = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, FALSE);
 	CreateOption enemyItemLaunched = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, TRUE);
-	FireOption enemyFireFront = FireOption(FIRE_TYPE::NORMAL_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 0.f, 0);
-	FireOption enemyFireAimed = FireOption(FIRE_TYPE::AIMED_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 150.f, 0);
+	FireOption enemyFireFront = FireOption(FIRE_TYPE::NORMAL_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 0.f, nullptr);
+	FireOption enemyFireAimed = FireOption(FIRE_TYPE::AIMED_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 50.f, nullptr);
+	INT shotTimes[] = { 5, 6, 5, 0, 0 };
+	INT shotAngle[] = { 22.5f, 22.5f, 22.5f, 0, 0};
+	GoAndSlowData enemyHandShotGASData = GoAndSlowData(0.5f, 15.f, Vec(0.f, 1.f), 50.f);
+	NwayShotData enemyHandShotNwayData = NwayShotData(3, shotTimes, shotAngle, FALSE);
+	FireOption enemyHandShotFire = FireOption(FIRE_TYPE::N_WAY_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0.f, enemyHandShotNwayData);
+	CreateOption enemyHandShotCreate = CreateOption(380, ENEMY_HAND_SHOT, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyHandShotGASData, FALSE);
 
 	FLOAT line1 = 4.f;
 	ActivateEnemy(line1, Vec(350.f, 0.f), enemyItemNormal, enemyFireAimed);
 	ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), enemyItemNormal, enemyFireAimed);
 	ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), enemyItemNormal, enemyFireAimed);
 	ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), enemyItemLaunched, enemyFireAimed);
+
+	FLOAT line2 = 6.f;
+	ActivateEnemy(line2, Vec(650.f, 0.f), enemyHandShotCreate, enemyHandShotFire);
 	return;
 }
 
@@ -253,7 +262,7 @@ void EnemyManager::SetPlayerInfo(Player& playerInfo)
 }
 
 /*
-	ÀÏÁ¤ÇÑ Enemy Å¸ÀÔº° °³¼ö¸¸Å­ º¤ÅÍ¿¡ ¹Ì¸® ÇÒ´çÇØ³õ´Â ÇÔ¼ö.
+	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Enemy Å¸ï¿½Ôºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å­ ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½Ì¸ï¿½ ï¿½Ò´ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
 */
 void EnemyManager::SetEnemyMemoryPool()
 {
@@ -271,62 +280,62 @@ void EnemyManager::SetEnemyMemoryPool()
 }
 
 /*
-	EnemyManager »ý¼º½Ã ¸Þ¸ð¸®Ç®À» Àâ¾Æ³õ´Â ÇÔ¼ö.
+	EnemyManager ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ï¿½ï¿½ï¿½Ç®ï¿½ï¿½ ï¿½ï¿½ï¿½Æ³ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½.
 */
 template <typename T>
 void EnemyManager::AllocEnemyMemory(const _In_ INT allocTime)
 {
-	// ÇÒ´ç È¸¼ö¸¸Å­ for¹®À» ·çÇÁ
+	// ï¿½Ò´ï¿½ È¸ï¿½ï¿½ï¿½ï¿½Å­ forï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	for (int i = 0; i < allocTime; ++i)
 	{
-		// »ý¼ºÀº °¢°¢ÀÇ EnemyÅ¸ÀÔÀÇ ÇüÅÂÁö¸¸ vector¿¡ pushÇÏ±â À§ÇØ Enemy*ÀÇ ÇüÅÂ·Î Ä³½ºÆÃ.
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ EnemyÅ¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ vectorï¿½ï¿½ pushï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ Enemy*ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½.
 		T* newEnemy = new T();
 		m_EnemyMemoryVector.push_back((Enemy*)newEnemy);
 	}
-	
+
 	return;
 }
 
 /*
-	ÀÎÀÚ·Î ¹ÞÀº ENEMY_TYPE°ú ÀÏÄ¡ÇÏ°í, Activated»óÅÂ°¡ ¾Æ´Ñ Enemy¸¦ ¹ÝÈ¯ÇØÁÖ´Â ÇÔ¼ö. 
+	ï¿½ï¿½ï¿½Ú·ï¿½ ï¿½ï¿½ï¿½ï¿½ ENEMY_TYPEï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï°ï¿½, Activatedï¿½ï¿½ï¿½Â°ï¿½ ï¿½Æ´ï¿½ Enemyï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½.
 */
 Enemy * EnemyManager::FindDeactivatedEnemy(const ENEMY::ENEMY_TYPE findEnemyType)
 {
 	std::vector<Enemy*>::iterator iter = m_EnemyMemoryVector.begin();
 	while (iter != m_EnemyMemoryVector.end())
 	{
-		// Enemy TypeÀÌ ÀÏÄ¡ÇÏ´ÂÁö ¿ì¼± È®ÀÎ.
+		// Enemy Typeï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ï¿½ï¿½ ï¿½ì¼± È®ï¿½ï¿½.
 		if ((*iter)->GetEnemyType() == findEnemyType)
 		{
-			// Enemy°¡ Deactivated »óÅÂÀÎÁö È®ÀÎ.
+			// Enemyï¿½ï¿½ Deactivated ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½.
 			if (!(*iter)->GetIsEnemyActivated())
 			{
-				// ¸Â´Ù¸é ¹ÝÈ¯.
+				// ï¿½Â´Ù¸ï¿½ ï¿½ï¿½È¯.
 				return *iter;
 			}
 		}
-		// ¾Æ´Ò °æ¿ì iterator¸¦ ´ÙÀ½ ¿ø¼Ò·Î. 
+		// ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ iteratorï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ò·ï¿½.
 		++iter;
 	}
-	// ÇØ´çÇÏ´Â Enemy°¡ ¾ø´Ù¸é nullptr ¹ÝÈ¯.
+	// ï¿½Ø´ï¿½ï¿½Ï´ï¿½ Enemyï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ nullptr ï¿½ï¿½È¯.
 	return nullptr;
 }
 
 /*
-	Áß½É À§Ä¡¿Í °¡·Î ¼¼·Î ±æÀÌ¸¦ °¡Áø Vec ÀÚ·áÇüÀ» ³ÖÀ¸¸é ±×¿Í Ãæµ¹ÇÑ Enemy¸¦ ¹ÝÈ¯ÇØÁÖ´Â ÇÔ¼ö.
-	Ãæµ¹ÇÑ Enemy°¡ ¾øÀ» °æ¿ì nullptr ¹ÝÈ¯.
+	ï¿½ß½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ Vec ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×¿ï¿½ ï¿½æµ¹ï¿½ï¿½ Enemyï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½.
+	ï¿½æµ¹ï¿½ï¿½ Enemyï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ nullptr ï¿½ï¿½È¯.
 */
 Enemy * EnemyManager::FindEnemyColideWith(const Vec position, const Vec range)
 {
 	for (auto& i : m_EnemyMemoryVector)
 	{
-		// È°¼ºÈ­ »óÅÂ & »ì¾ÆÀÖ´Â »óÅÂÀÎ Enemy¸¸ Á¶°Ç °Ë»ç.
+		// È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ & ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Enemyï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½.
 		if (i->GetIsEnemyActivated() && !i->GetIsEnemyDead())
 		{
-			// Ãæµ¹ °Ë»ç
+			// ï¿½æµ¹ ï¿½Ë»ï¿½
 			if (IsObjectColided(position, range, i->GetPosition(), i->GetColideRange()))
 			{
-				// Ãæµ¹ÇßÀ» °æ¿ì ¹ÝÈ¯.
+				// ï¿½æµ¹ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯.
 				return i;
 			}
 		}

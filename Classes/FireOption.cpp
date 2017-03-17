@@ -1,6 +1,68 @@
 #include "stdafx.h"
 #include "FireOption.h"
 
+NwayShotData::NwayShotData(
+	const INT shotTimes,
+	const INT* shotNumberArr,
+	const INT* shotAngleArr,
+	const BOOL isMissileShotToPlayer)
+{
+	ShotTimes = shotTimes;
+	for (int i = 0; i < ShotTimes; ++i)
+	{
+		ShotNumber[i] = shotNumberArr[i];
+		ShotAngle[i] = shotAngleArr[i];
+	}
+	IsMissileShotToPlayer = isMissileShotToPlayer;
+}
+
+/*
+	nullptr로 초기화할 경우, 아무것도 하지 않음.
+*/
+NwayShotData::NwayShotData(const char *)
+{
+
+}
+
+/*
+	Initialize with input data.
+*/
+NwayShotData & NwayShotData::operator=(const NwayShotData & data)
+{
+	ShotTimes = data.ShotTimes;
+	for (int i = 0; i < ShotTimes; ++i)
+	{
+		ShotNumber[i] = data.ShotNumber[i];
+		ShotAngle[i] = data.ShotAngle[i];
+	}
+	IsMissileShotToPlayer = data.IsMissileShotToPlayer;
+	IsMissileNeedDelay = data.IsMissileNeedDelay;
+	RecordShotTimes = data.RecordShotTimes;
+	
+	return *this;
+}
+
+/*
+	들어온 NwayShotData가 유효한지를 반환해주는 함수.
+	발사횟수(ShotTimes)가 적어도 1이상 maxShotTime이하여야 하고,
+	ShotTimes만큼의 배열에는 의미있는 숫자가 들어가 있어야 함.
+*/
+BOOL NwayShotData::GetNwayShotDataValid()
+{
+	if (ShotTimes <= 0)
+	{
+		return FALSE;
+	}
+	for (int i = 0; i < ShotTimes; ++i)
+	{
+		if (ShotNumber[i] == 0 || ShotAngle[i] == 0.f)
+		{
+			return FALSE;
+		}
+	}
+
+	return TRUE;
+}
 
 
 FireOption::FireOption()
@@ -19,7 +81,7 @@ FireOption::FireOption(
 	const FLOAT& initShootDelay,
 	const FLOAT& intervalShootDelay,
 	const FLOAT& randomRange,
-	const INT& shotNum)
+	const NwayShotData& shotData)
 	: m_IsOptionCanUse(TRUE)
 {
 	SetFireType(fireType);
@@ -32,7 +94,7 @@ FireOption::FireOption(
 	SetInitShootDelay(initShootDelay);
 	SetIntervalShootDelay(intervalShootDelay);
 	SetRandomRange(randomRange);
-	SetShotNumber(shotNum);
+	SetNwayShotData(shotData);
 }
 
 FireOption::FireOption(const std::nullptr_t)
@@ -56,7 +118,7 @@ FireOption & FireOption::operator=(const FireOption op)
 	SetInitShootDelay(op.GetInitShootDelay());
 	SetIntervalShootDelay(op.GetIntervalShootDelay());
 	SetRandomRange(op.GetRandomRange());
-	SetShotNumber(op.GetShotNumber());
+	SetNwayShotData(op.GetNwayShotData());
 	m_IsOptionCanUse = TRUE;
 	return *this;
 }
@@ -119,9 +181,9 @@ FLOAT FireOption::GetRandomRange() const
 	return m_RandomRange;
 }
 
-INT FireOption::GetShotNumber() const
+NwayShotData FireOption::GetNwayShotData() const
 {
-	return m_ShotNumber;
+	return m_NwayShotData;
 }
 
 void FireOption::SetFireType(const ENEMY::FIRE_TYPE& fireType)
@@ -174,7 +236,8 @@ void FireOption::SetRandomRange(const FLOAT& range)
 	m_RandomRange = range;
 }
 
-void FireOption::SetShotNumber(const INT& shotNum)
+void FireOption::SetNwayShotData(const NwayShotData & data)
 {
-	m_ShotNumber = shotNum;
+	m_NwayShotData = data;
 }
+

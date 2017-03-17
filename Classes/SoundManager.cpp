@@ -5,23 +5,23 @@
 
 
 
-SoundManager* SoundManager::_instance = nullptr;
+SoundManager* SoundManager::m_pInstance = nullptr;
 
 // SoundManager ½Ì±ÛÅæ ±¸Çö.
-SoundManager* SoundManager::getInstance()
+SoundManager* SoundManager::GetInstance()
 {
-	if (!_instance)
+	if (!m_pInstance)
 	{
-		_instance = new SoundManager();
+		m_pInstance = new SoundManager();
 	}
-	return _instance;
+	return m_pInstance;
 }
 
 // ½Ì±ÛÅæ »èÁ¦ ÇÔ¼ö.
-void SoundManager::deleteInstance()
+void SoundManager::DeleteInstance()
 {
-	delete _instance;
-	_instance = nullptr;
+	delete m_pInstance;
+	m_pInstance = nullptr;
 	return;
 }
 
@@ -31,8 +31,7 @@ void SoundManager::deleteInstance()
 SoundManager::SoundManager()
 	: m_AccTime(0)
 {
-	vRESULT retval = init();
-	DebugLogPrint(retval, MESSAGES::creationFailed, _T("In SoundMananger Creation"));
+	Init();
 }
 
 /*
@@ -40,16 +39,15 @@ SoundManager::SoundManager()
 */
 SoundManager::~SoundManager()
 {
-	deleteInstance();
+	DeleteInstance();
 }
 
 /*
 	ÃÊ±âÈ­ ÇÔ¼ö.
 */
-const vRESULT SoundManager::init()
+void SoundManager::Init()
 {
-
-	return WELL_PERFORMED;
+	return;
 }
 
 /*

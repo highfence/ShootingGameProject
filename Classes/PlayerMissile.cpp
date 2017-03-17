@@ -10,10 +10,10 @@ PlayerMissile::PlayerMissile()
 	m_Damage = playerMissileDamageArray[0];
 	m_Width = playerMissileWidthArray[0];
 	m_Height = playerMissileHeightArray[0];
-	init();
+	Init();
 }
 
-void PlayerMissile::init()
+void PlayerMissile::Init()
 {
 	InitialImgLoad();
 	return;
@@ -71,7 +71,7 @@ void PlayerMissile::Fly(
 */
 BOOL PlayerMissile::CheckColide()
 {
-	Enemy* i = EnemyManager::getInstance()->FindEnemyColideWith(m_Pos, Vec(m_Width, m_Height));
+	Enemy* i = EnemyManager::GetInstance()->FindEnemyColideWith(m_Pos, Vec(m_Width, m_Height));
 	if (i != nullptr)
 	{
 		// 충돌 처리.

@@ -62,7 +62,7 @@ void EnemyZaco::Draw(_Inout_ HDC drawDC)
 
 void EnemyZaco::Explode()
 {
-	EffectManager::getInstance()->MakeEffect(
+	EffectManager::GetInstance()->MakeEffect(
 		EFFECT::EFFECT_TYPE::EXPLODE_LIGHT,
 		m_Pos,
 		m_CreateOption.GetFlightSpeed(),
@@ -75,7 +75,7 @@ void EnemyZaco::DeadProc()
 {
 	if ((!m_IsEnemyExplode) && (m_IsEnemyDead))
 	{
-		UIManager::getInstance()->PlusScore(300);
+		UIManager::GetInstance()->PlusScore(300);
 		Explode();
 		m_IsEnemyExplode = TRUE;
 	}

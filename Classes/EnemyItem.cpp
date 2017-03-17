@@ -16,10 +16,10 @@ const INT enemyItemHp = 1;
 EnemyItem::EnemyItem()
 	: Enemy()
 {
-	init();
+	Init();
 }
 
-const vRESULT EnemyItem::init()
+void EnemyItem::Init()
 {
 	m_EnemyType = ENEMY::ENEMY_TYPE::ENEMY_ITEM;
 	m_SpriteRange.x = enemyItemSpriteWidth;
@@ -28,7 +28,7 @@ const vRESULT EnemyItem::init()
 	m_Hp = enemyItemHp;
 	m_LoadedMissileNumber = enemyItemLoadedMissileNumber;
 	LoadMissiles(ENEMY::MISSILE_SIZE::SMALL);
-	return WELL_PERFORMED;
+	return;
 }
 
 EnemyItem::~EnemyItem()
@@ -55,7 +55,7 @@ void EnemyItem::DeadProc()
 {
 	if ((!m_IsEnemyExplode) && (m_IsEnemyDead))
 	{
-		UIManager::getInstance()->PlusScore(300);
+		UIManager::GetInstance()->PlusScore(300);
 		Explode();
 		m_IsEnemyExplode = TRUE;
 	}
@@ -99,9 +99,9 @@ void EnemyItem::Explode()
 	FireOption enemyNoFire = FireOption(FIRE_TYPE::FIRE_TYPE_NUM, MISSILE_TYPE::NONE, MISSILE_SIZE::SMALL, 0.f, 0.f, 0.f, Vec(0.f, 0.f), 0.f, 0.f, 0.f, 0);
 	if (m_CreateOption.GetIsItemLaunched())
 	{
-		EnemyManager::getInstance()->ActivateEnemyOnce(m_Pos, itemOption, enemyNoFire);
+		EnemyManager::GetInstance()->ActivateEnemyOnce(m_Pos, itemOption, enemyNoFire);
 	}
-	EffectManager::getInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos);
+	EffectManager::GetInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos);
 	return;
 }
 
