@@ -53,7 +53,7 @@ namespace ENEMY
 	
 	enum FIRE_OPTION
 	{
-		FIRE_FRONT, FIRE_AIMED, N_WAY_FIRE_OPTION, FIRE_OPTION_NUM
+		FIRE_FRONT, FIRE_AIMED, N_WAY_FIRE_OPTION, N_WAY_FIRE_TO_PLAYER, CIRCLE, FIRE_OPTION_NUM
 	};
 
 	const std::wstring enemyMissileSmall = _T("../Resources/FX/proton_02.png");

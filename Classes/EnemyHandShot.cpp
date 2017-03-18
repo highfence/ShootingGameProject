@@ -75,85 +75,6 @@ void EnemyHandShot::DeadProc()
 	}
 	return;
 }
-//
-//void EnemyHandShot::Fire()
-//{
-//	// TODO :: N-Way탄 구현.
-//	if (m_AccTime > fireInitialDelayTime)
-//	{
-//		if (m_ShotNum == 0 && (m_RecordAccTime > fireInitialDelayTime))
-//		{
-//			//NWayBulletLaunch(5);
-//			m_RecordAccTime = 0.f;
-//			++m_ShotNum;
-//		}
-//		else if (m_ShotNum == 1 && (m_RecordAccTime > fireIntevalDelayTime))
-//		{
-//			//NWayBulletLaunch(6);
-//			m_RecordAccTime = 0.f;
-//			++m_ShotNum;
-//		}
-//		else if (m_ShotNum == 2 && (m_RecordAccTime > fireIntevalDelayTime))
-//		{
-//			//NWayBulletLaunch(5);
-//			m_RecordAccTime = 0.f;
-//			++m_ShotNum;
-//		}
-//		else if (m_ShotNum == 3)
-//		{
-//			m_ShotNum = 0;
-//			if (m_IsLaunchRightHand)
-//			{
-//				m_IsLaunchRightHand = FALSE;
-//			}
-//			else
-//			{
-//				m_IsLaunchRightHand = TRUE;
-//			}
-//		}
-//	}
-//
-//	return;
-//}
-
-/*
-const vRESULT EnemyHandShot::NWayBulletLaunch(const _In_ INT bulletNumber)
-{
-	Vec launchPos = GetLaunchPos();
-	Vec shotVec;
-	INT shotNumber;
-
-	// 홀수일 경우.
-	INT IsBulletNumberOdd = bulletNumber % 2;
-	if (IsBulletNumberOdd == TRUE)
-	{
-		shotNumber = (bulletNumber - 1) / 2 + 1;
-		for (int i = 0; i < shotNumber; ++i)
-		{
-			RotateVec(i * degreeOfOddWayLaunch, 0.f, 1.f, shotVec.x, shotVec.y);
-			FireOption optionLeft(shotVec, 300.f, AIM_FIRE, MEDIUM);
-			MissileOption optionRight(shotVec.GetXSymmetryVec(), 300.f, AIM_FIRE, MEDIUM);
-			FindBulletAndLaunch(launchPos, optionLeft);
-			FindBulletAndLaunch(launchPos, optionRight);
-		}
-	}
-	// 짝수일 경우.
-	else
-	{
-		shotNumber = bulletNumber / 2;
-		for (int i = 0; i < shotNumber; ++i)
-		{
-			RotateVec(i * degreeOfEvenWayLaunch + 12.25f, 0.f, 1.f, shotVec.x, shotVec.y);
-			MissileOption optionLeft(shotVec, 300.f, AIM_FIRE, MEDIUM);
-			MissileOption optionRight(shotVec.GetXSymmetryVec(), 300.f, AIM_FIRE, MEDIUM);
-			FindBulletAndLaunch(launchPos, optionLeft);
-			FindBulletAndLaunch(launchPos, optionRight);
-		}
-	}
-
-	return WELL_PERFORMED;
-}
-*/
 
 /*
 	RightHand에서 발사할 것인지 LeftHand에서 발사할 것인지 판단하고 발사 위치를 반환해주는 함수.
@@ -167,19 +88,6 @@ Vec EnemyHandShot::GetLaunchPos() const
 
 	return Vec(m_Pos.x + m_LeftHandPos.x, m_Pos.y + m_LeftHandPos.y);
 }
-
-/*
-	미사일 풀에서 발사 가능한 미사일을 찾고 입력받은 인자에 따라 발사하는 함수.
-*/
-//
-//void EnemyHandShot::FindBulletAndLaunch(Vec launchPos, MissileOption option)
-//{
-//	EnemyMissile* shotBullet = GetLaunchableMissile();
-//	if (shotBullet != nullptr)
-//	{
-//		shotBullet->Launch(launchPos, option);
-//	}
-//}
 
 
 void EnemyHandShot::Explode()
@@ -216,4 +124,50 @@ void EnemyHandShot::GetDamage(const _In_ INT damage, const _In_ Vec playerMissil
 	{
 		EffectManager::GetInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_HIT, Vec(playerMissileVec.x + rand() % 10 - 5, m_Pos.y + m_SpriteRange.y / 2), 150, Vec(0, -1));
 	}
+}
+
+/*
+	Enemy::CalcLaunchPos 오버라이딩. 어느 손에서 발사할지 결정해준다. 
+*/
+void EnemyHandShot::CalcLaunchPos()
+{
+	auto opt = GetFireOption();
+	auto data = opt.GetNwayShotData();
+
+	// NwayShot을 쏘는 경우
+	if (data != nullptr)
+	{
+		if (data.RecordShotTimes == 0)
+		{
+			ChangeHand();
+		}
+	}
+	// 그렇지 않은 경우.
+	else
+	{
+		if (m_ShootedMissileNumber == opt.GetMissileShotNumber())
+		{
+			ChangeHand();
+		}
+	}
+
+	m_LaunchPos = GetLaunchPos();
+	return;
+}
+
+/*
+	손을 바꾸어주는 함수.
+*/
+void EnemyHandShot::ChangeHand()
+{
+	if (m_IsLaunchRightHand)
+	{
+		m_IsLaunchRightHand = FALSE;
+	}
+	else
+	{
+		m_IsLaunchRightHand = TRUE;
+	}
+	return;
+
 }

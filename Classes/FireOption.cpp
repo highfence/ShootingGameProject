@@ -5,15 +5,31 @@ NwayShotData::NwayShotData(
 	const INT shotTimes,
 	const INT* shotNumberArr,
 	const INT* shotAngleArr,
-	const BOOL isMissileShotToPlayer)
+	const BOOL isMissileShotToPlayer,
+	const BOOL isMissileCircled)
 {
+	// shotNumberArr이 널포인터일 경우 잘못된 진입.
+	if (shotNumberArr == nullptr)
+	{
+		return;
+	}
+
 	ShotTimes = shotTimes;
 	for (int i = 0; i < ShotTimes; ++i)
 	{
 		ShotNumber[i] = shotNumberArr[i];
-		ShotAngle[i] = shotAngleArr[i];
 	}
+	// ShotAngle은 널포인터가 들어올 수 있음.
+	if (shotAngleArr != nullptr)
+	{
+		for (int i = 0; i < ShotTimes; ++i)
+		{
+			ShotAngle[i] = shotAngleArr[i];
+		}
+	}
+
 	IsMissileShotToPlayer = isMissileShotToPlayer;
+	IsMissileCircled = isMissileCircled;
 }
 
 /*
@@ -36,10 +52,25 @@ NwayShotData & NwayShotData::operator=(const NwayShotData & data)
 		ShotAngle[i] = data.ShotAngle[i];
 	}
 	IsMissileShotToPlayer = data.IsMissileShotToPlayer;
+	IsMissileCircled = data.IsMissileCircled;
 	IsMissileNeedDelay = data.IsMissileNeedDelay;
 	RecordShotTimes = data.RecordShotTimes;
 	
 	return *this;
+}
+
+/*
+	널 포인터와의 비교를 위해 만들어진 연산자 오버로딩
+*/
+BOOL NwayShotData::operator!=(const char *null)
+{
+	// ShotTimes가 0인 경우 nullptr과 같다고 인식하여 FALSE반환.
+	if (ShotTimes == 0)
+	{
+		return FALSE;
+	}
+	// 아니라면 같지 않으므로 TRUE반환.
+	return TRUE;
 }
 
 /*
@@ -55,7 +86,7 @@ BOOL NwayShotData::GetNwayShotDataValid()
 	}
 	for (int i = 0; i < ShotTimes; ++i)
 	{
-		if (ShotNumber[i] == 0 || ShotAngle[i] == 0.f)
+		if (ShotNumber[i] == 0)
 		{
 			return FALSE;
 		}
@@ -80,6 +111,7 @@ FireOption::FireOption(
 	const Vec& missileVec,
 	const FLOAT& initShootDelay,
 	const FLOAT& intervalShootDelay,
+	const INT& missileNumber,
 	const FLOAT& randomRange,
 	const NwayShotData& shotData)
 	: m_IsOptionCanUse(TRUE)
@@ -93,6 +125,7 @@ FireOption::FireOption(
 	SetMissileVec(missileVec);
 	SetInitShootDelay(initShootDelay);
 	SetIntervalShootDelay(intervalShootDelay);
+	SetMissileShotNumber(missileNumber);
 	SetRandomRange(randomRange);
 	SetNwayShotData(shotData);
 }
@@ -117,6 +150,7 @@ FireOption & FireOption::operator=(const FireOption op)
 	SetMissileVec(op.GetMissileVec());
 	SetInitShootDelay(op.GetInitShootDelay());
 	SetIntervalShootDelay(op.GetIntervalShootDelay());
+	SetMissileShotNumber(op.GetMissileShotNumber());
 	SetRandomRange(op.GetRandomRange());
 	SetNwayShotData(op.GetNwayShotData());
 	m_IsOptionCanUse = TRUE;
@@ -181,6 +215,11 @@ FLOAT FireOption::GetIntervalShootDelay() const
 	return m_IntervalShootDelay;
 }
 
+INT FireOption::GetMissileShotNumber() const
+{
+	return m_MissileShootNumber;
+}
+
 FLOAT FireOption::GetRandomRange() const
 {
 	return m_RandomRange;
@@ -234,6 +273,11 @@ void FireOption::SetInitShootDelay(const FLOAT& time)
 void FireOption::SetIntervalShootDelay(const FLOAT& time)
 {
 	m_IntervalShootDelay = time;
+}
+
+void FireOption::SetMissileShotNumber(const INT & number)
+{
+	m_MissileShootNumber = number;
 }
 
 void FireOption::SetRandomRange(const FLOAT& range)

@@ -52,6 +52,7 @@ void Enemy::FunctionPointerRegist()
 	m_pFireHandler[FIRE_TYPE::NORMAL_FIRE] = &Enemy::FireNormal;
 	m_pFireHandler[FIRE_TYPE::AIMED_FIRE] = &Enemy::FireAimed;
 	m_pFireHandler[FIRE_TYPE::N_WAY_FIRE] = &Enemy::FireNways;
+	m_pFireHandler[FIRE_TYPE::CIRCLE_FIRE] = &Enemy::FireCircle;
 
 	// Missile Fly Function Pointer Regist
 	//m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &Enemy::MissileFlyStraight;
@@ -88,6 +89,14 @@ EnemyMissile * Enemy::GetLaunchableMissile()
 	return nullptr;
 }
 
+/*
+	LaunchPos를 결정해주는 함수. 기본적으로 LaunchPos = m_Pos이다.
+*/
+void Enemy::CalcLaunchPos()
+{
+	m_LaunchPos = m_Pos;
+}
+
 void Enemy::CalcProc(const _In_ FLOAT dt)
 {
 
@@ -102,6 +111,7 @@ void Enemy::CalcProc(const _In_ FLOAT dt)
 	{
 		AccTime(dt);
 		Fly(dt);
+		CalcLaunchPos();
 		Fire();
 	}
 	// 죽은 상태라면 DeadProc진행.
@@ -264,38 +274,6 @@ BOOL Enemy::FlyGoAndSlow(const _In_ FLOAT dt)
 
 	return TRUE;
 }
-
-///*
-//	직선으로 미사일을 날아가게 하는 방식.
-//*/
-//BOOL Enemy::MissileFlyStraight(EnemyMissile* missile, const FLOAT dt)
-//{
-//	FireOption op;
-//	if ((op = GetFireOption()).GetIsOptionCanUse())
-//	{
-//		missile->Fly(dt, 0, 1, op.GetMissileSpeed());
-//		missile->CheckColideWithPlayer();
-//	}
-//	return TRUE;
-//}
-//
-///*
-//	조준탄으로 미사일을 날아가게 하는 방식.
-//	EnemyMissile에서 정의된 MissileOption을 이용한 Launch를 사용해야만 미사일이 작동한다.
-//*/
-//BOOL Enemy::MissileFlyAimed(EnemyMissile* missile, const FLOAT dt)
-//{
-//	FireOption option = missile->GetOption();
-//	if (!option.GetIsOptionCanUse())
-//	{
-//		return FALSE;
-//	}
-//
-//	missile->Fly(dt, option.GetMissileVec().x, option.GetMissileVec().y, option.GetMissileSpeed());
-//	missile->CheckColideWithPlayer();
-//
-//	return TRUE;
-//}
 
 /*
 	Return Enemy Is on Display.
@@ -504,7 +482,7 @@ BOOL Enemy::FireNormal()
 		auto missile = GetLaunchableMissile();
 		if (missile != nullptr)
 		{
-			missile->Launch(m_Pos, opt);
+			missile->Launch(m_LaunchPos, opt);
 		}
 		m_RecordFireTime = 0.f;
 	}
@@ -558,19 +536,17 @@ BOOL Enemy::FireNways()
 		// 이번 발사하는 미사일 개수가 짝수일 경우 처리.
 		if (data.ShotNumber[data.RecordShotTimes] % 2 == 0)
 		{
-			LaunchEvenNumberWaysMissiles();
-			// 딜레이 처리.
-			data.IsMissileNeedDelay = TRUE;
-			++data.RecordShotTimes;
+			LaunchEvenNumberWays();
 		}
 		// 발사하는 미사일 개수가 홀수일 경우 처리.
 		else
 		{
-			LaunchOddNumberWaysMissiles();
-			// 딜레이 처리.
-			data.IsMissileNeedDelay = TRUE;
-			++data.RecordShotTimes;
+			LaunchOddNumberWays();
 		}
+
+		// 발사 후 딜레이 처리와 Shot정보를 다음으로 옮김.
+		data.IsMissileNeedDelay = TRUE;
+		++data.RecordShotTimes;
 		
 		// 재장전 처리.
 		// RecordShotTimes == ShotTimes일 경우 재장전 시간이 필요하다.
@@ -584,6 +560,50 @@ BOOL Enemy::FireNways()
 	else if (m_RecordFireTime > (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
 	{
 		// 인터벌 딜레이가 끝났으므로 미사일 발사 가능. 
+		data.IsMissileNeedDelay = FALSE;
+		m_RecordFireTime = opt.GetInitShootDelay();
+	}
+
+	// 변경점 적용.
+	opt.SetNwayShotData(data);
+	SetFireOption(opt);
+	return TRUE;
+}
+
+/*
+	사방에 원형으로 미사일을 발사하는 Fire타입
+	기본적인 구조는 NwayShot이랑 같고, rotate가 Angle대신 360 / 미사일 개수로 이뤄진다는 차이점이 있다.
+*/
+BOOL Enemy::FireCircle()
+{
+	FireOption opt = GetFireOption();
+	NwayShotData data = opt.GetNwayShotData();
+
+	if (!data.GetNwayShotDataValid())
+	{
+		return FALSE;
+	}
+
+	if (m_RecordFireTime > opt.GetInitShootDelay() &&
+		m_RecordFireTime <= (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
+	{
+		if (data.IsMissileNeedDelay)
+		{
+			return FALSE;
+		}
+		LaunchCircleWays();
+
+		data.IsMissileNeedDelay = TRUE;
+		++data.RecordShotTimes;
+
+		if (data.RecordShotTimes == data.ShotTimes)
+		{
+			data.RecordShotTimes = 0;
+			m_RecordFireTime = 0.f;
+		}
+	}
+	else if (m_RecordFireTime > (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
+	{
 		data.IsMissileNeedDelay = FALSE;
 		m_RecordFireTime = opt.GetInitShootDelay();
 	}
@@ -628,7 +648,7 @@ BOOL Enemy::SetOptionMissileVecToPlayer()
 	홀수 개의 미사일을 Launch시키는 함수.
 	FireNways에서 호출.
 */
-BOOL Enemy::LaunchOddNumberWaysMissiles()
+BOOL Enemy::LaunchOddNumberWays()
 {
 	FireOption opt = GetFireOption();
 	NwayShotData data = opt.GetNwayShotData();
@@ -654,7 +674,7 @@ BOOL Enemy::LaunchOddNumberWaysMissiles()
 		{
 			// 미사일 벡터만 달라진 옵션으로 발사.
 			inputOption.SetMissileVec(rotateVec);
-			missile->Launch(m_Pos, inputOption);
+			missile->Launch(m_LaunchPos, inputOption);
 		}
 		// 정중앙 미사일이 아닌 경우, 반대 벡터로도 한 번 더 쏴주기.
 		if (i != 0)
@@ -663,7 +683,7 @@ BOOL Enemy::LaunchOddNumberWaysMissiles()
 			if (missile != nullptr)
 			{
 				inputOption.SetMissileVec(rotateVec.GetYSymmetryVec());
-				missile->Launch(m_Pos, inputOption);
+				missile->Launch(m_LaunchPos, inputOption);
 			}
 		}
 	}
@@ -675,7 +695,7 @@ BOOL Enemy::LaunchOddNumberWaysMissiles()
 	짝수 개의 미사일을 Launch시키는 함수.
 	FireNways에서 호출.
 */
-BOOL Enemy::LaunchEvenNumberWaysMissiles()
+BOOL Enemy::LaunchEvenNumberWays()
 {
 	FireOption opt = GetFireOption();
 	NwayShotData data = opt.GetNwayShotData();
@@ -701,17 +721,53 @@ BOOL Enemy::LaunchEvenNumberWaysMissiles()
 		if (missile != nullptr)
 		{
 			inputOption.SetMissileVec(rotateVec);
-			missile->Launch(m_Pos, inputOption);
+			missile->Launch(m_LaunchPos, inputOption);
 		}
 
 		missile = GetLaunchableMissile();
 		if (missile != nullptr)
 		{
 			inputOption.SetMissileVec(rotateVec.GetYSymmetryVec());
-			missile->Launch(m_Pos, inputOption);
+			missile->Launch(m_LaunchPos, inputOption);
 		}
 	}
 
+	return TRUE;
+}
+
+/*
+	원형으로 미사일을 Launch 시켜주는 함수.
+*/
+BOOL Enemy::LaunchCircleWays()
+{
+	FireOption opt = GetFireOption();
+	NwayShotData data = opt.GetNwayShotData();
+	FireOption inputOption = opt;
+	INT LaunchTimes = (data.ShotNumber[data.RecordShotTimes]) / 2;
+
+	Vec standardVec = opt.GetMissileVec();
+	Vec rotateVec = standardVec;
+	// 정해진 Angle대신 미사일 개수에 따라 각도가 달라짐.
+	FLOAT theta = 360.f / data.ShotNumber[data.RecordShotTimes];
+
+	for (INT i = 0; i < LaunchTimes; ++i)
+	{
+		RotateVec(i * theta, standardVec.x, standardVec.y, rotateVec.x, rotateVec.y);
+
+		EnemyMissile* missile = GetLaunchableMissile();
+		if (missile != nullptr)
+		{
+			inputOption.SetMissileVec(rotateVec);
+			missile->Launch(m_LaunchPos, inputOption);
+		}
+
+		missile = GetLaunchableMissile();
+		if (missile != nullptr)
+		{
+			inputOption.SetMissileVec(rotateVec.GetYSymmetryVec());
+			missile->Launch(m_LaunchPos, inputOption);
+		}
+	}
 	return TRUE;
 }
 

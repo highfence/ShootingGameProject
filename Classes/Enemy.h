@@ -61,12 +61,14 @@ protected :
 
 	// 기존 멤버 변수 (지워야할 것을 찾자)
 	Vec		     m_Pos;
+	Vec			 m_LaunchPos = Vec(0.f, 0.f);
 	INT		     m_Hp;
 	ENEMY_TYPE	 m_EnemyType;
 	Vec			 m_PlayerPos;
 	Vec		     m_SpriteRange;
 	Vec		     m_ColideRange;
 	INT		     m_LoadedMissileNumber;
+	INT			 m_ShootedMissileNumber = 0;
 	FLOAT	     m_AccTime = 0.f;
 	FLOAT	     m_RecordAccTime = 0.f;
 	FLOAT	     m_RecordFlyTime = 0.f;
@@ -84,6 +86,7 @@ protected :
 
 	// Protected 함수.
 	EnemyMissile* GetLaunchableMissile();
+	virtual void CalcLaunchPos();
 
 private :
 
@@ -103,11 +106,13 @@ private :
 	BOOL FireNormal();
 	BOOL FireAimed();
 	BOOL FireNways();
+	BOOL FireCircle();
 
 	// Fire 보조 함수.
 	BOOL SetOptionMissileVecToPlayer();
-	BOOL LaunchOddNumberWaysMissiles();
-	BOOL LaunchEvenNumberWaysMissiles();
+	BOOL LaunchOddNumberWays();
+	BOOL LaunchEvenNumberWays();
+	BOOL LaunchCircleWays();
 
 	// 그 외 사용 함수.
 	void Init();

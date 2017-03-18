@@ -10,19 +10,22 @@ struct NwayShotData
 {
 	NwayShotData() = default;
 	NwayShotData(
-		const _In_ INT,
-		const _In_ INT*,
-		const _In_ INT*,
-		const _In_ BOOL);
+		const _In_ INT maxShotTimes,
+		const _In_ INT* shotNumberArr,
+		const _In_ INT* shotAngleArr,
+		const _In_ BOOL isMissileShotToPlayer,
+		const _In_ BOOL isMissileCircled);
 	NwayShotData(const _In_ NwayShotData&) = default;
 	NwayShotData(const _In_ char*);
 	NwayShotData& operator=(const _In_ NwayShotData&);
+	BOOL operator!=(const _In_ char*);
 	BOOL GetNwayShotDataValid();
 	
 	INT ShotTimes = 0;
 	INT ShotNumber[maxShotTimes] = { 0 };
 	FLOAT ShotAngle[maxShotTimes] = { 0.f };
 	BOOL IsMissileShotToPlayer = FALSE;
+	BOOL IsMissileCircled = FALSE;
 
 	// 계산에 필요한 인자.
 	INT RecordShotTimes = 0;
@@ -43,6 +46,7 @@ public :
 		const _In_ Vec&  missileVec,
 		const _In_ FLOAT&  initShootDelay,
 		const _In_ FLOAT&  intervalShootDelay,
+		const _In_ INT&	missileNumber,
 		const _In_ FLOAT&  randomRange,
 		const _In_ NwayShotData& shotData);
 	FireOption(const _In_ std::nullptr_t);
@@ -65,6 +69,7 @@ public :
 	Vec                 GetMissileVec()         const;
 	FLOAT               GetInitShootDelay()     const;
 	FLOAT               GetIntervalShootDelay() const;
+	INT					GetMissileShotNumber()  const;
 	FLOAT               GetRandomRange()        const;
 	NwayShotData        GetNwayShotData()       const;
 
@@ -77,6 +82,7 @@ public :
 	void SetMissileVec        (const _In_ Vec&);
 	void SetInitShootDelay    (const _In_ FLOAT&);
 	void SetIntervalShootDelay(const _In_ FLOAT&);
+	void SetMissileShotNumber (const _In_ INT&);
 	void SetRandomRange       (const _In_ FLOAT&);
 	void SetNwayShotData      (const _In_ NwayShotData&);
 
@@ -96,6 +102,7 @@ private :
 	Vec m_MissileVec;
 	FLOAT m_InitShootDelay;
 	FLOAT m_IntervalShootDelay;
+	INT	  m_MissileShootNumber;
 	FLOAT m_RandomRange;
 	NwayShotData m_NwayShotData;
 

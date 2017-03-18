@@ -15,19 +15,19 @@ public :
 	void Draw(_Inout_ HDC) override;
 	void Explode() override;
 	void DeadProc() override;
-	//void Fire() override;
 	
 	void GetDamage(const _In_ INT, const _In_ Vec);
+	
+protected :
+
+	void CalcLaunchPos() override;
 
 private :
 
 	void Init();
 	const vRESULT InitialImgLoad();
-	//const vRESULT NWayBulletLaunch(const _In_ INT);
 	Vec GetLaunchPos() const;
-	/*void FindBulletAndLaunch(
-		const _In_ Vec,
-		const _In_ FireOption);*/
+	void ChangeHand();
 
 	Vec m_RightHandPos;
 	Vec m_LeftHandPos;
