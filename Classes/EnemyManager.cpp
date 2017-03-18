@@ -47,7 +47,7 @@ void EnemyManager::Init()
 }
 
 /*
-	�Լ� �����͸� �������ִ� �Լ�. (init���� ȣ��)
+	함수 포인터를 등록해주는 함수. (init에서 호출)
 */
 void EnemyManager::RegisterFunctionPointer()
 {
@@ -59,7 +59,7 @@ void EnemyManager::RegisterFunctionPointer()
 }
 
 /*
-	EnemyItem�� �������ִ� �Լ� �����Ϳ� ���ϵ� �Լ�.
+	EnemyItem을 만들어주는 함수.
 */
 BOOL EnemyManager::ActivateEnemyItem(
 	const _In_ Vec createPos,
@@ -79,7 +79,7 @@ BOOL EnemyManager::ActivateEnemyItem(
 }
 
 /*
-	Item�� ������ �Լ� �����Ϳ� ���ϵ� �Լ�.
+	Item을 만들어주는 함수.
 */
 BOOL EnemyManager::ActivateItem(
 	const _In_ Vec createPos,
@@ -99,7 +99,7 @@ BOOL EnemyManager::ActivateItem(
 }
 
 /*
-	EnemyZaco�� ������ �Լ� �����Ϳ� ���ϵ� �Լ�.
+	EnemyZaco를 만들어주는 함수.
 */
 BOOL EnemyManager::ActivateZaco(
 	const _In_ Vec createPos,
@@ -119,7 +119,7 @@ BOOL EnemyManager::ActivateZaco(
 }
 
 /*
-	EnemyHandShot�� ������ �Լ� �����Ϳ� ���ϵ� �Լ�.
+	EnemyHandShot을 만들어 주는 함수.
 */
 BOOL EnemyManager::ActivateHandShot(
 	const _In_ Vec createPos,
@@ -188,8 +188,8 @@ void EnemyManager::Draw(_Inout_ HDC drawDC)
 }
 
 /*
-	Ȱ��ȭ �� Enemy�鿡�� ������ �������ִ� �Լ�.
-	������ DistributeTime�� DistributePlayerInfo�� �����Ѵ�.
+	활성화 된 Enemy들에게 정보를 전파해주는 함수.
+	이전의 DistributeTime과 DistributePlayerInfo를 대체.
 */
 void EnemyManager::DistributeData(const FLOAT dt)
 {
@@ -258,7 +258,7 @@ void EnemyManager::SetPlayerInfo(Player& playerInfo)
 }
 
 /*
-	������ Enemy Ÿ�Ժ� ������ŭ ���Ϳ� �̸� �Ҵ��س��� �Լ�.
+	일정한 Enemy 타입별 개수만큼 벡터에 미리 할당해놓는 함수.
 */
 void EnemyManager::SetEnemyMemoryPool()
 {
@@ -276,15 +276,15 @@ void EnemyManager::SetEnemyMemoryPool()
 }
 
 /*
-	EnemyManager ������ �޸���Ǯ�� ���Ƴ��� �Լ�.
+	EnemyManager 생성시 메모리풀을 잡아 놓는 함수.
 */
 template <typename T>
 void EnemyManager::AllocEnemyMemory(const _In_ INT allocTime)
 {
-	// �Ҵ� ȸ����ŭ for���� ����
+	// 할당 받은 회수만큼 for문 루프
 	for (int i = 0; i < allocTime; ++i)
 	{
-		// ������ ������ EnemyŸ���� �������� vector�� push�ϱ� ���� Enemy*�� ���·� ĳ����.
+		// 생성은 각각 Enemy타입의 형태이지만, vector에 넣기 위해 Enemy*형태로 캐스팅.
 		T* newEnemy = new T();
 		m_EnemyMemoryVector.push_back((Enemy*)newEnemy);
 	}
@@ -293,49 +293,50 @@ void EnemyManager::AllocEnemyMemory(const _In_ INT allocTime)
 }
 
 /*
-	���ڷ� ���� ENEMY_TYPE�� ��ġ�ϰ�, Activated���°� �ƴ� Enemy�� ��ȯ���ִ� �Լ�.
+	인자로 받은 ENEMY_TYPE과 일치하고, Activated상태가 아닌 Enemy를 반환해주는 함수.
 */
 Enemy * EnemyManager::FindDeactivatedEnemy(const ENEMY::ENEMY_TYPE findEnemyType)
 {
 	std::vector<Enemy*>::iterator iter = m_EnemyMemoryVector.begin();
 	while (iter != m_EnemyMemoryVector.end())
 	{
-		// Enemy Type�� ��ġ�ϴ��� �켱 Ȯ��.
+		// Enemy Type이 일치하는지 우선 확인.
 		if ((*iter)->GetEnemyType() == findEnemyType)
 		{
-			// Enemy�� Deactivated �������� Ȯ��.
+			// Enemy가 Deactivated 상태인지 확인.
 			if (!(*iter)->GetIsEnemyActivated())
 			{
-				// �´ٸ� ��ȯ.
+				// 맞다면 반환.
 				return *iter;
 			}
 		}
-		// �ƴ� ���� iterator�� ���� ���ҷ�.
+		// 아닐 경우 iterator를 다음 원소로.
 		++iter;
 	}
-	// �ش��ϴ� Enemy�� ���ٸ� nullptr ��ȯ.
+	// 해당하는 Enemy가 없다면 nullptr반환.
 	return nullptr;
 }
 
 /*
-	�߽� ��ġ�� ���� ���� ���̸� ���� Vec �ڷ����� ������ �׿� �浹�� Enemy�� ��ȯ���ִ� �Լ�.
-	�浹�� Enemy�� ���� ���� nullptr ��ȯ.
+	중심 위치와 가로 세로 길이를 가진 Vec 자료형을 넣으면 그와 충돌한 Enemy를 반환해주는 함수.
+	충돌한 Enemy가 없을 경우 nullptr 반환.
 */
 Enemy * EnemyManager::FindEnemyColideWith(const Vec position, const Vec range)
 {
 	for (auto& i : m_EnemyMemoryVector)
 	{
+		// ENEMY_TYPE이 ITEM인 경우에는 검사를 실행하지 않음.
 		if (i->GetEnemyType() == ENEMY_TYPE::ITEM)
 		{
 			continue;
 		}
-		// Ȱ��ȭ ���� & �����ִ� ������ Enemy�� ���� �˻�.
+		// 활성화 상태 & 살아있는 상태인 Enemy만 조건 검ㅅ.
 		if (i->GetIsEnemyActivated() && !i->GetIsEnemyDead())
 		{
-			// �浹 �˻�
+			// 충돌 검사.
 			if (IsObjectColided(position, range, i->GetPosition(), i->GetColideRange()))
 			{
-				// �浹���� ���� ��ȯ.
+				// 충돌했을 경우 반환.
 				return i;
 			}
 		}
