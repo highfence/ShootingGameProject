@@ -60,6 +60,31 @@ OptionHandler::~OptionHandler()
 */
 void OptionHandler::Init()
 {
+	using namespace ENEMY;
+
+	GoAndSlowData enemyItemData = GoAndSlowData(0.5f, 5.f, Vec(0.f, 1.f), 50.f);
+	CreateOption enemyItemNormal = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, FALSE);
+	CreateOption enemyItemLaunched = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, TRUE);
+	FireOption enemyFireFront = FireOption(FIRE_TYPE::NORMAL_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 0.f, nullptr);
+	FireOption enemyFireAimed = FireOption(FIRE_TYPE::AIMED_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 50.f, nullptr);
+
+	INT shotTimes[] = { 5, 6, 5, 0, 0 };
+	INT shotAngle[] = { 22.5f, 22.5f, 22.5f, 0, 0 };
+
+	GoAndSlowData enemyHandShotGASData = GoAndSlowData(0.5f, 15.f, Vec(0.f, 1.f), 50.f);
+	NwayShotData enemyHandShotNwayData = NwayShotData(3, shotTimes, shotAngle, FALSE);
+	FireOption enemyHandShotFire = FireOption(FIRE_TYPE::N_WAY_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0.f, enemyHandShotNwayData);
+	CreateOption enemyHandShotCreate = CreateOption(380, ENEMY_HAND_SHOT, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyHandShotGASData, FALSE);
+
+	// 积己 可记 殿废.
+	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(ENEMY_ITEM_TRUE, enemyItemLaunched));
+	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(ENEMY_ITEM_FALSE, enemyItemNormal));
+	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(ENEMY_HAND_SHOT_CREATE, enemyHandShotCreate));
+
+	// 惯荤 可记 殿废.
+	m_FireOptionMap.insert(std::unordered_map<ENEMY::FIRE_OPTION, FireOption>::value_type(FIRE_FRONT, enemyFireFront));
+	m_FireOptionMap.insert(std::unordered_map<ENEMY::FIRE_OPTION, FireOption>::value_type(FIRE_AIMED, enemyFireAimed));
+	m_FireOptionMap.insert(std::unordered_map<ENEMY::FIRE_OPTION, FireOption>::value_type(N_WAY_FIRE_OPTION, enemyHandShotFire));
 
 	return;
 }

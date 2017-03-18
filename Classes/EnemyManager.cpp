@@ -6,10 +6,11 @@
 #include "EnemyZaco.h"
 #include "EnemyHandShot.h"
 #include "EnemyManager.h"
+#include "OptionHandler.h"
 
 EnemyManager* EnemyManager::m_pInstance = nullptr;
 
-// EnemyManager �̱��� ����.
+// EnemyManager 싱글톤 호출 함수.
 EnemyManager* EnemyManager::GetInstance()
 {
 	if (!m_pInstance)
@@ -21,7 +22,6 @@ EnemyManager* EnemyManager::GetInstance()
 
 /*
 	deleteInstance
-	�̱��� �Ҹ� �Լ�.
 */
 void EnemyManager::DeleteInstance()
 {
@@ -37,7 +37,7 @@ EnemyManager::EnemyManager()
 }
 
 /*
-	Enemy ���� �Լ� ������ �ڵ鷯�� �Լ��� ������ �ִ� �Լ�.
+	초기화 함수. 메모리 풀 잡아 높고 함수 포인터 등록.
 */
 void EnemyManager::Init()
 {
@@ -232,26 +232,22 @@ Player& EnemyManager::getPlayerInfo()
 
 void EnemyManager::MakeProc()
 {
-	GoAndSlowData enemyItemData = GoAndSlowData(0.5f, 5.f, Vec(0.f, 1.f), 50.f);
-	CreateOption enemyItemNormal = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, FALSE);
-	CreateOption enemyItemLaunched = CreateOption(1, ENEMY_ITEM, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, TRUE);
-	FireOption enemyFireFront = FireOption(FIRE_TYPE::NORMAL_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 0.f, nullptr);
-	FireOption enemyFireAimed = FireOption(FIRE_TYPE::AIMED_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 50.f, nullptr);
-	INT shotTimes[] = { 5, 6, 5, 0, 0 };
-	INT shotAngle[] = { 22.5f, 22.5f, 22.5f, 0, 0};
-	GoAndSlowData enemyHandShotGASData = GoAndSlowData(0.5f, 15.f, Vec(0.f, 1.f), 50.f);
-	NwayShotData enemyHandShotNwayData = NwayShotData(3, shotTimes, shotAngle, FALSE);
-	FireOption enemyHandShotFire = FireOption(FIRE_TYPE::N_WAY_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0.f, enemyHandShotNwayData);
-	CreateOption enemyHandShotCreate = CreateOption(380, ENEMY_HAND_SHOT, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyHandShotGASData, FALSE);
-
+	auto OptGenerater = OptionHandler::GetInstance();
+	
 	FLOAT line1 = 4.f;
-	ActivateEnemy(line1, Vec(350.f, 0.f), enemyItemNormal, enemyFireAimed);
-	ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), enemyItemNormal, enemyFireAimed);
-	ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), enemyItemNormal, enemyFireAimed);
-	ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), enemyItemLaunched, enemyFireAimed);
+	auto enemyItemFalseCreate = OptGenerater->GetCreateOption(ENEMY_ITEM_FALSE);
+	auto enemyItemTrueCreate = OptGenerater->GetCreateOption(ENEMY_ITEM_TRUE);
+	auto enemyItemFire = OptGenerater->GetFireOption(FIRE_FRONT);
+	ActivateEnemy(line1, Vec(350.f, 0.f), enemyItemFalseCreate, enemyItemFire);
+	ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), enemyItemFalseCreate, enemyItemFire);
+	ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), enemyItemFalseCreate, enemyItemFire);
+	ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), enemyItemTrueCreate, enemyItemFire);
 
 	FLOAT line2 = 6.f;
+	auto enemyHandShotCreate = OptGenerater->GetCreateOption(ENEMY_HAND_SHOT_CREATE);
+	auto enemyHandShotFire = OptGenerater->GetFireOption(N_WAY_FIRE_OPTION);
 	ActivateEnemy(line2, Vec(650.f, 0.f), enemyHandShotCreate, enemyHandShotFire);
+
 	return;
 }
 
@@ -329,6 +325,10 @@ Enemy * EnemyManager::FindEnemyColideWith(const Vec position, const Vec range)
 {
 	for (auto& i : m_EnemyMemoryVector)
 	{
+		if (i->GetEnemyType() == ENEMY_TYPE::ITEM)
+		{
+			continue;
+		}
 		// Ȱ��ȭ ���� & �����ִ� ������ Enemy�� ���� �˻�.
 		if (i->GetIsEnemyActivated() && !i->GetIsEnemyDead())
 		{

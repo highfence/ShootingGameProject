@@ -28,6 +28,6 @@ private:
 	void Init();
 
 	// 옵션 저장 풀.
-	std::unordered_map<INT, CreateOption> m_CreateOptionMap;
-	std::unordered_map<INT, FireOption> m_FireOptionMap;
+	std::unordered_map<ENEMY::CREATE_OPTION, CreateOption> m_CreateOptionMap;
+	std::unordered_map<ENEMY::FIRE_OPTION, FireOption> m_FireOptionMap;
 };

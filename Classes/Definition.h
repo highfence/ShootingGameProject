@@ -48,12 +48,12 @@ namespace ENEMY
 	
 	enum CREATE_OPTION
 	{
-		CREATE_OPTION_NUM
+		ENEMY_ITEM_TRUE, ENEMY_ITEM_FALSE, ENEMY_HAND_SHOT_CREATE, CREATE_OPTION_NUM
 	};
 	
 	enum FIRE_OPTION
 	{
-		FIRE_OPTION_NUM
+		FIRE_FRONT, FIRE_AIMED, N_WAY_FIRE_OPTION, FIRE_OPTION_NUM
 	};
 
 	const std::wstring enemyMissileSmall = _T("../Resources/FX/proton_02.png");
