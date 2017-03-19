@@ -108,17 +108,13 @@ CircleShotData::CircleShotData(
 {
 	CenterPos = centerPos;
 	MissileNum = missileNum;
-	Radius = rotateDistance;
+	Radius = radius;
 	InitRotateAnglePerSec = initRotatePerSec;
 	AccRotateAnglePerSec = accRotatePerSec;
 	MaxRotateAngelPerSec = maxRotatePerSec;
 	IsRotateClockWise = isRotateClockWise;
 	RotateTime = rotateTime;
 	ShotSpeedWhenTheRotateEnd = shotSpeedWhenTheRotateEnd;
-}
-
-CircleShotData::CircleShotData(const char *)
-{
 }
 
 CircleShotData & CircleShotData::operator=(const CircleShotData & dt)

@@ -79,10 +79,10 @@ void OptionHandler::Init()
 	FireOption enemyHandShotFire = FireOption(FIRE_TYPE::N_WAY_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, LARGE, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0, 0.f, enemyHandShotNwayData);
 	FireOption enemyNwayShotToPlayer = FireOption(FIRE_TYPE::N_WAY_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0, 0.f, enemyHandShotNwayToPlayerData);
 	
-
-	// 작업중
 	NwayShotData enemyHandShotCircleData = NwayShotData(3, MissileNumber, nullptr, FALSE, TRUE);
-	FireOption enemyCircleOption = FireOption(FIRE_TYPE::MULTI_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0, 0.f, enemyHandShotCircleData);
+	FireOption enemyMultiOption = FireOption(FIRE_TYPE::MULTI_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0, 0.f, enemyHandShotCircleData);
+	CircleShotData enemyCircleShotData = CircleShotData(Vec(0.f, 0.f), 15, 300.f, 1.f, 50.f, 300.f, TRUE, 10.f, 300.f);
+	FireOption enemyRotateOption = FireOption(FIRE_TYPE::CIRCLE_FIRE, MISSILE_TYPE::CIRCLE_TYPE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 0.5f, 4.f, 0, 0.f, enemyCircleShotData);
 
 	// 생성 옵션 등록.
 	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(ENEMY_ITEM_TRUE, enemyItemLaunched));
@@ -94,7 +94,8 @@ void OptionHandler::Init()
 	m_FireOptionMap.insert(std::unordered_map<ENEMY::FIRE_OPTION, FireOption>::value_type(FIRE_AIMED, enemyFireAimed));
 	m_FireOptionMap.insert(std::unordered_map<ENEMY::FIRE_OPTION, FireOption>::value_type(N_WAY_FIRE_OPTION, enemyHandShotFire));
 	m_FireOptionMap.insert(std::unordered_map<ENEMY::FIRE_OPTION, FireOption>::value_type(N_WAY_FIRE_TO_PLAYER, enemyNwayShotToPlayer));
-	m_FireOptionMap.insert(std::unordered_map<ENEMY::FIRE_OPTION, FireOption>::value_type(CIRCLE, enemyCircleOption));
+	m_FireOptionMap.insert(std::unordered_map<ENEMY::FIRE_OPTION, FireOption>::value_type(MULTI_FIRE_OPTION, enemyMultiOption));
+	m_FireOptionMap.insert(std::unordered_map<ENEMY::FIRE_OPTION, FireOption>::value_type(ROTATE_FIRE_OPTION, enemyRotateOption));
 
 	return;
 }

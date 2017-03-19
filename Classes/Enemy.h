@@ -87,6 +87,7 @@ protected :
 	// Protected ÇÔ¼ö.
 	EnemyMissile* GetLaunchableMissile();
 	virtual void CalcLaunchPos();
+	void		 MissileManageProc();
 
 private :
 

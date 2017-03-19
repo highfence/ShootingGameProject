@@ -53,10 +53,7 @@ void Enemy::FunctionPointerRegist()
 	m_pFireHandler[FIRE_TYPE::AIMED_FIRE] = &Enemy::FireAimed;
 	m_pFireHandler[FIRE_TYPE::N_WAY_FIRE] = &Enemy::FireNways;
 	m_pFireHandler[FIRE_TYPE::MULTI_FIRE] = &Enemy::FireMulti;
-
-	// Missile Fly Function Pointer Regist
-	//m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &Enemy::MissileFlyStraight;
-	//m_pMissileFlyHandler[MISSILE_TYPE::AIM_FIRE] = &Enemy::MissileFlyAimed;
+	m_pFireHandler[FIRE_TYPE::CIRCLE_FIRE] = &Enemy::FireCircle;
 
 	return;
 }
@@ -97,9 +94,25 @@ void Enemy::CalcLaunchPos()
 	m_LaunchPos = m_Pos;
 }
 
+/*
+	미사일이 지속적인 케어를 받아야하는 경우 진행되는 미사일 프로세스.
+*/
+void Enemy::MissileManageProc()
+{
+	if (GetFireOption().GetFireType() == ENEMY::FIRE_TYPE::CIRCLE_FIRE)
+	{
+		// 미사일들의 옵션의 중심 포지션을 자기 자신으로 바꾸어준다.
+		for (auto& i : m_MissileVec)
+		{
+			i->GetOption().GetCircleShotData().CenterPos = m_Pos;
+		}
+	}
+
+	return;
+}
+
 void Enemy::CalcProc(const _In_ FLOAT dt)
 {
-
 	// 비활성화 상태일 경우 바로 리턴.
 	if (!m_IsEnemyActivated)
 	{
@@ -121,6 +134,7 @@ void Enemy::CalcProc(const _In_ FLOAT dt)
 	}
 
 	// 죽건 죽지 않았건 미사일은 진행.
+	MissileManageProc();
 	MissileFly(dt);
 
 	// 행동이 끝났다면 비활성화.
@@ -172,7 +186,6 @@ void Enemy::MissileFly(const _In_ FLOAT dt)
 	{
 		if (i->GetMissileLaunched())
 		{
-			// TODO :: 미사일은 자기가 그냥 이동시키도록.
 			i->CalcProc(dt);
 		}
 	}
@@ -624,7 +637,7 @@ BOOL Enemy::FireCircle()
 	auto data = opt.GetCircleShotData();
 
 	// 혹시나 해서 다시 한 번 미사일 타입 세팅.
-	opt.SetMissileType(ENEMY::MISSILE_TYPE::CIRCLE_FIRE);
+	opt.SetMissileType(ENEMY::MISSILE_TYPE::CIRCLE_TYPE);
 
 	// 회전탄 발사 시간 조절 (회전탄은 Interval이 길어야 한다.)
 	if (m_RecordFireTime > opt.GetInitShootDelay() &&

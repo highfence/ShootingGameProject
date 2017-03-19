@@ -49,7 +49,6 @@ struct CircleShotData
 		);
 
 	CircleShotData(const _In_ CircleShotData&) = default;
-	CircleShotData(const _In_ char*);
 	CircleShotData& operator=(const _In_ CircleShotData&);
 
 	Vec CenterPos = Vec(0.f, 0.f);

@@ -45,7 +45,7 @@ void EnemyMissile::RegisterFunctionPointer()
 {
 	m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &EnemyMissile::MissileFlyNormal;
 	m_pMissileFlyHandler[MISSILE_TYPE::ACCELERATE_FIRE] = &EnemyMissile::MissileAccelerate;
-	m_pMissileFlyHandler[MISSILE_TYPE::CIRCLE_FIRE] = &EnemyMissile::MissileCircle;
+	m_pMissileFlyHandler[MISSILE_TYPE::CIRCLE_TYPE] = &EnemyMissile::MissileCircle;
 	return;
 }
 
