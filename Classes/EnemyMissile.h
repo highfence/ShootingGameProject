@@ -40,5 +40,8 @@ private :
 	// 함수 포인터 핸들러에 등록될 함수.
 	BOOL MissileFlyNormal(const _In_ FLOAT);
 	BOOL MissileAccelerate(const _In_ FLOAT);
+	BOOL MissileCircle(const _In_ FLOAT);
 	
+	// 보조 함수.
+	void MoveLoopingBullet(const _In_ FLOAT);
 };

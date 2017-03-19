@@ -39,7 +39,7 @@ struct CircleShotData
 	CircleShotData(
 		const _In_ Vec centerPos,
 		const _In_ INT missileNum,
-		const _In_ FLOAT rotateDistance,
+		const _In_ FLOAT radius,
 		const _In_ FLOAT initRotatePerSec,
 		const _In_ FLOAT accRotatePerSec,
 		const _In_ FLOAT maxRotatePerSec,
@@ -54,13 +54,18 @@ struct CircleShotData
 
 	Vec CenterPos = Vec(0.f, 0.f);
 	INT MissileNum = 0;
-	FLOAT RotateDistance = 0;
+	FLOAT Radius = 0;
 	FLOAT InitRotateAnglePerSec = 0.f;
 	FLOAT AccRotateAnglePerSec = 0.f;
 	FLOAT MaxRotateAngelPerSec = 0.f;
+	FLOAT theta = 0.f;
 	BOOL IsRotateClockWise = TRUE;
 	FLOAT RotateTime = 0.f;
 	FLOAT ShotSpeedWhenTheRotateEnd = 0.f;
+
+	// 내부 계산용 멤버.
+	FLOAT RecordRotateTime = 0.f;
+	BOOL IsMissileNeedDelay = FALSE;
 };
 
 class FireOption
@@ -79,6 +84,19 @@ public :
 		const _In_ INT&	missileNumber,
 		const _In_ FLOAT&  randomRange,
 		const _In_ NwayShotData& shotData);
+	FireOption(
+		const _In_ ENEMY::FIRE_TYPE& fireType,
+		const _In_ ENEMY::MISSILE_TYPE& missileType,
+		const _In_ ENEMY::MISSILE_SIZE& missileSize,
+		const _In_ FLOAT&  missileSpeed,
+		const _In_ FLOAT&  accMissileSpeed,
+		const _In_ FLOAT&  waitingTime,
+		const _In_ Vec&  missileVec,
+		const _In_ FLOAT&  initShootDelay,
+		const _In_ FLOAT&  intervalShootDelay,
+		const _In_ INT&	missileNumber,
+		const _In_ FLOAT&  randomRange,
+		const _In_ CircleShotData& shotData);
 	FireOption(const _In_ std::nullptr_t);
 	FireOption();
 	~FireOption();
@@ -102,7 +120,7 @@ public :
 	INT					GetMissileShotNumber()  const;
 	FLOAT               GetRandomRange()        const;
 	NwayShotData        GetNwayShotData()       const;
-	CircleShotData		GetCircleShotDate()		const;
+	CircleShotData		GetCircleShotData()		const;
 
 	void SetFireType          (const _In_ ENEMY::FIRE_TYPE&);
 	void SetMissileType       (const _In_ ENEMY::MISSILE_TYPE&);

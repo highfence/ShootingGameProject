@@ -98,7 +98,7 @@ BOOL NwayShotData::GetNwayShotDataValid()
 CircleShotData::CircleShotData(
 	const Vec centerPos,
 	const INT missileNum,
-	const FLOAT rotateDistance,
+	const FLOAT radius,
 	const FLOAT initRotatePerSec,
 	const FLOAT accRotatePerSec,
 	const FLOAT maxRotatePerSec,
@@ -108,7 +108,7 @@ CircleShotData::CircleShotData(
 {
 	CenterPos = centerPos;
 	MissileNum = missileNum;
-	RotateDistance = rotateDistance;
+	Radius = rotateDistance;
 	InitRotateAnglePerSec = initRotatePerSec;
 	AccRotateAnglePerSec = accRotatePerSec;
 	MaxRotateAngelPerSec = maxRotatePerSec;
@@ -125,7 +125,7 @@ CircleShotData & CircleShotData::operator=(const CircleShotData & dt)
 {
 	CenterPos = dt.CenterPos;
 	MissileNum = dt.MissileNum;
-	RotateDistance = dt.RotateDistance;
+	Radius = dt.Radius;
 	InitRotateAnglePerSec = dt.InitRotateAnglePerSec;
 	AccRotateAnglePerSec = dt.AccRotateAnglePerSec;
 	MaxRotateAngelPerSec = dt.MaxRotateAngelPerSec;
@@ -168,6 +168,35 @@ FireOption::FireOption(
 	SetMissileShotNumber(missileNumber);
 	SetRandomRange(randomRange);
 	SetNwayShotData(shotData);
+}
+
+FireOption::FireOption(
+	const ENEMY::FIRE_TYPE& fireType,
+	const ENEMY::MISSILE_TYPE& missileType,
+	const ENEMY::MISSILE_SIZE& missileSize,
+	const FLOAT& missileSpeed,
+	const FLOAT& accMissileSpeed,
+	const FLOAT& waitingTime,
+	const Vec& missileVec,
+	const FLOAT& initShootDelay,
+	const FLOAT& intervalShootDelay,
+	const INT& missileNumber,
+	const FLOAT& randomRange,
+	const CircleShotData& shotData)
+	: m_IsOptionCanUse(TRUE)
+{
+	SetFireType(fireType);
+	SetMissileType(missileType);
+	SetMissileSize(missileSize);
+	SetMissileSpeed(missileSpeed);
+	SetAccMissileSpeed(accMissileSpeed);
+	SetWaitingTime(waitingTime);
+	SetMissileVec(missileVec);
+	SetInitShootDelay(initShootDelay);
+	SetIntervalShootDelay(intervalShootDelay);
+	SetMissileShotNumber(missileNumber);
+	SetRandomRange(randomRange);
+	SetCircleShotData(shotData);
 }
 
 FireOption::FireOption(const std::nullptr_t)
@@ -270,7 +299,7 @@ NwayShotData FireOption::GetNwayShotData() const
 	return m_NwayShotData;
 }
 
-CircleShotData FireOption::GetCircleShotDate() const
+CircleShotData FireOption::GetCircleShotData() const
 {
 	return m_CircleShotData;
 }

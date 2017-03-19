@@ -45,6 +45,7 @@ void EnemyMissile::RegisterFunctionPointer()
 {
 	m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &EnemyMissile::MissileFlyNormal;
 	m_pMissileFlyHandler[MISSILE_TYPE::ACCELERATE_FIRE] = &EnemyMissile::MissileAccelerate;
+	m_pMissileFlyHandler[MISSILE_TYPE::CIRCLE_FIRE] = &EnemyMissile::MissileCircle;
 	return;
 }
 
@@ -65,14 +66,85 @@ BOOL EnemyMissile::MissileFlyNormal(const FLOAT deltaTime)
 */
 BOOL EnemyMissile::MissileAccelerate(const FLOAT deltaTime)
 {
-	FireOption op = GetOption();
-	Vec missileVec = op.GetMissileVec();
-	FLOAT initSpeed = op.GetMissileSpeed();
-	FLOAT accSpeed = op.GetAccMissileSpeed();
+	FireOption opt = GetOption();
+	Vec missileVec = opt.GetMissileVec();
+	FLOAT initSpeed = opt.GetMissileSpeed();
+	FLOAT accSpeed = opt.GetAccMissileSpeed();
 	FLOAT currentSpeed = initSpeed + accSpeed * m_AccTime;
 	Fly(deltaTime, missileVec.x, missileVec.y, currentSpeed);
 	
 	return TRUE;
+}
+
+/*
+	회전탄의 움직임을 구현하는 미사일.
+*/
+BOOL EnemyMissile::MissileCircle(const FLOAT dt)
+{
+	FireOption opt = GetOption();
+	CircleShotData data = opt.GetCircleShotData();
+	
+	// 진행 벡터와 speed를 이용하여 이동거리 계산.
+	FLOAT flyDistance = m_AccTime * opt.GetMissileSpeed();
+	
+	// 이동거리가 아직 충분하지 않다면 (Radius 미만이라면) Fly진행.
+	if (flyDistance < data.Radius)
+	{
+		MissileFlyNormal(dt);
+	}
+	// 충분하다면 회전 운동 진행. RecordRotateTime에 시간 누적.
+	else if (data.RecordRotateTime < data.RotateTime)
+	{
+		MoveLoopingBullet(dt);
+		data.RecordRotateTime += dt;
+	}
+	// RecordRotateTime이 넘어가면 중심에서 현재 위치로의 벡터로 진행.
+	else
+	{
+		Vec oppositeVec = m_Pos - data.CenterPos;
+		opt.SetMissileVec(oppositeVec);
+		SetFireOption(opt);
+		MissileFlyNormal(dt);
+	}
+
+	// 변경사항 저장.
+	opt.SetCircleShotData(data);
+	SetFireOption(opt);
+	return TRUE;
+}
+
+/*
+	원형으로 미사일을 루프시켜주는 함수.
+*/
+void EnemyMissile::MoveLoopingBullet(const FLOAT dt)
+{
+	FireOption opt = GetOption();
+	CircleShotData data = opt.GetCircleShotData();
+
+	// 도는 각도 계산.
+	FLOAT currentRotateAngle = (data.InitRotateAnglePerSec + data.AccRotateAnglePerSec * data.RecordRotateTime) * dt;
+
+	// 도는 각도가 Max값을 넘어가면 Max값으로 고정.
+	if (currentRotateAngle > data.MaxRotateAngelPerSec)
+	{
+		currentRotateAngle = data.MaxRotateAngelPerSec;
+	}
+
+	// 라디안 변환.
+	FLOAT currentRotateRadian = currentRotateAngle * 180 / M_PI;
+
+	// 각도 이동.
+	data.theta += currentRotateRadian;
+
+	// 이동시킨 각도에 따라 좌표 변환.
+	Vec MoveOnVec;
+	MoveOnVec.x = data.CenterPos.x + data.Radius * cos(data.theta);
+	MoveOnVec.y = data.CenterPos.y + data.Radius * sin(data.theta);
+
+	// 변경사항 저장.
+	opt.SetCircleShotData(data);
+	SetFireOption(opt);
+	return;
 }
 
 BOOL EnemyMissile::CheckColideWithPlayer()

@@ -106,13 +106,15 @@ private :
 	BOOL FireNormal();
 	BOOL FireAimed();
 	BOOL FireNways();
+	BOOL FireMulti();
 	BOOL FireCircle();
 
 	// Fire 보조 함수.
 	BOOL SetOptionMissileVecToPlayer();
 	BOOL LaunchOddNumberWays();
 	BOOL LaunchEvenNumberWays();
-	BOOL LaunchCircleWays();
+	BOOL LaunchMultiWays();
+	BOOL LaunchForRotateWays();
 
 	// 그 외 사용 함수.
 	void Init();

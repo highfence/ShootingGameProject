@@ -52,7 +52,7 @@ void Enemy::FunctionPointerRegist()
 	m_pFireHandler[FIRE_TYPE::NORMAL_FIRE] = &Enemy::FireNormal;
 	m_pFireHandler[FIRE_TYPE::AIMED_FIRE] = &Enemy::FireAimed;
 	m_pFireHandler[FIRE_TYPE::N_WAY_FIRE] = &Enemy::FireNways;
-	m_pFireHandler[FIRE_TYPE::CIRCLE_FIRE] = &Enemy::FireCircle;
+	m_pFireHandler[FIRE_TYPE::MULTI_FIRE] = &Enemy::FireMulti;
 
 	// Missile Fly Function Pointer Regist
 	//m_pMissileFlyHandler[MISSILE_TYPE::STRAIGHT_FIRE] = &Enemy::MissileFlyStraight;
@@ -571,10 +571,10 @@ BOOL Enemy::FireNways()
 }
 
 /*
-	사방에 원형으로 미사일을 발사하는 Fire타입
+	사방으로 미사일을 발사하는 Fire타입
 	기본적인 구조는 NwayShot이랑 같고, rotate가 Angle대신 360 / 미사일 개수로 이뤄진다는 차이점이 있다.
 */
-BOOL Enemy::FireCircle()
+BOOL Enemy::FireMulti()
 {
 	FireOption opt = GetFireOption();
 	NwayShotData data = opt.GetNwayShotData();
@@ -591,7 +591,7 @@ BOOL Enemy::FireCircle()
 		{
 			return FALSE;
 		}
-		LaunchCircleWays();
+		LaunchMultiWays();
 
 		data.IsMissileNeedDelay = TRUE;
 		++data.RecordShotTimes;
@@ -610,6 +610,45 @@ BOOL Enemy::FireCircle()
 
 	// 변경점 적용.
 	opt.SetNwayShotData(data);
+	SetFireOption(opt);
+	return TRUE;
+}
+
+/*
+	한 점을 중심으로 회전하는 Circle형 미사일을 발사해주는 함수.
+	초반 원형으로 퍼지는 벡터만을 쏴주면 나머지는 EnemyMissile에서 회전처리.
+*/
+BOOL Enemy::FireCircle()
+{
+	FireOption opt = GetFireOption();
+	auto data = opt.GetCircleShotData();
+
+	// 혹시나 해서 다시 한 번 미사일 타입 세팅.
+	opt.SetMissileType(ENEMY::MISSILE_TYPE::CIRCLE_FIRE);
+
+	// 회전탄 발사 시간 조절 (회전탄은 Interval이 길어야 한다.)
+	if (m_RecordFireTime > opt.GetInitShootDelay() &&
+		m_RecordFireTime < (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
+	{
+		if (data.IsMissileNeedDelay)
+		{
+			return FALSE;
+		}
+		
+		// 사방으로 미사일을 뿌려주는 함수.
+		LaunchForRotateWays();
+
+		data.IsMissileNeedDelay = TRUE;
+	}
+	// 인터벌 딜레이 처리.
+	else if (m_RecordFireTime > opt.GetInitShootDelay() + opt.GetIntervalShootDelay())
+	{
+		data.IsMissileNeedDelay = FALSE;
+		m_RecordFireTime = opt.GetInitShootDelay();
+	}
+
+	// 변경점 적용.
+	opt.SetCircleShotData(data);
 	SetFireOption(opt);
 	return TRUE;
 }
@@ -738,17 +777,17 @@ BOOL Enemy::LaunchEvenNumberWays()
 /*
 	원형으로 미사일을 Launch 시켜주는 함수.
 */
-BOOL Enemy::LaunchCircleWays()
+BOOL Enemy::LaunchMultiWays()
 {
 	FireOption opt = GetFireOption();
 	NwayShotData data = opt.GetNwayShotData();
 	FireOption inputOption = opt;
-	INT LaunchTimes = (data.ShotNumber[data.RecordShotTimes]) / 2;
 
 	Vec standardVec = opt.GetMissileVec();
 	Vec rotateVec = standardVec;
 	// 정해진 Angle대신 미사일 개수에 따라 각도가 달라짐.
 	FLOAT theta = 360.f / data.ShotNumber[data.RecordShotTimes];
+	INT LaunchTimes = (data.ShotNumber[data.RecordShotTimes]) / 2;
 
 	for (INT i = 0; i < LaunchTimes; ++i)
 	{
@@ -768,6 +807,87 @@ BOOL Enemy::LaunchCircleWays()
 			missile->Launch(m_LaunchPos, inputOption);
 		}
 	}
+	return TRUE;
+}
+
+/*
+	회전탄을 위해 초기에 MultiWay로 뿌려주는 함수.
+	원리는 LaunchMultiWays와 같지만, NwayShotData대신 CircleShotData로 발사할 수 있도록 대응.
+*/
+BOOL Enemy::LaunchForRotateWays()
+{
+	FireOption opt = GetFireOption();
+	CircleShotData data = opt.GetCircleShotData();
+	FireOption inputOption = opt;
+
+	Vec standardVec = opt.GetMissileVec();
+	Vec rotateVec = standardVec;
+	// 정해진 Angle대신 미사일 개수에 따라 각도가 달라짐.
+	FLOAT theta = 360.f / data.MissileNum;
+	INT LaunchTimes;
+
+	// 발사하는 미사일이 홀수이냐 짝수이냐를 판별하여 Launch횟수 결정.
+	BOOL IsMissileNumberOdd;
+	if ((data.MissileNum % 2) == 0)
+	{
+		IsMissileNumberOdd = FALSE;
+		LaunchTimes = data.MissileNum / 2;
+	}
+	// 홀수일 경우.
+	else
+	{
+		IsMissileNumberOdd = TRUE;
+		LaunchTimes = (data.MissileNum + 1) / 2;
+	}
+
+	// 홀수 발사.
+	if (IsMissileNumberOdd)
+	{
+		for (INT i = 0; i < LaunchTimes; ++i)
+		{
+			RotateVec(i * theta, standardVec.x, standardVec.y, rotateVec.x, rotateVec.y);
+
+			EnemyMissile* missile = GetLaunchableMissile();
+			if (missile != nullptr)
+			{
+				inputOption.SetMissileVec(rotateVec);
+				missile->Launch(m_LaunchPos, inputOption);
+			}
+
+			if (i != 0)
+			{
+				missile = GetLaunchableMissile();
+				if (missile != nullptr)
+				{
+					inputOption.SetMissileVec(rotateVec.GetYSymmetryVec());
+					missile->Launch(m_LaunchPos, inputOption);
+				}
+			}
+		}
+	}
+	// 짝수 발사.
+	else
+	{
+		for (INT i = 0; i < LaunchTimes; ++i)
+		{
+			RotateVec(i * theta + (theta / 2), standardVec.x, standardVec.y, rotateVec.x, rotateVec.y);
+
+			EnemyMissile* missile = GetLaunchableMissile();
+			if (missile != nullptr)
+			{
+				inputOption.SetMissileVec(rotateVec);
+				missile->Launch(m_LaunchPos, inputOption);
+			}
+
+			missile = GetLaunchableMissile();
+			if (missile != nullptr)
+			{
+				inputOption.SetMissileVec(rotateVec.GetYSymmetryVec());
+				missile->Launch(m_LaunchPos, inputOption);
+			}
+		}
+	}
+
 	return TRUE;
 }
 
