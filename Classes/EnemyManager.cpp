@@ -238,16 +238,16 @@ void EnemyManager::MakeProc()
 	auto enemyItemFalseCreate = OptGenerater->GetCreateOption(ENEMY_ITEM_FALSE);
 	auto enemyItemTrueCreate = OptGenerater->GetCreateOption(ENEMY_ITEM_TRUE);
 	auto enemyItemFire = OptGenerater->GetFireOption(FIRE_FRONT);
-	ActivateEnemy(line1, Vec(350.f, 0.f), enemyItemFalseCreate, enemyItemFire);
-	ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), enemyItemFalseCreate, enemyItemFire);
-	ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), enemyItemFalseCreate, enemyItemFire);
-	ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), enemyItemTrueCreate, enemyItemFire);
+	//ActivateEnemy(line1, Vec(350.f, 0.f), enemyItemFalseCreate, enemyItemFire);
+	//ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), enemyItemFalseCreate, enemyItemFire);
+	//ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), enemyItemFalseCreate, enemyItemFire);
+	//ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), enemyItemTrueCreate, enemyItemFire);
 
 	FLOAT line2 = 6.f;
 	auto enemyHandShotCreate = OptGenerater->GetCreateOption(ENEMY_HAND_SHOT_CREATE);
 	auto enemyHandShotFire = OptGenerater->GetFireOption(N_WAY_FIRE_OPTION);
 	auto enemyCircleOption = OptGenerater->GetFireOption(ROTATE_FIRE_OPTION);
-	ActivateEnemy(line2, Vec(650.f, 0.f), enemyHandShotCreate, enemyHandShotFire);
+	//ActivateEnemy(line2, Vec(650.f, 0.f), enemyHandShotCreate, enemyHandShotFire);
 	ActivateEnemy(line2 + 3.f, Vec(250.f, 0.f), enemyHandShotCreate, enemyCircleOption);
 
 	return;

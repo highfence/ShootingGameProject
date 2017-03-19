@@ -218,6 +218,7 @@ FireOption & FireOption::operator=(const FireOption op)
 	SetMissileShotNumber(op.GetMissileShotNumber());
 	SetRandomRange(op.GetRandomRange());
 	SetNwayShotData(op.GetNwayShotData());
+	SetCircleShotData(op.GetCircleShotData());
 	m_IsOptionCanUse = TRUE;
 	return *this;
 }
