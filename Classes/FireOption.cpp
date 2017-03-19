@@ -4,7 +4,7 @@
 NwayShotData::NwayShotData(
 	const INT shotTimes,
 	const INT* shotNumberArr,
-	const INT* shotAngleArr,
+	const FLOAT* shotAngleArr,
 	const BOOL isMissileShotToPlayer,
 	const BOOL isMissileCircled)
 {
@@ -93,6 +93,46 @@ BOOL NwayShotData::GetNwayShotDataValid()
 	}
 
 	return TRUE;
+}
+
+CircleShotData::CircleShotData(
+	const Vec centerPos,
+	const INT missileNum,
+	const FLOAT rotateDistance,
+	const FLOAT initRotatePerSec,
+	const FLOAT accRotatePerSec,
+	const FLOAT maxRotatePerSec,
+	const BOOL isRotateClockWise,
+	const FLOAT rotateTime,
+	const FLOAT shotSpeedWhenTheRotateEnd)
+{
+	CenterPos = centerPos;
+	MissileNum = missileNum;
+	RotateDistance = rotateDistance;
+	InitRotateAnglePerSec = initRotatePerSec;
+	AccRotateAnglePerSec = accRotatePerSec;
+	MaxRotateAngelPerSec = maxRotatePerSec;
+	IsRotateClockWise = isRotateClockWise;
+	RotateTime = rotateTime;
+	ShotSpeedWhenTheRotateEnd = shotSpeedWhenTheRotateEnd;
+}
+
+CircleShotData::CircleShotData(const char *)
+{
+}
+
+CircleShotData & CircleShotData::operator=(const CircleShotData & dt)
+{
+	CenterPos = dt.CenterPos;
+	MissileNum = dt.MissileNum;
+	RotateDistance = dt.RotateDistance;
+	InitRotateAnglePerSec = dt.InitRotateAnglePerSec;
+	AccRotateAnglePerSec = dt.AccRotateAnglePerSec;
+	MaxRotateAngelPerSec = dt.MaxRotateAngelPerSec;
+	IsRotateClockWise = dt.IsRotateClockWise;
+	RotateTime = dt.RotateTime;
+	ShotSpeedWhenTheRotateEnd = dt.ShotSpeedWhenTheRotateEnd;
+	return *this;
 }
 
 
@@ -230,6 +270,11 @@ NwayShotData FireOption::GetNwayShotData() const
 	return m_NwayShotData;
 }
 
+CircleShotData FireOption::GetCircleShotDate() const
+{
+	return m_CircleShotData;
+}
+
 void FireOption::SetFireType(const ENEMY::FIRE_TYPE& fireType)
 {
 	m_FireType = fireType;
@@ -288,5 +333,10 @@ void FireOption::SetRandomRange(const FLOAT& range)
 void FireOption::SetNwayShotData(const NwayShotData & data)
 {
 	m_NwayShotData = data;
+}
+
+void FireOption::SetCircleShotData(const CircleShotData & data)
+{
+	m_CircleShotData = data;
 }
 

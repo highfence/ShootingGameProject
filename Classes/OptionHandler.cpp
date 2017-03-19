@@ -69,15 +69,16 @@ void OptionHandler::Init()
 	FireOption enemyFireAimed = FireOption(FIRE_TYPE::AIMED_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 1, 50.f, nullptr);
 
 	INT shotTimes[] = { 6, 5, 6, 0, 0 };
-	INT shotAngle[] = { 22.5f, 22.5f, 22.5f, 0, 0 };
+	FLOAT shotAngle[] = { 22.5f, 22.5f, 22.5f, 0, 0 };
 	INT MissileNumber[] = { 16, 17, 16, 0, 0 };
 
 	GoAndSlowData enemyHandShotGASData = GoAndSlowData(0.5f, 15.f, Vec(0.f, 1.f), 50.f);
 	NwayShotData enemyHandShotNwayData = NwayShotData(3, shotTimes, shotAngle, FALSE, FALSE);
 	NwayShotData enemyHandShotNwayToPlayerData = NwayShotData(3, shotTimes, shotAngle, TRUE, FALSE);
 	CreateOption enemyHandShotCreate = CreateOption(380, ENEMY_HAND_SHOT, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyHandShotGASData, FALSE);
-	FireOption enemyHandShotFire = FireOption(FIRE_TYPE::N_WAY_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0, 0.f, enemyHandShotNwayData);
+	FireOption enemyHandShotFire = FireOption(FIRE_TYPE::N_WAY_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, LARGE, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0, 0.f, enemyHandShotNwayData);
 	FireOption enemyNwayShotToPlayer = FireOption(FIRE_TYPE::N_WAY_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0, 0.f, enemyHandShotNwayToPlayerData);
+	
 
 	// ÀÛ¾÷Áß
 	NwayShotData enemyHandShotCircleData = NwayShotData(3, MissileNumber, nullptr, FALSE, TRUE);

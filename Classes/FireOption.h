@@ -12,7 +12,7 @@ struct NwayShotData
 	NwayShotData(
 		const _In_ INT maxShotTimes,
 		const _In_ INT* shotNumberArr,
-		const _In_ INT* shotAngleArr,
+		const _In_ FLOAT* shotAngleArr,
 		const _In_ BOOL isMissileShotToPlayer,
 		const _In_ BOOL isMissileCircled);
 	NwayShotData(const _In_ NwayShotData&) = default;
@@ -31,6 +31,36 @@ struct NwayShotData
 	INT RecordShotTimes = 0;
 	BOOL IsMissileNeedDelay = FALSE;
 
+};
+
+struct CircleShotData
+{
+	CircleShotData() = default;
+	CircleShotData(
+		const _In_ Vec centerPos,
+		const _In_ INT missileNum,
+		const _In_ FLOAT rotateDistance,
+		const _In_ FLOAT initRotatePerSec,
+		const _In_ FLOAT accRotatePerSec,
+		const _In_ FLOAT maxRotatePerSec,
+		const _In_ BOOL isRotateClockWise,
+		const _In_ FLOAT rotateTime,
+		const _In_ FLOAT shotSpeedWhenTheRotateEnd
+		);
+
+	CircleShotData(const _In_ CircleShotData&) = default;
+	CircleShotData(const _In_ char*);
+	CircleShotData& operator=(const _In_ CircleShotData&);
+
+	Vec CenterPos = Vec(0.f, 0.f);
+	INT MissileNum = 0;
+	FLOAT RotateDistance = 0;
+	FLOAT InitRotateAnglePerSec = 0.f;
+	FLOAT AccRotateAnglePerSec = 0.f;
+	FLOAT MaxRotateAngelPerSec = 0.f;
+	BOOL IsRotateClockWise = TRUE;
+	FLOAT RotateTime = 0.f;
+	FLOAT ShotSpeedWhenTheRotateEnd = 0.f;
 };
 
 class FireOption
@@ -72,6 +102,7 @@ public :
 	INT					GetMissileShotNumber()  const;
 	FLOAT               GetRandomRange()        const;
 	NwayShotData        GetNwayShotData()       const;
+	CircleShotData		GetCircleShotDate()		const;
 
 	void SetFireType          (const _In_ ENEMY::FIRE_TYPE&);
 	void SetMissileType       (const _In_ ENEMY::MISSILE_TYPE&);
@@ -85,6 +116,7 @@ public :
 	void SetMissileShotNumber (const _In_ INT&);
 	void SetRandomRange       (const _In_ FLOAT&);
 	void SetNwayShotData      (const _In_ NwayShotData&);
+	void SetCircleShotData	  (const _In_ CircleShotData&);
 
 
 private :
@@ -105,5 +137,6 @@ private :
 	INT	  m_MissileShootNumber;
 	FLOAT m_RandomRange;
 	NwayShotData m_NwayShotData;
+	CircleShotData m_CircleShotData;
 
 };
