@@ -95,8 +95,9 @@ BOOL EnemyMissile::MissileCircle(const FLOAT dt)
 	// 충분하다면 회전 운동 진행. RecordRotateTime에 시간 누적.
 	else if (data.RecordRotateTime < data.RotateTime)
 	{
-		MoveLoopingBullet(dt);
+		MoveLoopingBullet(dt, opt, data);
 		data.RecordRotateTime += dt;
+		MissileFlyNormal(dt);
 	}
 	// RecordRotateTime이 넘어가면 중심에서 현재 위치로의 벡터로 진행.
 	else
@@ -116,11 +117,8 @@ BOOL EnemyMissile::MissileCircle(const FLOAT dt)
 /*
 	원형으로 미사일을 루프시켜주는 함수.
 */
-void EnemyMissile::MoveLoopingBullet(const FLOAT dt)
+void EnemyMissile::MoveLoopingBullet(const FLOAT dt, FireOption& opt, CircleShotData& data)
 {
-	FireOption opt = GetOption();
-	CircleShotData data = opt.GetCircleShotData();
-
 	// 도는 각도 계산.
 	FLOAT currentRotateAngle = (data.InitRotateAnglePerSec + data.AccRotateAnglePerSec * data.RecordRotateTime) * dt;
 
@@ -140,10 +138,10 @@ void EnemyMissile::MoveLoopingBullet(const FLOAT dt)
 	Vec MoveOnVec;
 	MoveOnVec.x = data.CenterPos.x + data.Radius * cos(data.theta);
 	MoveOnVec.y = data.CenterPos.y + data.Radius * sin(data.theta);
+	opt.SetMissileVec(MoveOnVec);
 
 	// 변경사항 저장.
 	opt.SetCircleShotData(data);
-	SetFireOption(opt);
 	return;
 }
 
@@ -236,6 +234,28 @@ void EnemyMissile::SetPlayerPos(
 	m_PlayerPosX = playerPosX;
 	m_PlayerPosY = playerPosY;
 
+	return;
+}
+
+void EnemyMissile::Draw(const HDC drawDC)
+{
+	if (!m_IsMissileLaunched)
+	{
+		return;
+	}
+
+#pragma warning(push)
+#pragma warning(disable : 4244)
+
+	std::wstring debugLabel = std::to_wstring((int)m_Pos.x) + _T(", ") + std::to_wstring((int)m_Pos.y);
+	TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
+	m_pShapeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
+		m_Width, m_Height, 0, 0, SRCAND);
+
+	m_pSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
+		m_Width, m_Height, 0, 0, SRCPAINT);
+
+#pragma warning(pop)
 	return;
 }
 

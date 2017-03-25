@@ -248,7 +248,7 @@ void EnemyManager::MakeProc()
 	auto enemyHandShotFire = OptGenerater->GetFireOption(N_WAY_FIRE_OPTION);
 	auto enemyCircleOption = OptGenerater->GetFireOption(ROTATE_FIRE_OPTION);
 	//ActivateEnemy(line2, Vec(650.f, 0.f), enemyHandShotCreate, enemyHandShotFire);
-	ActivateEnemy(line2 + 3.f, Vec(250.f, 0.f), enemyHandShotCreate, enemyCircleOption);
+	ActivateEnemy(3.f, Vec(250.f, 0.f), enemyHandShotCreate, enemyCircleOption);
 
 	return;
 }

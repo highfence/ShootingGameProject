@@ -13,7 +13,7 @@ public :
 		const _In_ FLOAT,
 		const _In_ FLOAT,
 		const _In_ FLOAT) = 0;
-	void Draw(_Inout_ HDC);
+	virtual void Draw(_Inout_ HDC);
 
 	BOOL Launch(
 		const _In_ Vec);

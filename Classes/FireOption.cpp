@@ -128,6 +128,8 @@ CircleShotData & CircleShotData::operator=(const CircleShotData & dt)
 	IsRotateClockWise = dt.IsRotateClockWise;
 	RotateTime = dt.RotateTime;
 	ShotSpeedWhenTheRotateEnd = dt.ShotSpeedWhenTheRotateEnd;
+	RecordRotateTime = dt.RecordRotateTime;
+	IsMissileNeedDelay = dt.IsMissileNeedDelay;
 	return *this;
 }
 
@@ -333,7 +335,8 @@ void FireOption::SetWaitingTime(const FLOAT& waitingTime)
 
 void FireOption::SetMissileVec(const Vec& missileVec)
 {
-	m_MissileVec = missileVec;
+	m_MissileVec.x = missileVec.x;
+	m_MissileVec.y = missileVec.y;
 }
 
 void FireOption::SetInitShootDelay(const FLOAT& time)

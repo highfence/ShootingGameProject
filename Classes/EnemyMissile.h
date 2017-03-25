@@ -15,6 +15,7 @@ public :
 		const _In_ FLOAT,
 		const _In_ FLOAT) override;
 	void SetPlayerPos(const _In_ FLOAT, const _In_ FLOAT);
+	void Draw(const _In_ HDC) override;
 	BOOL CheckColideWithPlayer();
 
 	BOOL Launch(
@@ -43,5 +44,5 @@ private :
 	BOOL MissileCircle(const _In_ FLOAT);
 	
 	// 보조 함수.
-	void MoveLoopingBullet(const _In_ FLOAT);
+	void MoveLoopingBullet(const _In_ FLOAT, FireOption&, CircleShotData&);
 };
