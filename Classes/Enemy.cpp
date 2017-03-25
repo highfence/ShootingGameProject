@@ -636,9 +636,6 @@ BOOL Enemy::FireCircle()
 	FireOption opt = GetFireOption();
 	auto data = opt.GetCircleShotData();
 
-	// 혹시나 해서 다시 한 번 미사일 타입 세팅.
-	opt.SetMissileType(ENEMY::MISSILE_TYPE::CIRCLE_TYPE);
-
 	// 회전탄 발사 시간 조절 (회전탄은 Interval이 길어야 한다.)
 	if (m_RecordFireTime > opt.GetInitShootDelay() &&
 		m_RecordFireTime < (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))

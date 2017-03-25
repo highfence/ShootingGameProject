@@ -81,7 +81,7 @@ void OptionHandler::Init()
 	
 	NwayShotData enemyHandShotCircleData = NwayShotData(3, MissileNumber, nullptr, FALSE, TRUE);
 	FireOption enemyMultiOption = FireOption(FIRE_TYPE::MULTI_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.0f, 0.3f, 0, 0.f, enemyHandShotCircleData);
-	CircleShotData enemyCircleShotData = CircleShotData(Vec(0.f, 0.f), 1, 300.f, 1.f, 50.f, 300.f, TRUE, 10.f, 300.f);
+	CircleShotData enemyCircleShotData = CircleShotData(Vec(0.f, 0.f), 1, 100.f, 1.f, 50.f, 300.f, TRUE, 10.f, 300.f);
 	FireOption enemyRotateOption = FireOption(FIRE_TYPE::CIRCLE_FIRE, MISSILE_TYPE::CIRCLE_TYPE, MEDIUM, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 0.5f, 4.f, 0, 0.f, enemyCircleShotData);
 
 	// 积己 可记 殿废.

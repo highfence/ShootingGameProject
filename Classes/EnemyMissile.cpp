@@ -129,10 +129,11 @@ void EnemyMissile::MoveLoopingBullet(const FLOAT dt, FireOption& opt, CircleShot
 	}
 
 	// 라디안 변환.
-	FLOAT currentRotateRadian = currentRotateAngle * 180 / M_PI;
+	FLOAT currentRotateRadian = currentRotateAngle * M_PI / 180;
 
 	// 각도 이동.
 	data.theta += currentRotateRadian;
+	data.theta = fmod(data.theta, 2 * M_PI);
 
 	// 이동시킨 각도에 따라 좌표 변환.
 	Vec MoveOnVec;
@@ -247,8 +248,18 @@ void EnemyMissile::Draw(const HDC drawDC)
 #pragma warning(push)
 #pragma warning(disable : 4244)
 
+
 	std::wstring debugLabel = std::to_wstring((int)m_Pos.x) + _T(", ") + std::to_wstring((int)m_Pos.y);
 	TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
+
+	auto data = GetOption().GetCircleShotData();
+	Vec centerPos = data.CenterPos;
+	debugLabel = std::to_wstring(centerPos.x) + _T(", ") + std::to_wstring(centerPos.y);
+	TextOut(drawDC, centerPos.x, centerPos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
+
+	MoveToEx(drawDC, centerPos.x, centerPos.y, NULL);
+	LineTo(drawDC, m_Pos.x, m_Pos.y);
+
 	m_pShapeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
 		m_Width, m_Height, 0, 0, SRCAND);
 
