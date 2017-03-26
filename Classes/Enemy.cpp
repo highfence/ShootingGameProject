@@ -643,7 +643,7 @@ BOOL Enemy::FireCircle()
 
 	// 회전탄 발사 시간 조절 (회전탄은 Interval이 길어야 한다.)
 	if (m_RecordFireTime > opt.GetInitShootDelay() &&
-		m_RecordFireTime < (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
+		m_RecordFireTime < (opt.GetInitShootDelay() + data.RotateTime))
 	{
 		if (data.IsMissileNeedDelay)
 		{
@@ -652,11 +652,10 @@ BOOL Enemy::FireCircle()
 		
 		// 사방으로 미사일을 뿌려주는 함수.
 		LaunchForRotateWays();
-
 		data.IsMissileNeedDelay = TRUE;
 	}
 	// 인터벌 딜레이 처리.
-	else if (m_RecordFireTime > opt.GetInitShootDelay() + opt.GetIntervalShootDelay())
+	else if (m_RecordFireTime > opt.GetInitShootDelay() + data.RotateTime)
 	{
 		data.IsMissileNeedDelay = FALSE;
 		m_RecordFireTime = opt.GetInitShootDelay();

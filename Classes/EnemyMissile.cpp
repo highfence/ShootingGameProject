@@ -101,7 +101,9 @@ BOOL EnemyMissile::MissileCircle(const FLOAT dt)
 	// RecordRotateTime이 넘어가면 중심에서 현재 위치로의 벡터로 진행.
 	else
 	{
-		Vec oppositeVec = m_Pos - data.CenterPos;
+		Vec oppositeVec;
+		oppositeVec.x = m_Pos.x - data.CenterPos.x;
+		oppositeVec.y = m_Pos.y - data.CenterPos.y;
 		opt.SetMissileVec(oppositeVec);
 		SetFireOption(opt);
 		MissileFlyNormal(dt);
