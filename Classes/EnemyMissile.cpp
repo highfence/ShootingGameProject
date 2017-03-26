@@ -165,6 +165,7 @@ BOOL EnemyMissile::CheckColideWithPlayer()
 	if (!(x1 <= mx0 || mx1 <= x0 || y1 <= my0 || my1 <= y0))
 	{
 		playerInfo.PlayerDamaged();
+		MakeMissileInitialState();
 		return TRUE;
 	}
 	return FALSE;
@@ -250,22 +251,22 @@ void EnemyMissile::Draw(const HDC drawDC)
 
 
 #ifdef _DEBUG
-	// 좌표 출력.
-	std::wstring debugLabel = std::to_wstring((int)m_Pos.x) + _T(", ") + std::to_wstring((int)m_Pos.y);
-	TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
+	//// 좌표 출력.
+	//std::wstring debugLabel = std::to_wstring((int)m_Pos.x) + _T(", ") + std::to_wstring((int)m_Pos.y);
+	//TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
 
-	// 센터 포지션 출력.
-	auto data = GetOption().GetCircleShotData();
-	Vec centerPos = data.CenterPos;
-	auto theta = data.Theta;
-	debugLabel = std::to_wstring(centerPos.x) + _T(", ") + std::to_wstring(centerPos.y);
-	TextOut(drawDC, centerPos.x, centerPos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
-	debugLabel = std::to_wstring(theta);
-	TextOut(drawDC, centerPos.x, centerPos.y + 15, debugLabel.c_str(), wcslen(debugLabel.c_str()));
+	//// 센터 포지션 출력.
+	//auto data = GetOption().GetCircleShotData();
+	//Vec centerPos = data.CenterPos;
+	//auto theta = data.Theta;
+	//debugLabel = std::to_wstring(centerPos.x) + _T(", ") + std::to_wstring(centerPos.y);
+	//TextOut(drawDC, centerPos.x, centerPos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
+	//debugLabel = std::to_wstring(theta);
+	//TextOut(drawDC, centerPos.x, centerPos.y + 15, debugLabel.c_str(), wcslen(debugLabel.c_str()));
 
-	// 선 출력.
-	MoveToEx(drawDC, centerPos.x, centerPos.y, NULL);
-	LineTo(drawDC, m_Pos.x, m_Pos.y);
+	//// 선 출력.
+	//MoveToEx(drawDC, centerPos.x, centerPos.y, NULL);
+	//LineTo(drawDC, m_Pos.x, m_Pos.y);
 #endif
 
 	m_pShapeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
@@ -297,6 +298,44 @@ BOOL EnemyMissile::Launch(
 	m_MissileType = option.GetMissileType();
 
 	return TRUE;
+}
+
+BOOL EnemyMissile::IsMissileOnDisplay()
+{
+	if (m_Pos.y < -m_Height)
+	{
+		MakeMissileInitialState();
+		return FALSE;
+	}
+	else if (m_Pos.x < -m_Width)
+	{
+		MakeMissileInitialState();
+		return FALSE;
+	}
+	else if (m_Pos.x > winWidth + m_Width)
+	{
+		MakeMissileInitialState();
+		return FALSE;
+	}
+	else if (m_Pos.y > winHeight + m_Height)
+	{
+		MakeMissileInitialState();
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+
+/*
+	미사일의 상태를 초기화시켜주는 함수.
+	미사일이 화면 밖으로 나갔거나 플레이어와 충돌했을 경우 호출해준다.
+*/
+const FLOAT savePlacePos = -300.f;
+void EnemyMissile::MakeMissileInitialState()
+{
+	m_Pos = Vec(savePlacePos, savePlacePos);
+	m_Option = nullptr;
 }
 
 FireOption EnemyMissile::GetOption() const

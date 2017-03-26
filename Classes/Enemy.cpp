@@ -655,7 +655,7 @@ BOOL Enemy::FireCircle()
 		data.IsMissileNeedDelay = TRUE;
 	}
 	// 인터벌 딜레이 처리.
-	else if (m_RecordFireTime > opt.GetInitShootDelay() + data.RotateTime)
+	else if (m_RecordFireTime > opt.GetInitShootDelay() + data.RotateTime + 1.f)
 	{
 		data.IsMissileNeedDelay = FALSE;
 		m_RecordFireTime = opt.GetInitShootDelay();

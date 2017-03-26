@@ -45,4 +45,6 @@ private :
 	
 	// 보조 함수.
 	void MoveLoopingBullet(const _In_ FLOAT, FireOption&, CircleShotData&);
+	BOOL IsMissileOnDisplay() override;
+	void MakeMissileInitialState();
 };

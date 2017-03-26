@@ -25,11 +25,11 @@ public :
 	BOOL GetMissileLaunched() const;
 	void SetMissileType(const _In_ ENEMY::MISSILE_TYPE);
 	ENEMY::MISSILE_TYPE GetMissileType() const;
+	virtual BOOL IsMissileOnDisplay();
 
 	CImage* m_pSprite;
 	CImage* m_pShapeSprite;
 	BOOL m_IsMissileLaunched;
-	BOOL IsMissileOnDisplay();
 	Vec m_Pos;
 	FLOAT m_AccTime = 0.f;
 	INT m_Width;
