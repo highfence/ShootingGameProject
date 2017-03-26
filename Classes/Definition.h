@@ -6,9 +6,26 @@ const INT winWidth = 900;
 const INT winHeight = 1200;
 const INT boundaryRange = 100;
 
-// 배경 이미지 사이즈. (윈도우 사이즈와 같음)
-const INT imgWidth = 900;
-const INT imgHeight = 1600;
+namespace BACKGROUND
+{
+	// 배경 이미지 사이즈. (윈도우 사이즈와 같음)
+	const INT imgWidth = 900;
+	const INT imgHeight = 1600;
+
+	enum BACKGROUND_OBJ
+	{
+		BLACK_HOLE,
+		METEOR_1, METEOR_2, METEOR_3, METEOR_4, METEOR_5,
+		MOON, PLANET_1, PLANET_2, STAR_1, STAR_2,	
+		OBJ_NUM
+	};
+
+	const INT objWidthArray[OBJ_NUM] = {97, 42, 22, 31, 26, 17, 45, 64, 63, 40, 27};
+	const INT objHeightArray[OBJ_NUM] = {75, 39, 20, 36, 27, 15, 42, 68, 63, 37, 21};
+	const std::wstring objPathStr = _T("../Resources/Background/");
+	const std::wstring objFileExtensionStr = _T(".png");
+	const std::wstring objFileNameArray[OBJ_NUM] = { _T("Black hole"), _T("Meteor1"), _T("Meteor2"), _T("Meteor3"), _T("Meteor4"), _T("Meteor5"), _T("Moon"), _T("Planet1"), _T("Planet2"), _T("Star"), _T("Star2")};
+}
 
 // 키 입력 관련
 const INT keyboardNumber = 256;
