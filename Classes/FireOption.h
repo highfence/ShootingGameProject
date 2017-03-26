@@ -40,6 +40,7 @@ struct CircleShotData
 		const _In_ Vec centerPos,
 		const _In_ INT missileNum,
 		const _In_ FLOAT radius,
+		const _In_ FLOAT theta,
 		const _In_ FLOAT initRotatePerSec,
 		const _In_ FLOAT accRotatePerSec,
 		const _In_ FLOAT maxRotatePerSec,
@@ -51,14 +52,15 @@ struct CircleShotData
 	CircleShotData(const _In_ CircleShotData&) = default;
 	CircleShotData& operator=(const _In_ CircleShotData&);
 	void SetCenterPos(const Vec&);
+	void SetTheta(const FLOAT&);
 
 	Vec CenterPos = Vec(0.f, 0.f);
 	INT MissileNum = 0;
 	FLOAT Radius = 0;
+	FLOAT Theta = 0.f;
 	FLOAT InitRotateAnglePerSec = 0.f;
 	FLOAT AccRotateAnglePerSec = 0.f;
 	FLOAT MaxRotateAngelPerSec = 0.f;
-	FLOAT theta = 0.f;
 	BOOL IsRotateClockWise = TRUE;
 	FLOAT RotateTime = 0.f;
 	FLOAT ShotSpeedWhenTheRotateEnd = 0.f;

@@ -866,6 +866,9 @@ BOOL Enemy::LaunchForRotateWays()
 			if (missile != nullptr)
 			{
 				inputOption.SetMissileVec(rotateVec);
+				auto inputData = inputOption.GetCircleShotData();
+				inputData.SetTheta((theta * i) * M_PI / 180.f);
+				inputOption.SetCircleShotData(inputData);
 				missile->Launch(m_LaunchPos, inputOption);
 			}
 
@@ -875,6 +878,9 @@ BOOL Enemy::LaunchForRotateWays()
 				if (missile != nullptr)
 				{
 					inputOption.SetMissileVec(rotateVec.GetYSymmetryVec());
+					auto inputData = inputOption.GetCircleShotData();
+					inputData.SetTheta((-theta * i) * M_PI / 180.f);
+					inputOption.SetCircleShotData(inputData);
 					missile->Launch(m_LaunchPos, inputOption);
 				}
 			}
@@ -891,6 +897,9 @@ BOOL Enemy::LaunchForRotateWays()
 			if (missile != nullptr)
 			{
 				inputOption.SetMissileVec(rotateVec);
+				auto inputData = inputOption.GetCircleShotData();
+				inputData.SetTheta((theta * i) * M_PI / 180.f);
+				inputOption.SetCircleShotData(inputData);
 				missile->Launch(m_LaunchPos, inputOption);
 			}
 
@@ -898,6 +907,9 @@ BOOL Enemy::LaunchForRotateWays()
 			if (missile != nullptr)
 			{
 				inputOption.SetMissileVec(rotateVec.GetYSymmetryVec());
+				auto inputData = inputOption.GetCircleShotData();
+				inputData.SetTheta((-theta * i) * M_PI / 180.f);
+				inputOption.SetCircleShotData(inputData);
 				missile->Launch(m_LaunchPos, inputOption);
 			}
 		}

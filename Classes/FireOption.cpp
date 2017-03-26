@@ -99,6 +99,7 @@ CircleShotData::CircleShotData(
 	const Vec centerPos,
 	const INT missileNum,
 	const FLOAT radius,
+	const FLOAT theta,
 	const FLOAT initRotatePerSec,
 	const FLOAT accRotatePerSec,
 	const FLOAT maxRotatePerSec,
@@ -109,6 +110,7 @@ CircleShotData::CircleShotData(
 	CenterPos = centerPos;
 	MissileNum = missileNum;
 	Radius = radius;
+	Theta = theta;
 	InitRotateAnglePerSec = initRotatePerSec;
 	AccRotateAnglePerSec = accRotatePerSec;
 	MaxRotateAngelPerSec = maxRotatePerSec;
@@ -122,7 +124,7 @@ CircleShotData & CircleShotData::operator=(const CircleShotData & dt)
 	CenterPos = dt.CenterPos;
 	MissileNum = dt.MissileNum;
 	Radius = dt.Radius;
-	theta = dt.theta;
+	Theta = dt.Theta;
 	InitRotateAnglePerSec = dt.InitRotateAnglePerSec;
 	AccRotateAnglePerSec = dt.AccRotateAnglePerSec;
 	MaxRotateAngelPerSec = dt.MaxRotateAngelPerSec;
@@ -138,6 +140,11 @@ void CircleShotData::SetCenterPos(const Vec& pos)
 {
 	CenterPos.x = pos.x;
 	CenterPos.y = pos.y;
+}
+
+void CircleShotData::SetTheta(const FLOAT & inputTheta)
+{
+	Theta = inputTheta;
 }
 
 

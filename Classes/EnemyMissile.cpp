@@ -131,13 +131,13 @@ void EnemyMissile::MoveLoopingBullet(const FLOAT dt, FireOption& opt, CircleShot
 	FLOAT currentRotateRadian = currentRotateAngle * M_PI / 180;
 
 	// 각도 이동.
-	data.theta += currentRotateRadian;
-	data.theta = fmod(data.theta, 2 * M_PI);
+	data.Theta += currentRotateRadian;
+	data.Theta = fmod(data.Theta, 2 * M_PI);
 
 	// 이동시킨 각도에 따라 좌표 변환.
 	Vec MoveOnVec;
-	m_Pos.x = data.CenterPos.x + data.Radius * cos(data.theta);
-	m_Pos.y = data.CenterPos.y + data.Radius * sin(data.theta);
+	m_Pos.x = data.CenterPos.x + data.Radius * cos(data.Theta);
+	m_Pos.y = data.CenterPos.y + data.Radius * sin(data.Theta);
 
 	// 변경사항 저장.
 	opt.SetCircleShotData(data);
@@ -255,7 +255,7 @@ void EnemyMissile::Draw(const HDC drawDC)
 	// 센터 포지션 출력.
 	auto data = GetOption().GetCircleShotData();
 	Vec centerPos = data.CenterPos;
-	auto theta = data.theta;
+	auto theta = data.Theta;
 	debugLabel = std::to_wstring(centerPos.x) + _T(", ") + std::to_wstring(centerPos.y);
 	TextOut(drawDC, centerPos.x, centerPos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
 	debugLabel = std::to_wstring(theta);
