@@ -64,11 +64,6 @@ void Item::DeadProc()
 {
 	return;
 }
-//
-//void Item::Fire()
-//{
-//	return;
-//}
 
 BOOL Item::CheckPlayerGetItem()
 {

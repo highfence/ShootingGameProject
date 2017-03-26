@@ -122,6 +122,7 @@ CircleShotData & CircleShotData::operator=(const CircleShotData & dt)
 	CenterPos = dt.CenterPos;
 	MissileNum = dt.MissileNum;
 	Radius = dt.Radius;
+	theta = dt.theta;
 	InitRotateAnglePerSec = dt.InitRotateAnglePerSec;
 	AccRotateAnglePerSec = dt.AccRotateAnglePerSec;
 	MaxRotateAngelPerSec = dt.MaxRotateAngelPerSec;
@@ -131,6 +132,12 @@ CircleShotData & CircleShotData::operator=(const CircleShotData & dt)
 	RecordRotateTime = dt.RecordRotateTime;
 	IsMissileNeedDelay = dt.IsMissileNeedDelay;
 	return *this;
+}
+
+void CircleShotData::SetCenterPos(const Vec& pos)
+{
+	CenterPos.x = pos.x;
+	CenterPos.y = pos.y;
 }
 
 

@@ -95,6 +95,7 @@ BOOL EnemyMissile::MissileCircle(const FLOAT dt)
 	// 충분하다면 회전 운동 진행. RecordRotateTime에 시간 누적.
 	else if (data.RecordRotateTime < data.RotateTime)
 	{
+
 		MoveLoopingBullet(dt, opt, data);
 		data.RecordRotateTime += dt;
 		MissileFlyNormal(dt);
@@ -249,16 +250,24 @@ void EnemyMissile::Draw(const HDC drawDC)
 #pragma warning(disable : 4244)
 
 
+#ifdef _DEBUG
+	// 좌표 출력.
 	std::wstring debugLabel = std::to_wstring((int)m_Pos.x) + _T(", ") + std::to_wstring((int)m_Pos.y);
 	TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
 
+	// 센터 포지션 출력.
 	auto data = GetOption().GetCircleShotData();
 	Vec centerPos = data.CenterPos;
+	auto theta = data.theta;
 	debugLabel = std::to_wstring(centerPos.x) + _T(", ") + std::to_wstring(centerPos.y);
 	TextOut(drawDC, centerPos.x, centerPos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
+	debugLabel = std::to_wstring(theta);
+	TextOut(drawDC, centerPos.x, centerPos.y + 15, debugLabel.c_str(), wcslen(debugLabel.c_str()));
 
+	// 선 출력.
 	MoveToEx(drawDC, centerPos.x, centerPos.y, NULL);
 	LineTo(drawDC, m_Pos.x, m_Pos.y);
+#endif
 
 	m_pShapeSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
 		m_Width, m_Height, 0, 0, SRCAND);

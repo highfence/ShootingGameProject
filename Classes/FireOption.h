@@ -50,6 +50,7 @@ struct CircleShotData
 
 	CircleShotData(const _In_ CircleShotData&) = default;
 	CircleShotData& operator=(const _In_ CircleShotData&);
+	void SetCenterPos(const Vec&);
 
 	Vec CenterPos = Vec(0.f, 0.f);
 	INT MissileNum = 0;

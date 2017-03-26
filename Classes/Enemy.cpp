@@ -104,7 +104,12 @@ void Enemy::MissileManageProc()
 		// 미사일들의 옵션의 중심 포지션을 자기 자신으로 바꾸어준다.
 		for (auto& i : m_MissileVec)
 		{
-			i->GetOption().GetCircleShotData().CenterPos = m_Pos;
+			auto opt = i->GetOption();
+			auto data = opt.GetCircleShotData();
+			data.SetCenterPos(m_Pos);
+
+			opt.SetCircleShotData(data);
+			i->SetFireOption(opt);
 		}
 	}
 
