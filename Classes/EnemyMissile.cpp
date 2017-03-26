@@ -95,10 +95,8 @@ BOOL EnemyMissile::MissileCircle(const FLOAT dt)
 	// 충분하다면 회전 운동 진행. RecordRotateTime에 시간 누적.
 	else if (data.RecordRotateTime < data.RotateTime)
 	{
-
 		MoveLoopingBullet(dt, opt, data);
 		data.RecordRotateTime += dt;
-		MissileFlyNormal(dt);
 	}
 	// RecordRotateTime이 넘어가면 중심에서 현재 위치로의 벡터로 진행.
 	else
@@ -138,9 +136,8 @@ void EnemyMissile::MoveLoopingBullet(const FLOAT dt, FireOption& opt, CircleShot
 
 	// 이동시킨 각도에 따라 좌표 변환.
 	Vec MoveOnVec;
-	MoveOnVec.x = data.CenterPos.x + data.Radius * cos(data.theta);
-	MoveOnVec.y = data.CenterPos.y + data.Radius * sin(data.theta);
-	opt.SetMissileVec(MoveOnVec);
+	m_Pos.x = data.CenterPos.x + data.Radius * cos(data.theta);
+	m_Pos.y = data.CenterPos.y + data.Radius * sin(data.theta);
 
 	// 변경사항 저장.
 	opt.SetCircleShotData(data);
