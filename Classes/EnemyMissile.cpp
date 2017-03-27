@@ -335,7 +335,7 @@ const FLOAT savePlacePos = -300.f;
 void EnemyMissile::MakeMissileInitialState()
 {
 	m_Pos = Vec(savePlacePos, savePlacePos);
-	m_Option = nullptr;
+	//m_Option = nullptr;
 }
 
 FireOption EnemyMissile::GetOption() const

@@ -4,6 +4,7 @@
 #include <Windows.h>
 #include <stdlib.h>
 #include <vector>
+#include <thread>
 #include <list>
 #include <string>
 #include <atlimage.h>

@@ -19,6 +19,8 @@ GameManager::GameManager(_Inout_ HWND hWnd, _Inout_ HINSTANCE hInstance)
 	m_pTimer = new MyTimer();
 	m_pScroller = new BackGroundScroller();
 	m_pPlayer = new Player();
+	// TODO :: EnemyManager 때문에 로딩시간이 기므로 쓰레드로 로딩 처리.
+	// 나머지 시간은 메인 화면 띄우기.
 	m_pEnemyManager = EnemyManager::GetInstance();
 	m_pEffectManager = EffectManager::GetInstance();
 	m_pUIManager = UIManager::GetInstance();

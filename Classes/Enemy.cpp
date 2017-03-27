@@ -63,6 +63,7 @@ void Enemy::DistributeFireOption()
 	FireOption op = GetFireOption();
 	for (auto& i : m_MissileVec)
 	{
+		// TODO :: 세팅이 잘 안되는 건지 확인해보자.
 		i->SetFireOption(op);
 	}
 
