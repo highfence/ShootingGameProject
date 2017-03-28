@@ -24,13 +24,13 @@ public :
 	void ActivateEnemy(
 		const _In_ FLOAT activateTime, 
 		const _In_ Vec createPos,
-		_In_ CreateOption& createOption,
-		_In_ FireOption& fireOption);
+		const _In_ ENEMY::CREATE_OPTION createOption,
+		const _In_ ENEMY::FIRE_OPTION fireOption);
 
 	void ActivateEnemyOnce(
 		const _In_ Vec createPos,
-		_In_ CreateOption& createOption,
-		_In_ FireOption& fireOption);
+		const _In_ ENEMY::CREATE_OPTION createOption,
+		const _In_ ENEMY::FIRE_OPTION fireOption);
 
 	void CalcProc(const _In_ FLOAT);
 	void MakeProc();
@@ -51,6 +51,7 @@ private :
 	void DistributeData(const _In_ FLOAT);
 	void SetEnemyMemoryPool();
 	void RegisterFunctionPointer();
+	void GetOptionPointer();
 
 	template <typename T>
 	void AllocEnemyMemory(const _In_ INT);
@@ -58,29 +59,29 @@ private :
 	// 생성 함수 포인터 핸들러.
 	BOOL(EnemyManager::*m_pActivateHandler[ENEMY_TYPE_NUM])(
 		const _In_ Vec,
-		_In_ CreateOption&,
-		_In_ FireOption&);
+		const _In_ ENEMY::CREATE_OPTION,
+		const _In_ ENEMY::FIRE_OPTION);
 
 	// 함수 포인터에 들어갈 함수
 	BOOL ActivateEnemyItem(
 		const _In_ Vec,
-		_In_ CreateOption&,
-		_In_ FireOption&);
+		const _In_ ENEMY::CREATE_OPTION,
+		const _In_ ENEMY::FIRE_OPTION);
 
 	BOOL ActivateItem(
 		const _In_ Vec,
-		_In_ CreateOption&,
-		_In_ FireOption&);
+		const _In_ ENEMY::CREATE_OPTION,
+		const _In_ ENEMY::FIRE_OPTION);
 
 	BOOL ActivateZaco(
 		const _In_ Vec,
-		_In_ CreateOption&,
-		_In_ FireOption&);
+		const _In_ ENEMY::CREATE_OPTION,
+		const _In_ ENEMY::FIRE_OPTION);
 
 	BOOL ActivateHandShot(
 		const _In_ Vec,
-		_In_ CreateOption&,
-		_In_ FireOption&);
+		const _In_ ENEMY::CREATE_OPTION,
+		const _In_ ENEMY::FIRE_OPTION);
 
 	FLOAT m_AccTime;
 	FLOAT m_RecordCreateTime;
@@ -89,4 +90,8 @@ private :
 
 	// Enemy 메모리 풀.
 	std::vector<Enemy*> m_EnemyMemoryVector;
+
+	// Enemy Option 포인터 배열.
+	CreateOption* m_pCreateOptionArray[ENEMY::CREATE_OPTION::CREATE_OPTION_NUM];
+	FireOption* m_pFireOptionArray[ENEMY::FIRE_OPTION::FIRE_OPTION_NUM];
 };

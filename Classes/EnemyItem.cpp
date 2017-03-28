@@ -97,9 +97,7 @@ void EnemyItem::Explode()
 {
 	if (m_CreateOption.GetIsItemLaunched())
 	{
-		CreateOption itemOption = CreateOption(100000, ITEM, FLY_ITEM, Vec(0, 0), 150.f, 0, NULL, FALSE);
-		FireOption enemyNoFire = FireOption(FIRE_TYPE::FIRE_TYPE_NUM, MISSILE_TYPE::NONE, MISSILE_SIZE::SMALL, 0.f, 0.f, 0.f, Vec(0.f, 0.f), 0.f, 0.f, 0, 0.f, 0);
-		EnemyManager::GetInstance()->ActivateEnemyOnce(m_Pos, itemOption, enemyNoFire);
+		EnemyManager::GetInstance()->ActivateEnemyOnce(m_Pos, ITEM_CREATE, NO_FIRE);
 	}
 	EffectManager::GetInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos);
 	return;

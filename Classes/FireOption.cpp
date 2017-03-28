@@ -136,17 +136,6 @@ CircleShotData & CircleShotData::operator=(const CircleShotData & dt)
 	return *this;
 }
 
-void CircleShotData::SetCenterPos(const Vec& pos)
-{
-	CenterPos.x = pos.x;
-	CenterPos.y = pos.y;
-}
-
-void CircleShotData::SetTheta(const FLOAT & inputTheta)
-{
-	Theta = inputTheta;
-}
-
 
 FireOption::FireOption()
 	: m_IsOptionCanUse(FALSE)

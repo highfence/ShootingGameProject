@@ -51,8 +51,8 @@ struct CircleShotData
 
 	CircleShotData(const _In_ CircleShotData&) = default;
 	CircleShotData& operator=(const _In_ CircleShotData&);
-	void SetCenterPos(const Vec&);
-	void SetTheta(const FLOAT&);
+	void SetCenterPos(const _In_ Vec& pos) { CenterPos = pos; };
+	void SetTheta(const _In_ FLOAT& theta) { Theta = theta; };
 
 	Vec CenterPos = Vec(0.f, 0.f);
 	INT MissileNum = 0;

@@ -14,6 +14,6 @@ public :
 
 private :
 
-	const vRESULT init();
+	const vRESULT Init();
 	const vRESULT InitialImgLoad();
 };
