@@ -5,6 +5,7 @@
 #include "EnemyItem.h"
 #include "EnemyZaco.h"
 #include "EnemyHandShot.h"
+#include "EnemyMine.h"
 #include "EnemyManager.h"
 #include "OptionHandler.h"
 
@@ -43,6 +44,7 @@ void EnemyManager::Init()
 {
 	SetEnemyMemoryPool();
 	RegisterFunctionPointer();
+	GetOptionPointer();
 	return;
 }
 
@@ -59,17 +61,41 @@ void EnemyManager::RegisterFunctionPointer()
 }
 
 /*
+	초기화 작업시에 Option Handler로 부터 옵션들의 포인터를 받아두는 함수.
+*/
+void EnemyManager::GetOptionPointer()
+{
+	auto optHandler = OptionHandler::GetInstance();
+	for (int i = 0; i < ENEMY::CREATE_OPTION::CREATE_OPTION_NUM; ++i)
+	{
+		auto opt = optHandler->GetCreateOption((CREATE_OPTION)i);
+		m_pCreateOptionVec->push_back(opt);
+	}
+	
+	for (int i = 0; i < ENEMY::FIRE_OPTION::FIRE_OPTION_NUM; ++i)
+	{
+		auto opt = optHandler->GetFireOption((FIRE_OPTION)i);
+		m_pFireOptionVec->push_back(opt);
+	}
+
+	return;
+}
+
+/*
 	EnemyItem을 만들어주는 함수.
 */
 BOOL EnemyManager::ActivateEnemyItem(
 	const _In_ Vec createPos,
-	_In_ CreateOption& createOption,
-	_In_ FireOption& fireOption)
+	const _In_ ENEMY::CREATE_OPTION createOptionNumber,
+	const _In_ ENEMY::FIRE_OPTION fireOptionNumber)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_ITEM);
 	if (newEnemy != nullptr)
 	{
-		newEnemy->Activate(createPos, createOption, fireOption);
+		newEnemy->Activate(
+			createPos,
+			*m_pCreateOptionVec->at(createOptionNumber),
+			*m_pFireOptionVec->at(fireOptionNumber));
 		return TRUE;
 	}
 	else
@@ -83,13 +109,16 @@ BOOL EnemyManager::ActivateEnemyItem(
 */
 BOOL EnemyManager::ActivateItem(
 	const _In_ Vec createPos,
-	_In_ CreateOption& createOption,
-	_In_ FireOption& fireOption)
+	const _In_ ENEMY::CREATE_OPTION createOptionNumber,
+	const _In_ ENEMY::FIRE_OPTION fireOptionNumber)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ITEM);
 	if (newEnemy != nullptr)
 	{
-		newEnemy->Activate(createPos, createOption, fireOption);
+		newEnemy->Activate(
+			createPos,
+			*m_pCreateOptionVec->at(createOptionNumber),
+			*m_pFireOptionVec->at(fireOptionNumber));
 		return TRUE;
 	}
 	else
@@ -103,13 +132,16 @@ BOOL EnemyManager::ActivateItem(
 */
 BOOL EnemyManager::ActivateZaco(
 	const _In_ Vec createPos,
-	_In_ CreateOption& createOption,
-	_In_ FireOption& fireOption)
+	const _In_ ENEMY::CREATE_OPTION createOptionNumber,
+	const _In_ ENEMY::FIRE_OPTION fireOptionNumber)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_ZACO);
 	if (newEnemy != nullptr)
 	{
-		newEnemy->Activate(createPos, createOption, fireOption);
+		newEnemy->Activate(
+			createPos,
+			*m_pCreateOptionVec->at(createOptionNumber),
+			*m_pFireOptionVec->at(fireOptionNumber));
 		return TRUE;
 	}
 	else
@@ -123,13 +155,16 @@ BOOL EnemyManager::ActivateZaco(
 */
 BOOL EnemyManager::ActivateHandShot(
 	const _In_ Vec createPos,
-	_In_ CreateOption& createOption,
-	_In_ FireOption& fireOption)
+	const _In_ ENEMY::CREATE_OPTION createOptionNumber,
+	const _In_ ENEMY::FIRE_OPTION fireOptionNumber)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_HAND_SHOT);
 	if (newEnemy != nullptr)
 	{
-		newEnemy->Activate(createPos, createOption, fireOption);
+		newEnemy->Activate(
+			createPos,
+			*m_pCreateOptionVec->at(createOptionNumber),
+			*m_pFireOptionVec->at(fireOptionNumber));
 		return TRUE;
 	}
 	else
@@ -152,13 +187,14 @@ void EnemyManager::AccTime(const _In_ FLOAT dt)
 void EnemyManager::ActivateEnemy(
 	const _In_ FLOAT activateTime,
 	const _In_ Vec createPos,
-	_In_ CreateOption& createOption,
-	_In_ FireOption& fireOption)
+	const _In_ ENEMY::CREATE_OPTION createOptionNumber,
+	const _In_ ENEMY::FIRE_OPTION fireOptionNumber)
 {
 	if ((m_AccTime > activateTime) && (m_RecordCreateTime < activateTime))
 	{
-		(this->*m_pActivateHandler[createOption.GetEnemyType()])
-			(createPos, createOption, fireOption);
+		auto opt = m_pCreateOptionVec->at(createOptionNumber);
+		(this->*m_pActivateHandler[opt->GetEnemyType()])
+			(createPos, createOptionNumber, fireOptionNumber);
 		m_RecordCreateTime = activateTime;
 	}
 
@@ -167,12 +203,12 @@ void EnemyManager::ActivateEnemy(
 
 void EnemyManager::ActivateEnemyOnce(
 	const _In_ Vec createPos,
-	_In_ CreateOption& createOption,
-	_In_ FireOption& fireOption)
+	const _In_ ENEMY::CREATE_OPTION createOptionNumber,
+	const _In_ ENEMY::FIRE_OPTION fireOptionNumber)
 {
-
-	(this->*m_pActivateHandler[createOption.GetEnemyType()])
-		(createPos, createOption, fireOption);
+	auto opt = m_pCreateOptionVec->at(createOptionNumber);
+	(this->*m_pActivateHandler[opt->GetEnemyType()])
+		(createPos, createOptionNumber, fireOptionNumber);
 
 	return;
 }
@@ -232,23 +268,19 @@ Player& EnemyManager::getPlayerInfo()
 
 void EnemyManager::MakeProc()
 {
-	auto OptGenerater = OptionHandler::GetInstance();
-	
 	FLOAT line1 = 4.f;
-	auto enemyItemFalseCreate = OptGenerater->GetCreateOption(ENEMY_ITEM_FALSE);
-	auto enemyItemTrueCreate = OptGenerater->GetCreateOption(ENEMY_ITEM_TRUE);
-	auto enemyItemFire = OptGenerater->GetFireOption(FIRE_FRONT);
-	//ActivateEnemy(line1, Vec(350.f, 0.f), enemyItemFalseCreate, enemyItemFire);
-	//ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), enemyItemFalseCreate, enemyItemFire);
-	//ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), enemyItemFalseCreate, enemyItemFire);
-	//ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), enemyItemTrueCreate, enemyItemFire);
+	ActivateEnemy(line1, Vec(350.f, 0.f), ENEMY_ITEM_FALSE, FIRE_FRONT);
+	ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), ENEMY_ITEM_FALSE, FIRE_FRONT);
+	ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), ENEMY_ITEM_FALSE, FIRE_FRONT);
+	ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), ENEMY_ITEM_TRUE, FIRE_FRONT);
 
 	FLOAT line2 = 6.f;
-	auto enemyHandShotCreate = OptGenerater->GetCreateOption(ENEMY_HAND_SHOT_CREATE);
-	auto enemyHandShotFire = OptGenerater->GetFireOption(N_WAY_FIRE_OPTION);
-	auto enemyCircleOption = OptGenerater->GetFireOption(ROTATE_FIRE_OPTION);
-	//ActivateEnemy(line2, Vec(650.f, 0.f), enemyHandShotCreate, enemyHandShotFire);
-	ActivateEnemy(line2 + 3.f, Vec(250.f, 0.f), enemyHandShotCreate, enemyCircleOption);
+		
+
+
+	FLOAT line3 = 15.f;
+	ActivateEnemy(line3, Vec(650.f, 0.f), ENEMY_HAND_SHOT_CREATE, N_WAY_FIRE_OPTION);
+	ActivateEnemy(line3 + 3.f, Vec(250.f, 0.f), ENEMY_HAND_SHOT_CREATE, ROTATE_FIRE_OPTION);
 
 	return;
 }
@@ -268,11 +300,13 @@ void EnemyManager::SetEnemyMemoryPool()
 	const INT ItemAllocTime = 3;
 	const INT enemyZacoAllocTime = 15;
 	const INT enemyHandShotAllocTime = 5;
+	const INT enemyMineAllocTime = 30;
 
 	AllocEnemyMemory<EnemyHandShot>(enemyHandShotAllocTime);
 	AllocEnemyMemory<EnemyItem>(enemyItemAllocTime);
 	AllocEnemyMemory<Item>(ItemAllocTime);
 	AllocEnemyMemory<EnemyZaco>(enemyZacoAllocTime);
+	AllocEnemyMemory<EnemyMine>(enemyMineAllocTime);
 
 	return;
 }

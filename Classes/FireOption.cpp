@@ -128,6 +128,8 @@ CircleShotData & CircleShotData::operator=(const CircleShotData & dt)
 	IsRotateClockWise = dt.IsRotateClockWise;
 	RotateTime = dt.RotateTime;
 	ShotSpeedWhenTheRotateEnd = dt.ShotSpeedWhenTheRotateEnd;
+	RecordRotateTime = dt.RecordRotateTime;
+	IsMissileNeedDelay = dt.IsMissileNeedDelay;
 	return *this;
 }
 

@@ -134,12 +134,12 @@ void EnemyMissile::MoveLoopingBullet(const FLOAT dt)
 	FLOAT currentRotateRadian = currentRotateAngle * 180 / M_PI;
 
 	// 각도 이동.
-	data.theta += currentRotateRadian;
+	data.Theta += currentRotateRadian;
 
 	// 이동시킨 각도에 따라 좌표 변환.
 	Vec MoveOnVec;
-	MoveOnVec.x = data.CenterPos.x + data.Radius * cos(data.theta);
-	MoveOnVec.y = data.CenterPos.y + data.Radius * sin(data.theta);
+	MoveOnVec.x = data.CenterPos.x + data.Radius * cos(data.Theta);
+	MoveOnVec.y = data.CenterPos.y + data.Radius * sin(data.Theta);
 
 	// 변경사항 저장.
 	opt.SetCircleShotData(data);

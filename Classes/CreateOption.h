@@ -15,6 +15,7 @@ struct GoAndSlowData
 	);
 	GoAndSlowData(int);
 	GoAndSlowData& operator=(const GoAndSlowData&);
+	GoAndSlowData& operator=(const _In_ wchar_t*){};
 	FLOAT SlowDownStartTime;
 	FLOAT SlowDownDurationTime;
 	Vec SlowDownMoveVec;

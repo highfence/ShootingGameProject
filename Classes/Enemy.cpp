@@ -63,6 +63,7 @@ void Enemy::DistributeFireOption()
 	FireOption op = GetFireOption();
 	for (auto& i : m_MissileVec)
 	{
+		// TODO :: 세팅이 잘 안되는 건지 확인해보자.
 		i->SetFireOption(op);
 	}
 
@@ -104,7 +105,12 @@ void Enemy::MissileManageProc()
 		// 미사일들의 옵션의 중심 포지션을 자기 자신으로 바꾸어준다.
 		for (auto& i : m_MissileVec)
 		{
-			i->GetOption().GetCircleShotData().CenterPos = m_Pos;
+			auto opt = i->GetOption();
+			auto data = opt.GetCircleShotData();
+			data.SetCenterPos(m_Pos);
+
+			opt.SetCircleShotData(data);
+			i->SetFireOption(opt);
 		}
 	}
 
@@ -636,12 +642,9 @@ BOOL Enemy::FireCircle()
 	FireOption opt = GetFireOption();
 	auto data = opt.GetCircleShotData();
 
-	// 혹시나 해서 다시 한 번 미사일 타입 세팅.
-	opt.SetMissileType(ENEMY::MISSILE_TYPE::CIRCLE_TYPE);
-
 	// 회전탄 발사 시간 조절 (회전탄은 Interval이 길어야 한다.)
 	if (m_RecordFireTime > opt.GetInitShootDelay() &&
-		m_RecordFireTime < (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
+		m_RecordFireTime < (opt.GetInitShootDelay() + data.RotateTime))
 	{
 		if (data.IsMissileNeedDelay)
 		{
@@ -650,11 +653,10 @@ BOOL Enemy::FireCircle()
 		
 		// 사방으로 미사일을 뿌려주는 함수.
 		LaunchForRotateWays();
-
 		data.IsMissileNeedDelay = TRUE;
 	}
 	// 인터벌 딜레이 처리.
-	else if (m_RecordFireTime > opt.GetInitShootDelay() + opt.GetIntervalShootDelay())
+	else if (m_RecordFireTime > opt.GetInitShootDelay() + data.RotateTime + 1.f)
 	{
 		data.IsMissileNeedDelay = FALSE;
 		m_RecordFireTime = opt.GetInitShootDelay();
@@ -864,6 +866,9 @@ BOOL Enemy::LaunchForRotateWays()
 			if (missile != nullptr)
 			{
 				inputOption.SetMissileVec(rotateVec);
+				auto inputData = inputOption.GetCircleShotData();
+				inputData.SetTheta((theta * i) * M_PI / 180.f);
+				inputOption.SetCircleShotData(inputData);
 				missile->Launch(m_LaunchPos, inputOption);
 			}
 
@@ -873,6 +878,9 @@ BOOL Enemy::LaunchForRotateWays()
 				if (missile != nullptr)
 				{
 					inputOption.SetMissileVec(rotateVec.GetYSymmetryVec());
+					auto inputData = inputOption.GetCircleShotData();
+					inputData.SetTheta((-theta * i) * M_PI / 180.f);
+					inputOption.SetCircleShotData(inputData);
 					missile->Launch(m_LaunchPos, inputOption);
 				}
 			}
@@ -889,6 +897,9 @@ BOOL Enemy::LaunchForRotateWays()
 			if (missile != nullptr)
 			{
 				inputOption.SetMissileVec(rotateVec);
+				auto inputData = inputOption.GetCircleShotData();
+				inputData.SetTheta((theta * i) * M_PI / 180.f);
+				inputOption.SetCircleShotData(inputData);
 				missile->Launch(m_LaunchPos, inputOption);
 			}
 
@@ -896,6 +907,9 @@ BOOL Enemy::LaunchForRotateWays()
 			if (missile != nullptr)
 			{
 				inputOption.SetMissileVec(rotateVec.GetYSymmetryVec());
+				auto inputData = inputOption.GetCircleShotData();
+				inputData.SetTheta((-theta * i) * M_PI / 180.f);
+				inputOption.SetCircleShotData(inputData);
 				missile->Launch(m_LaunchPos, inputOption);
 			}
 		}

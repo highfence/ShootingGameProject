@@ -13,8 +13,8 @@ public :
 	static OptionHandler* GetInstance();
 	void DeleteInstance();
 
-	CreateOption& GetCreateOption(const _In_ ENEMY::CREATE_OPTION);
-	FireOption& GetFireOption(const _In_ ENEMY::FIRE_OPTION);
+	CreateOption* GetCreateOption(const _In_ ENEMY::CREATE_OPTION);
+	FireOption* GetFireOption(const _In_ ENEMY::FIRE_OPTION);
 	~OptionHandler();
 
 private:
