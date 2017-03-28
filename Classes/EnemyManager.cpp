@@ -69,13 +69,13 @@ void EnemyManager::GetOptionPointer()
 	for (int i = 0; i < ENEMY::CREATE_OPTION::CREATE_OPTION_NUM; ++i)
 	{
 		auto opt = optHandler->GetCreateOption((CREATE_OPTION)i);
-		m_pCreateOptionVec->push_back(opt);
+		m_pCreateOptionArray[i] = opt;
 	}
 	
 	for (int i = 0; i < ENEMY::FIRE_OPTION::FIRE_OPTION_NUM; ++i)
 	{
 		auto opt = optHandler->GetFireOption((FIRE_OPTION)i);
-		m_pFireOptionVec->push_back(opt);
+		m_pFireOptionArray[i] = opt;
 	}
 
 	return;
@@ -94,8 +94,8 @@ BOOL EnemyManager::ActivateEnemyItem(
 	{
 		newEnemy->Activate(
 			createPos,
-			*m_pCreateOptionVec->at(createOptionNumber),
-			*m_pFireOptionVec->at(fireOptionNumber));
+			*m_pCreateOptionArray[createOptionNumber],
+			*m_pFireOptionArray[fireOptionNumber]);
 		return TRUE;
 	}
 	else
@@ -117,8 +117,8 @@ BOOL EnemyManager::ActivateItem(
 	{
 		newEnemy->Activate(
 			createPos,
-			*m_pCreateOptionVec->at(createOptionNumber),
-			*m_pFireOptionVec->at(fireOptionNumber));
+			*m_pCreateOptionArray[createOptionNumber],
+			*m_pFireOptionArray[fireOptionNumber]);
 		return TRUE;
 	}
 	else
@@ -140,8 +140,8 @@ BOOL EnemyManager::ActivateZaco(
 	{
 		newEnemy->Activate(
 			createPos,
-			*m_pCreateOptionVec->at(createOptionNumber),
-			*m_pFireOptionVec->at(fireOptionNumber));
+			*m_pCreateOptionArray[createOptionNumber],
+			*m_pFireOptionArray[fireOptionNumber]);
 		return TRUE;
 	}
 	else
@@ -163,8 +163,8 @@ BOOL EnemyManager::ActivateHandShot(
 	{
 		newEnemy->Activate(
 			createPos,
-			*m_pCreateOptionVec->at(createOptionNumber),
-			*m_pFireOptionVec->at(fireOptionNumber));
+			*m_pCreateOptionArray[createOptionNumber],
+			*m_pFireOptionArray[fireOptionNumber]);
 		return TRUE;
 	}
 	else
@@ -192,7 +192,7 @@ void EnemyManager::ActivateEnemy(
 {
 	if ((m_AccTime > activateTime) && (m_RecordCreateTime < activateTime))
 	{
-		auto opt = m_pCreateOptionVec->at(createOptionNumber);
+		auto opt = m_pCreateOptionArray[createOptionNumber];
 		(this->*m_pActivateHandler[opt->GetEnemyType()])
 			(createPos, createOptionNumber, fireOptionNumber);
 		m_RecordCreateTime = activateTime;
@@ -206,7 +206,7 @@ void EnemyManager::ActivateEnemyOnce(
 	const _In_ ENEMY::CREATE_OPTION createOptionNumber,
 	const _In_ ENEMY::FIRE_OPTION fireOptionNumber)
 {
-	auto opt = m_pCreateOptionVec->at(createOptionNumber);
+	auto opt = m_pCreateOptionArray[createOptionNumber];
 	(this->*m_pActivateHandler[opt->GetEnemyType()])
 		(createPos, createOptionNumber, fireOptionNumber);
 

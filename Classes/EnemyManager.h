@@ -92,6 +92,6 @@ private :
 	std::vector<Enemy*> m_EnemyMemoryVector;
 
 	// Enemy Option 포인터 배열.
-	std::vector<CreateOption*>* m_pCreateOptionVec;
-	std::vector<FireOption*>* m_pFireOptionVec;
+	CreateOption* m_pCreateOptionArray[ENEMY::CREATE_OPTION::CREATE_OPTION_NUM];
+	FireOption* m_pFireOptionArray[ENEMY::FIRE_OPTION::FIRE_OPTION_NUM];
 };

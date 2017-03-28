@@ -76,7 +76,7 @@ void OptionHandler::Init()
 	FLOAT shotAngle[] = { 22.5f, 22.5f, 22.5f, 0, 0 };
 	INT MissileNumber[] = { 16, 17, 16, 0, 0 };
 
-	GoAndSlowData* enemyHandShotGASData = new GoAndSlowData(0.5f, 15.f, Vec(0.f, 1.f), 50.f);
+	GoAndSlowData enemyHandShotGASData = GoAndSlowData(0.5f, 15.f, Vec(0.f, 1.f), 50.f);
 	NwayShotData enemyHandShotNwayData = NwayShotData(3, shotTimes, shotAngle, FALSE, FALSE);
 	NwayShotData enemyHandShotNwayToPlayerData = NwayShotData(3, shotTimes, shotAngle, TRUE, FALSE);
 	CreateOption enemyHandShotCreate = CreateOption(380, ENEMY_HAND_SHOT, FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyHandShotGASData, FALSE);
