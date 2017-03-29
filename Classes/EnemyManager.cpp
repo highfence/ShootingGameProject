@@ -301,7 +301,9 @@ void EnemyManager::SetEnemyMemoryPool()
 	const INT enemyZacoAllocTime = 15;
 	const INT enemyHandShotAllocTime = 5;
 	const INT enemyMineAllocTime = 30;
+	const INT wholeAllocTime = enemyItemAllocTime + ItemAllocTime + enemyZacoAllocTime + enemyHandShotAllocTime + enemyMineAllocTime;
 
+	m_EnemyMemoryVector.reserve(wholeAllocTime);
 	AllocEnemyMemory<EnemyHandShot>(enemyHandShotAllocTime);
 	AllocEnemyMemory<EnemyItem>(enemyItemAllocTime);
 	AllocEnemyMemory<Item>(ItemAllocTime);
@@ -322,7 +324,7 @@ void EnemyManager::AllocEnemyMemory(const _In_ INT allocTime)
 	{
 		// 생성은 각각 Enemy타입의 형태이지만, vector에 넣기 위해 Enemy*형태로 캐스팅.
 		T* newEnemy = new T();
-		m_EnemyMemoryVector.push_back((Enemy*)newEnemy);
+		m_EnemyMemoryVector.emplace_back((Enemy*)newEnemy);
 	}
 
 	return;
