@@ -33,6 +33,27 @@ EnemyMine::~EnemyMine()
 {
 }
 
+/*
+	Mine의 돌아가는 애니메이션을 위해 CalcProc 오버로딩.
+	함수 내부에서 Enemy::CalcProc 호출.
+*/
+void EnemyMine::CalcProc(const _In_ FLOAT dt)
+{
+	Enemy::CalcProc(dt);
+	
+	// RecordFrameTime에 시간 누적.
+	m_RecordFrameTime += dt;
+
+	// 누적된 시간이 Frame당 배분된 시간보다 크다면 다음 Frame 호출.
+	if (m_RecordFrameTime > m_TimePerOneFrame)
+	{
+		
+		m_RecordFrameTime = 0.f;
+	}
+
+	return;
+}
+
 void EnemyMine::Draw(_Inout_ HDC drawDC)
 {
 #pragma warning(push)
@@ -71,7 +92,18 @@ void EnemyMine::DeadProc()
 
 void EnemyMine::InitialImgLoad()
 {
-	m_pSprite->Load(enemyMineSpritePath.c_str());
-	m_pSprite->Load(enemyMineShadePath.c_str());
+	ImgLoad(m_pSprite, enemyMineSpritePath, m_FrameNum, enemyMineFileExtension, FALSE);
+	ImgLoad(m_pShadeSprite, enemyMineShadePath, m_FrameNum, enemyMineFileExtension, FALSE);
+
+	return;
+}
+
+void EnemyMine::MakeSpriteNextThing()
+{
+	// FrameNum을 다음 Frame으로.
+	m_FrameNum = (++m_FrameNum) % (m_MaxFrameNum + 1);
+
+	ImgLoad(m_pSprite, enemyMineSpritePath, m_FrameNum, enemyMineFileExtension, TRUE);
+	ImgLoad(m_pShadeSprite, enemyMineShadePath, m_FrameNum, enemyMineFileExtension, TRUE);
 	return;
 }
