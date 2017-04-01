@@ -164,7 +164,7 @@ BOOL EnemyMissile::CheckColideWithPlayer()
 
 	if (!(x1 <= mx0 || mx1 <= x0 || y1 <= my0 || my1 <= y0))
 	{
-		playerInfo.PlayerDamaged();
+		playerInfo.PlayerDamaged(m_Option.GetMissileVec());
 		MakeMissileInitialState();
 		return TRUE;
 	}

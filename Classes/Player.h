@@ -25,7 +25,7 @@ public :
 	const vRESULT GetPosition(_Out_ Vec*) const;
 	FLOAT GetCollisionPixel() const;
 	BOOL GetIsPlayerAlived() const;
-	void PlayerDamaged();
+	void PlayerDamaged(const _In_ Vec);
 	void PlayerPowerUp();
 
 private :
@@ -41,7 +41,7 @@ private :
 	void CheckMissileColide();
 	void ChangeMissilesAccordWithPower();
 	INT CalDirection(const _In_ INT);
-	const vRESULT MakeDyingExplosion();
+	void MakeDyingExplosion(const _In_ Vec);
 
 
 	Vec m_Pos;

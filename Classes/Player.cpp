@@ -294,12 +294,11 @@ void Player::LoadImgWithDirection()
 /*
 	플레이어에게 총알이 맞았을 경우 호출하는 함수.
 */
-void Player::PlayerDamaged()
+void Player::PlayerDamaged(const _In_ Vec missileVec)
 {
 	if (m_IsPlayerAlive)
 	{
-		vRESULT retval = MakeDyingExplosion();
-		DebugLogPrint(retval, MESSAGES::explodeFailed, _T("from Player Damaged"));
+		MakeDyingExplosion(missileVec);
 	}
 	m_IsPlayerAlive = FALSE;
 
@@ -396,17 +395,25 @@ INT Player::PrintDebugLabel(_Inout_ HDC drawDC)
 /*
 	Make 8-ways Explosion when Player died.
 */
-const vRESULT Player::MakeDyingExplosion()
+void Player::MakeDyingExplosion(const _In_ Vec missileVec)
 {
-	EffectManager* effectManager = EffectManager::GetInstance();
-	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.f, 1.f));
-	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.f, -1.f));
-	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.5f, 0.5f));
-	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(0.5f, -0.5f));
-	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(-0.5f, 0.5f));
-	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(-0.5f, -0.5f));
-	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(1.f, 0.f));
-	effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed, Vec(-1.f, 0.f));
+	const float vecRange = 25.f;
+	const float speedRange = 300.f;
+	const int makeEffectNumber = 8;
+	std::mt19937 rng((unsigned int)time(NULL));
+	std::uniform_real_distribution<float> rangeDist(-0.20, 0.20);
+	std::uniform_real_distribution<float> speedDist(-(speedRange / 2), speedRange);
 
-	return WELL_PERFORMED;
+	EffectManager* effectManager = EffectManager::GetInstance();
+	for (int i = 0; i < makeEffectNumber; ++i)
+	{
+		float x = rangeDist(rng);
+		float y = rangeDist(rng);
+		float speed = speedDist(rng);
+		Vec effectVec = Vec(missileVec.x + x, missileVec.y + y);
+
+		effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed + speed, effectVec);
+	}
+
+	return;
 }
