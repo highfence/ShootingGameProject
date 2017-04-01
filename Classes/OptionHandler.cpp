@@ -66,12 +66,38 @@ void OptionHandler::Init()
 	GoAndSlowData emptyData;
 
 	/* 쏘지 않는 FireOption */
-	FireOption enemyNoFire = FireOption(FIRE_TYPE::FIRE_TYPE_NUM, MISSILE_TYPE::NONE, MISSILE_SIZE::SMALL, 0.f, 0.f, 0.f, Vec(0.f, 0.f), 0.f, 0.f, 0, 0.f, 0);
+	FireOption enemyNoFire = FireOption(
+		FIRE_TYPE::FIRE_TYPE_NUM,
+		MISSILE_TYPE::NONE,
+		MISSILE_SIZE::SMALL,
+		0.f, 0.f, 0.f,
+		Vec(0.f, 0.f),
+		0.f, 0.f, 0, 0.f, 0);
 
 	/* 직선, 조준탄 FireOption */
-	FireOption enemyFireFront = FireOption(FIRE_TYPE::NORMAL_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MISSILE_SIZE::SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 1, 0.f, nullptr);
-	FireOption enemyFireAimed = FireOption(FIRE_TYPE::AIMED_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MISSILE_SIZE::SMALL, 500.f, 0.f, 0.f, Vec(0.f, 1.f), 1.5f, 1.5f, 1, 50.f, nullptr);
-	FireOption enemyMineAimed = FireOption(FIRE_TYPE::AIMED_FIRE, MISSILE_TYPE::STRAIGHT_FIRE, MISSILE_SIZE::SMALL, 300.f, 0.f, 0.f, Vec(0.f, 1.f), 0.25f, 3.0f, 1, 50.f, nullptr);
+	FireOption enemyFireFront = FireOption(
+		FIRE_TYPE::NORMAL_FIRE,
+		MISSILE_TYPE::STRAIGHT_FIRE,
+		MISSILE_SIZE::SMALL,
+		500.f, 0.f, 0.f,
+		Vec(0.f, 1.f),
+		1.5f, 1.5f, 1, 0.f, nullptr);
+
+	FireOption enemyFireAimed = FireOption(
+		FIRE_TYPE::AIMED_FIRE,
+		MISSILE_TYPE::STRAIGHT_FIRE,
+		MISSILE_SIZE::SMALL,
+		500.f, 0.f, 0.f,
+		Vec(0.f, 1.f),
+		1.5f, 1.5f, 1, 50.f, nullptr);
+
+	FireOption enemyMineAimed = FireOption(
+		FIRE_TYPE::AIMED_FIRE,
+		MISSILE_TYPE::STRAIGHT_FIRE,
+		MISSILE_SIZE::SMALL,
+		300.f, 0.f, 0.f,
+		Vec(0.f, 1.f),
+		0.25f, 3.0f, 1, 150.f, nullptr);
 
 	/* Data 생성을 위한 정보. */
 	INT shotTimes[] = { 6, 5, 6, 0, 0 };
@@ -102,6 +128,7 @@ void OptionHandler::Init()
 
 	/* EnemyMine 관련 CreateOption*/
 	CreateOption enemyMineDiagonal = CreateOption(1, ENEMY_TYPE::ENEMY_MINE, FLIGHT_TYPE::FLY_ACCELERATE, Vec(-0.5f, 0.5f), 250.f, 150.f, emptyData, FALSE);
+	CreateOption enemyMineStraight = CreateOption(1, ENEMY_TYPE::ENEMY_MINE, FLIGHT_TYPE::FLY_ACCELERATE, Vec(0.f, 1.f), 150.f, 100.f, emptyData, FALSE);
 
 	/* EnemyHandShot 관련 CreateOption */
 	GoAndSlowData enemyHandShotGASData = GoAndSlowData(0.5f, 15.f, Vec(0.f, 1.f), 50.f);
@@ -113,6 +140,7 @@ void OptionHandler::Init()
 	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(CREATE_OPTION::ENEMY_ITEM_FALSE, enemyItemNormal));
 	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(CREATE_OPTION::ENEMY_HAND_SHOT_CREATE, enemyHandShotCreate));
 	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(CREATE_OPTION::ENEMY_MINE_DIAGONAL, enemyMineDiagonal));
+	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(CREATE_OPTION::ENEMY_MINE_STRAIGHT, enemyMineStraight));
 	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(CREATE_OPTION::ITEM_CREATE, itemOption));
 
 	// 발사 옵션 등록.

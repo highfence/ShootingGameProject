@@ -496,14 +496,19 @@ BOOL Enemy::FireNormal()
 {
 	FireOption opt = GetFireOption();
 	
-	if (m_AccTime > opt.GetInitShootDelay() && m_RecordFireTime > opt.GetIntervalShootDelay())
+	if (m_AccTime > opt.GetInitShootDelay()) 
 	{
-		auto missile = GetLaunchableMissile();
-		if (missile != nullptr)
+		// 첫번째 진입 시점.
+		if ((m_RecordFireTime == m_AccTime)
+			|| m_RecordFireTime > opt.GetIntervalShootDelay())
 		{
-			missile->Launch(m_LaunchPos, opt);
+			auto missile = GetLaunchableMissile();
+			if (missile != nullptr)
+			{
+				missile->Launch(m_LaunchPos, opt);
+			}
+			m_RecordFireTime = 0.f;
 		}
-		m_RecordFireTime = 0.f;
 	}
 	return TRUE;
 }
@@ -677,6 +682,7 @@ BOOL Enemy::SetOptionMissileVecToPlayer()
 {
 	FireOption opt = GetFireOption();
 	FLOAT range = opt.GetRandomRange();
+	Vec vecToPlayer = m_PlayerPos - m_Pos;
 
 	// RandomRange 옵션이 있을 경우
 	if (range != 0)
@@ -684,12 +690,12 @@ BOOL Enemy::SetOptionMissileVecToPlayer()
 		// 난수 생성기를 통해 -range ~ range 범위의 값을 생성해준다.
 		std::mt19937 rng;
 		std::uniform_real_distribution<float> dist(-range, range);
-		opt.SetMissileVec(Vec(m_PlayerPos.x + dist(rng), m_PlayerPos.y + dist(rng)));
+		opt.SetMissileVec(Vec(vecToPlayer.x + dist(rng), vecToPlayer.y + dist(rng)));
 	}
 	else
 	{
 		// 아닐 경우 그냥 플레이어의 위치를 등록해준다.
-		opt.SetMissileVec(Vec(m_PlayerPos.x, m_PlayerPos.y));
+		opt.SetMissileVec(Vec(vecToPlayer.x, vecToPlayer.y));
 	}
 
 	// 등록한 옵션으로 수정.
