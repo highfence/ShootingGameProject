@@ -41,6 +41,7 @@ private :
 	CImage* m_pSprite = nullptr;
 	CImage* m_pShadeSprite = nullptr;
 	BOOL m_IsOptionActivated = FALSE;
+	BOOL m_IsMissileRed = TRUE;
 	Option* m_pNextOption = nullptr;
 
 	std::vector<OptionMissile*> m_MissileVec;

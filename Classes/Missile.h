@@ -27,6 +27,8 @@ public :
 	ENEMY::MISSILE_TYPE GetMissileType() const;
 	virtual BOOL IsMissileOnDisplay();
 
+protected :
+
 	CImage* m_pSprite;
 	CImage* m_pShapeSprite;
 	BOOL m_IsMissileLaunched;
