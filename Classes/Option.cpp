@@ -3,8 +3,9 @@
 
 const FLOAT optionSpriteWidth = 15.f;
 const FLOAT optionSpriteHeight = 15.f;
-const FLOAT optionWidthRangeThershold = 50.f;
-const FLOAT optionHeightRangeThershold = 30.f;
+const FLOAT optionWidthRangeThershold = 15.f;
+const FLOAT optionHeightRangeThershold = 10.f;
+const FLOAT optionThersholdCorrectionValue = 5.f;
 const std::wstring optionSpritePath = _T("../Resources/Player/Opt");
 const std::wstring optionShadePath = _T("../Resources/Player/OptS");
 const std::wstring optionFileExtension = _T(".png");
@@ -160,25 +161,23 @@ void Option::Move(const _In_ Vec previousPos)
 	FLOAT xGap = previousPos.x - m_Pos.x;
 	FLOAT yGap = previousPos.y - m_Pos.y;
 
-	if (xGap > optionWidthRangeThershold)
+	if (xGap > optionWidthRangeThershold + optionThersholdCorrectionValue)
 	{
-
+		m_Pos.x = previousPos.x - optionWidthRangeThershold;
 	}
-	else if (xGap < -optionWidthRangeThershold)
+	else if (xGap < -(optionWidthRangeThershold + optionThersholdCorrectionValue))
 	{
-
+		m_Pos.x = previousPos.x + optionWidthRangeThershold;
 	}
 
-	if (yGap > optionHeightRangeThershold)
+	if (yGap > optionHeightRangeThershold + optionThersholdCorrectionValue)
 	{
-
+		m_Pos.y = previousPos.y - optionWidthRangeThershold;
 	}
-	else if (xGap < -optionHeightRangeThershold)
+	else if (yGap < -(optionHeightRangeThershold + optionThersholdCorrectionValue))
 	{
-
+		m_Pos.y = previousPos.y + optionWidthRangeThershold;
 	}
-	m_Pos.x = previousPos.x;
-	m_Pos.y = previousPos.y - 25.f;
 
 	if (m_pNextOption != nullptr)
 	{
