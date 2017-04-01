@@ -4,6 +4,7 @@
 class Missile;
 class PlayerMissile;
 class Enemy;
+class Option;
 
 /*
 	Player
@@ -31,15 +32,18 @@ public :
 private :
 
 	void init();
-	INT InitialImgLoad();
-	INT AccTime(const _In_ FLOAT);
+	void InitialImgLoad();
+	void InitialOptionSetting();
+	void AccTime(const _In_ FLOAT);
 	void MissileLoad();
 	void MissileDraw(_Inout_ HDC);
+	void OptionDraw(_Inout_ HDC);
 	void LaunchMissile(const _In_ FLOAT);
 	void LoadImgWithDirection();
 	void DeleteMissile();
 	void CheckMissileColide();
 	void ChangeMissilesAccordWithPower();
+	void ChangeOptionsAccordWithPower();
 	INT CalDirection(const _In_ INT);
 	void MakeDyingExplosion(const _In_ Vec);
 
@@ -58,6 +62,7 @@ private :
 	INT m_Direction;
 
 	std::vector<PlayerMissile*> m_MissileVec;
+	std::vector<Option*> m_OptionVec;
 
 #ifdef _DEBUG
 	INT PrintDebugLabel(_Inout_ HDC);

@@ -4,6 +4,7 @@
 #include "EnemyManager.h"
 #include "EffectManager.h"
 #include "SoundManager.h"
+#include "Option.h"
 
 const FLOAT playerInitWidth = winWidth / 2;
 const FLOAT playerInitHeight = winHeight * 3 / 4;
@@ -19,7 +20,7 @@ const INT playerMissileNumber = 15;
 const FLOAT playerMissileLoadSpeed = 0.05f;
 const FLOAT playerColisionPixel = 15;
 const INT playerMaxPowerTier = 4;
-
+const INT playerOptionNumber = 3;
 
 Player::Player()
 	: 
@@ -44,6 +45,7 @@ void Player::init()
 	m_Height = playerSpriteHeight;
 
 	InitialImgLoad();
+	InitialOptionSetting();
 	MissileLoad();
 	return;
 }
@@ -54,12 +56,35 @@ Player::~Player()
 	delete m_pSprite;
 }
 
-INT Player::InitialImgLoad()
+void Player::InitialImgLoad()
 {
 	ImgLoad(m_pSprite, playerFilePath, 3, playerFileExtension, FALSE);
 	ImgLoad(m_pShadeSprite, playerShadePath, 3, playerFileExtension, FALSE);
-	return WELL_PERFORMED;
+	return;
 }
+
+void Player::InitialOptionSetting()
+{
+	// Option의 특성상, 쓰지 않는 Option을 두고 있는 것이 좋기 때문에, 한 개를 추가해준다.
+	m_OptionVec.reserve(playerOptionNumber + 1);
+	Option* previousOption = nullptr;
+	Option* curOption = nullptr;
+	for (int i = 0; i <= playerOptionNumber; ++i)
+	{
+		curOption = new Option();
+		m_OptionVec.emplace_back(curOption);
+
+		if (previousOption != nullptr)
+		{
+			previousOption->SetNextOption(*curOption);
+		}
+		previousOption = curOption;
+		curOption = nullptr;
+	}
+
+	return;
+}
+
 
 void Player::Draw(_Inout_ HDC drawDC)
 {
@@ -75,9 +100,13 @@ void Player::Draw(_Inout_ HDC drawDC)
 	m_pSprite->BitBlt(drawDC, m_Pos.x - m_Width / 2, m_Pos.y - m_Height / 2,
 		m_Width, m_Height, 0, 0, SRCPAINT);
 
+#pragma warning(pop)
+	
+	/* 미사일들 출력 */
 	MissileDraw(drawDC);
 
-#pragma warning(pop)
+	/* 옵션들 출력 */
+	OptionDraw(drawDC);
 
 #ifdef _DEBUG
 	PrintDebugLabel(drawDC);
@@ -140,10 +169,11 @@ void Player::MissileFly(const _In_ FLOAT dt)
 
 void Player::MissileLoad()
 {
+	m_MissileVec.reserve(playerMissileNumber);
 	for (int i = 0; i < playerMissileNumber; ++i)
 	{
 		PlayerMissile* loadingMissile = new PlayerMissile;
-		m_MissileVec.push_back(loadingMissile);
+		m_MissileVec.emplace_back(loadingMissile);
 	}
 
 	return;
@@ -151,10 +181,17 @@ void Player::MissileLoad()
 
 void Player::MissileDraw(_Inout_ HDC drawDC)
 {
-	for (auto i : m_MissileVec)
+	for (const auto& i : m_MissileVec)
 	{
 		i->Draw(drawDC);
 	}
+
+	return;
+}
+
+void Player::OptionDraw(_Inout_ HDC drawDC)
+{
+	m_OptionVec.front()->DrawProc(drawDC);
 
 	return;
 }
@@ -163,7 +200,7 @@ void Player::LaunchMissile(const _In_ FLOAT dt)
 {
 	if (m_AccTime > playerMissileLoadSpeed)
 	{
-		for (auto i : m_MissileVec)
+		for (auto& i : m_MissileVec)
 		{
 			if (i->Missile::Launch(m_Pos))
 			{
@@ -176,11 +213,11 @@ void Player::LaunchMissile(const _In_ FLOAT dt)
 	return;
 }
 
-INT Player::AccTime(const _In_ FLOAT dt)
+void Player::AccTime(const _In_ FLOAT dt)
 {
 	m_AccTime += dt;
 	m_RecordAccTime += dt;
-	return WELL_PERFORMED;
+	return;
 }
 
 void Player::DeleteMissile()
@@ -314,6 +351,7 @@ void Player::PlayerPowerUp()
 	{
 		++m_PowerTier;
 		ChangeMissilesAccordWithPower();
+		ChangeOptionsAccordWithPower();
 	}
 
 	return;
@@ -329,6 +367,15 @@ void Player::ChangeMissilesAccordWithPower()
 		i->ChangeMissileTier(m_PowerTier);
 	}
 
+	return;
+}
+
+/*
+	멤버 변수 m_OptionTier에 맞도록 Option의 개수를 바꾸어주는 함수.
+*/
+void Player::ChangeOptionsAccordWithPower()
+{
+	m_OptionVec.front()->Activate(m_Pos);
 	return;
 }
 
