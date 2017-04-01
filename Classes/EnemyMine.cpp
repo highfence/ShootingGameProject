@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "EffectManager.h"
 #include "EnemyMine.h"
+#include "EnemyManager.h"
 #include "UIManager.h"
 
 const std::wstring enemyMineSpritePath = _T("../Resources/Enemy/mine_11_0");
+const std::wstring enemyMineItemSpritePath = _T("../Resources/Enemy/mine_12_0");
 const std::wstring enemyMineShadePath = _T("../Resources/Enemy/mine_11_S0");
 const std::wstring enemyMineFileExtension = _T(".png");
 const INT enemyMineSpriteWidth = 48;
@@ -70,6 +72,11 @@ void EnemyMine::Draw(_Inout_ HDC drawDC)
 
 void EnemyMine::Explode()
 {
+	if (m_CreateOption.GetIsItemLaunched() == TRUE)
+	{
+		EnemyManager::GetInstance()->ActivateEnemyOnce(m_Pos, CREATE_OPTION::ITEM_CREATE, FIRE_OPTION::NO_FIRE);
+	}
+
 	EffectManager::GetInstance()->MakeEffect(
 		EFFECT::EFFECT_TYPE::EXPLODE_LIGHT,
 		m_Pos,
@@ -108,7 +115,14 @@ void EnemyMine::MakeSpriteNextThing()
 		m_FrameNum = 1;
 	}
 
-	ImgLoad(m_pSprite, enemyMineSpritePath, m_FrameNum, enemyMineFileExtension, TRUE);
+	if (m_CreateOption.GetIsItemLaunched())
+	{
+		ImgLoad(m_pSprite, enemyMineItemSpritePath, m_FrameNum, enemyMineFileExtension, TRUE);
+	}
+	else
+	{
+		ImgLoad(m_pSprite, enemyMineSpritePath, m_FrameNum, enemyMineFileExtension, TRUE);
+	}
 	ImgLoad(m_pShadeSprite, enemyMineShadePath, m_FrameNum, enemyMineFileExtension, TRUE);
 	return;
 }

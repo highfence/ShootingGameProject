@@ -129,6 +129,7 @@ void OptionHandler::Init()
 	/* EnemyMine 관련 CreateOption*/
 	CreateOption enemyMineDiagonal = CreateOption(1, ENEMY_TYPE::ENEMY_MINE, FLIGHT_TYPE::FLY_ACCELERATE, Vec(-0.5f, 0.5f), 250.f, 150.f, emptyData, FALSE);
 	CreateOption enemyMineStraight = CreateOption(1, ENEMY_TYPE::ENEMY_MINE, FLIGHT_TYPE::FLY_ACCELERATE, Vec(0.f, 1.f), 50.f, 20.f, emptyData, FALSE);
+	CreateOption enemyMineStraightWithItem = CreateOption(1, ENEMY_TYPE::ENEMY_MINE, FLIGHT_TYPE::FLY_ACCELERATE, Vec(0.f, 1.f), 50.f, 20.f, emptyData, TRUE);
 
 	/* EnemyHandShot 관련 CreateOption */
 	GoAndSlowData enemyHandShotGASData = GoAndSlowData(0.5f, 15.f, Vec(0.f, 1.f), 50.f);
@@ -141,6 +142,7 @@ void OptionHandler::Init()
 	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(CREATE_OPTION::ENEMY_HAND_SHOT_CREATE, enemyHandShotCreate));
 	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(CREATE_OPTION::ENEMY_MINE_DIAGONAL, enemyMineDiagonal));
 	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(CREATE_OPTION::ENEMY_MINE_STRAIGHT, enemyMineStraight));
+	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(CREATE_OPTION::ENEMY_MINE_STRAIGHT_WITH_ITEM, enemyMineStraightWithItem));
 	m_CreateOptionMap.insert(std::unordered_map<ENEMY::CREATE_OPTION, CreateOption>::value_type(CREATE_OPTION::ITEM_CREATE, itemOption));
 
 	// 발사 옵션 등록.
