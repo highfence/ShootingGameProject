@@ -128,7 +128,7 @@ void OptionHandler::Init()
 
 	/* EnemyMine 관련 CreateOption*/
 	CreateOption enemyMineDiagonal = CreateOption(1, ENEMY_TYPE::ENEMY_MINE, FLIGHT_TYPE::FLY_ACCELERATE, Vec(-0.5f, 0.5f), 250.f, 150.f, emptyData, FALSE);
-	CreateOption enemyMineStraight = CreateOption(1, ENEMY_TYPE::ENEMY_MINE, FLIGHT_TYPE::FLY_ACCELERATE, Vec(0.f, 1.f), 150.f, 100.f, emptyData, FALSE);
+	CreateOption enemyMineStraight = CreateOption(1, ENEMY_TYPE::ENEMY_MINE, FLIGHT_TYPE::FLY_ACCELERATE, Vec(0.f, 1.f), 50.f, 20.f, emptyData, FALSE);
 
 	/* EnemyHandShot 관련 CreateOption */
 	GoAndSlowData enemyHandShotGASData = GoAndSlowData(0.5f, 15.f, Vec(0.f, 1.f), 50.f);

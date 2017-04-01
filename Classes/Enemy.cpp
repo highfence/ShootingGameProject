@@ -168,7 +168,7 @@ void Enemy::DrawProc(_Inout_ HDC drawDC)
 	DrawMissiles(drawDC);
 
 #ifdef _DEBUG
-	//std::wstring debugLabel = _T("Player X : ") + std::to_wstring(m_PlayerPos.x) + _T(", Y : ") + std::to_wstring(m_PlayerPos.y);
+	//std::wstring debugLabel = std::to_wstring((int)(m_AccTime * 2));
 	//TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
 #endif
 	return;
