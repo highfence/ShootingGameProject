@@ -5,8 +5,8 @@ const FLOAT optionSpriteWidth = 15.f;
 const FLOAT optionSpriteHeight = 15.f;
 const FLOAT optionWidthRangeThershold = 50.f;
 const FLOAT optionHeightRangeThershold = 30.f;
-const std::wstring optionSpritePath = _T("../Resources/Opt");
-const std::wstring optionShadePath = _T("../Resources/OptS");
+const std::wstring optionSpritePath = _T("../Resources/Player/Opt");
+const std::wstring optionShadePath = _T("../Resources/Player/OptS");
 const std::wstring optionFileExtension = _T(".png");
 const INT loadMissileNumber = 20;
 
@@ -62,13 +62,16 @@ void Option::CalcProc(const _In_ FLOAT deltaTime, const _In_ Vec previousPositio
 
 void Option::DrawProc(_Inout_ HDC drawDC)
 {
+	if (m_pNextOption != nullptr)
+	{
+		/* 내 뒤의 Option이 먼저 그려짐 */
+		m_pNextOption->DrawProc(drawDC);
+	}
+	
 	if (m_IsOptionActivated == FALSE)
 	{
 		return;
 	}
-
-	/* 내 뒤의 Option이 먼저 그려짐 */
-	m_pNextOption->DrawProc(drawDC);
 
 #pragma warning(push)
 #pragma warning(disable : 4244)	
@@ -173,6 +176,13 @@ void Option::Move(const _In_ Vec previousPos)
 	else if (xGap < -optionHeightRangeThershold)
 	{
 
+	}
+	m_Pos.x = previousPos.x;
+	m_Pos.y = previousPos.y - 25.f;
+
+	if (m_pNextOption != nullptr)
+	{
+		m_pNextOption->Move(m_Pos);
 	}
 
 	return;

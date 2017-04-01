@@ -102,11 +102,6 @@ void Player::Draw(_Inout_ HDC drawDC)
 
 #pragma warning(pop)
 	
-	/* 미사일들 출력 */
-	MissileDraw(drawDC);
-
-	/* 옵션들 출력 */
-	OptionDraw(drawDC);
 
 #ifdef _DEBUG
 	PrintDebugLabel(drawDC);
@@ -164,6 +159,13 @@ void Player::MissileFly(const _In_ FLOAT dt)
 	{
 		i->Fly(dt, 0, -1, PLAYER::playerMissileSpeed);
 	}
+	return;
+}
+
+void Player::OptionFly()
+{
+	m_OptionVec.front()->Move(m_Pos);
+
 	return;
 }
 
@@ -235,6 +237,7 @@ void Player::CalProc(const _In_ BYTE* keyByte, const _In_ FLOAT dt)
 	AccTime(dt);
 	Move(keyByte, dt);
 	MissileFly(dt);
+	OptionFly();
 	CheckMissileColide();
 
 	return;
@@ -242,7 +245,14 @@ void Player::CalProc(const _In_ BYTE* keyByte, const _In_ FLOAT dt)
 
 void Player::DrawProc(_Inout_ HDC drawDC)
 {
+	/* Player 자신의 Draw */
 	Draw(drawDC);
+
+	/* 미사일들 출력 */
+	MissileDraw(drawDC);
+
+	/* 옵션들 출력 */
+	OptionDraw(drawDC);
 	return;
 }
 

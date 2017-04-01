@@ -17,13 +17,13 @@ public :
 	void SetNextOption(_In_ Option&);
 	BOOL GetIsOptionActivated();
 	void SettingForActivate(const _In_ Vec);
+	void Move(const _In_ Vec);
 
 private :
 
 	void init();
 	void InitialImgLoad();
 	void MissileLoad();
-	void Move(const _In_ Vec);
 
 	Vec m_Pos = Vec(0.f, 0.f);
 	Vec m_SavePreviousPos = Vec(0.f, 0.f);

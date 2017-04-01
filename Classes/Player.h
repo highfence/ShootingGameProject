@@ -22,7 +22,6 @@ public :
 
 	void Draw(_Inout_ HDC);
 	void Move(const _In_ BYTE*, const _In_ FLOAT);
-	void MissileFly(const _In_ FLOAT);
 	const vRESULT GetPosition(_Out_ Vec*) const;
 	FLOAT GetCollisionPixel() const;
 	BOOL GetIsPlayerAlived() const;
@@ -38,6 +37,8 @@ private :
 	void MissileLoad();
 	void MissileDraw(_Inout_ HDC);
 	void OptionDraw(_Inout_ HDC);
+	void MissileFly(const _In_ FLOAT);
+	void OptionFly();
 	void LaunchMissile(const _In_ FLOAT);
 	void LoadImgWithDirection();
 	void DeleteMissile();
