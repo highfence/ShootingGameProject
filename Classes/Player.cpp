@@ -162,9 +162,9 @@ void Player::MissileFly(const _In_ FLOAT dt)
 	return;
 }
 
-void Player::OptionFly()
+void Player::OptionFly(const _In_ FLOAT deltaTime)
 {
-	m_OptionVec.front()->Move(m_Pos);
+	m_OptionVec.front()->CalcProc(deltaTime, m_Pos);
 
 	return;
 }
@@ -237,7 +237,7 @@ void Player::CalProc(const _In_ BYTE* keyByte, const _In_ FLOAT dt)
 	AccTime(dt);
 	Move(keyByte, dt);
 	MissileFly(dt);
-	OptionFly();
+	OptionFly(dt);
 	CheckMissileColide();
 
 	return;

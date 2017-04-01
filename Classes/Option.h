@@ -24,16 +24,20 @@ private :
 	void init();
 	void InitialImgLoad();
 	void MissileLoad();
+	void MakeImageNextFrame();
+	void AccTime(const _In_ FLOAT);
 
 	Vec m_Pos = Vec(0.f, 0.f);
 	Vec m_SavePreviousPos = Vec(0.f, 0.f);
 	FLOAT m_Width = 0.f;
 	FLOAT m_Height = 0.f;
 	FLOAT m_AccTime = 0.f;
+	FLOAT m_RecordRotateTime = 0.f;
 	FLOAT m_RecordFireTime = 0.f;
 	INT m_PowerTier = 1;
 	INT m_FrameNum = 1;
 	INT m_MaxFrameNum = 8;
+	FLOAT m_TimePerFrame = 0.30f;
 	CImage* m_pSprite = nullptr;
 	CImage* m_pShadeSprite = nullptr;
 	BOOL m_IsOptionActivated = FALSE;

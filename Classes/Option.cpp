@@ -50,19 +50,33 @@ Option::~Option()
 
 void Option::CalcProc(const _In_ FLOAT deltaTime, const _In_ Vec previousPosition)
 {
+	Move(previousPosition);
+
+	if (m_pNextOption != nullptr)
+	{
+		m_pNextOption->Move(m_Pos);
+		m_pNextOption->CalcProc(deltaTime, m_Pos);
+	}
+
 	if (m_IsOptionActivated == FALSE)
 	{
 		return;
 	}
 
-	Move(previousPosition);
+	AccTime(deltaTime);
+	MakeImageNextFrame();
 
-	m_pNextOption->CalcProc(deltaTime, m_Pos);
 	return;
 }
 
 void Option::DrawProc(_Inout_ HDC drawDC)
 {
+	if (m_IsOptionActivated)
+	{
+		std::wstring debugLabel = _T("here!");
+		TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
+	}
+
 	if (m_pNextOption != nullptr)
 	{
 		/* 내 뒤의 Option이 먼저 그려짐 */
@@ -183,6 +197,35 @@ void Option::Move(const _In_ Vec previousPos)
 	{
 		m_pNextOption->Move(m_Pos);
 	}
+
+	return;
+}
+
+void Option::MakeImageNextFrame()
+{
+	if (m_RecordRotateTime < m_TimePerFrame)
+	{
+		return;
+	}
+	m_RecordRotateTime = 0.f;
+
+	++m_FrameNum;
+	if (m_FrameNum == m_MaxFrameNum + 1)
+	{
+		m_FrameNum = 1;
+	}
+	
+	ImgLoad(m_pSprite, optionSpritePath, m_FrameNum, optionFileExtension, TRUE);
+	ImgLoad(m_pShadeSprite, optionShadePath, m_FrameNum, optionFileExtension, TRUE);
+
+	return;
+}
+
+void Option::AccTime(const FLOAT deltaTime)
+{
+	m_AccTime = deltaTime;
+	m_RecordFireTime = deltaTime;
+	m_RecordRotateTime = deltaTime;
 
 	return;
 }

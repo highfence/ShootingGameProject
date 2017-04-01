@@ -38,7 +38,7 @@ private :
 	void MissileDraw(_Inout_ HDC);
 	void OptionDraw(_Inout_ HDC);
 	void MissileFly(const _In_ FLOAT);
-	void OptionFly();
+	void OptionFly(const _In_ FLOAT);
 	void LaunchMissile(const _In_ FLOAT);
 	void LoadImgWithDirection();
 	void DeleteMissile();
