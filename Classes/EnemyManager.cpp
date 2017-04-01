@@ -57,6 +57,7 @@ void EnemyManager::RegisterFunctionPointer()
 	m_pActivateHandler[ENEMY_TYPE::ITEM] = &EnemyManager::ActivateItem;
 	m_pActivateHandler[ENEMY_TYPE::ENEMY_ZACO] = &EnemyManager::ActivateZaco;
 	m_pActivateHandler[ENEMY_TYPE::ENEMY_HAND_SHOT] = &EnemyManager::ActivateHandShot;
+	m_pActivateHandler[ENEMY_TYPE::ENEMY_MINE] = &EnemyManager::ActivateEnemyMine;
 	return;
 }
 
@@ -66,13 +67,13 @@ void EnemyManager::RegisterFunctionPointer()
 void EnemyManager::GetOptionPointer()
 {
 	auto optHandler = OptionHandler::GetInstance();
-	for (int i = 0; i < ENEMY::CREATE_OPTION::CREATE_OPTION_NUM; ++i)
+	for (int i = 0; (CREATE_OPTION)i < CREATE_OPTION::CREATE_OPTION_NUM; ++i)
 	{
 		auto opt = optHandler->GetCreateOption((CREATE_OPTION)i);
 		m_pCreateOptionArray[i] = opt;
 	}
 	
-	for (int i = 0; i < ENEMY::FIRE_OPTION::FIRE_OPTION_NUM; ++i)
+	for (INT i = 0; (FIRE_OPTION)i < FIRE_OPTION::FIRE_OPTION_NUM; ++i)
 	{
 		auto opt = optHandler->GetFireOption((FIRE_OPTION)i);
 		m_pFireOptionArray[i] = opt;
@@ -159,6 +160,29 @@ BOOL EnemyManager::ActivateHandShot(
 	const _In_ ENEMY::FIRE_OPTION fireOptionNumber)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_HAND_SHOT);
+	if (newEnemy != nullptr)
+	{
+		newEnemy->Activate(
+			createPos,
+			*m_pCreateOptionArray[createOptionNumber],
+			*m_pFireOptionArray[fireOptionNumber]);
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/*
+	EnemyMine을 만들어 주는 함수.
+*/
+BOOL EnemyManager::ActivateEnemyMine(
+	const _In_ Vec createPos,
+	const _In_ ENEMY::CREATE_OPTION createOptionNumber,
+	const _In_ ENEMY::FIRE_OPTION fireOptionNumber)
+{
+	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_MINE);
 	if (newEnemy != nullptr)
 	{
 		newEnemy->Activate(
@@ -269,18 +293,23 @@ Player& EnemyManager::getPlayerInfo()
 void EnemyManager::MakeProc()
 {
 	FLOAT line1 = 4.f;
-	ActivateEnemy(line1, Vec(350.f, 0.f), ENEMY_ITEM_FALSE, FIRE_FRONT);
-	ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), ENEMY_ITEM_FALSE, FIRE_FRONT);
-	ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), ENEMY_ITEM_FALSE, FIRE_FRONT);
-	ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), ENEMY_ITEM_TRUE, FIRE_FRONT);
+	ActivateEnemy(line1		   , Vec(350.f, 0.f), CREATE_OPTION::ENEMY_ITEM_FALSE, FIRE_OPTION::FIRE_FRONT);
+	ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), CREATE_OPTION::ENEMY_ITEM_FALSE, FIRE_OPTION::FIRE_FRONT);
+	ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), CREATE_OPTION::ENEMY_ITEM_FALSE, FIRE_OPTION::FIRE_FRONT);
+	ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), CREATE_OPTION::ENEMY_ITEM_TRUE, FIRE_OPTION::FIRE_FRONT);
 
 	FLOAT line2 = 6.f;
-		
-
+	ActivateEnemy(line2		   , Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 0.25f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 0.50f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 0.75f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 1.00f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 1.25f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 1.50f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
 
 	FLOAT line3 = 15.f;
-	ActivateEnemy(line3, Vec(650.f, 0.f), ENEMY_HAND_SHOT_CREATE, N_WAY_FIRE_OPTION);
-	ActivateEnemy(line3 + 3.f, Vec(250.f, 0.f), ENEMY_HAND_SHOT_CREATE, ROTATE_FIRE_OPTION);
+	ActivateEnemy(line3, Vec(650.f, 0.f), CREATE_OPTION::ENEMY_HAND_SHOT_CREATE, FIRE_OPTION::N_WAY_FIRE_OPTION);
+	ActivateEnemy(line3 + 3.f, Vec(250.f, 0.f), CREATE_OPTION::ENEMY_HAND_SHOT_CREATE, FIRE_OPTION::ROTATE_FIRE_OPTION);
 
 	return;
 }

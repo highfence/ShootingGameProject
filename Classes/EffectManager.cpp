@@ -5,6 +5,7 @@
 #include "ExplodeSmoke.h"
 #include "ExplodeArc.h"
 #include "EffectManager.h"
+using namespace EFFECT;
 
 EffectManager* EffectManager::m_pInstance = nullptr;
 
@@ -36,15 +37,15 @@ EffectManager::EffectManager()
 // 초기화 함수.
 void EffectManager::Init()
 {
-	m_pEffectMakerHandler[EXPLODE_LIGHT] = &EffectManager::MakeExplodeLight;
-	m_pEffectMakerHandler[EXPLODE_HIT] = &EffectManager::MakeExplodeHit;
-	m_pEffectMakerHandler[EXPLODE_SMOKE] = &EffectManager::MakeExplodeSmoke;
-	m_pEffectMakerHandler[EXPLODE_ARC] = &EffectManager::MakeExplodeArc;
+	m_pEffectMakerHandler[EFFECT_TYPE::EXPLODE_LIGHT] = &EffectManager::MakeExplodeLight;
+	m_pEffectMakerHandler[EFFECT_TYPE::EXPLODE_HIT] = &EffectManager::MakeExplodeHit;
+	m_pEffectMakerHandler[EFFECT_TYPE::EXPLODE_SMOKE] = &EffectManager::MakeExplodeSmoke;
+	m_pEffectMakerHandler[EFFECT_TYPE::EXPLODE_ARC] = &EffectManager::MakeExplodeArc;
 
-	m_pEffectMakerHandlerWithFloat[EXPLODE_LIGHT] = &EffectManager::MakeExplodeLightWithFloat;
-	m_pEffectMakerHandlerWithFloat[EXPLODE_HIT] = &EffectManager::MakeExplodeHitWithFloat;
-	m_pEffectMakerHandlerWithFloat[EXPLODE_SMOKE] = &EffectManager::MakeExplodeSmokeWithFloat;
-	m_pEffectMakerHandlerWithFloat[EXPLODE_ARC] = &EffectManager::MakeExplodeArcWithFloat;
+	m_pEffectMakerHandlerWithFloat[EFFECT_TYPE::EXPLODE_LIGHT] = &EffectManager::MakeExplodeLightWithFloat;
+	m_pEffectMakerHandlerWithFloat[EFFECT_TYPE::EXPLODE_HIT] = &EffectManager::MakeExplodeHitWithFloat;
+	m_pEffectMakerHandlerWithFloat[EFFECT_TYPE::EXPLODE_SMOKE] = &EffectManager::MakeExplodeSmokeWithFloat;
+	m_pEffectMakerHandlerWithFloat[EFFECT_TYPE::EXPLODE_ARC] = &EffectManager::MakeExplodeArcWithFloat;
 
 	return;
 }

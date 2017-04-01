@@ -83,6 +83,11 @@ private :
 		const _In_ ENEMY::CREATE_OPTION,
 		const _In_ ENEMY::FIRE_OPTION);
 
+	BOOL ActivateEnemyMine(
+		const _In_ Vec,
+		const _In_ ENEMY::CREATE_OPTION,
+		const _In_ ENEMY::FIRE_OPTION);
+
 	FLOAT m_AccTime;
 	FLOAT m_RecordCreateTime;
 	

@@ -39,7 +39,8 @@ EnemyMine::~EnemyMine()
 */
 void EnemyMine::CalcProc(const _In_ FLOAT dt)
 {
-	Enemy::CalcProc(dt);
+	// 기존 Enemy의 함수 호출.
+	this->Enemy::CalcProc(dt);
 	
 	// RecordFrameTime에 시간 누적.
 	m_RecordFrameTime += dt;
@@ -47,7 +48,7 @@ void EnemyMine::CalcProc(const _In_ FLOAT dt)
 	// 누적된 시간이 Frame당 배분된 시간보다 크다면 다음 Frame 호출.
 	if (m_RecordFrameTime > m_TimePerOneFrame)
 	{
-		
+		MakeSpriteNextThing();
 		m_RecordFrameTime = 0.f;
 	}
 
@@ -101,7 +102,11 @@ void EnemyMine::InitialImgLoad()
 void EnemyMine::MakeSpriteNextThing()
 {
 	// FrameNum을 다음 Frame으로.
-	m_FrameNum = (++m_FrameNum) % (m_MaxFrameNum + 1);
+	++m_FrameNum;
+	if (m_FrameNum == m_MaxFrameNum + 1)
+	{
+		m_FrameNum = 1;
+	}
 
 	ImgLoad(m_pSprite, enemyMineSpritePath, m_FrameNum, enemyMineFileExtension, TRUE);
 	ImgLoad(m_pShadeSprite, enemyMineShadePath, m_FrameNum, enemyMineFileExtension, TRUE);

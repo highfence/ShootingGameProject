@@ -37,8 +37,8 @@ private :
 	static EffectManager* m_pInstance;
 
 	// 핸들러와 핸들러 함수들.
-	BOOL(EffectManager::*m_pEffectMakerHandler[EFFECT::EFFECT_TYPE_NUM])(const _In_ Vec);
-	BOOL(EffectManager::*m_pEffectMakerHandlerWithFloat[EFFECT::EFFECT_TYPE_NUM])(
+	BOOL(EffectManager::*m_pEffectMakerHandler[EFFECT::EFFECT_TYPE::EFFECT_TYPE_NUM])(const _In_ Vec);
+	BOOL(EffectManager::*m_pEffectMakerHandlerWithFloat[EFFECT::EFFECT_TYPE::EFFECT_TYPE_NUM])(
 		const _In_ Vec,
 		const _In_ FLOAT,
 		const _In_ Vec);

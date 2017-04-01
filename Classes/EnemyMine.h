@@ -18,7 +18,7 @@ private :
 	void MakeSpriteNextThing();
 
 	FLOAT m_RecordFrameTime = 0.f;
-	FLOAT m_TimePerOneFrame = 0.3f;
+	FLOAT m_TimePerOneFrame = 0.15f;
 	INT m_FrameNum = 1;
 	INT m_MaxFrameNum = 9;
 
