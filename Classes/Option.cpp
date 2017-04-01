@@ -3,8 +3,8 @@
 
 const FLOAT optionSpriteWidth = 15.f;
 const FLOAT optionSpriteHeight = 15.f;
-const FLOAT optionWidthRangeThershold = 15.f;
-const FLOAT optionHeightRangeThershold = 10.f;
+const FLOAT optionWidthRangeThershold = 35.f;
+const FLOAT optionHeightRangeThershold = 25.f;
 const FLOAT optionThersholdCorrectionValue = 5.f;
 const std::wstring optionSpritePath = _T("../Resources/Player/Opt");
 const std::wstring optionShadePath = _T("../Resources/Player/OptS");
@@ -50,11 +50,8 @@ Option::~Option()
 
 void Option::CalcProc(const _In_ FLOAT deltaTime, const _In_ Vec previousPosition)
 {
-	Move(previousPosition);
-
 	if (m_pNextOption != nullptr)
 	{
-		m_pNextOption->Move(m_Pos);
 		m_pNextOption->CalcProc(deltaTime, m_Pos);
 	}
 
@@ -65,17 +62,20 @@ void Option::CalcProc(const _In_ FLOAT deltaTime, const _In_ Vec previousPositio
 
 	AccTime(deltaTime);
 	MakeImageNextFrame();
+	Move(previousPosition);
 
 	return;
 }
 
 void Option::DrawProc(_Inout_ HDC drawDC)
 {
+#ifdef _DEBUG
 	if (m_IsOptionActivated)
 	{
-		std::wstring debugLabel = _T("here!");
+		std::wstring debugLabel = std::to_wstring(m_FrameNum) + _T(",") + std::to_wstring((int)m_AccTime);
 		TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
 	}
+#endif
 
 	if (m_pNextOption != nullptr)
 	{
@@ -112,8 +112,8 @@ void Option::Activate(const _In_ Vec previousPos)
 		return;
 	}
 
-	// 다음 옵션이 Activate 되어 있다면,
-	if (m_pNextOption->GetIsOptionActivated())
+	// 현재 옵션이 Activate 되어 있다면,
+	if (m_IsOptionActivated)
 	{
 		// 한 번 더 내려간다.
 		m_pNextOption->Activate(m_Pos);
@@ -121,8 +121,7 @@ void Option::Activate(const _In_ Vec previousPos)
 	// Deactive 상태라면,	
 	else
 	{
-		// NextOption 세팅
-		m_pNextOption->SettingForActivate(m_Pos);
+		m_IsOptionActivated = TRUE;
 	}
 
 	return;
@@ -223,9 +222,9 @@ void Option::MakeImageNextFrame()
 
 void Option::AccTime(const FLOAT deltaTime)
 {
-	m_AccTime = deltaTime;
-	m_RecordFireTime = deltaTime;
-	m_RecordRotateTime = deltaTime;
+	m_AccTime += deltaTime;
+	m_RecordFireTime += deltaTime;
+	m_RecordRotateTime += deltaTime;
 
 	return;
 }

@@ -37,7 +37,7 @@ private :
 	INT m_PowerTier = 1;
 	INT m_FrameNum = 1;
 	INT m_MaxFrameNum = 8;
-	FLOAT m_TimePerFrame = 0.30f;
+	FLOAT m_TimePerFrame = 0.15f;
 	CImage* m_pSprite = nullptr;
 	CImage* m_pShadeSprite = nullptr;
 	BOOL m_IsOptionActivated = FALSE;
