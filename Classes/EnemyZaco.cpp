@@ -77,7 +77,7 @@ void EnemyZaco::DeadProc()
 	{
 		UIManager::GetInstance()->PlusScore(300);
 		Explode();
-		m_IsEnemyExplode = TRUE;
+		this->m_IsEnemyExplode = TRUE;
 	}
 	return;
 }

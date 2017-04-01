@@ -53,31 +53,14 @@ void EnemyItem::Draw(_Inout_ HDC drawDC)
 
 void EnemyItem::DeadProc()
 {
-	if ((!m_IsEnemyExplode) && (m_IsEnemyDead))
+	if (m_IsEnemyExplode == FALSE)
 	{
 		UIManager::GetInstance()->PlusScore(300);
 		Explode();
-		m_IsEnemyExplode = TRUE;
+		this->m_IsEnemyExplode = TRUE;
 	}
 	return;
 }
-//
-//void EnemyItem::Fire()
-//{
-//	const FLOAT fireFrequency = 1.5f;
-//	if (m_RecordAccTime > fireFrequency)
-//	{
-//		for (auto i : m_MissileVec)
-//		{
-//			if (i->Missile::Launch(ENEMY::MISSILE_TYPE::STRAIGHT_FIRE, m_Pos))
-//			{
-//				break;
-//			}
-//		}
-//		m_RecordAccTime = 0.f;
-//	}
-//	return;
-//}
 
 void EnemyItem::Activate(
 	const Vec createPos,

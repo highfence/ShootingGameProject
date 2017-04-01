@@ -71,7 +71,7 @@ void EnemyHandShot::DeadProc()
 	{
 		UIManager::GetInstance()->PlusScore(2700);
 		Explode();
-		m_IsEnemyExplode = TRUE;
+		this->m_IsEnemyExplode = TRUE;
 	}
 	return;
 }

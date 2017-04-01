@@ -86,7 +86,7 @@ void EnemyMine::DeadProc()
 	{
 		UIManager::GetInstance()->PlusScore(75);
 		Explode();
-		m_IsEnemyExplode = TRUE;
+		this->m_IsEnemyExplode = TRUE;
 	}
 	return;
 }

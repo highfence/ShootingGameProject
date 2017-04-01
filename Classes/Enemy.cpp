@@ -168,8 +168,11 @@ void Enemy::DrawProc(_Inout_ HDC drawDC)
 	DrawMissiles(drawDC);
 
 #ifdef _DEBUG
-	//std::wstring debugLabel = std::to_wstring((int)(m_AccTime * 2));
-	//TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
+	std::wstring debugLabel = _T("explode!");
+	if (m_IsEnemyExplode == TRUE)
+	{
+		TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
+	}
 #endif
 	return;
 }
@@ -446,6 +449,7 @@ void Enemy::Activate(
 void Enemy::Deactivate()
 {
 	SetIsEnemyActivated(FALSE);
+	m_IsEnemyExplode = FALSE;
 	SetCreateOption(nullptr);
 	SetFireOption(nullptr);
 }
