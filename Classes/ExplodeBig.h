@@ -1,18 +1,18 @@
 #pragma once
 #include "Effect.h"
 
-class ExplodeArc : public Effect
+class ExplodeBig : public Effect
 {
-public:
-	ExplodeArc() = delete;
-	ExplodeArc(const _In_ Vec);
-	ExplodeArc(
+public :
+	ExplodeBig() = delete;
+	ExplodeBig(const _In_ Vec);
+	ExplodeBig(
 		const _In_ Vec,
 		const _In_ FLOAT,
 		const _In_ Vec);
-	~ExplodeArc();
+	~ExplodeBig() = default;
 
-private:
+private :
 
 	void Init();
 	void InitialDataSubstitude() override;

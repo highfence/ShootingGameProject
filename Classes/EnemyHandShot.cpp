@@ -3,6 +3,8 @@
 #include "EffectManager.h"
 #include "EnemyManager.h"
 #include "UIManager.h"
+#include "ExplodeSmoke.h"
+#include "ExplodeHit.h"
 #include "EnemyMissile.h"
 
 const std::wstring enemyHandShotSpritePath = _T("../Resources/EnemyHandShot.png");
@@ -92,7 +94,7 @@ Vec EnemyHandShot::GetLaunchPos() const
 
 void EnemyHandShot::Explode()
 {
-	EffectManager::GetInstance()->MakeEffect(EFFECT::EXPLODE_SMOKE, m_Pos);
+	EffectManager::GetInstance()->MakeEffect<ExplodeSmoke>(m_Pos);
 	return;
 }
 
@@ -122,7 +124,9 @@ void EnemyHandShot::GetDamage(const _In_ INT damage, const _In_ Vec playerMissil
 	}
 	else
 	{
-		EffectManager::GetInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_HIT, Vec(playerMissileVec.x + rand() % 10 - 5, m_Pos.y + m_SpriteRange.y / 2), 150, Vec(0, -1));
+		Vec hitEffectVec = Vec(playerMissileVec.x + rand() % 10 - 5, m_Pos.y + m_SpriteRange.y / 2);
+		EffectManager::GetInstance()->MakeEffectWithFloat<ExplodeHit>(
+			hitEffectVec, 150, Vec(0, -1));
 	}
 }
 

@@ -37,16 +37,6 @@ EffectManager::EffectManager()
 // 초기화 함수.
 void EffectManager::Init()
 {
-	m_pEffectMakerHandler[EFFECT_TYPE::EXPLODE_LIGHT] = &EffectManager::MakeExplodeLight;
-	m_pEffectMakerHandler[EFFECT_TYPE::EXPLODE_HIT] = &EffectManager::MakeExplodeHit;
-	m_pEffectMakerHandler[EFFECT_TYPE::EXPLODE_SMOKE] = &EffectManager::MakeExplodeSmoke;
-	m_pEffectMakerHandler[EFFECT_TYPE::EXPLODE_ARC] = &EffectManager::MakeExplodeArc;
-
-	m_pEffectMakerHandlerWithFloat[EFFECT_TYPE::EXPLODE_LIGHT] = &EffectManager::MakeExplodeLightWithFloat;
-	m_pEffectMakerHandlerWithFloat[EFFECT_TYPE::EXPLODE_HIT] = &EffectManager::MakeExplodeHitWithFloat;
-	m_pEffectMakerHandlerWithFloat[EFFECT_TYPE::EXPLODE_SMOKE] = &EffectManager::MakeExplodeSmokeWithFloat;
-	m_pEffectMakerHandlerWithFloat[EFFECT_TYPE::EXPLODE_ARC] = &EffectManager::MakeExplodeArcWithFloat;
-
 	return;
 }
 
@@ -92,7 +82,6 @@ void EffectManager::AccTime(const _In_ FLOAT dt)
 	return;
 }
 
-
 // 끝난 이펙트들을 벡터에서 정리하는 함수.
 void EffectManager::ClearVec()
 {
@@ -109,97 +98,5 @@ void EffectManager::ClearVec()
 		}
 	}
 
-	return;
-}
-
-BOOL EffectManager::MakeExplodeLight(
-	const _In_ Vec createPos)
-{
-	auto newEffect = new ExplodeLight(createPos);
-	m_EffectVec.push_back(newEffect);
-	return TRUE;
-}
-
-BOOL EffectManager::MakeExplodeLightWithFloat(
-	const _In_ Vec createPos,
-	const _In_ FLOAT floatSpeed,
-	const _In_ Vec floatVec)
-{
-	auto newEffect = new ExplodeLight(createPos, floatSpeed, floatVec);
-	m_EffectVec.push_back(newEffect);
-	return TRUE;
-}
-
-BOOL EffectManager::MakeExplodeHit(
-	const _In_ Vec createPos)
-{
-	auto newEffect = new ExplodeHit(createPos);
-	m_EffectVec.push_back(newEffect);
-	return TRUE;
-}
-
-BOOL EffectManager::MakeExplodeHitWithFloat(
-	const _In_ Vec createPos,
-	const _In_ FLOAT floatSpeed,
-	const _In_ Vec floatVec)
-{
-	auto newEffect = new ExplodeHit(createPos, floatSpeed, floatVec);
-	m_EffectVec.push_back(newEffect);
-	return TRUE;
-}
-
-BOOL EffectManager::MakeExplodeSmoke(
-	const _In_ Vec createPos)
-{
-	auto newEffect = new ExplodeSmoke(createPos);
-	m_EffectVec.push_back(newEffect);
-	return TRUE;
-}
-
-BOOL EffectManager::MakeExplodeSmokeWithFloat(
-	const _In_ Vec createPos,
-	const _In_ FLOAT floatSpeed,
-	const _In_ Vec floatVec)
-{
-	auto newEffect = new ExplodeSmoke(createPos, floatSpeed, floatVec);
-	m_EffectVec.push_back(newEffect);
-	return TRUE;
-}
-
-BOOL EffectManager::MakeExplodeArc(
-	const _In_ Vec createPos)
-{
-	auto newEffect = new ExplodeArc(createPos);
-	m_EffectVec.push_back(newEffect);
-	return TRUE;
-}
-
-BOOL EffectManager::MakeExplodeArcWithFloat(
-	const _In_ Vec createPos,
-	const _In_ FLOAT floatSpeed,
-	const _In_ Vec floatVec)
-{
-	auto newEffect = new ExplodeArc(createPos, floatSpeed, floatVec);
-	m_EffectVec.push_back(newEffect);
-	return TRUE;
-}
-void EffectManager::MakeEffect(
-	const _In_ INT effectType,
-	const _In_ Vec createPos)
-{
-	(this->*m_pEffectMakerHandler[effectType])(createPos);
-	return;
-}
-
-void EffectManager::MakeEffect(
-	const _In_ INT effectType,
-	const _In_ Vec createPos,
-	const _In_ FLOAT floatSpeed,
-	const _In_ Vec floatVec)
-{
-	(this->*m_pEffectMakerHandlerWithFloat[effectType])(
-		createPos,
-		floatSpeed,
-		floatVec);
 	return;
 }

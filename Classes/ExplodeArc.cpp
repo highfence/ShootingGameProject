@@ -6,13 +6,13 @@ const std::wstring explodeArcShadePath = _T("../Resources/FX/explosion_1S_0");
 const std::wstring explodeArcExtension = _T(".png");
 const INT explodeArcWidth = 52;
 const INT explodeArcHeight = 51;
-const FLOAT explodeArcFrameTime = 0.1f;
+const FLOAT explodeArcTimePerFrame = 0.1f;
 const INT explodeArcMaxFrameNum = 11;
 
 ExplodeArc::ExplodeArc(const _In_ Vec createPos)
 	: Effect(createPos)
 {
-	init();
+	Init();
 }
 
 ExplodeArc::ExplodeArc(
@@ -21,10 +21,10 @@ ExplodeArc::ExplodeArc(
 	const _In_ Vec floatVec)
 	: Effect(createPos, floatSpeed, floatVec)
 {
-	init();
+	Init();
 }
 
-void ExplodeArc::init()
+void ExplodeArc::Init()
 {
 	InitialDataSubstitude();
 	LoadInitialImg();
@@ -49,7 +49,7 @@ void ExplodeArc::InitialDataSubstitude()
 {
 	m_Width = explodeArcWidth;
 	m_Height = explodeArcHeight;
-	m_TimePerFrame = explodeArcFrameTime;
+	m_TimePerFrame = explodeArcTimePerFrame;
 	m_MaxFrameNum = explodeArcMaxFrameNum;
 	return;
 }

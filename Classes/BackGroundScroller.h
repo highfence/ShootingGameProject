@@ -23,7 +23,6 @@ typedef struct
 	생성후 Scroll을 통하여 DrawProc에서 사용한다.
 
 	TODO :: Optional하게 다른 배경으로 바꿀 수 있는 기능 구현.
-	TODO :: 랜덤하게 배경에 오브젝트 추가하는 기능 구현.
 */
 
 class BackGroundScroller

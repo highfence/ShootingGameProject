@@ -3,6 +3,7 @@
 #include "EnemyMissile.h"
 #include "EffectManager.h"
 #include "UIManager.h"
+#include "ExplodeLight.h"
 #include "EnemyZaco.h"
 
 const std::wstring enemyZacoSpritePath = _T("../Resources/EnemyZaco.png");
@@ -62,8 +63,7 @@ void EnemyZaco::Draw(_Inout_ HDC drawDC)
 
 void EnemyZaco::Explode()
 {
-	EffectManager::GetInstance()->MakeEffect(
-		EFFECT::EFFECT_TYPE::EXPLODE_LIGHT,
+	EffectManager::GetInstance()->MakeEffectWithFloat<ExplodeLight>(
 		m_Pos,
 		m_CreateOption.GetFlightSpeed(),
 		m_CreateOption.GetFlightVec());

@@ -5,6 +5,7 @@
 #include "EffectManager.h"
 #include "SoundManager.h"
 #include "Option.h"
+#include "ExplodeLight.h"
 
 const FLOAT playerInitWidth = winWidth / 2;
 const FLOAT playerInitHeight = winHeight * 3 / 4;
@@ -470,7 +471,7 @@ void Player::MakeDyingExplosion(const _In_ Vec missileVec)
 		float speed = speedDist(rng);
 		Vec effectVec = Vec(missileVec.x + x, missileVec.y + y);
 
-		effectManager->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos, playerMoveSpeed + speed, effectVec);
+		effectManager->MakeEffectWithFloat<ExplodeLight>(m_Pos, playerMoveSpeed + speed, effectVec);
 	}
 
 	return;

@@ -18,15 +18,16 @@ public :
 
 	void CalProc(const _In_ FLOAT);
 	void DrawProc(_Inout_ HDC);
-	void MakeEffect(
-		const _In_ INT,
-		const _In_ Vec);
 
-	void MakeEffect(
-		const _In_ INT,
+	template <typename T>
+	BOOL MakeEffect(const _In_ Vec);
+	template <typename T>
+	BOOL MakeEffectWithFloat(
 		const _In_ Vec,
 		const _In_ FLOAT,
 		const _In_ Vec);
+
+
 
 private :
 
@@ -36,38 +37,7 @@ private :
 	// 싱글톤 인스턴스.
 	static EffectManager* m_pInstance;
 
-	// 핸들러와 핸들러 함수들.
-	BOOL(EffectManager::*m_pEffectMakerHandler[EFFECT::EFFECT_TYPE::EFFECT_TYPE_NUM])(const _In_ Vec);
-	BOOL(EffectManager::*m_pEffectMakerHandlerWithFloat[EFFECT::EFFECT_TYPE::EFFECT_TYPE_NUM])(
-		const _In_ Vec,
-		const _In_ FLOAT,
-		const _In_ Vec);
-
-	BOOL MakeExplodeLight(const _In_ Vec);
-	BOOL MakeExplodeLightWithFloat(
-		const _In_ Vec,
-		const _In_ FLOAT,
-		const _In_ Vec);
-
-	BOOL MakeExplodeHit(const _In_ Vec);
-	BOOL MakeExplodeHitWithFloat(
-		const _In_ Vec,
-		const _In_ FLOAT,
-		const _In_ Vec);
-
-	BOOL MakeExplodeSmoke(const _In_ Vec);
-	BOOL MakeExplodeSmokeWithFloat(
-		const _In_ Vec,
-		const _In_ FLOAT,
-		const _In_ Vec);
-
-	BOOL MakeExplodeArc(const _In_ Vec);
-	BOOL MakeExplodeArcWithFloat(
-		const _In_ Vec,
-		const _In_ FLOAT,
-		const _In_ Vec);
-
-	void Init();
+		void Init();
 	void AccTime(const _In_ FLOAT);
 	void ClearVec();
 
@@ -75,3 +45,22 @@ private :
 	std::vector<Effect*> m_EffectVec;
 
 };
+
+template<typename T>
+inline BOOL EffectManager::MakeEffect(const Vec createPos)
+{
+	auto newEffect = new T(createPos);
+	m_EffectVec.emplace_back((Effect*)newEffect);
+	return TRUE;
+}
+
+template<typename T>
+inline BOOL EffectManager::MakeEffectWithFloat(
+	const Vec createPos,
+	const FLOAT floatSpeed,
+	const Vec floatVec)
+{
+	auto newEffect = new T(createPos, floatSpeed, floatVec);
+	m_EffectVec.emplace_back((Effect*)newEffect);
+	return TRUE;
+}

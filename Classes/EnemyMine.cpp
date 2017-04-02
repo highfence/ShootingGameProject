@@ -3,6 +3,7 @@
 #include "EnemyMine.h"
 #include "EnemyManager.h"
 #include "UIManager.h"
+#include "ExplodeLight.h"
 
 const std::wstring enemyMineSpritePath = _T("../Resources/Enemy/mine_11_0");
 const std::wstring enemyMineItemSpritePath = _T("../Resources/Enemy/mine_12_0");
@@ -77,12 +78,11 @@ void EnemyMine::Explode()
 		EnemyManager::GetInstance()->ActivateEnemyOnce(m_Pos, CREATE_OPTION::ITEM_CREATE, FIRE_OPTION::NO_FIRE);
 	}
 
-	EffectManager::GetInstance()->MakeEffect(
-		EFFECT::EFFECT_TYPE::EXPLODE_LIGHT,
+	EffectManager::GetInstance()->MakeEffectWithFloat<ExplodeLight>(
 		m_Pos,
 		m_CreateOption.GetFlightSpeed(),
-		m_CreateOption.GetFlightVec()
-	);
+		m_CreateOption.GetFlightVec());
+
 
 	return;
 }

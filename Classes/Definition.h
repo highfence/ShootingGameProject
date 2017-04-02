@@ -118,10 +118,6 @@ namespace ENEMY
 
 namespace EFFECT
 {
-	enum EFFECT_TYPE 
-	{
-		EXPLODE_LIGHT, EXPLODE_HIT, EXPLODE_SMOKE, EXPLODE_ARC, EFFECT_TYPE_NUM
-	};
 
 	const INT explodeLightMaxFrameNum = 9;
 	const std::wstring explodeLightSpritePathStr = _T("../Resources/FX/explosion_2_0");

@@ -3,6 +3,7 @@
 #include "EffectManager.h"
 #include "EnemyManager.h"
 #include "UIManager.h"
+#include "ExplodeLight.h"
 #include "EnemyMissile.h"
 
 const std::wstring enemyItemSpritePath = _T("../Resources/EnemyItem.png");
@@ -82,7 +83,7 @@ void EnemyItem::Explode()
 	{
 		EnemyManager::GetInstance()->ActivateEnemyOnce(m_Pos, ITEM_CREATE, NO_FIRE);
 	}
-	EffectManager::GetInstance()->MakeEffect(EFFECT::EFFECT_TYPE::EXPLODE_LIGHT, m_Pos);
+	EffectManager::GetInstance()->MakeEffect<ExplodeLight>(m_Pos);
 	return;
 }
 
