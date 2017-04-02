@@ -78,7 +78,7 @@ EnemyMissile * Enemy::GetLaunchableMissile()
 {
 	for (auto i : m_MissileVec)
 	{
-		if (!i->m_IsMissileLaunched)
+		if (!i->GetMissileLaunched())
 		{
 			return i;
 		}

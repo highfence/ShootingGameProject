@@ -155,7 +155,7 @@ void Player::Move(const _In_ BYTE* KeyState, const _In_ FLOAT dt)
 
 void Player::MissileFly(const _In_ FLOAT dt)
 {
-	for (auto i : m_MissileVec)
+	for (auto& i : m_MissileVec)
 	{
 		i->Fly(dt, 0, -1, PLAYER::playerMissileSpeed);
 	}
@@ -210,6 +210,7 @@ void Player::LaunchMissile(const _In_ FLOAT dt)
 				break;
 			}
 		}
+		m_OptionVec.front()->Launch();
 	}
 
 	return;

@@ -18,6 +18,8 @@ public :
 	BOOL GetIsOptionActivated();
 	void SettingForActivate(const _In_ Vec);
 	void Move(const _In_ Vec);
+	void Launch();
+	void MissileFly(const _In_ FLOAT);
 
 private :
 
@@ -26,9 +28,14 @@ private :
 	void MissileLoad();
 	void MakeImageNextFrame();
 	void AccTime(const _In_ FLOAT);
+	void AdjustLaunchPos();
+	OptionMissile* GetLaunchableMissile(const _In_ PLAYER::OPTION_COLOR);
+	void MissileDraw(_Inout_ HDC);
 
 	Vec m_Pos = Vec(0.f, 0.f);
 	Vec m_SavePreviousPos = Vec(0.f, 0.f);
+	Vec m_LaunchPos = Vec(0.f, 0.f);
+	BOOL m_IsLaunchPosGoesToRight = FALSE;
 	FLOAT m_Width = 0.f;
 	FLOAT m_Height = 0.f;
 	FLOAT m_AccTime = 0.f;
@@ -44,5 +51,6 @@ private :
 	BOOL m_IsMissileRed = TRUE;
 	Option* m_pNextOption = nullptr;
 
-	std::vector<OptionMissile*> m_MissileVec;
+	std::vector<OptionMissile*> m_RedMissileVec;
+	std::vector<OptionMissile*> m_BlueMissileVec;
 };

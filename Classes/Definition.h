@@ -141,6 +141,11 @@ namespace PLAYER
 	const INT playerMissileWidthArray[4] = { 6, 18, 38, 70 };
 	const INT playerMissileHeightArray[4] = { 22, 25, 28, 28 };
 	const INT playerMissileDamageArray[4] = { 3, 7, 15, 21 };
+
+	enum OPTION_COLOR
+	{
+		RED, BLUE, OPTION_COLOR_NUM
+	};
 }
 
 enum vRESULT

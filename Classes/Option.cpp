@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Option.h"
+#include "OptionMissile.h"
 
 const FLOAT optionSpriteWidth = 15.f;
 const FLOAT optionSpriteHeight = 15.f;
@@ -9,7 +10,7 @@ const FLOAT optionThersholdCorrectionValue = 5.f;
 const std::wstring optionSpritePath = _T("../Resources/Player/Opt");
 const std::wstring optionShadePath = _T("../Resources/Player/OptS");
 const std::wstring optionFileExtension = _T(".png");
-const INT loadMissileNumber = 20;
+const INT optionLoadMissileNumber = 10;
 
 Option::Option()
 {
@@ -39,13 +40,30 @@ void Option::InitialImgLoad()
 
 void Option::MissileLoad()
 {
+	m_RedMissileVec.reserve(optionLoadMissileNumber);
+	m_BlueMissileVec.reserve(optionLoadMissileNumber);
+
+	for (int i = 0; i < optionLoadMissileNumber; ++i)
+	{
+		OptionMissile* redMissile = new OptionMissile(PLAYER::OPTION_COLOR::RED);
+		m_RedMissileVec.emplace_back(redMissile);
+
+		OptionMissile* blueMissile = new OptionMissile(PLAYER::OPTION_COLOR::BLUE);
+		m_BlueMissileVec.emplace_back(blueMissile);
+	}
 
 	return;
 }
 
 Option::~Option()
 {
+	m_RedMissileVec.clear();
+	m_BlueMissileVec.clear();
 
+	delete m_pSprite;
+	m_pSprite = nullptr;
+	delete m_pShadeSprite;
+	m_pShadeSprite = nullptr;
 }
 
 void Option::CalcProc(const _In_ FLOAT deltaTime, const _In_ Vec previousPosition)
@@ -60,6 +78,7 @@ void Option::CalcProc(const _In_ FLOAT deltaTime, const _In_ Vec previousPositio
 		return;
 	}
 
+	MissileFly(deltaTime);
 	AccTime(deltaTime);
 	MakeImageNextFrame();
 	Move(previousPosition);
@@ -77,15 +96,15 @@ void Option::DrawProc(_Inout_ HDC drawDC)
 	}
 #endif
 
+	if (m_IsOptionActivated == FALSE)
+	{
+		return;
+	}
+
 	if (m_pNextOption != nullptr)
 	{
 		/* 내 뒤의 Option이 먼저 그려짐 */
 		m_pNextOption->DrawProc(drawDC);
-	}
-	
-	if (m_IsOptionActivated == FALSE)
-	{
-		return;
 	}
 
 #pragma warning(push)
@@ -97,6 +116,9 @@ void Option::DrawProc(_Inout_ HDC drawDC)
 		m_Width, m_Height, 0, 0, SRCPAINT);
 
 #pragma warning(pop)
+
+	/* 미사일 그려주기 */
+	MissileDraw(drawDC);
 
 	return;
 }
@@ -200,6 +222,97 @@ void Option::Move(const _In_ Vec previousPos)
 	return;
 }
 
+void Option::Launch()
+{
+	if (!GetIsOptionActivated())
+	{
+		return;
+	}
+
+	if (m_pNextOption->GetIsOptionActivated())
+	{
+		m_pNextOption->Launch();
+	}
+
+	// LaunchPos 조정.
+	AdjustLaunchPos();
+	
+	// 현재 발사 색상에 맞는 미사일 찾기.
+	OptionMissile* missile;
+	if (m_IsMissileRed)
+	{
+		missile = GetLaunchableMissile(PLAYER::OPTION_COLOR::RED);
+		m_IsMissileRed = FALSE;
+	}
+	else
+	{
+		missile = GetLaunchableMissile(PLAYER::OPTION_COLOR::BLUE);
+		m_IsMissileRed = TRUE;
+	}
+
+	// 발사 가능한 미사일이 있다면 미사일 발사.
+	if (missile != nullptr)
+	{
+		missile->Launch(m_Pos + m_LaunchPos);
+	}
+
+	return;
+}
+
+void Option::MissileFly(const FLOAT deltaTime)
+{
+	const INT OptionMissileSpeed = 2000;
+	for (auto& i : m_RedMissileVec)
+	{
+		i->Fly(deltaTime, 0, -1, OptionMissileSpeed);
+	}
+	for (auto& i : m_BlueMissileVec)
+	{
+		i->Fly(deltaTime, 0, -1, OptionMissileSpeed);
+	}
+
+	return;
+}
+
+OptionMissile* Option::GetLaunchableMissile(const _In_ PLAYER::OPTION_COLOR color)
+{
+	if (color == PLAYER::OPTION_COLOR::RED)
+	{
+		for (auto& i : m_RedMissileVec)
+		{
+			if (!i->GetMissileLaunched())
+			{
+				return i;
+			}
+		}
+	}
+	else if (color == PLAYER::OPTION_COLOR::BLUE)
+	{
+		for (auto& i : m_BlueMissileVec)
+		{
+			if (!i->GetMissileLaunched())
+			{
+				return i;
+			}
+		}
+	}
+
+	return nullptr;
+}
+
+void Option::MissileDraw(HDC drawDC)
+{
+	for (auto& i : m_RedMissileVec)
+	{
+		i->Draw(drawDC);
+	}
+	for (auto& i : m_RedMissileVec)
+	{
+		i->Draw(drawDC);
+	}
+	return;
+}
+
 void Option::MakeImageNextFrame()
 {
 	if (m_RecordRotateTime < m_TimePerFrame)
@@ -225,6 +338,29 @@ void Option::AccTime(const FLOAT deltaTime)
 	m_AccTime += deltaTime;
 	m_RecordFireTime += deltaTime;
 	m_RecordRotateTime += deltaTime;
+
+	return;
+}
+
+void Option::AdjustLaunchPos()
+{
+	if (m_LaunchPos.x == 0.f)
+	{
+		if (m_IsLaunchPosGoesToRight)
+		{
+			m_LaunchPos.x = 5.f;
+			m_IsLaunchPosGoesToRight = FALSE;
+		}
+		else
+		{
+			m_LaunchPos.x = -5.f;
+			m_IsLaunchPosGoesToRight = TRUE;
+		}
+	}
+	else
+	{
+		m_LaunchPos.x = 0.f;
+	}
 
 	return;
 }
