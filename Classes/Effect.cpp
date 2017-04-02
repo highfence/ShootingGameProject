@@ -2,20 +2,11 @@
 #include "Effect.h"
 
 Effect::Effect(const _In_ Vec createPos)
-	: m_Pos(createPos),
-	m_AccTime(0),
-	m_CutAccTime(0),
-	m_IsEffectDone(FALSE),
-	m_FrameNum(1),
-	m_IsDrawedOnce(FALSE),
-	// TODO :: 널포인터 생성
-	m_pSprite(nullptr),
-	m_pShade(nullptr)
+	: m_Pos(createPos)
 {
-	m_FloatSpeed = 0.f;
 	m_pSprite = new CImage();
 	m_pShade = new CImage();
-	init();
+	Init();
 }
 
 Effect::Effect(
@@ -24,21 +15,14 @@ Effect::Effect(
 	const _In_ Vec floatVec)
 	: m_FloatVec(floatVec),
 	m_FloatSpeed(floatSpeed),
-	m_Pos(createPos),
-	m_AccTime(0),
-	m_CutAccTime(0),
-	m_IsEffectDone(FALSE),
-	m_FrameNum(1),
-	m_IsDrawedOnce(FALSE),
-	m_pSprite(nullptr),
-	m_pShade(nullptr)
+	m_Pos(createPos)
 {
 	m_pSprite = new CImage;
 	m_pShade = new CImage;
-	init();
+	Init();
 }
 
-void Effect::init()
+void Effect::Init()
 {
 	return;
 }

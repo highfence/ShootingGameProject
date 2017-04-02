@@ -6,10 +6,6 @@ const std::wstring explodeLightExtention = _T(".png");
 ExplodeLight::ExplodeLight(const _In_ Vec createPos)
 	: Effect(createPos)
 {
-	m_Width = explodeLightWidth;
-	m_Height = explodeLightHeight;
-	m_TimePerFrame = explodeLightFrameTime;
-	m_MaxFrameNum = explodeLightMaxFrameNum;
 	init();
 }
 
@@ -19,16 +15,13 @@ ExplodeLight::ExplodeLight(
 	const _In_ Vec floatVec)
 	: Effect(createPos, floatSpeed, floatVec)
 {
-	m_Width = explodeLightWidth;
-	m_Height = explodeLightHeight;
-	m_TimePerFrame = explodeLightFrameTime;
-	m_MaxFrameNum = explodeLightMaxFrameNum;
 	init();
 }
 
 void ExplodeLight::init()
 {
 	LoadInitialImg();
+	InitialDataSubstitude();
 	return;
 }
 
@@ -44,4 +37,12 @@ void ExplodeLight::LoadInitialImg()
 	m_FileExtensionStr = explodeLightExtention;
 	ImgLoad(explodeLightSpritePathStr, explodeLightShadePathStr, explodeLightExtention,1);
 	return;
+}
+
+void ExplodeLight::InitialDataSubstitude()
+{
+	m_Width = explodeLightWidth;
+	m_Height = explodeLightHeight;
+	m_TimePerFrame = explodeLightFrameTime;
+	m_MaxFrameNum = explodeLightMaxFrameNum;
 }

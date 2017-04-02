@@ -4,6 +4,7 @@
 class ExplodeSmoke : public Effect
 {
 public :
+	ExplodeSmoke() = delete;
 	ExplodeSmoke(const _In_ Vec);
 	ExplodeSmoke(
 		const _In_ Vec,
@@ -12,9 +13,8 @@ public :
 	~ExplodeSmoke();
 
 private :
-	ExplodeSmoke();
 
 	void init();
-	void InitialDataSubstitude();
 	void LoadInitialImg() override;
+	void InitialDataSubstitude() override;
 };

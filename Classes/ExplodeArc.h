@@ -4,6 +4,7 @@
 class ExplodeArc : public Effect
 {
 public:
+	ExplodeArc() = delete;
 	ExplodeArc(const _In_ Vec);
 	ExplodeArc(
 		const _In_ Vec,
@@ -12,11 +13,9 @@ public:
 	~ExplodeArc();
 
 private:
-	// 인자 없이 생성 불가.
-	ExplodeArc();
 
 	void init();
-	void InitialDataSubstitude();
+	void InitialDataSubstitude() override;
 	void LoadInitialImg() override;
 
 };

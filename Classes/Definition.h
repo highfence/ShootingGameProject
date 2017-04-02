@@ -1,10 +1,11 @@
 #pragma once
-
-
 // 윈도우 사이즈
 const INT winWidth = 900;
 const INT winHeight = 1200;
 const INT boundaryRange = 100;
+
+// 벡터 초기화 값.
+const Vec zero = Vec(0.f, 0.f);
 
 namespace BACKGROUND
 {

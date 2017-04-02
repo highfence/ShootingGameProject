@@ -7,6 +7,7 @@ using namespace EFFECT;
 class Effect
 {
 public :
+	Effect() = delete;
 	Effect(const _In_ Vec);
 	Effect(
 		const _In_ Vec,
@@ -15,6 +16,7 @@ public :
 
 	virtual ~Effect();
 	virtual void LoadInitialImg() = 0;
+	virtual void InitialDataSubstitude() = 0;
 
 	void CalProc(const _In_ FLOAT);
 	void DrawProc(_Inout_ HDC);
@@ -33,27 +35,25 @@ public :
 	void FrameCheck();
 
 
-	Vec m_Pos;
-	Vec m_FloatVec;
-	FLOAT m_FloatSpeed;
-	FLOAT m_Width;
-	FLOAT m_Height;
-	FLOAT m_TimePerFrame;
-	INT m_FrameNum;
-	INT m_MaxFrameNum;
-	CImage* m_pSprite;
-	CImage* m_pShade;
-	FLOAT m_AccTime;
-	FLOAT m_CutAccTime;
+	Vec m_Pos = zero;
+	Vec m_FloatVec = zero;
+	FLOAT m_FloatSpeed = 0.f;
+	FLOAT m_Width = 0.f;
+	FLOAT m_Height = 0.f;
+	FLOAT m_TimePerFrame = 0.f;
+	INT m_FrameNum = 1;
+	INT m_MaxFrameNum = 0;
+	CImage* m_pSprite = nullptr;
+	CImage* m_pShade = nullptr;
+	FLOAT m_AccTime = 0.f;
+	FLOAT m_CutAccTime = 0.f;
 	std::wstring m_SpriteStr;
 	std::wstring m_ShadeStr;
 	std::wstring m_FileExtensionStr;
 
 private :
-	// 인자 없이 생성 불가.
-	Effect();
 
-	void init();
-	BOOL m_IsEffectDone;
-	BOOL m_IsDrawedOnce;
+	void Init();
+	BOOL m_IsEffectDone = FALSE;
+	BOOL m_IsDrawedOnce = FALSE;
 };

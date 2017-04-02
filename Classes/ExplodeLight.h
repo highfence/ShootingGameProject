@@ -4,6 +4,7 @@
 class ExplodeLight : public Effect
 {
 public :
+	ExplodeLight() = delete;
 	ExplodeLight(const _In_ Vec);
 	ExplodeLight(
 		const _In_ Vec,
@@ -12,9 +13,8 @@ public :
 	~ExplodeLight();
 
 private :
-	// 인자 없이 생성 불가.
-	ExplodeLight();
 
 	void init();
 	void LoadInitialImg() override;
+	void InitialDataSubstitude() override;
 };

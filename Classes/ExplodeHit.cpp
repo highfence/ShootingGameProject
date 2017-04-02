@@ -12,10 +12,6 @@ const std::wstring explodeHitExtension = _T(".png");
 ExplodeHit::ExplodeHit(const _In_ Vec createPos)
 	: Effect(createPos)
 {
-	m_Width = explodeHitWidth;
-	m_Height = explodeHitHeight;
-	m_TimePerFrame = explodeHitFrameTime;
-	m_MaxFrameNum = explodeHitMaxFrameNum;
 	init();
 }
 
@@ -25,16 +21,13 @@ ExplodeHit::ExplodeHit(
 	const _In_ Vec floatVec)
 	: Effect(createPos, floatSpeed, floatVec)
 {
-	m_Width = explodeHitWidth;
-	m_Height = explodeHitHeight;
-	m_TimePerFrame = explodeHitFrameTime;
-	m_MaxFrameNum = explodeHitMaxFrameNum;
 	init();;
 }
 
 void ExplodeHit::init()
 {
 	LoadInitialImg();
+	InitialDataSubstitude();
 	return;
 }
 
@@ -51,4 +44,12 @@ void ExplodeHit::LoadInitialImg()
 	m_FileExtensionStr = explodeHitExtension;
 	ImgLoad(explodeHitSpritePath, explodeHitShadePath, explodeHitExtension, 1);
 	return;
+}
+
+void ExplodeHit::InitialDataSubstitude()
+{
+	m_Width = explodeHitWidth;
+	m_Height = explodeHitHeight;
+	m_TimePerFrame = explodeHitFrameTime;
+	m_MaxFrameNum = explodeHitMaxFrameNum;
 }
