@@ -10,7 +10,7 @@ const FLOAT optionThersholdCorrectionValue = 5.f;
 const std::wstring optionSpritePath = _T("../Resources/Player/Opt");
 const std::wstring optionShadePath = _T("../Resources/Player/OptS");
 const std::wstring optionFileExtension = _T(".png");
-const INT optionLoadMissileNumber = 10;
+const INT optionLoadMissileNumber = 30;
 
 Option::Option()
 {

@@ -20,7 +20,6 @@ public :
 	EnemyManager();
 	~EnemyManager();
 	
-	// TODO :: 구조체는 참조자로 전달하자.
 	void ActivateEnemy(
 		const _In_ FLOAT activateTime, 
 		const _In_ Vec createPos,
@@ -87,6 +86,7 @@ private :
 		const _In_ Vec,
 		const _In_ ENEMY::CREATE_OPTION,
 		const _In_ ENEMY::FIRE_OPTION);
+
 
 	FLOAT m_AccTime;
 	FLOAT m_RecordCreateTime;
