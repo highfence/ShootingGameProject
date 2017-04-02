@@ -144,6 +144,8 @@ void OptionMissile::Fly(
 		MissileDestroy();
 	}
 
+	CheckColide();
+
 	return;
 }
 
