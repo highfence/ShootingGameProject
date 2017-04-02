@@ -10,8 +10,8 @@ const INT optionMissileHeight = 23;
 const FLOAT optionMissileLongerTime = 0.2f;
 const std::wstring optionMissileRedSmall = _T("../Resources/Player/OptionMissileRedSmall.png");
 const std::wstring optionMissileBlueSmall = _T("../Resources/Player/OptionMissileBlueSmall.png");
-const std::wstring optionMissileRed = _T("../Resources/Player/OptionMissileBlue.png");
-const std::wstring optionMissileBlue = _T("../Resources/Player/OptionMissileRed.png");
+const std::wstring optionMissileRed = _T("../Resources/Player/OptionMissileRed.png");
+const std::wstring optionMissileBlue = _T("../Resources/Player/OptionMissileBlue.png");
 const std::wstring optionMissileShade = _T("../Resources/Player/OptionMissileS.png");
 const std::wstring optionMissileSmallShade = _T("../Resources/Player/OptionMissileSmallS.png");
 

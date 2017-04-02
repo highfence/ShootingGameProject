@@ -306,7 +306,7 @@ void Option::MissileDraw(HDC drawDC)
 	{
 		i->Draw(drawDC);
 	}
-	for (auto& i : m_RedMissileVec)
+	for (auto& i : m_BlueMissileVec)
 	{
 		i->Draw(drawDC);
 	}
