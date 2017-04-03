@@ -96,14 +96,14 @@ void EnemyBoss::MakeBossColorAccordWithHp()
 		return;
 	}
 
-	m_LostedHpPercent = (enemyBossHp - m_Hp) / enemyBossHp;
-	m_ColorChangeProgress = m_FrameNum / m_MaxFrameNum;
+	m_LostedHpPercent = ((DOUBLE)(enemyBossHp - m_Hp) / (DOUBLE)enemyBossHp);
+	m_ColorChangeProgress = (DOUBLE)m_FrameNum / (DOUBLE)m_MaxFrameNum;
 	BOOL isImgChangedAtLeastOnce = FALSE;
 
-	while (m_LostedHpPercent> m_ColorChangeProgress)
+	while (m_LostedHpPercent > m_ColorChangeProgress)
 	{
 		m_FrameNum += m_FrameIntervalNum;
-		m_ColorChangeProgress = m_FrameNum / m_MaxFrameNum;
+		m_ColorChangeProgress = (DOUBLE)m_FrameNum / (DOUBLE)m_MaxFrameNum;
 		isImgChangedAtLeastOnce = TRUE;
 	}
 
