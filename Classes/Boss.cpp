@@ -28,6 +28,8 @@ void EnemyBoss::Init()
 	m_SpriteRange.y = enemyBossHeight;
 	m_ColideRange = m_SpriteRange;
 	m_Hp = enemyBossHp;
+	m_FrameIntervalNum = enemyBossFrameInterval;
+	m_MaxFrameNum = enemyBossMaxFrame;
 	m_LoadedMissileNumber = enemyBossLoadedMissileNumber;
 	LoadMissiles(ENEMY::MISSILE_SIZE::EXTRA);
 	InitialImgLoad();
@@ -51,6 +53,16 @@ void EnemyBoss::Draw(_Inout_ HDC drawDC)
 {
 #pragma warning(push)
 #pragma warning(disable : 4244)
+
+	std::wstring hpLabel = _T("BOSS remainHp : ") + std::to_wstring(m_Hp);
+	std::wstring lossPercent = _T("Lost HP Percent : ") + std::to_wstring(m_LostedHpPercent);
+	std::wstring colorProgress = _T("Color Progress : ") + std::to_wstring(m_ColorChangeProgress);
+	std::wstring frameNum = _T("Frame Num : ") + std::to_wstring(m_FrameNum);
+
+	TextOut(drawDC, 10, 110, hpLabel.c_str(), wcslen(hpLabel.c_str()));
+	TextOut(drawDC, 10, 130, lossPercent.c_str(), wcslen(lossPercent.c_str()));
+	TextOut(drawDC, 10, 150, colorProgress.c_str(), wcslen(colorProgress.c_str()));
+	TextOut(drawDC, 10, 170, frameNum.c_str(), wcslen(frameNum.c_str()));
 
 	m_pShadeSprite->BitBlt(drawDC, m_Pos.x - m_SpriteRange.x / 2, m_Pos.y - m_SpriteRange.y / 2,
 		m_SpriteRange.x, m_SpriteRange.y, 0, 0, SRCAND);
@@ -84,14 +96,14 @@ void EnemyBoss::MakeBossColorAccordWithHp()
 		return;
 	}
 
-	FLOAT lostedHpPercent = (enemyBossHp - m_Hp) / enemyBossHp;
-	FLOAT colorChangeProgress = m_FrameNum / m_MaxFrameNum;
+	m_LostedHpPercent = (enemyBossHp - m_Hp) / enemyBossHp;
+	m_ColorChangeProgress = m_FrameNum / m_MaxFrameNum;
 	BOOL isImgChangedAtLeastOnce = FALSE;
 
-	while (lostedHpPercent > colorChangeProgress)
+	while (m_LostedHpPercent> m_ColorChangeProgress)
 	{
 		m_FrameNum += m_FrameIntervalNum;
-		colorChangeProgress = m_FrameNum / m_MaxFrameNum;
+		m_ColorChangeProgress = m_FrameNum / m_MaxFrameNum;
 		isImgChangedAtLeastOnce = TRUE;
 	}
 

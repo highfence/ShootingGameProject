@@ -89,11 +89,6 @@ void Option::CalcProc(const _In_ FLOAT deltaTime, const _In_ Vec previousPositio
 void Option::DrawProc(_Inout_ HDC drawDC)
 {
 #ifdef _DEBUG
-	if (m_IsOptionActivated)
-	{
-		std::wstring debugLabel = std::to_wstring(m_FrameNum) + _T(",") + std::to_wstring((int)m_AccTime);
-		TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
-	}
 #endif
 
 	if (m_IsOptionActivated == FALSE)

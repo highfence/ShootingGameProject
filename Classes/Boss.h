@@ -23,4 +23,6 @@ private :
 	INT m_FrameNum = 0;
 	INT m_FrameIntervalNum = 0;
 	INT m_MaxFrameNum = 0;
+	DOUBLE m_LostedHpPercent = 0.f;
+	DOUBLE m_ColorChangeProgress = 0.f;
 };
