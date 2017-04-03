@@ -20,8 +20,7 @@ OptionMissile::OptionMissile(const _In_ PLAYER::OPTION_COLOR color)
 	: Missile(), m_MissileColor(color)
 {
 	Init();
-	// 초기에 SmallSize로 로드.
-	SmallSizeImgLoad(FALSE);
+	NormalSizeImgLoad(FALSE);
 }
 
 void OptionMissile::Init()
@@ -129,7 +128,7 @@ void OptionMissile::Fly(
 	AccTime(dt);
 
 	// 일정 시간 이상이 되면 이미지 길어지도록.
-	CheckMissileFlyEnough();
+	// CheckMissileFlyEnough();
 
 	FLOAT unitVecX;
 	FLOAT unitVecY;

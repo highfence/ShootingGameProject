@@ -33,6 +33,10 @@ void GameManager::init()
 {
 	m_hdc = GetDC(m_hWnd);
 	m_pTimer->Init();
+	m_MemoryDC = CreateCompatibleDC(m_hdc);
+	m_MemoryBitmap = CreateCompatibleBitmap(m_hdc, winWidth, winHeight);
+	m_OldBitmap = (HBITMAP)SelectObject(m_MemoryDC, m_MemoryBitmap);
+
 	return;
 }
 
@@ -40,6 +44,8 @@ GameManager::~GameManager()
 {
 	delete m_pTimer;
 	delete m_pScroller;
+	DeleteObject(m_MemoryBitmap);
+	DeleteDC(m_MemoryDC);
 	ReleaseDC(m_hWnd, m_hdc);
 }
 
@@ -79,26 +85,21 @@ void GameManager::CalProc(const _In_ FLOAT dt)
 
 void GameManager::DrawProc(const _In_ FLOAT dt)
 {
-	HDC memoryDC = CreateCompatibleDC(m_hdc);
-	HBITMAP memoryBitmap = CreateCompatibleBitmap(m_hdc, winWidth, winHeight);
-	HBITMAP oldBitmap = (HBITMAP)SelectObject(memoryDC, memoryBitmap);
 
-	Rectangle(memoryDC, 0, 0, winWidth, winHeight);
+	Rectangle(m_MemoryDC, 0, 0, winWidth, winHeight);
 
-	m_pScroller->Scroll(memoryDC, dt);
+	m_pScroller->Scroll(m_MemoryDC, dt);
 	if (m_pPlayer->GetIsPlayerAlived())
 	{
-		m_pPlayer->DrawProc(memoryDC);
+		m_pPlayer->DrawProc(m_MemoryDC);
 	}
-	m_pEnemyManager->DrawProc(memoryDC);
-	m_pEffectManager->DrawProc(memoryDC);
-	m_pUIManager->DrawProc(memoryDC);
+	m_pEnemyManager->DrawProc(m_MemoryDC);
+	m_pEffectManager->DrawProc(m_MemoryDC);
+	m_pUIManager->DrawProc(m_MemoryDC);
 
-	BitBlt(m_hdc, 0, 0, winWidth, winHeight, memoryDC, 0, 0, SRCCOPY);
+	BitBlt(m_hdc, 0, 0, winWidth, winHeight, m_MemoryDC, 0, 0, SRCCOPY);
 
-	SelectObject(m_hdc, oldBitmap);
-	DeleteObject(memoryBitmap);
-	DeleteDC(memoryDC);
+	SelectObject(m_hdc, m_OldBitmap);
 	return;
 }
 

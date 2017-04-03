@@ -41,6 +41,9 @@ private :
 
 	HWND m_hWnd;
 	HDC m_hdc;
+	HDC m_MemoryDC;
+	HBITMAP m_MemoryBitmap;
+	HBITMAP m_OldBitmap;
 	HINSTANCE m_hInstance;
 	FLOAT m_AccTime;
 	MyTimer* m_pTimer;

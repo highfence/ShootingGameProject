@@ -2,7 +2,7 @@
 #include "BackGroundScroller.h"
 
 using namespace BACKGROUND;
-const wchar_t* Background1 = _T("../Resources/BackGround1.png");
+const wchar_t* Background1 = _T("../Resources/BackGround.png");
 const INT scrollSpeed = 300;
 const FLOAT objGenerateIntervalTime = 0.5f;
 const FLOAT objGenerateChance = 0.2f;

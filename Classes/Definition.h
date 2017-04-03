@@ -1,7 +1,7 @@
 #pragma once
 // 윈도우 사이즈
 const INT winWidth = 900;
-const INT winHeight = 1200;
+const INT winHeight = 1205;
 const INT boundaryRange = 100;
 
 // 벡터 초기화 값.
@@ -11,7 +11,7 @@ namespace BACKGROUND
 {
 	// 배경 이미지 사이즈. (윈도우 사이즈와 같음)
 	const INT imgWidth = 900;
-	const INT imgHeight = 1600;
+	const INT imgHeight = 1200;
 
 	enum BACKGROUND_OBJ  
 	{

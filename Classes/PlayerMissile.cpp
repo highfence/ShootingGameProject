@@ -86,6 +86,7 @@ BOOL PlayerMissile::CheckColide()
 }
 
 /*
+	// TODO :: 미사일 이미지 로드하지 말고, 메모리 풀 잡아놓고 하기.
 	ChangeMissileTier
 	미사일의 티어를 받아 이미지와 데미지를 바꾸는 함수.
 */
