@@ -5,6 +5,7 @@
 #include "UIManager.h"
 #include "ExplodeSmoke.h"
 #include "ExplodeHit.h"
+#include "ExplodeBig.h"
 #include "EnemyMissile.h"
 
 const std::wstring enemyHandShotSpritePath = _T("../Resources/EnemyHandShot.png");
@@ -94,7 +95,7 @@ Vec EnemyHandShot::GetLaunchPos() const
 
 void EnemyHandShot::Explode()
 {
-	EffectManager::GetInstance()->MakeEffect<ExplodeSmoke>(m_Pos);
+	EffectManager::GetInstance()->MakeEffect<ExplodeBig>(m_Pos);
 	return;
 }
 

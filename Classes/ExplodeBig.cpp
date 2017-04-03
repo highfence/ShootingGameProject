@@ -3,7 +3,7 @@
 
 const std::wstring explodeBigSpritePath = _T("../Resources/FX/ExplodeBig_");
 const std::wstring explodeBigShadePath = _T("../Resources/FX/ExplodeBigS_");
-const std::wstring explodeBigFileExtension = _T(".png");
+const std::wstring explodeBigFileExtension = _T(".gif");
 const INT explodeBigWidth = 96;
 const INT explodeBigHeight = 96;
 const INT explodeBigMaxFrame = 12;

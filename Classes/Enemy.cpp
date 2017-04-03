@@ -63,7 +63,6 @@ void Enemy::DistributeFireOption()
 	FireOption op = GetFireOption();
 	for (auto& i : m_MissileVec)
 	{
-		// TODO :: 세팅이 잘 안되는 건지 확인해보자.
 		i->SetFireOption(op);
 	}
 
@@ -168,11 +167,7 @@ void Enemy::DrawProc(_Inout_ HDC drawDC)
 	DrawMissiles(drawDC);
 
 #ifdef _DEBUG
-	std::wstring debugLabel = _T("explode!");
-	if (m_IsEnemyExplode == TRUE)
-	{
-		TextOut(drawDC, m_Pos.x, m_Pos.y, debugLabel.c_str(), wcslen(debugLabel.c_str()));
-	}
+
 #endif
 	return;
 }

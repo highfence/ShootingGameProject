@@ -19,6 +19,13 @@ public :
 
 	EnemyManager();
 	~EnemyManager();
+
+	template <typename T>
+	void Activate(
+		const _In_ FLOAT activateTime,
+		const _In_ Vec createPos,
+		const _In_ ENEMY::CREATE_OPTION createOption,
+		const _In_ ENEMY::FIRE_OPTION fireOption);
 	
 	void ActivateEnemy(
 		const _In_ FLOAT activateTime, 
