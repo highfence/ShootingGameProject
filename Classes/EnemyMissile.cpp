@@ -28,6 +28,14 @@ EnemyMissile::EnemyMissile(ENEMY::MISSILE_SIZE missileSize)
 		m_Width = enemyMissileLargeWidth;
 		m_Height = enemyMissileLargeHeight;
 	}
+	else if (missileSize == ENEMY::MISSILE_SIZE::EXTRA)
+	{
+		m_pSprite->Load(enemyMissileExtra.c_str());
+		m_pShapeSprite->Load(enemyMissileShadeExtra.c_str());
+		m_Width = enemyMissileExtraWidth;
+		m_Height = enemyMissileExtraHeight;
+	}
+
 	init();
 	return;
 }

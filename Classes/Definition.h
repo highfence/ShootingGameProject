@@ -41,27 +41,46 @@ namespace ENEMY
 {
 	enum ENEMY_TYPE 
 	{
-		ENEMY_ITEM, ITEM, ENEMY_ZACO, ENEMY_HAND_SHOT, ENEMY_MINE, ENEMY_TYPE_NUM
+		ENEMY_ITEM,
+		ITEM,
+		ENEMY_ZACO,
+		ENEMY_HAND_SHOT,
+		ENEMY_MINE,
+		ENEMY_BOSS,
+		ENEMY_TYPE_NUM
 	};
 
 	enum FLIGHT_TYPE 
 	{
-		FLY_STRAIGHT, FLY_ITEM, FLY_ACCELERATE, FLY_GO_AND_SLOW, FLIGHT_TYPE_NUM
+		FLY_STRAIGHT,
+		FLY_ITEM,
+		FLY_ACCELERATE,
+		FLY_GO_AND_SLOW,
+		FLIGHT_TYPE_NUM
 	};
 
 	enum MISSILE_TYPE 
 	{
-		NONE, STRAIGHT_FIRE, ACCELERATE_FIRE, CIRCLE_TYPE, MISSILE_TYPE_NUM
+		NONE,
+		STRAIGHT_FIRE,
+		ACCELERATE_FIRE,
+		CIRCLE_TYPE,
+		MISSILE_TYPE_NUM
 	};
 
 	enum FIRE_TYPE 
 	{
-		NORMAL_FIRE, AIMED_FIRE, N_WAY_FIRE, MULTI_FIRE, CIRCLE_FIRE, FIRE_TYPE_NUM
+		NORMAL_FIRE,
+		AIMED_FIRE,
+		N_WAY_FIRE,
+		MULTI_FIRE,
+		CIRCLE_FIRE,
+		FIRE_TYPE_NUM
 	};
 
 	enum MISSILE_SIZE
 	{
-		SMALL, MEDIUM, LARGE, MISSILE_SIZE_NUM
+		SMALL, MEDIUM, LARGE, EXTRA, MISSILE_SIZE_NUM
 	};
 	
 	enum CREATE_OPTION
@@ -73,6 +92,7 @@ namespace ENEMY
 		ENEMY_MINE_DIAGONAL,
 		ENEMY_MINE_STRAIGHT,
 		ENEMY_MINE_STRAIGHT_WITH_ITEM,
+		ENEMY_BOSS_CREATE,
 		CREATE_OPTION_NUM
 	};
 	
@@ -89,6 +109,7 @@ namespace ENEMY
 		FIRE_OPTION_NUM
 	};
 
+	/* Enemy Missile */
 	const std::wstring enemyMissileSmall = _T("../Resources/FX/proton_02.png");
 	const std::wstring enemyMissileShadeSmall = _T("../Resources/FX/proton_02S.png");
 	const INT enemyMissileSmallWidth = 9;
@@ -101,6 +122,10 @@ namespace ENEMY
 	const std::wstring enemyMissileShadeLarge = _T("../Resources/FX/proton_00S.png");
 	const INT enemyMissileLargeWidth = 20;
 	const INT enemyMissileLargeHeight = 20;
+	const std::wstring enemyMissileExtra = _T("../Resources/Boss/Missile_Extra.png");
+	const std::wstring enemyMissileShadeExtra = _T("../Resources/Boss/Missile_ExtraS.png");
+	const INT enemyMissileExtraWidth = 47;
+	const INT enemyMissileExtraHeight = 47;
 
 	// Enemy_Item
 	const FLOAT enemyItemDamage = 3.f;

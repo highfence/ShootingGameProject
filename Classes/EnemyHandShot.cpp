@@ -115,7 +115,9 @@ const vRESULT EnemyHandShot::InitialImgLoad()
 /*
 	EnemyHandShot이 맞았을 경우 특별한 이펙트를 발생시키기 위해 오버라이딩.
 */
-void EnemyHandShot::GetDamage(const _In_ INT damage, const _In_ Vec playerMissileVec)
+void EnemyHandShot::GetDamage(
+	const _In_ INT damage,
+	const _In_ Vec playerMissileVec)
 {
 	m_Hp -= damage;
 

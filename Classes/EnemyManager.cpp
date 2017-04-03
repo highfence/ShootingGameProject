@@ -6,6 +6,7 @@
 #include "EnemyZaco.h"
 #include "EnemyHandShot.h"
 #include "EnemyMine.h"
+#include "Boss.h"
 #include "EnemyManager.h"
 #include "OptionHandler.h"
 
@@ -58,6 +59,7 @@ void EnemyManager::RegisterFunctionPointer()
 	m_pActivateHandler[ENEMY_TYPE::ENEMY_ZACO] = &EnemyManager::ActivateZaco;
 	m_pActivateHandler[ENEMY_TYPE::ENEMY_HAND_SHOT] = &EnemyManager::ActivateHandShot;
 	m_pActivateHandler[ENEMY_TYPE::ENEMY_MINE] = &EnemyManager::ActivateEnemyMine;
+	m_pActivateHandler[ENEMY_TYPE::ENEMY_BOSS] = &EnemyManager::ActivateEnemyBoss;
 	return;
 }
 
@@ -183,6 +185,29 @@ BOOL EnemyManager::ActivateEnemyMine(
 	const _In_ ENEMY::FIRE_OPTION fireOptionNumber)
 {
 	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_MINE);
+	if (newEnemy != nullptr)
+	{
+		newEnemy->Activate(
+			createPos,
+			*m_pCreateOptionArray[createOptionNumber],
+			*m_pFireOptionArray[fireOptionNumber]);
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/*
+	EnemyBoss를 만들어 주는 함수.
+*/
+BOOL EnemyManager::ActivateEnemyBoss(
+	const _In_ Vec createPos,
+	const _In_ ENEMY::CREATE_OPTION createOptionNumber,
+	const _In_ ENEMY::FIRE_OPTION fireOptionNumber)
+{
+	auto newEnemy = FindDeactivatedEnemy(ENEMY::ENEMY_TYPE::ENEMY_BOSS);
 	if (newEnemy != nullptr)
 	{
 		newEnemy->Activate(
@@ -335,6 +360,9 @@ void EnemyManager::MakeProc()
 	FLOAT line6 = line5 + 4.5;
 	ActivateEnemy(line6 + 3.f, Vec(250.f, 0.f), CREATE_OPTION::ENEMY_HAND_SHOT_CREATE, FIRE_OPTION::ROTATE_FIRE_OPTION);
 
+	FLOAT line7 = line6 + 6.0f;
+	ActivateEnemy(3.0f, Vec(450.f, 300.f), CREATE_OPTION::ENEMY_BOSS_CREATE, FIRE_OPTION::N_WAY_FIRE_OPTION);
+
 	return;
 }
 
@@ -354,7 +382,14 @@ void EnemyManager::SetEnemyMemoryPool()
 	const INT enemyZacoAllocTime = 15;
 	const INT enemyHandShotAllocTime = 5;
 	const INT enemyMineAllocTime = 30;
-	const INT wholeAllocTime = enemyItemAllocTime + ItemAllocTime + enemyZacoAllocTime + enemyHandShotAllocTime + enemyMineAllocTime;
+	const INT enemyBossAllocTime = 1;
+	const INT wholeAllocTime = 
+		enemyItemAllocTime +
+		ItemAllocTime +
+		enemyZacoAllocTime +
+		enemyHandShotAllocTime +
+		enemyMineAllocTime +
+		enemyBossAllocTime;
 
 	m_EnemyMemoryVector.reserve(wholeAllocTime);
 	AllocEnemyMemory<EnemyHandShot>(enemyHandShotAllocTime);
@@ -362,6 +397,7 @@ void EnemyManager::SetEnemyMemoryPool()
 	AllocEnemyMemory<Item>(ItemAllocTime);
 	AllocEnemyMemory<EnemyZaco>(enemyZacoAllocTime);
 	AllocEnemyMemory<EnemyMine>(enemyMineAllocTime);
+	AllocEnemyMemory<EnemyBoss>(enemyBossAllocTime);
 
 	return;
 }

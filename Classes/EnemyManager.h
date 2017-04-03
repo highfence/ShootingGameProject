@@ -20,12 +20,12 @@ public :
 	EnemyManager();
 	~EnemyManager();
 
-	template <typename T>
-	void Activate(
-		const _In_ FLOAT activateTime,
-		const _In_ Vec createPos,
-		const _In_ ENEMY::CREATE_OPTION createOption,
-		const _In_ ENEMY::FIRE_OPTION fireOption);
+	//template <typename T>
+	//void Activate(
+	//	const _In_ FLOAT activateTime,
+	//	const _In_ Vec createPos,
+	//	const _In_ ENEMY::CREATE_OPTION createOption,
+	//	const _In_ ENEMY::FIRE_OPTION fireOption);
 	
 	void ActivateEnemy(
 		const _In_ FLOAT activateTime, 
@@ -94,6 +94,10 @@ private :
 		const _In_ ENEMY::CREATE_OPTION,
 		const _In_ ENEMY::FIRE_OPTION);
 
+	BOOL ActivateEnemyBoss(
+		const _In_ Vec,
+		const _In_ ENEMY::CREATE_OPTION,
+		const _In_ ENEMY::FIRE_OPTION);
 
 	FLOAT m_AccTime;
 	FLOAT m_RecordCreateTime;
