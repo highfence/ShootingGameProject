@@ -30,7 +30,7 @@ public :
 
 private :
 
-	void init();
+	void Init();
 	void InitialImgLoad();
 	void InitialOptionSetting();
 	void AccTime(const _In_ FLOAT);

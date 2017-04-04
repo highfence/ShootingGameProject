@@ -35,10 +35,10 @@ Player::Player()
 	m_pSprite = new CImage;
 	m_pShadeSprite = new CImage;
 	m_pMissile = new PlayerMissile;
-	init();
+	Init();
 }
 
-void Player::init()
+void Player::Init()
 {
 	m_Pos.x = playerInitWidth;
 	m_Pos.y = playerInitHeight;
