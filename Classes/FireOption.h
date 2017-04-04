@@ -21,15 +21,15 @@ struct NwayShotData
 	BOOL operator!=(const _In_ char*);
 	BOOL GetNwayShotDataValid();
 	
-	INT ShotTimes = 0;
-	INT ShotNumber[maxShotTimes] = { 0 };
-	FLOAT ShotAngle[maxShotTimes] = { 0.f };
-	BOOL IsMissileShotToPlayer = FALSE;
-	BOOL IsMissileCircled = FALSE;
+	INT m_ShotTimes = 0;
+	INT m_ShotNumber[maxShotTimes] = { 0 };
+	FLOAT m_ShotAngle[maxShotTimes] = { 0.f };
+	BOOL m_IsMissileShotToPlayer = FALSE;
+	BOOL m_IsMissileCircled = FALSE;
 
 	// 계산에 필요한 인자.
-	INT RecordShotTimes = 0;
-	BOOL IsMissileNeedDelay = FALSE;
+	INT m_RecordShotTimes = 0;
+	BOOL m_IsMissileNeedDelay = FALSE;
 
 };
 
@@ -51,23 +51,23 @@ struct CircleShotData
 
 	CircleShotData(const _In_ CircleShotData&) = default;
 	CircleShotData& operator=(const _In_ CircleShotData&);
-	void SetCenterPos(const _In_ Vec& pos) { CenterPos = pos; };
-	void SetTheta(const _In_ FLOAT& theta) { Theta = theta; };
+	void SetCenterPos(const _In_ Vec& pos) { m_CenterPos = pos; };
+	void SetTheta(const _In_ FLOAT& theta) { m_Theta = theta; };
 
-	Vec CenterPos = Vec(0.f, 0.f);
-	INT MissileNum = 0;
-	FLOAT Radius = 0;
-	FLOAT Theta = 0.f;
-	FLOAT InitRotateAnglePerSec = 0.f;
-	FLOAT AccRotateAnglePerSec = 0.f;
-	FLOAT MaxRotateAngelPerSec = 0.f;
-	BOOL IsRotateClockWise = TRUE;
-	FLOAT RotateTime = 0.f;
-	FLOAT ShotSpeedWhenTheRotateEnd = 0.f;
+	Vec m_CenterPos = Vec(0.f, 0.f);
+	INT m_MissileNum = 0;
+	FLOAT m_Radius = 0;
+	FLOAT m_Theta = 0.f;
+	FLOAT m_InitRotateAnglePerSec = 0.f;
+	FLOAT m_AccRotateAnglePerSec = 0.f;
+	FLOAT m_MaxRotateAngelPerSec = 0.f;
+	BOOL m_IsRotateClockWise = TRUE;
+	FLOAT m_RotateTime = 0.f;
+	FLOAT m_ShotSpeedWhenTheRotateEnd = 0.f;
 
 	// 내부 계산용 멤버.
-	FLOAT RecordRotateTime = 0.f;
-	BOOL IsMissileNeedDelay = FALSE;
+	FLOAT m_RecordRotateTime = 0.f;
+	BOOL m_IsMissileNeedDelay = FALSE;
 };
 
 class FireOption

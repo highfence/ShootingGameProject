@@ -275,11 +275,11 @@ BOOL Enemy::FlyGoAndSlow(const _In_ FLOAT dt)
 	GoAndSlowData data = opt.GetGoAndSlowData();
 
 	// 누적 시간이 SlowDownStartTime과 SlowDownStartTime + SlowDonwDurationTime사이일 경우 느린 비행.
-	if ((m_AccTime < data.SlowDownStartTime + data.SlowDownDurationTime) 
-		&& (m_AccTime > data.SlowDownStartTime))
+	if ((m_AccTime < data.m_SlowDownStartTime + data.m_SlowDownDurationTime) 
+		&& (m_AccTime > data.m_SlowDownStartTime))
 	{
-		m_Pos.x += data.SlowDownMoveVec.x * data.SlowDownMoveSpeed * dt;
-		m_Pos.y += data.SlowDownMoveVec.y * data.SlowDownMoveSpeed * dt;
+		m_Pos.x += data.m_SlowDownMoveVec.x * data.m_SlowDownMoveSpeed * dt;
+		m_Pos.y += data.m_SlowDownMoveVec.y * data.m_SlowDownMoveSpeed * dt;
 	}
 	else
 	{
@@ -540,7 +540,7 @@ BOOL Enemy::FireNways()
 	}
 
 	// 플레이어 쪽으로 발사하는 옵션이 있을 경우, 벡터를 플레이어 쪽으로 바꿔줌.
-	if (data.IsMissileShotToPlayer)
+	if (data.m_IsMissileShotToPlayer)
 	{
 		SetOptionMissileVecToPlayer();
 	}
@@ -551,13 +551,13 @@ BOOL Enemy::FireNways()
 		m_RecordFireTime <= (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
 	{
 		// 미사일에 인터벌 딜레이가 필요할 경우 발사 불가. 
-		if (data.IsMissileNeedDelay)
+		if (data.m_IsMissileNeedDelay)
 		{
 			return FALSE;
 		}
 
 		// 이번 발사하는 미사일 개수가 짝수일 경우 처리.
-		if (data.ShotNumber[data.RecordShotTimes] % 2 == 0)
+		if (data.m_ShotNumber[data.m_RecordShotTimes] % 2 == 0)
 		{
 			LaunchEvenNumberWays();
 		}
@@ -568,14 +568,14 @@ BOOL Enemy::FireNways()
 		}
 
 		// 발사 후 딜레이 처리와 Shot정보를 다음으로 옮김.
-		data.IsMissileNeedDelay = TRUE;
-		++data.RecordShotTimes;
+		data.m_IsMissileNeedDelay = TRUE;
+		++data.m_RecordShotTimes;
 		
 		// 재장전 처리.
 		// RecordShotTimes == ShotTimes일 경우 재장전 시간이 필요하다.
-		if (data.RecordShotTimes == data.ShotTimes)
+		if (data.m_RecordShotTimes == data.m_ShotTimes)
 		{
-			data.RecordShotTimes = 0;
+			data.m_RecordShotTimes = 0;
 			m_RecordFireTime = 0.f;
 		}
 	}
@@ -583,7 +583,7 @@ BOOL Enemy::FireNways()
 	else if (m_RecordFireTime > (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
 	{
 		// 인터벌 딜레이가 끝났으므로 미사일 발사 가능. 
-		data.IsMissileNeedDelay = FALSE;
+		data.m_IsMissileNeedDelay = FALSE;
 		m_RecordFireTime = opt.GetInitShootDelay();
 	}
 
@@ -610,24 +610,24 @@ BOOL Enemy::FireMulti()
 	if (m_RecordFireTime > opt.GetInitShootDelay() &&
 		m_RecordFireTime <= (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
 	{
-		if (data.IsMissileNeedDelay)
+		if (data.m_IsMissileNeedDelay)
 		{
 			return FALSE;
 		}
 		LaunchMultiWays();
 
-		data.IsMissileNeedDelay = TRUE;
-		++data.RecordShotTimes;
+		data.m_IsMissileNeedDelay = TRUE;
+		++data.m_RecordShotTimes;
 
-		if (data.RecordShotTimes == data.ShotTimes)
+		if (data.m_RecordShotTimes == data.m_ShotTimes)
 		{
-			data.RecordShotTimes = 0;
+			data.m_RecordShotTimes = 0;
 			m_RecordFireTime = 0.f;
 		}
 	}
 	else if (m_RecordFireTime > (opt.GetInitShootDelay() + opt.GetIntervalShootDelay()))
 	{
-		data.IsMissileNeedDelay = FALSE;
+		data.m_IsMissileNeedDelay = FALSE;
 		m_RecordFireTime = opt.GetInitShootDelay();
 	}
 
@@ -648,21 +648,21 @@ BOOL Enemy::FireCircle()
 
 	// 회전탄 발사 시간 조절 (회전탄은 Interval이 길어야 한다.)
 	if (m_RecordFireTime > opt.GetInitShootDelay() &&
-		m_RecordFireTime < (opt.GetInitShootDelay() + data.RotateTime))
+		m_RecordFireTime < (opt.GetInitShootDelay() + data.m_RotateTime))
 	{
-		if (data.IsMissileNeedDelay)
+		if (data.m_IsMissileNeedDelay)
 		{
 			return FALSE;
 		}
 		
 		// 사방으로 미사일을 뿌려주는 함수.
 		LaunchForRotateWays();
-		data.IsMissileNeedDelay = TRUE;
+		data.m_IsMissileNeedDelay = TRUE;
 	}
 	// 인터벌 딜레이 처리.
-	else if (m_RecordFireTime > opt.GetInitShootDelay() + data.RotateTime + 1.f)
+	else if (m_RecordFireTime > opt.GetInitShootDelay() + data.m_RotateTime + 1.f)
 	{
-		data.IsMissileNeedDelay = FALSE;
+		data.m_IsMissileNeedDelay = FALSE;
 		m_RecordFireTime = opt.GetInitShootDelay();
 	}
 
@@ -716,12 +716,12 @@ BOOL Enemy::LaunchOddNumberWays()
 	FireOption inputOption = opt;
 
 	// 좌우가 같은 모양으로 퍼지기 때문에 각도 처리를 해줘야 할 횟수 구하기.
-	INT LaunchTimes = (data.ShotNumber[data.RecordShotTimes] + 1) / 2;
+	INT LaunchTimes = (data.m_ShotNumber[data.m_RecordShotTimes] + 1) / 2;
 
 	// 부채꼴 모양으로 퍼질 미사일들의 기준이 될 정중앙 벡터 
 	Vec standardVec = opt.GetMissileVec();
 	Vec rotateVec = standardVec;
-	FLOAT theta = data.ShotAngle[data.RecordShotTimes];
+	FLOAT theta = data.m_ShotAngle[data.m_RecordShotTimes];
 
 	for (INT i = 0; i < LaunchTimes; ++i)
 	{
@@ -763,12 +763,12 @@ BOOL Enemy::LaunchEvenNumberWays()
 	FireOption inputOption = opt;
 
 	// 좌우가 같은 모양으로 퍼지기 때문에 각도 처리를 해줘야 할 횟수 구하기.
-	INT LaunchTimes = (data.ShotNumber[data.RecordShotTimes]) / 2;
+	INT LaunchTimes = (data.m_ShotNumber[data.m_RecordShotTimes]) / 2;
 
 	// 부채꼴 모양으로 퍼질 미사일들의 기준이 될 정중앙 벡터 
 	Vec standardVec = opt.GetMissileVec();
 	Vec rotateVec = standardVec;
-	FLOAT theta = data.ShotAngle[data.RecordShotTimes];
+	FLOAT theta = data.m_ShotAngle[data.m_RecordShotTimes];
 
 	for (INT i = 0; i < LaunchTimes; ++i)
 	{
@@ -806,8 +806,8 @@ BOOL Enemy::LaunchMultiWays()
 	Vec standardVec = opt.GetMissileVec();
 	Vec rotateVec = standardVec;
 	// 정해진 Angle대신 미사일 개수에 따라 각도가 달라짐.
-	FLOAT theta = 360.f / data.ShotNumber[data.RecordShotTimes];
-	INT LaunchTimes = (data.ShotNumber[data.RecordShotTimes]) / 2;
+	FLOAT theta = 360.f / data.m_ShotNumber[data.m_RecordShotTimes];
+	INT LaunchTimes = (data.m_ShotNumber[data.m_RecordShotTimes]) / 2;
 
 	for (INT i = 0; i < LaunchTimes; ++i)
 	{
@@ -843,21 +843,21 @@ BOOL Enemy::LaunchForRotateWays()
 	Vec standardVec = opt.GetMissileVec();
 	Vec rotateVec = standardVec;
 	// 정해진 Angle대신 미사일 개수에 따라 각도가 달라짐.
-	FLOAT theta = 360.f / data.MissileNum;
+	FLOAT theta = 360.f / data.m_MissileNum;
 	INT LaunchTimes;
 
 	// 발사하는 미사일이 홀수이냐 짝수이냐를 판별하여 Launch횟수 결정.
 	BOOL IsMissileNumberOdd;
-	if ((data.MissileNum % 2) == 0)
+	if ((data.m_MissileNum % 2) == 0)
 	{
 		IsMissileNumberOdd = FALSE;
-		LaunchTimes = data.MissileNum / 2;
+		LaunchTimes = data.m_MissileNum / 2;
 	}
 	// 홀수일 경우.
 	else
 	{
 		IsMissileNumberOdd = TRUE;
-		LaunchTimes = (data.MissileNum + 1) / 2;
+		LaunchTimes = (data.m_MissileNum + 1) / 2;
 	}
 
 	// 홀수 발사.

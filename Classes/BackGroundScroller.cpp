@@ -66,8 +66,6 @@ void BackGroundScroller::Scroll(_Inout_ HDC drawDC, const _In_ FLOAT dt)
 
 	// 배경화면 스크롤.
 	ScrollBackGround(drawDC, dt);
-	// 오브젝트 스크롤.
-	//ScrollObj(drawDC, dt);
 	
 	return;
 }
@@ -105,11 +103,15 @@ void BackGroundScroller::ScrollObj(_Inout_ HDC drawDC, const _In_ FLOAT dt)
 			}
 			else
 			{
+
 #pragma warning(push)
 #pragma warning(disable : 4244)
+
 				i->img->BitBlt(drawDC, i->scrollX, i->scrollY, i->imgWidth, i->imgHeight, 0, 0, BLACKNESS);
 				i->img->BitBlt(drawDC, i->scrollX, i->scrollY, i->imgWidth, i->imgHeight, 0, 0, SRCAND);
+
 #pragma warning(pop)
+
 			}
 		}
 	}

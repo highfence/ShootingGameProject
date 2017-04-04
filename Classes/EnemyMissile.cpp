@@ -96,22 +96,22 @@ BOOL EnemyMissile::MissileCircle(const FLOAT dt)
 	FLOAT flyDistance = m_AccTime * opt.GetMissileSpeed();
 	
 	// 이동거리가 아직 충분하지 않다면 (Radius 미만이라면) Fly진행.
-	if (flyDistance < data.Radius)
+	if (flyDistance < data.m_Radius)
 	{
 		MissileFlyNormal(dt);
 	}
 	// 충분하다면 회전 운동 진행. RecordRotateTime에 시간 누적.
-	else if (data.RecordRotateTime < data.RotateTime)
+	else if (data.m_RecordRotateTime < data.m_RotateTime)
 	{
 		MoveLoopingBullet(dt, opt, data);
-		data.RecordRotateTime += dt;
+		data.m_RecordRotateTime += dt;
 	}
 	// RecordRotateTime이 넘어가면 중심에서 현재 위치로의 벡터로 진행.
 	else
 	{
 		Vec oppositeVec;
-		oppositeVec.x = m_Pos.x - data.CenterPos.x;
-		oppositeVec.y = m_Pos.y - data.CenterPos.y;
+		oppositeVec.x = m_Pos.x - data.m_CenterPos.x;
+		oppositeVec.y = m_Pos.y - data.m_CenterPos.y;
 		opt.SetMissileVec(oppositeVec);
 		SetFireOption(opt);
 		MissileFlyNormal(dt);
@@ -129,25 +129,25 @@ BOOL EnemyMissile::MissileCircle(const FLOAT dt)
 void EnemyMissile::MoveLoopingBullet(const FLOAT dt, FireOption& opt, CircleShotData& data)
 {
 	// 도는 각도 계산.
-	FLOAT currentRotateAngle = (data.InitRotateAnglePerSec + data.AccRotateAnglePerSec * data.RecordRotateTime) * dt;
+	FLOAT currentRotateAngle = (data.m_InitRotateAnglePerSec + data.m_AccRotateAnglePerSec * data.m_RecordRotateTime) * dt;
 
 	// 도는 각도가 Max값을 넘어가면 Max값으로 고정.
-	if (currentRotateAngle > data.MaxRotateAngelPerSec)
+	if (currentRotateAngle > data.m_MaxRotateAngelPerSec)
 	{
-		currentRotateAngle = data.MaxRotateAngelPerSec;
+		currentRotateAngle = data.m_MaxRotateAngelPerSec;
 	}
 
 	// 라디안 변환.
 	FLOAT currentRotateRadian = currentRotateAngle * M_PI / 180;
 
 	// 각도 이동.
-	data.Theta += currentRotateRadian;
-	data.Theta = fmod(data.Theta, 2 * M_PI);
+	data.m_Theta += currentRotateRadian;
+	data.m_Theta = fmod(data.m_Theta, 2 * M_PI);
 
 	// 이동시킨 각도에 따라 좌표 변환.
 	Vec MoveOnVec;
-	m_Pos.x = data.CenterPos.x + data.Radius * cos(data.Theta);
-	m_Pos.y = data.CenterPos.y + data.Radius * sin(data.Theta);
+	m_Pos.x = data.m_CenterPos.x + data.m_Radius * cos(data.m_Theta);
+	m_Pos.y = data.m_CenterPos.y + data.m_Radius * sin(data.m_Theta);
 
 	// 변경사항 저장.
 	opt.SetCircleShotData(data);

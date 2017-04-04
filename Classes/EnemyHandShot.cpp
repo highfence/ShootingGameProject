@@ -144,7 +144,7 @@ void EnemyHandShot::CalcLaunchPos()
 	// NwayShot을 쏘는 경우
 	if (data != nullptr)
 	{
-		if (data.RecordShotTimes == 0)
+		if (data.m_RecordShotTimes == 0)
 		{
 			ChangeHand();
 		}

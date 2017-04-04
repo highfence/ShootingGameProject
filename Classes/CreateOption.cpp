@@ -154,25 +154,28 @@ GoAndSlowData::GoAndSlowData(
 	const Vec& slowDownMoveVec,
 	const FLOAT& slowDownMoveSpeed)
 {
-	SlowDownStartTime = slowDownStartTime;
-	SlowDownDurationTime = slowDownDurationTime;
-	SlowDownMoveVec = slowDownMoveVec;
-	SlowDownMoveSpeed = slowDownMoveSpeed;
+	m_SlowDownStartTime = slowDownStartTime;
+	m_SlowDownDurationTime = slowDownDurationTime;
+	m_SlowDownMoveVec = slowDownMoveVec;
+	m_SlowDownMoveSpeed = slowDownMoveSpeed;
 }
 
-GoAndSlowData::GoAndSlowData(int)
+/*
+	int값이 들어올시 모두 0으로 세팅.	
+*/
+GoAndSlowData::GoAndSlowData(int trashValue)
 {
-	SlowDownStartTime = 0.f;
-	SlowDownDurationTime = 0.f;
-	SlowDownMoveVec = Vec(0.f, 0.f);
-	SlowDownMoveSpeed = 0.f;
+	m_SlowDownStartTime = 0.f;
+	m_SlowDownDurationTime = 0.f;
+	m_SlowDownMoveVec = Vec(0.f, 0.f);
+	m_SlowDownMoveSpeed = 0.f;
 }
 
 GoAndSlowData & GoAndSlowData::operator=(const GoAndSlowData& data)
 {
-	SlowDownStartTime = data.SlowDownStartTime;
-	SlowDownDurationTime = data.SlowDownDurationTime;
-	SlowDownMoveVec = data.SlowDownMoveVec;
-	SlowDownMoveSpeed = data.SlowDownMoveSpeed;
+	m_SlowDownStartTime = data.m_SlowDownStartTime;
+	m_SlowDownDurationTime = data.m_SlowDownDurationTime;
+	m_SlowDownMoveVec = data.m_SlowDownMoveVec;
+	m_SlowDownMoveSpeed = data.m_SlowDownMoveSpeed;
 	return *this;
 }
