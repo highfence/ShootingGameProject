@@ -124,7 +124,7 @@ void OptionHandler::Init()
 	CreateOption enemyItemLaunched = CreateOption(1, ENEMY_TYPE::ENEMY_ITEM, FLIGHT_TYPE::FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyItemData, TRUE);
 
 	/* Item 관련 CreateOption */
-	CreateOption itemOption = CreateOption(100000, ENEMY_TYPE::ITEM, FLIGHT_TYPE::FLY_ITEM, Vec(0, 0), 150.f, 0, NULL, FALSE);
+	CreateOption itemOption = CreateOption(100000, ENEMY_TYPE::ITEM, FLIGHT_TYPE::FLY_ITEM, Vec(0, 0), 150.f, 0, nullptr, FALSE);
 
 	/* EnemyMine 관련 CreateOption*/
 	CreateOption enemyMineDiagonal = CreateOption(1, ENEMY_TYPE::ENEMY_MINE, FLIGHT_TYPE::FLY_ACCELERATE, Vec(-0.5f, 0.5f), 250.f, 150.f, emptyData, FALSE);
@@ -137,8 +137,8 @@ void OptionHandler::Init()
 
 	/* EnemyBoss 관련 Option */
 	// 임시 데이터
-	GoAndSlowData enemyBossGASData = GoAndSlowData(0.5f, 99.f, Vec(0.f, 0.f), 0.f);
-	CreateOption enemyBossCreate = CreateOption(2000, ENEMY_TYPE::ENEMY_BOSS, FLIGHT_TYPE::FLY_GO_AND_SLOW, Vec(0, 1), 300.f, 0.f, enemyBossGASData, FALSE);
+	MoveOnlySide enemyBossSideMove = MoveOnlySide(250.f, 50.f, 300.f, 1.5f, 0.3f);
+	CreateOption enemyBossCreate = CreateOption(2000, ENEMY_TYPE::ENEMY_BOSS, FLIGHT_TYPE::FLY_MOVE_ONLY_SIDE, Vec(0, 1), 300.f, 0.f, enemyBossSideMove, FALSE);
 
 
 	// 생성 옵션 등록.

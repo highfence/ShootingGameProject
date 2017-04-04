@@ -19,6 +19,51 @@ CreateOption::CreateOption(
 	SetFlightSpeed(flightSpeed);
 	SetAccFlightSpeed(accFlightSpeed);
 	SetGoAndSlowData(goAndSlowData);
+	SetMoveOnlySide(NULL);
+	SetIsItemLaunched(isItemLaunched);
+}
+
+CreateOption::CreateOption(
+	const INT & enemyHp,
+	const ENEMY::ENEMY_TYPE & enemyType,
+	const ENEMY::FLIGHT_TYPE & flightType,
+	const Vec & flightVec,
+	const FLOAT & flightSpeed,
+	const FLOAT & accFlightSpeed,
+	const MoveOnlySide & moveOnlySide,
+	const BOOL & isItemLaunched)
+	: m_IsOptionCanUse(TRUE)
+{
+	SetEnemyHp(enemyHp);
+	SetEnemyType(enemyType);
+	SetFlightType(flightType);
+	SetFlightVec(flightVec);
+	SetFlightSpeed(flightSpeed);
+	SetAccFlightSpeed(accFlightSpeed);
+	SetGoAndSlowData(NULL);
+	SetMoveOnlySide(moveOnlySide);
+	SetIsItemLaunched(isItemLaunched);
+}
+
+CreateOption::CreateOption(
+	const INT & enemyHp,
+	const ENEMY::ENEMY_TYPE & enemyType,
+	const ENEMY::FLIGHT_TYPE & flightType,
+	const Vec & flightVec,
+	const FLOAT & flightSpeed,
+	const FLOAT & accFlightSpeed,
+	const std::nullptr_t null,
+	const BOOL & isItemLaunched)
+	: m_IsOptionCanUse(TRUE)
+{
+	SetEnemyHp(enemyHp);
+	SetEnemyType(enemyType);
+	SetFlightType(flightType);
+	SetFlightVec(flightVec);
+	SetFlightSpeed(flightSpeed);
+	SetAccFlightSpeed(accFlightSpeed);
+	SetGoAndSlowData(NULL);
+	SetMoveOnlySide(NULL);
 	SetIsItemLaunched(isItemLaunched);
 }
 
@@ -99,6 +144,11 @@ GoAndSlowData CreateOption::GetGoAndSlowData() const
 	return m_GoAndSlowData;
 }
 
+MoveOnlySide CreateOption::GetMoveOnlySide() const
+{
+	return m_MoveOnlySide;
+}
+
 BOOL CreateOption::GetIsItemLaunched() const
 {
 	return m_IsItemLaunched;
@@ -137,6 +187,11 @@ void CreateOption::SetAccFlightSpeed(const _In_ FLOAT& accFlightSpeed)
 void CreateOption::SetGoAndSlowData(const _In_ GoAndSlowData& data)
 {
 	m_GoAndSlowData = data;
+}
+
+void CreateOption::SetMoveOnlySide(const MoveOnlySide & data)
+{
+	m_MoveOnlySide = data;
 }
 
 void CreateOption::SetIsItemLaunched(const BOOL& isItemLaunched)
