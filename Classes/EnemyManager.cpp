@@ -361,8 +361,7 @@ void EnemyManager::MakeProc()
 	ActivateEnemy(line6 + 3.f, Vec(250.f, 0.f), CREATE_OPTION::ENEMY_HAND_SHOT_CREATE, FIRE_OPTION::ROTATE_FIRE_OPTION);
 
 	FLOAT line7 = line6 + 6.0f;
-	ActivateEnemy(line7
-		, Vec(450.f, 0.f), CREATE_OPTION::ENEMY_BOSS_CREATE, FIRE_OPTION::N_WAY_FIRE_OPTION);
+	ActivateEnemy(line7, Vec(450.f, 0.f), CREATE_OPTION::ENEMY_BOSS_CREATE, FIRE_OPTION::N_WAY_FIRE_OPTION);
 
 	return;
 }
