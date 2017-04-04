@@ -22,40 +22,32 @@ struct GoAndSlowData
 	FLOAT m_SlowDownMoveSpeed;
 };
 
-struct MoveOnlySide
+struct MoveSideOnly
 {
-	MoveOnlySide() = default;
-	MoveOnlySide(
+	MoveSideOnly() = default;
+	MoveSideOnly(
 		const _In_ FLOAT& yAxisMoveDistance,
 		const _In_ FLOAT& yAxisMoveSpeed,
 		const _In_ FLOAT& xAxisMoveSpeed,
 		const _In_ FLOAT& xAxisMoveTimeInterval,
-		const _In_ FLOAT& moveTimeRandomRange)
-	{
-		m_YAxisMoveDistance = yAxisMoveDistance;
-		m_YAxisMoveSpeed = yAxisMoveSpeed;
-		m_XAxisMoveSpeed = xAxisMoveSpeed;
-		m_XAxisMoveTimeInterval = xAxisMoveTimeInterval;
-		m_MoveTimeRandomRange = moveTimeRandomRange;
-	};
-	MoveOnlySide(const _In_ INT) {};
-	MoveOnlySide& operator=(const _In_ MoveOnlySide& opt)
-	{
-		m_YAxisMoveDistance = opt.m_YAxisMoveDistance;
-		m_YAxisMoveSpeed = opt.m_YAxisMoveSpeed;
-		m_XAxisMoveSpeed = opt.m_XAxisMoveSpeed;
-		m_XAxisMoveTimeInterval = opt.m_XAxisMoveTimeInterval;
-		m_MoveTimeRandomRange = opt.m_MoveTimeRandomRange;
-		m_IsYAxisMoveEnded = opt.m_IsYAxisMoveEnded;
-	};
-	MoveOnlySide& operator=(const _In_ char*) {};
+		const _In_ FLOAT& moveTimeRandomRange);
+	
+	MoveSideOnly(const _In_ INT) {};
+	MoveSideOnly& operator=(const MoveSideOnly& opt);
+	MoveSideOnly& operator=(const _In_ char*) {};
 
 	FLOAT m_YAxisMoveDistance = 0.f;
 	FLOAT m_YAxisMoveSpeed = 0.f;
 	FLOAT m_XAxisMoveSpeed = 0.f;
 	FLOAT m_XAxisMoveTimeInterval = 0.f;
 	FLOAT m_MoveTimeRandomRange = 0.f;
+
+	// 계산을 위한 변수들.
 	BOOL m_IsYAxisMoveEnded = FALSE;
+	BOOL m_IsGoingRight = FALSE;
+	Vec m_InitialCreatePosition = zero;
+	FLOAT m_XAxisPostionBeforeMove = 0.f;
+	FLOAT m_XAxisMoveDistance = 0.f;
 };
 
 class CreateOption
@@ -77,7 +69,7 @@ public :
 		const _In_ Vec& flightVec,
 		const _In_ FLOAT& flightSpeed,
 		const _In_ FLOAT& accFlightSpeed,
-		const _In_ MoveOnlySide& moveOnlySide,
+		const _In_ MoveSideOnly& moveOnlySide,
 		const _In_ BOOL& isItemLaunched);
 	CreateOption(
 		const _In_ INT& enemyHp,
@@ -104,7 +96,7 @@ public :
 	FLOAT              GetFlightSpeed()    const;
 	FLOAT              GetAccFlightSpeed() const;
 	GoAndSlowData      GetGoAndSlowData()  const;
-	MoveOnlySide	   GetMoveOnlySide()   const;
+	MoveSideOnly	   GetMoveSideOnly()   const;
 	BOOL               GetIsItemLaunched() const;
 
 	void SetEnemyHp       (const _In_ INT&);
@@ -114,7 +106,7 @@ public :
 	void SetFlightSpeed   (const _In_ FLOAT&);
 	void SetAccFlightSpeed(const _In_ FLOAT&);
 	void SetGoAndSlowData (const _In_ GoAndSlowData&);
-	void SetMoveOnlySide  (const _In_ MoveOnlySide&);
+	void SetMoveSideOnly  (const _In_ MoveSideOnly&);
 	void SetIsItemLaunched(const _In_ BOOL&);
 
 private :
@@ -131,6 +123,6 @@ private :
 	FLOAT m_FlightSpeed;
 	FLOAT m_AccFlightSpeed;
 	GoAndSlowData m_GoAndSlowData;
-	MoveOnlySide m_MoveOnlySide;
+	MoveSideOnly m_MoveOnlySide;
 	BOOL m_IsItemLaunched;
 };

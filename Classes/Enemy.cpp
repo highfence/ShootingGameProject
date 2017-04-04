@@ -47,6 +47,7 @@ void Enemy::FunctionPointerRegist()
 	m_pFlightHandler[FLIGHT_TYPE::FLY_ITEM] = &Enemy::FlyItem;
 	m_pFlightHandler[FLIGHT_TYPE::FLY_ACCELERATE] = &Enemy::FlyAccelerate;
 	m_pFlightHandler[FLIGHT_TYPE::FLY_GO_AND_SLOW] = &Enemy::FlyGoAndSlow;
+	m_pFlightHandler[FLIGHT_TYPE::FLY_MOVE_ONLY_SIDE] = &Enemy::FlyMoveSideOnly;
 
 	// Fire Function Pointer Regist
 	m_pFireHandler[FIRE_TYPE::NORMAL_FIRE] = &Enemy::FireNormal;
@@ -287,6 +288,153 @@ BOOL Enemy::FlyGoAndSlow(const _In_ FLOAT dt)
 		FLOAT flightSpeed = opt.GetFlightSpeed();
 		m_Pos.x += flightVec.x * flightSpeed * dt;
 		m_Pos.y += flightVec.y * flightSpeed * dt;
+	}
+
+	return TRUE;
+}
+
+/*
+	일정 거리만큼 앞으로 진행한 뒤, 그 뒤로는 양 옆으로만 움직이는 움직임.
+	Y축 움직임 중에는 무적 판정이며, 미사일도 쏘지 않도록 만들어주어야 함.
+*/
+BOOL Enemy::FlyMoveSideOnly(const _In_ FLOAT dt)
+{
+	CreateOption opt = GetCreateOption();
+	MoveSideOnly data = opt.GetMoveSideOnly();
+
+	// 최초 진입시에 createPos를 기록해놓는다.
+	if (data.m_InitialCreatePosition == zero)
+	{
+		data.m_InitialCreatePosition = m_Pos;
+	}
+
+	// 움직인 거리가 YAxisMoveDistance까지는 앞으로 직진.
+	FLOAT moveDistance = m_Pos.y - data.m_InitialCreatePosition.y;
+	if (moveDistance < data.m_YAxisMoveDistance)
+	{
+		m_Pos.y += data.m_YAxisMoveSpeed * dt;
+	}
+	// 움직인 거리가 일정 거리 이상 되면 옆으로만 움직임.
+	else
+	{
+		// Y축 움직임이 끝났다고 기록. (미사일 발사나 피격 판정을 위해)
+		if (data.m_IsYAxisMoveEnded == FALSE)
+		{
+			data.m_IsYAxisMoveEnded = TRUE;
+		}
+		MoveSide(dt, opt, data);
+	}
+		
+	// 변경 사항 저장.
+	opt.SetMoveSideOnly(data);
+	SetCreateOption(opt);
+
+	return TRUE;
+}
+
+/*
+	옆으로 이동하는 움직임 구현.
+*/
+BOOL Enemy::MoveSide(
+	const _In_ FLOAT dt,
+	_Inout_ CreateOption& opt,
+	_Inout_ MoveSideOnly& data)
+{
+	// 제대로 기다리지 않았다면, 바로 리턴.
+	if (!IsWaitEnough(data))
+	{
+		return FALSE;
+	}
+
+	// 움직임이 끝나지 않았다면, 정해진 대로 계속 움직여준다.
+	if (!IsMoveEnough(data))
+	{
+		if (data.m_IsGoingRight)
+		{
+			m_Pos.x += data.m_XAxisMoveSpeed * dt;
+		}
+		else
+		{
+			m_Pos.x -= data.m_XAxisMoveSpeed * dt;
+		}
+		return TRUE;
+	}
+
+	// 움직임이 끝났다면, 필요한 데이터 초기화.
+	m_RecordFlyTime = 0.f;
+	data.m_XAxisPostionBeforeMove = m_Pos.x;
+
+	// 움직일 거리 랜덤 생성.
+	FLOAT moveRange = (winWidth / 2) - (m_SpriteRange.x / 2);
+	std::mt19937 rng((unsigned int)time(NULL));
+	std::uniform_real_distribution<float> distForMoveRange(50.f, moveRange);
+	FLOAT moveDistance = distForMoveRange(rng);
+	data.m_XAxisMoveDistance = moveDistance;
+
+	// 화면 중심 기준으로 왼쪽에 있다면, 오른쪽으로 이동.
+	if (m_Pos.x <= (winWidth / 2))
+	{
+		data.m_IsGoingRight = TRUE;
+	}
+	// 화면 중심 기준으로 오른쪽에 있다면, 왼쪽으로 이동. 
+	else
+	{
+		data.m_IsGoingRight = FALSE;
+	}
+
+	return TRUE;
+}
+
+/*
+	MoveSideOnly 데이터에 명시된 만큼 보스가 제대로 기다렸는지를 확인해주는 함수.
+	MoveSide에서 사용.
+*/
+BOOL Enemy::IsWaitEnough(const _In_ MoveSideOnly& data)
+{
+	if (m_RecordFlyTime < data.m_XAxisMoveTimeInterval)
+	{
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+/*
+	MoveSideOnly 데이터에 명시된 만큼 보스가 제대로 움직였는지를 확인해주는 함수.
+	MoveSide에서 사용.
+*/
+BOOL Enemy::IsMoveEnough(const _In_ MoveSideOnly& data)
+{
+	// 이동할 거리가 정해져있지 않다면, MoveSide에서 처리하도록 TRUE반환.
+	if (data.m_XAxisMoveDistance == 0)
+	{
+		return TRUE;
+	}
+
+	// 양 옆에 너무 붙으면 FALSE 반환.
+	if ((m_Pos.x < m_SpriteRange.x) || (m_Pos.x > winWidth - m_SpriteRange.x))
+	{
+		return TRUE;
+	}
+
+
+	// 오른쪽으로 가고 있는 중이라면,
+	if (data.m_IsGoingRight)
+	{
+		// 오른쪽으로 충분히 가지 않았다면 FALSE.
+		if (m_Pos.x < data.m_XAxisPostionBeforeMove + data.m_XAxisMoveDistance)
+		{
+			return FALSE;
+		}
+	}
+	// 왼쪽으로 가고 있는 중이라면,
+	else
+	{
+		// 왼쪽으로 충분히 가지 않았다면 FALSE.
+		if (m_Pos.x > data.m_XAxisPostionBeforeMove - data.m_XAxisMoveDistance)
+		{
+			return FALSE;
+		}
 	}
 
 	return TRUE;
@@ -931,7 +1079,7 @@ BOOL Enemy::GetIsEnemyActivated() const
 	return m_IsEnemyActivated;
 }
 
-CreateOption Enemy::GetCreateOption() const
+CreateOption& Enemy::GetCreateOption() 
 {
 	return m_CreateOption;
 }

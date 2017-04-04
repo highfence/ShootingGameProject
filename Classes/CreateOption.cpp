@@ -19,7 +19,7 @@ CreateOption::CreateOption(
 	SetFlightSpeed(flightSpeed);
 	SetAccFlightSpeed(accFlightSpeed);
 	SetGoAndSlowData(goAndSlowData);
-	SetMoveOnlySide(NULL);
+	SetMoveSideOnly(NULL);
 	SetIsItemLaunched(isItemLaunched);
 }
 
@@ -30,7 +30,7 @@ CreateOption::CreateOption(
 	const Vec & flightVec,
 	const FLOAT & flightSpeed,
 	const FLOAT & accFlightSpeed,
-	const MoveOnlySide & moveOnlySide,
+	const MoveSideOnly & moveOnlySide,
 	const BOOL & isItemLaunched)
 	: m_IsOptionCanUse(TRUE)
 {
@@ -41,7 +41,7 @@ CreateOption::CreateOption(
 	SetFlightSpeed(flightSpeed);
 	SetAccFlightSpeed(accFlightSpeed);
 	SetGoAndSlowData(NULL);
-	SetMoveOnlySide(moveOnlySide);
+	SetMoveSideOnly(moveOnlySide);
 	SetIsItemLaunched(isItemLaunched);
 }
 
@@ -63,7 +63,7 @@ CreateOption::CreateOption(
 	SetFlightSpeed(flightSpeed);
 	SetAccFlightSpeed(accFlightSpeed);
 	SetGoAndSlowData(NULL);
-	SetMoveOnlySide(NULL);
+	SetMoveSideOnly(NULL);
 	SetIsItemLaunched(isItemLaunched);
 }
 
@@ -92,6 +92,7 @@ CreateOption& CreateOption::operator=(const _In_ CreateOption& op)
 	SetFlightSpeed(op.GetFlightSpeed());
 	SetAccFlightSpeed(op.GetAccFlightSpeed());
 	SetGoAndSlowData(op.GetGoAndSlowData());
+	SetMoveSideOnly(op.GetMoveSideOnly());
 	SetIsItemLaunched(op.GetIsItemLaunched());
 	return *this;
 }
@@ -144,7 +145,7 @@ GoAndSlowData CreateOption::GetGoAndSlowData() const
 	return m_GoAndSlowData;
 }
 
-MoveOnlySide CreateOption::GetMoveOnlySide() const
+MoveSideOnly CreateOption::GetMoveSideOnly() const
 {
 	return m_MoveOnlySide;
 }
@@ -189,7 +190,7 @@ void CreateOption::SetGoAndSlowData(const _In_ GoAndSlowData& data)
 	m_GoAndSlowData = data;
 }
 
-void CreateOption::SetMoveOnlySide(const MoveOnlySide & data)
+void CreateOption::SetMoveSideOnly(const MoveSideOnly & data)
 {
 	m_MoveOnlySide = data;
 }
@@ -232,5 +233,34 @@ GoAndSlowData & GoAndSlowData::operator=(const GoAndSlowData& data)
 	m_SlowDownDurationTime = data.m_SlowDownDurationTime;
 	m_SlowDownMoveVec = data.m_SlowDownMoveVec;
 	m_SlowDownMoveSpeed = data.m_SlowDownMoveSpeed;
+	return *this;
+}
+
+MoveSideOnly::MoveSideOnly(
+	const FLOAT & yAxisMoveDistance,
+	const FLOAT & yAxisMoveSpeed,
+	const FLOAT & xAxisMoveSpeed,
+	const FLOAT & xAxisMoveTimeInterval,
+	const FLOAT & moveTimeRandomRange)
+{
+	m_YAxisMoveDistance = yAxisMoveDistance;
+	m_YAxisMoveSpeed = yAxisMoveSpeed;
+	m_XAxisMoveSpeed = xAxisMoveSpeed;
+	m_XAxisMoveTimeInterval = xAxisMoveTimeInterval;
+	m_MoveTimeRandomRange = moveTimeRandomRange;
+};
+
+MoveSideOnly & MoveSideOnly::operator=(const MoveSideOnly& data)
+{
+	m_YAxisMoveDistance = data.m_YAxisMoveDistance;
+	m_YAxisMoveSpeed = data.m_YAxisMoveSpeed;
+	m_XAxisMoveSpeed = data.m_XAxisMoveSpeed;
+	m_XAxisMoveTimeInterval = data.m_XAxisMoveTimeInterval;
+	m_MoveTimeRandomRange = data.m_MoveTimeRandomRange;
+	m_IsYAxisMoveEnded = data.m_IsYAxisMoveEnded;
+	m_IsGoingRight = data.m_IsGoingRight;
+	m_InitialCreatePosition = data.m_InitialCreatePosition;
+	m_XAxisPostionBeforeMove = data.m_XAxisPostionBeforeMove;
+	m_XAxisMoveDistance = data.m_XAxisMoveDistance;
 	return *this;
 }

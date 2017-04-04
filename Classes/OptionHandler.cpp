@@ -137,7 +137,7 @@ void OptionHandler::Init()
 
 	/* EnemyBoss 관련 Option */
 	// 임시 데이터
-	MoveOnlySide enemyBossSideMove = MoveOnlySide(250.f, 50.f, 300.f, 1.5f, 0.3f);
+	MoveSideOnly enemyBossSideMove(350.f, 50.f, 300.f, 1.5f, 0.3f);
 	CreateOption enemyBossCreate = CreateOption(2000, ENEMY_TYPE::ENEMY_BOSS, FLIGHT_TYPE::FLY_MOVE_ONLY_SIDE, Vec(0, 1), 300.f, 0.f, enemyBossSideMove, FALSE);
 
 

@@ -100,6 +100,19 @@ Vec & Vec::operator/(const FLOAT floatForDivide)
 	return *this;
 }
 
+BOOL Vec::operator==(const Vec compareVec)
+{
+	if (x != compareVec.x)
+	{
+		return FALSE;
+	}
+	else if (y != compareVec.y)
+	{
+		return FALSE;
+	}
+	return TRUE;
+}
+
 Vec Vec::GetMinusVec() const
 {
 	return Vec(-x, -y);

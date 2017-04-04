@@ -36,7 +36,7 @@ public :
 
 	// Getter, Setter
 	BOOL GetIsEnemyActivated() const;
-	CreateOption GetCreateOption() const;
+	CreateOption& GetCreateOption();
 	FireOption GetFireOption() const;
 	Vec GetPosition() const;
 	Vec GetColideRange() const;
@@ -102,6 +102,15 @@ private :
 	BOOL FlyItem(const _In_ FLOAT);
 	BOOL FlyAccelerate(const _In_ FLOAT);
 	BOOL FlyGoAndSlow(const _In_ FLOAT);
+	BOOL FlyMoveSideOnly(const _In_ FLOAT);
+
+	// Fly 보조 함수.
+	BOOL MoveSide(
+		const _In_ FLOAT,
+		_Inout_ CreateOption&,
+		_Inout_ MoveSideOnly&);
+	BOOL IsWaitEnough(const _In_ MoveSideOnly&);
+	BOOL IsMoveEnough(const _In_ MoveSideOnly&);
 
 	// Fire 타입 함수 포인터.
 	BOOL FireNormal();
