@@ -16,11 +16,18 @@ struct GoAndSlowData
 	GoAndSlowData(int);
 	GoAndSlowData& operator=(const GoAndSlowData&);
 	GoAndSlowData& operator=(const _In_ wchar_t*){};
-	FLOAT SlowDownStartTime;
-	FLOAT SlowDownDurationTime;
-	Vec SlowDownMoveVec;
-	FLOAT SlowDownMoveSpeed;
+	FLOAT m_SlowDownStartTime;
+	FLOAT m_SlowDownDurationTime;
+	Vec m_SlowDownMoveVec;
+	FLOAT m_SlowDownMoveSpeed;
 };
+
+//struct MoveOnlySide
+//{
+//	MoveOnlySide() = default;
+//	MoveOnlySide();
+//
+//};
 
 class CreateOption
 {

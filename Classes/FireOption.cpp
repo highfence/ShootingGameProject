@@ -14,22 +14,22 @@ NwayShotData::NwayShotData(
 		return;
 	}
 
-	ShotTimes = shotTimes;
-	for (int i = 0; i < ShotTimes; ++i)
+	m_ShotTimes = shotTimes;
+	for (int i = 0; i < m_ShotTimes; ++i)
 	{
-		ShotNumber[i] = shotNumberArr[i];
+		m_ShotNumber[i] = shotNumberArr[i];
 	}
 	// ShotAngle은 널포인터가 들어올 수 있음.
 	if (shotAngleArr != nullptr)
 	{
-		for (int i = 0; i < ShotTimes; ++i)
+		for (int i = 0; i < m_ShotTimes; ++i)
 		{
-			ShotAngle[i] = shotAngleArr[i];
+			m_ShotAngle[i] = shotAngleArr[i];
 		}
 	}
 
-	IsMissileShotToPlayer = isMissileShotToPlayer;
-	IsMissileCircled = isMissileCircled;
+	m_IsMissileShotToPlayer = isMissileShotToPlayer;
+	m_IsMissileCircled = isMissileCircled;
 }
 
 /*
@@ -45,16 +45,16 @@ NwayShotData::NwayShotData(const char *)
 */
 NwayShotData & NwayShotData::operator=(const NwayShotData & data)
 {
-	ShotTimes = data.ShotTimes;
-	for (int i = 0; i < ShotTimes; ++i)
+	m_ShotTimes = data.m_ShotTimes;
+	for (int i = 0; i < m_ShotTimes; ++i)
 	{
-		ShotNumber[i] = data.ShotNumber[i];
-		ShotAngle[i] = data.ShotAngle[i];
+		m_ShotNumber[i] = data.m_ShotNumber[i];
+		m_ShotAngle[i] = data.m_ShotAngle[i];
 	}
-	IsMissileShotToPlayer = data.IsMissileShotToPlayer;
-	IsMissileCircled = data.IsMissileCircled;
-	IsMissileNeedDelay = data.IsMissileNeedDelay;
-	RecordShotTimes = data.RecordShotTimes;
+	m_IsMissileShotToPlayer = data.m_IsMissileShotToPlayer;
+	m_IsMissileCircled = data.m_IsMissileCircled;
+	m_IsMissileNeedDelay = data.m_IsMissileNeedDelay;
+	m_RecordShotTimes = data.m_RecordShotTimes;
 	
 	return *this;
 }
@@ -65,7 +65,7 @@ NwayShotData & NwayShotData::operator=(const NwayShotData & data)
 BOOL NwayShotData::operator!=(const char *null)
 {
 	// ShotTimes가 0인 경우 nullptr과 같다고 인식하여 FALSE반환.
-	if (ShotTimes == 0)
+	if (m_ShotTimes == 0)
 	{
 		return FALSE;
 	}
@@ -80,13 +80,13 @@ BOOL NwayShotData::operator!=(const char *null)
 */
 BOOL NwayShotData::GetNwayShotDataValid()
 {
-	if (ShotTimes <= 0)
+	if (m_ShotTimes <= 0)
 	{
 		return FALSE;
 	}
-	for (int i = 0; i < ShotTimes; ++i)
+	for (int i = 0; i < m_ShotTimes; ++i)
 	{
-		if (ShotNumber[i] == 0)
+		if (m_ShotNumber[i] == 0)
 		{
 			return FALSE;
 		}
@@ -107,32 +107,32 @@ CircleShotData::CircleShotData(
 	const FLOAT rotateTime,
 	const FLOAT shotSpeedWhenTheRotateEnd)
 {
-	CenterPos = centerPos;
-	MissileNum = missileNum;
-	Radius = radius;
-	Theta = theta;
-	InitRotateAnglePerSec = initRotatePerSec;
-	AccRotateAnglePerSec = accRotatePerSec;
-	MaxRotateAngelPerSec = maxRotatePerSec;
-	IsRotateClockWise = isRotateClockWise;
-	RotateTime = rotateTime;
-	ShotSpeedWhenTheRotateEnd = shotSpeedWhenTheRotateEnd;
+	m_CenterPos = centerPos;
+	m_MissileNum = missileNum;
+	m_Radius = radius;
+	m_Theta = theta;
+	m_InitRotateAnglePerSec = initRotatePerSec;
+	m_AccRotateAnglePerSec = accRotatePerSec;
+	m_MaxRotateAngelPerSec = maxRotatePerSec;
+	m_IsRotateClockWise = isRotateClockWise;
+	m_RotateTime = rotateTime;
+	m_ShotSpeedWhenTheRotateEnd = shotSpeedWhenTheRotateEnd;
 }
 
 CircleShotData & CircleShotData::operator=(const CircleShotData & dt)
 {
-	CenterPos = dt.CenterPos;
-	MissileNum = dt.MissileNum;
-	Radius = dt.Radius;
-	Theta = dt.Theta;
-	InitRotateAnglePerSec = dt.InitRotateAnglePerSec;
-	AccRotateAnglePerSec = dt.AccRotateAnglePerSec;
-	MaxRotateAngelPerSec = dt.MaxRotateAngelPerSec;
-	IsRotateClockWise = dt.IsRotateClockWise;
-	RotateTime = dt.RotateTime;
-	ShotSpeedWhenTheRotateEnd = dt.ShotSpeedWhenTheRotateEnd;
-	RecordRotateTime = dt.RecordRotateTime;
-	IsMissileNeedDelay = dt.IsMissileNeedDelay;
+	m_CenterPos = dt.m_CenterPos;
+	m_MissileNum = dt.m_MissileNum;
+	m_Radius = dt.m_Radius;
+	m_Theta = dt.m_Theta;
+	m_InitRotateAnglePerSec = dt.m_InitRotateAnglePerSec;
+	m_AccRotateAnglePerSec = dt.m_AccRotateAnglePerSec;
+	m_MaxRotateAngelPerSec = dt.m_MaxRotateAngelPerSec;
+	m_IsRotateClockWise = dt.m_IsRotateClockWise;
+	m_RotateTime = dt.m_RotateTime;
+	m_ShotSpeedWhenTheRotateEnd = dt.m_ShotSpeedWhenTheRotateEnd;
+	m_RecordRotateTime = dt.m_RecordRotateTime;
+	m_IsMissileNeedDelay = dt.m_IsMissileNeedDelay;
 	return *this;
 }
 
