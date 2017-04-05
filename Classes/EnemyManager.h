@@ -20,12 +20,12 @@ public :
 	EnemyManager();
 	~EnemyManager();
 
-	//template <typename T>
-	//void Activate(
-	//	const _In_ FLOAT activateTime,
-	//	const _In_ Vec createPos,
-	//	const _In_ ENEMY::CREATE_OPTION createOption,
-	//	const _In_ ENEMY::FIRE_OPTION fireOption);
+	template <class T>
+	void Activate(
+		const _In_ FLOAT activateTime,
+		const _In_ Vec createPos,
+		const _In_ ENEMY::CREATE_OPTION createOption,
+		const _In_ ENEMY::FIRE_OPTION fireOption);
 	
 	void ActivateEnemy(
 		const _In_ FLOAT activateTime, 
@@ -59,8 +59,10 @@ private :
 	void RegisterFunctionPointer();
 	void GetOptionPointer();
 
-	template <typename T>
+	template <class T>
 	void AllocEnemyMemory(const _In_ INT);
+
+
 
 	// 생성 함수 포인터 핸들러.
 	BOOL(EnemyManager::*m_pActivateHandler[ENEMY_TYPE_NUM])(

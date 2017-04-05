@@ -9,6 +9,7 @@
 #include "Boss.h"
 #include "EnemyManager.h"
 #include "OptionHandler.h"
+#include <type_traits>
 
 EnemyManager* EnemyManager::m_pInstance = nullptr;
 
@@ -317,51 +318,51 @@ Player& EnemyManager::getPlayerInfo()
 
 void EnemyManager::MakeProc()
 {
-	//FLOAT line1 = 4.f;
-	//ActivateEnemy(line1		   , Vec(350.f, 0.f), CREATE_OPTION::ENEMY_ITEM_FALSE, FIRE_OPTION::FIRE_FRONT);
-	//ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), CREATE_OPTION::ENEMY_ITEM_FALSE, FIRE_OPTION::FIRE_FRONT);
-	//ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), CREATE_OPTION::ENEMY_ITEM_FALSE, FIRE_OPTION::FIRE_FRONT);
-	//ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), CREATE_OPTION::ENEMY_ITEM_TRUE, FIRE_OPTION::FIRE_FRONT);
+	FLOAT line1 = 4.f;
+	ActivateEnemy(line1		   , Vec(350.f, 0.f), CREATE_OPTION::ENEMY_ITEM_FALSE, FIRE_OPTION::FIRE_FRONT);
+	ActivateEnemy(line1 + 0.25f, Vec(275.f, 0.f), CREATE_OPTION::ENEMY_ITEM_FALSE, FIRE_OPTION::FIRE_FRONT);
+	ActivateEnemy(line1 + 0.50f, Vec(200.f, 0.f), CREATE_OPTION::ENEMY_ITEM_FALSE, FIRE_OPTION::FIRE_FRONT);
+	ActivateEnemy(line1 + 0.75f, Vec(125.f, 0.f), CREATE_OPTION::ENEMY_ITEM_TRUE, FIRE_OPTION::FIRE_FRONT);
 
-	//FLOAT line2 = 6.f;
-	//ActivateEnemy(line2		   , Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line2 + 0.25f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line2 + 0.50f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line2 + 0.75f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line2 + 1.00f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line2 + 1.25f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line2 + 1.50f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line2 + 1.75f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	FLOAT line2 = 6.f;
+	ActivateEnemy(line2		   , Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 0.25f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 0.50f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 0.75f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 1.00f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 1.25f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 1.50f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line2 + 1.75f, Vec(winWidth, 125.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
 
-	//FLOAT line3 = line2 + 0.01;
-	//ActivateEnemy(line3 + 0.50f, Vec(winWidth, 55.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line3 + 0.75f, Vec(winWidth, 55.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line3 + 1.00f, Vec(winWidth, 55.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line3 + 1.25f, Vec(winWidth, 55.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line3 + 1.50f, Vec(winWidth, 55.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	FLOAT line3 = line2 + 0.01;
+	ActivateEnemy(line3 + 0.50f, Vec(winWidth, 55.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line3 + 0.75f, Vec(winWidth, 55.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line3 + 1.00f, Vec(winWidth, 55.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line3 + 1.25f, Vec(winWidth, 55.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line3 + 1.50f, Vec(winWidth, 55.f), CREATE_OPTION::ENEMY_MINE_DIAGONAL, FIRE_OPTION::MINE_AIMED);
 
-	//FLOAT line4 = line3 + 2.f;
-	//ActivateEnemy(line4, Vec(350.f, 0.f), CREATE_OPTION::ENEMY_HAND_SHOT_CREATE, FIRE_OPTION::N_WAY_FIRE_OPTION);
+	FLOAT line4 = line3 + 2.f;
+	ActivateEnemy(line4, Vec(350.f, 0.f), CREATE_OPTION::ENEMY_HAND_SHOT_CREATE, FIRE_OPTION::N_WAY_FIRE_OPTION);
 
-	//FLOAT line5 = line4 + 2.5;
-	//ActivateEnemy(line5		   , Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line5	+ 0.01f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line5 + 0.25f, Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line5 + 0.26f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line5 + 0.50f, Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line5 + 0.51f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line5 + 0.75f, Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line5 + 0.76f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line5 + 1.00f, Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line5 + 1.01f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line5 + 1.25f, Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
-	//ActivateEnemy(line5 + 1.26f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT_WITH_ITEM, FIRE_OPTION::MINE_AIMED);
+	FLOAT line5 = line4 + 2.5;
+	ActivateEnemy(line5		   , Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line5	+ 0.01f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line5 + 0.25f, Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line5 + 0.26f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line5 + 0.50f, Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line5 + 0.51f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line5 + 0.75f, Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line5 + 0.76f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line5 + 1.00f, Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line5 + 1.01f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line5 + 1.25f, Vec(550.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT, FIRE_OPTION::MINE_AIMED);
+	ActivateEnemy(line5 + 1.26f, Vec(500.f, 0.f), CREATE_OPTION::ENEMY_MINE_STRAIGHT_WITH_ITEM, FIRE_OPTION::MINE_AIMED);
 
-	//FLOAT line6 = line5 + 4.5;
-	//ActivateEnemy(line6 + 3.f, Vec(250.f, 0.f), CREATE_OPTION::ENEMY_HAND_SHOT_CREATE, FIRE_OPTION::ROTATE_FIRE_OPTION);
+	FLOAT line6 = line5 + 4.5;
+	ActivateEnemy(line6 + 3.f, Vec(250.f, 0.f), CREATE_OPTION::ENEMY_HAND_SHOT_CREATE, FIRE_OPTION::ROTATE_FIRE_OPTION);
 
-	//FLOAT line7 = line6 + 6.0f;
-	ActivateEnemy(3.f, Vec(450.f, 0.f), CREATE_OPTION::ENEMY_BOSS_CREATE, FIRE_OPTION::N_WAY_FIRE_OPTION);
+	FLOAT line7 = line6 + 6.0f;
+	ActivateEnemy(line7 + 1.5f, Vec(450.f, 0.f), CREATE_OPTION::ENEMY_BOSS_CREATE, FIRE_OPTION::N_WAY_FIRE_OPTION);
 
 	return;
 }
@@ -402,10 +403,23 @@ void EnemyManager::SetEnemyMemoryPool()
 	return;
 }
 
+///*
+//	원하는 에너미를 Activate 시켜주는 함수.
+//*/
+//template <class T>
+//void Activate(
+//	const _In_ FLOAT activateTime,
+//	const _In_ Vec createPos,
+//	const _In_ ENEMY::CREATE_OPTION createOption,
+//	const _In_ ENEMY::FIRE_OPTION fireOption)
+//{
+//	
+//}
+
 /*
 	EnemyManager 생성시 메모리풀을 잡아 놓는 함수.
 */
-template <typename T>
+template <class T>
 void EnemyManager::AllocEnemyMemory(const _In_ INT allocTime)
 {
 	// 할당 받은 회수만큼 for문 루프
@@ -424,7 +438,7 @@ void EnemyManager::AllocEnemyMemory(const _In_ INT allocTime)
 */
 Enemy * EnemyManager::FindDeactivatedEnemy(const ENEMY::ENEMY_TYPE findEnemyType)
 {
-	std::vector<Enemy*>::iterator iter = m_EnemyMemoryVector.begin();
+	auto iter = m_EnemyMemoryVector.begin();
 	while (iter != m_EnemyMemoryVector.end())
 	{
 		// Enemy Type이 일치하는지 우선 확인.
@@ -443,6 +457,8 @@ Enemy * EnemyManager::FindDeactivatedEnemy(const ENEMY::ENEMY_TYPE findEnemyType
 	// 해당하는 Enemy가 없다면 nullptr반환.
 	return nullptr;
 }
+
+
 
 /*
 	중심 위치와 가로 세로 길이를 가진 Vec 자료형을 넣으면 그와 충돌한 Enemy를 반환해주는 함수.

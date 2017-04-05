@@ -60,14 +60,14 @@ protected :
 	FireOption	 m_FireOption;
 
 	// 기존 멤버 변수 (지워야할 것을 찾자)
-	Vec		     m_Pos;
-	Vec			 m_LaunchPos = Vec(0.f, 0.f);
-	INT		     m_Hp;
-	ENEMY_TYPE	 m_EnemyType;
-	Vec			 m_PlayerPos;
-	Vec		     m_SpriteRange;
-	Vec		     m_ColideRange;
-	INT		     m_LoadedMissileNumber;
+	Vec		     m_Pos = zero;
+	Vec			 m_LaunchPos = zero;
+	INT		     m_Hp = 0; 
+	ENEMY_TYPE	 m_EnemyType = ENEMY::ENEMY_TYPE::NONE;
+	Vec			 m_PlayerPos = zero;
+	Vec		     m_SpriteRange = zero;
+	Vec		     m_ColideRange = zero;
+	INT		     m_LoadedMissileNumber = 0;
 	INT			 m_ShootedMissileNumber = 0;
 	FLOAT	     m_AccTime = 0.f;
 	FLOAT	     m_RecordAccTime = 0.f;

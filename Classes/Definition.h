@@ -41,6 +41,7 @@ namespace ENEMY
 {
 	enum ENEMY_TYPE 
 	{
+		NONE,
 		ENEMY_ITEM,
 		ITEM,
 		ENEMY_ZACO,
